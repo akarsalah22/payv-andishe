@@ -1,26 +1,164 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Direct @font-face declarations for the 4 Kurdish fonts in /public/font */
+@font-face {
+  font-family: 'Peshang';
+  src: url('/font/Peshang_Des_5_Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Sirwan';
+  src: url('/font/sirwan_font.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SiRWAN-001';
+  src: url('/font/SiRWAN.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SiRWAN-003';
+  src: url('/font/SiRWAN_1.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+  --font-peshang: var(--font-vazirmatn), var(--font-peshang), 'Vazirmatn', 'Peshang', 'Noto Sans Arabic', sans-serif;
+  --font-sirwan: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+  --font-sirwan1: var(--font-sirwan1), 'SiRWAN-001', 'Sirwan', var(--font-vazirmatn), 'Noto Sans Arabic', sans-serif;
+  --font-sirwan2: var(--font-sirwan2), 'SiRWAN-003', 'Sirwan', var(--font-vazirmatn), 'Noto Sans Arabic', sans-serif;
+  --font-vazirmatn: var(--font-vazirmatn), 'Vazirmatn', 'Noto Sans Arabic', Tahoma, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #faf8f5;
+  --foreground: #1c1b18;
+}
+
+.dark {
+  --background: #121316;
+  --foreground: #eeeff2;
+}
+
+/* Ensure Kurdish/Arabic letter connectivity and touch defaults */
+*, ::before, ::after {
+  letter-spacing: normal;
+  -webkit-tap-highlight-color: transparent;
+  text-transform: none;
+  font-variant: normal;
+}
+
+button, a {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-family: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: normal;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+  direction: rtl;
+  text-align: right;
+  line-height: 1.7;
+  letter-spacing: normal;
+  -webkit-tap-highlight-color: transparent;
 }
+
+/* Global OpenType ligatures and contextual alternates for proper Kurdish cursive connectivity */
+body, h1, h2, h3, h4, h5, h6, p, span, button, a {
+  font-feature-settings: "liga" 1, "calt" 1;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+  letter-spacing: normal !important;
+}
+
+/* Headings and Titles: Unified baseline, OpenType ligatures & contextual alternates */
+h1, h2, h3, h4, h5, h6 {
+  display: block;
+  vertical-align: baseline;
+  line-height: 1.5; /* leading-normal to prevent descender clipping of letters like ڕ and ۆ */
+}
+
+/* Explicit utility classes for Kurdish fonts with OpenType support */
+.font-peshang {
+  font-family: var(--font-vazirmatn), var(--font-peshang), 'Vazirmatn', 'Peshang', 'Noto Sans Arabic', sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1;
+  letter-spacing: normal !important;
+}
+
+.font-sirwan {
+  font-family: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1;
+  letter-spacing: normal !important;
+}
+
+.font-sirwan1 {
+  font-family: var(--font-sirwan1), 'SiRWAN-001', 'Sirwan', var(--font-vazirmatn), 'Noto Sans Arabic', sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1;
+  letter-spacing: normal !important;
+}
+
+.font-sirwan2 {
+  font-family: var(--font-sirwan2), 'SiRWAN-003', 'Sirwan', var(--font-vazirmatn), 'Noto Sans Arabic', sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1;
+  letter-spacing: normal !important;
+}
+
+.font-vazirmatn {
+  font-family: var(--font-vazirmatn), 'Vazirmatn', 'Noto Sans Arabic', sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1;
+  letter-spacing: normal !important;
+}
+
+/* Mobile Touch Micro-interaction Utility */
+.tap-highlight-transparent {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom Sleek Scrollbar for modals and containers */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160, 160, 160, 0.25) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(160, 160, 160, 0.25);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 151, 87, 0.5);
+}
+

@@ -1,0 +1,103 @@
+export type FilmCategory = 'ئەنیمەیشن' | 'سینەمایی' | 'کورتە فیلم';
+
+export interface Film {
+  id: string;
+  slug: string;
+  titleKurdish: string;
+  originalTitle: string;
+  year: number;
+  duration: string;
+  category: FilmCategory;
+  genres: string[];
+  posterUrl: string;
+  description: string;
+  telegramPostUrl: string;
+}
+
+export const FILM_CATEGORIES: ('هەمووی' | FilmCategory)[] = [
+  'هەمووی',
+  'ئەنیمەیشن',
+  'سینەمایی',
+  'کورتە فیلم',
+];
+
+export const SAMPLE_FILMS: Film[] = [
+  {
+    id: '1',
+    slug: 'spirited-away',
+    titleKurdish: 'ڕۆشتووی ڕۆحەکان',
+    originalTitle: 'Spirited Away',
+    year: 2001,
+    duration: '٢ کاتژمێر و ٥ خولەک',
+    category: 'ئەنیمەیشن',
+    genres: ['ئەنیمەیشن', 'سەرکێشی'],
+    posterUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
+    description: 'شاکارێکی ئەفسوناوی میازاکی؛ کچۆڵەیەک دەکەوێتە جیهانی ڕۆحەکان و دەبێت بە ئازایەتی خێزانەکەی ڕزگار بکات.',
+    telegramPostUrl: 'https://t.me/payvandishe/101',
+  },
+  {
+    id: '2',
+    slug: 'interstellar',
+    titleKurdish: 'نێوان ئەستێرەکان',
+    originalTitle: 'Interstellar',
+    year: 2014,
+    duration: '٢ کاتژمێر و ٤٩ خولەک',
+    category: 'سینەمایی',
+    genres: ['زانستی خەیاڵی', 'دراما'],
+    posterUrl: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80',
+    description: 'گەشتێکی قووڵ و فەلسەفی لە نێو بۆشایی گەردووندا بۆ دۆزینەوەی نشینگەیەکی نوێ بۆ مرۆڤایەتی.',
+    telegramPostUrl: 'https://t.me/payvandishe/102',
+  },
+  {
+    id: '3',
+    slug: 'the-shawshank-redemption',
+    titleKurdish: 'ڕزگاربوون لە شاوڕەنگ',
+    originalTitle: 'The Shawshank Redemption',
+    year: 1994,
+    duration: '٢ کاتژمێر و ٢٢ خولەک',
+    category: 'سینەمایی',
+    genres: ['دراما', 'تاوان'],
+    posterUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
+    description: 'چیرۆکێکی کاریگەر لەسەر بەهای هیوا، دانبەخۆداگرتن و دۆستایەتی لە تاریکترین ڕۆژەکانی زینداندا.',
+    telegramPostUrl: 'https://t.me/payvandishe/103',
+  },
+  {
+    id: '4',
+    slug: 'my-neighbor-totoro',
+    titleKurdish: 'تۆتۆرۆی دراوسێم',
+    originalTitle: 'My Neighbor Totoro',
+    year: 1988,
+    duration: '١ کاتژمێر و ٢٦ خولەک',
+    category: 'ئەنیمەیشن',
+    genres: ['ئەنیمەیشن', 'خێزانی'],
+    posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
+    description: 'سەرکێشییەکی پڕ لە پاکی و سۆزی منداڵانە لەگەڵ بوونەوەرە ئەفسوناوییەکانی دارستان لە گوندێکی ژاپۆن.',
+    telegramPostUrl: 'https://t.me/payvandishe/104',
+  },
+  {
+    id: '5',
+    slug: 'the-red-balloon',
+    titleKurdish: 'باڵۆنە سوورەکە',
+    originalTitle: 'The Red Balloon (Le Ballon Rouge)',
+    year: 1956,
+    duration: '٣٤ خولەک',
+    category: 'کورتە فیلم',
+    genres: ['کورتە فیلم', 'خەیاڵی'],
+    posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+    description: 'کورتە فیلمێکی شاکاری فەڕەنسی لەسەر دۆستایەتی سۆزدارانەی کوڕێکی بچووک و باڵۆنێکی جادوویی لە پاریس.',
+    telegramPostUrl: 'https://t.me/payvandishe/105',
+  },
+  {
+    id: '6',
+    slug: 'the-pianist',
+    titleKurdish: 'پیانۆژەن',
+    originalTitle: 'The Pianist',
+    year: 2002,
+    duration: '٢ کاتژمێر و ٣٠ خولەک',
+    category: 'سینەمایی',
+    genres: ['دراما', 'مێژوویی'],
+    posterUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
+    description: 'خەباتی پیانۆژەنێکی بەتوانا بۆ مانەوە لە ژیاندا لە نێو جەنگ و وێرانییەکانی پۆڵۆنیادا.',
+    telegramPostUrl: 'https://t.me/payvandishe/106',
+  },
+];

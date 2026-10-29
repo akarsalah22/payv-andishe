@@ -1,0 +1,24 @@
+{
+  "name": "پەیڤ و ئەندێشە",
+  "short_name": "پەیڤ و ئەندێشە",
+  "description": "پانتاییەک بۆ سینەما، ئەدەب و ئەندێشە",
+  "start_url": "/",
+  "display": "standalone",
+  "dir": "rtl",
+  "lang": "ku",
+  "background_color": "#121316",
+  "theme_color": "#121316",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
+
