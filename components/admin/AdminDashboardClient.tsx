@@ -52,6 +52,7 @@ export function AdminDashboardClient() {
   const [createType, setCreateType] = useState<CreateItemType>('film');
   const [editingFilmId, setEditingFilmId] = useState<string | null>(null);
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
+  const [isFilmSubmitting, setIsFilmSubmitting] = useState<boolean>(false);
   const [isArticleSubmitting, setIsArticleSubmitting] = useState<boolean>(false);
 
   // Search Queries for Lists
@@ -366,6 +367,7 @@ export function AdminDashboardClient() {
       telegramPostUrl: filmTelegramUrl.trim(),
     };
 
+    setIsFilmSubmitting(true);
     try {
       const res = await fetch('/api/films', {
         method,
@@ -378,7 +380,7 @@ export function AdminDashboardClient() {
         setEditingFilmId(null);
         resetFilmForm();
         triggerToast(
-          isEditMode ? 'زانیارییەکانی فیلم نوێکرانەوە' : 'فیلمەکە زیاد کرا',
+          isEditMode ? 'زانیارییەکانی فیلم نوێکرانەوە' : 'فیلمەکە بە سەرکەوتوویی لە بنکەدراوە زیاد کرا',
           {
             href: '/films',
             label: 'بینینی بابەت',
@@ -387,30 +389,20 @@ export function AdminDashboardClient() {
         );
         setActiveTab('films');
         return;
+      } else {
+        const errorData = await res.json().catch(() => null);
+        triggerToast(
+          errorData?.error || 'تۆمارکردن لە سێرڤەر سەرکەوتوو نەبوو، دووبارە هەوڵبدەرەوە',
+          undefined,
+          'error'
+        );
       }
     } catch (err) {
-      console.error('Error saving film via API, fallback to localStorage:', err);
+      console.error('Error saving film via API:', err);
+      triggerToast('هەڵەیەک لە پەیوەندی بە سێرڤەر ڕوویدا', undefined, 'error');
+    } finally {
+      setIsFilmSubmitting(false);
     }
-
-    // Fallback if API fails
-    if (editingFilmId) {
-      const updated = films.map((f) => (f.id === editingFilmId ? payload : f));
-      saveFilmsToStorage(updated);
-      triggerToast('زانیارییەکانی فیلم نوێکرانەوە', {
-        href: '/films',
-        label: 'بینینی بابەت',
-      }, 'success');
-    } else {
-      const updated = [payload, ...films];
-      saveFilmsToStorage(updated);
-      triggerToast('فیلمەکە زیاد کرا', {
-        href: '/films',
-        label: 'بینینی بابەت',
-      }, 'success');
-    }
-    setEditingFilmId(null);
-    resetFilmForm();
-    setActiveTab('films');
   };
 
   // Start Editing Article
@@ -518,25 +510,8 @@ export function AdminDashboardClient() {
         );
       }
     } catch (err) {
-      console.error('Error saving article via API, falling back to localStorage:', err);
-      if (isEditMode && editingArticle) {
-        const updated = articles.map((a) => (a.id === editingArticle.id ? (payload as Article) : a));
-        saveArticlesToStorage(updated);
-      } else {
-        const updated = [payload as Article, ...articles];
-        saveArticlesToStorage(updated);
-      }
-      setEditingArticle(null);
-      resetArticleForm();
-      triggerToast(
-        isEditMode ? 'گۆڕانکارییەکان پاشەکەوت کران' : 'وتارەکە بڵاوکرایەوە',
-        {
-          href: `/articles/${payload.slug}`,
-          label: 'بینینی بابەت',
-        },
-        'success'
-      );
-      setActiveTab('articles');
+      console.error('Error saving article via API:', err);
+      triggerToast('هەڵەیەک لە پەیوەندی بە سێرڤەر ڕوویدا', undefined, 'error');
     } finally {
       setIsArticleSubmitting(false);
     }
@@ -1388,9 +1363,14 @@ export function AdminDashboardClient() {
                   <div className="flex items-center gap-3 pt-2">
                     <button
                       type="submit"
-                      className="flex-1 py-2.5 rounded-xl bg-[#d49757] hover:bg-[#c28747] text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation tap-highlight-transparent"
+                      disabled={isFilmSubmitting}
+                      className="flex-1 py-2.5 rounded-xl bg-[#d49757] hover:bg-[#c28747] text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation tap-highlight-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {editingFilmId ? 'پاشەکەوتکردنی گۆڕانکارییەکان' : 'پاشەکەوتکردن و بڵاوکردنەوەی فیلم'}
+                      {isFilmSubmitting
+                        ? 'تکایە چاوەڕوان بە...'
+                        : editingFilmId
+                        ? 'پاشەکەوتکردنی گۆڕانکارییەکان'
+                        : 'پاشەکەوتکردن و بڵاوکردنەوەی فیلم'}
                     </button>
                     {editingFilmId && (
                       <button

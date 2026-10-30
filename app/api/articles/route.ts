@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
-import { readArticles, writeArticles } from '@/lib/storage';
+import { readArticles, saveSingleArticle, removeSingleArticle } from '@/lib/storage';
 import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/auth';
 import type { Article } from '@/data/articles';
 
-// GET: Fetch all articles from disk
+// GET: Fetch all articles from Neon Postgres
 export async function GET() {
   try {
     const articles = await readArticles();
@@ -15,7 +15,7 @@ export async function GET() {
   }
 }
 
-// POST: Create a new article and write permanently to disk
+// POST: Create a new article and write to Neon Postgres
 export async function POST(req: Request) {
   try {
     const cookieStore = await cookies();
@@ -27,10 +27,8 @@ export async function POST(req: Request) {
     const newArticle = await req.json();
 
     if (!newArticle.title || !newArticle.title.trim()) {
-      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
+      return NextResponse.json({ error: 'ناونیشانی وتار داواکراوە' }, { status: 400 });
     }
-
-    const articles = await readArticles();
 
     // Format content if passed as a single string
     const paragraphs = Array.isArray(newArticle.content)
@@ -59,20 +57,22 @@ export async function POST(req: Request) {
       author: newArticle.author || 'پەیڤ و ئەندێشە',
     };
 
-    const updated = [articleToSave, ...articles];
-    await writeArticles(updated);
+    await saveSingleArticle(articleToSave);
 
     revalidatePath('/');
     revalidatePath('/articles');
     revalidatePath('/admin');
+    revalidatePath(`/articles/${articleToSave.slug}`);
 
     return NextResponse.json({ success: true, article: articleToSave }, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: 'Failed to create article' }, { status: 500 });
+  } catch (err: unknown) {
+    console.error('Error in POST /api/articles:', err);
+    const message = err instanceof Error ? err.message : 'هەڵەیەک لە تۆمارکردنی وتاردا ڕوویدا';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-// PUT: Update existing article permanently on disk
+// PUT: Update existing article in Neon Postgres
 export async function PUT(req: Request) {
   try {
     const cookieStore = await cookies();
@@ -84,55 +84,55 @@ export async function PUT(req: Request) {
     const updatedArticle = await req.json();
 
     if (!updatedArticle.id) {
-      return NextResponse.json({ error: 'Article ID is required' }, { status: 400 });
+      return NextResponse.json({ error: 'ناسێنەری وتار داواکراوە' }, { status: 400 });
     }
 
     const articles = await readArticles();
-    const index = articles.findIndex((a: Article) => a.id === updatedArticle.id);
-
-    if (index === -1) {
-      return NextResponse.json({ error: 'Article not found' }, { status: 404 });
-    }
+    const existing = articles.find((a: Article) => a.id === updatedArticle.id);
 
     // Format content if string
     const paragraphs = Array.isArray(updatedArticle.content)
       ? updatedArticle.content
       : typeof updatedArticle.content === 'string'
       ? updatedArticle.content.split('\n\n').map((p: string) => p.trim()).filter(Boolean)
-      : articles[index].content;
+      : existing?.content || [''];
 
-    const cover = updatedArticle.coverImage || updatedArticle.imageUrl || articles[index].coverImage;
-
-    articles[index] = {
-      ...articles[index],
+    const mergedArticle: Article = {
+      ...(existing || {
+        id: updatedArticle.id,
+        slug: updatedArticle.slug || `post-${Date.now()}`,
+        title: updatedArticle.title || '',
+        excerpt: updatedArticle.excerpt || '',
+        content: [''],
+        category: updatedArticle.category || 'ڕامان',
+        readTime: updatedArticle.readTime || '٥ خولەک خوێندنەوە',
+        date: updatedArticle.date || 'ئەمڕۆ',
+        coverImage: updatedArticle.coverImage || '',
+        imageUrl: updatedArticle.coverImage || '',
+        author: updatedArticle.author || 'پەیڤ و ئەندێشە',
+      }),
       ...updatedArticle,
-      content: paragraphs,
-      coverImage: cover,
-      imageUrl: cover,
-      updatedAt: new Date().toISOString(),
+      content: paragraphs.length > 0 ? paragraphs : [''],
+      coverImage: updatedArticle.coverImage || updatedArticle.imageUrl || existing?.coverImage || '',
+      imageUrl: updatedArticle.coverImage || updatedArticle.imageUrl || existing?.imageUrl || '',
     };
 
-    await writeArticles(articles);
+    await saveSingleArticle(mergedArticle);
 
     revalidatePath('/');
     revalidatePath('/articles');
-    if (updatedArticle.slug) {
-      revalidatePath(`/articles/${updatedArticle.slug}`);
-    }
     revalidatePath('/admin');
+    revalidatePath(`/articles/${mergedArticle.slug}`);
 
-    return NextResponse.json({ success: true, article: articles[index] });
-  } catch {
-    return NextResponse.json({ error: 'Failed to update article' }, { status: 500 });
+    return NextResponse.json({ success: true, article: mergedArticle });
+  } catch (err: unknown) {
+    console.error('Error in PUT /api/articles:', err);
+    const message = err instanceof Error ? err.message : 'هەڵەیەک لە نوێکردنەوەی وتاردا ڕوویدا';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
-// PATCH alias to PUT
-export async function PATCH(req: Request) {
-  return PUT(req);
-}
-
-// DELETE: Delete article permanently from disk
+// DELETE: Remove an article from Neon Postgres
 export async function DELETE(req: Request) {
   try {
     const cookieStore = await cookies();
@@ -142,37 +142,32 @@ export async function DELETE(req: Request) {
     }
 
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id');
+    const idFromQuery = searchParams.get('id');
 
-    let articleId = id;
-    if (!articleId) {
+    let idToDelete = idFromQuery;
+    if (!idToDelete) {
       try {
         const body = await req.json();
-        articleId = body.id;
+        idToDelete = body.id;
       } catch {
-        // no body
+        // query param was empty and body not json
       }
     }
 
-    if (!articleId) {
-      return NextResponse.json({ error: 'Article ID is required' }, { status: 400 });
+    if (!idToDelete) {
+      return NextResponse.json({ error: 'ناسێنەری وتار داواکراوە' }, { status: 400 });
     }
 
-    const articles = await readArticles();
-    const articleToDelete = articles.find((a: Article) => a.id === articleId);
-    const updated = articles.filter((a: Article) => a.id !== articleId);
-
-    await writeArticles(updated);
+    await removeSingleArticle(idToDelete);
 
     revalidatePath('/');
     revalidatePath('/articles');
-    if (articleToDelete?.slug) {
-      revalidatePath(`/articles/${articleToDelete.slug}`);
-    }
     revalidatePath('/admin');
 
     return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: 'Failed to delete article' }, { status: 500 });
+  } catch (err: unknown) {
+    console.error('Error in DELETE /api/articles:', err);
+    const message = err instanceof Error ? err.message : 'هەڵەیەک لە سڕینەوەی وتاردا ڕوویدا';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
