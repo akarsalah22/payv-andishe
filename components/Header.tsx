@@ -108,7 +108,7 @@ export function Header() {
             className="group flex items-center gap-2 text-zinc-900 dark:text-zinc-100 transition-colors select-none"
           >
             <span className="text-xl sm:text-2xl font-bold font-peshang tracking-normal group-hover:text-[#d49757] transition-colors">
-              پەیڤ و ئەندێشە
+              میدیای ئیسلامی
             </span>
           </Link>
 
@@ -120,11 +120,10 @@ export function Header() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`rounded-xl px-3.5 py-1.5 text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent ${
-                    active
+                  className={`rounded-xl px-3.5 py-1.5 text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent ${active
                       ? 'bg-[#d49757]/10 text-[#d49757] border border-[#d49757]/30 font-bold'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#ede8e1]/60 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/60'
-                  }`}
+                    }`}
                 >
                   {link.name}
                 </Link>
@@ -160,7 +159,7 @@ export function Header() {
 
             {/* Telegram Channel Icon Button */}
             <a
-              href="https://t.me/payvandishe"
+              href="https://t.me/mediay_islami"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="کەناڵی تێلیگرام"
@@ -189,9 +188,8 @@ export function Header() {
 
       {/* Mobile Drawer (Native Fluid Sliding Drawer) */}
       <div
-        className={`fixed inset-0 z-[99] md:hidden transition-all duration-300 ${
-          isMenuOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
-        }`}
+        className={`fixed inset-0 z-[99] md:hidden transition-all duration-300 ${isMenuOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
+          }`}
         role="dialog"
         aria-modal="true"
         dir="rtl"
@@ -199,17 +197,15 @@ export function Header() {
         {/* Backdrop Fade Overlay */}
         <div
           onClick={() => setIsMenuOpen(false)}
-          className={`fixed inset-0 bg-black/40 backdrop-blur-sm dark:bg-black/70 transition-opacity duration-300 ease-out cursor-pointer ${
-            isMenuOpen ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`fixed inset-0 bg-black/40 backdrop-blur-sm dark:bg-black/70 transition-opacity duration-300 ease-out cursor-pointer ${isMenuOpen ? 'opacity-100' : 'opacity-0'
+            }`}
           aria-hidden="true"
         />
 
         {/* Sliding Drawer Container from the Right Side */}
         <div
-          className={`fixed inset-y-0 right-0 w-[85%] max-w-xs bg-[#faf8f5] dark:bg-[#121316] text-[#1c1b18] dark:text-[#eeeff2] border-l border-[#ede8e1] dark:border-zinc-800 p-6 shadow-2xl flex flex-col justify-between z-[100] overflow-y-auto transform transition-transform duration-300 ease-out text-right ${
-            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
+          className={`fixed inset-y-0 right-0 w-[85%] max-w-xs bg-[#faf8f5] dark:bg-[#121316] text-[#1c1b18] dark:text-[#eeeff2] border-l border-[#ede8e1] dark:border-zinc-800 p-6 shadow-2xl flex flex-col justify-between z-[100] overflow-y-auto transform transition-transform duration-300 ease-out text-right ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
         >
           <div>
             {/* Header inside drawer */}
@@ -220,7 +216,7 @@ export function Header() {
                 className="select-none"
               >
                 <span className="text-lg font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100">
-                  پەیڤ و ئەندێشە
+                  میدیای ئیسلامی
                 </span>
               </Link>
 
@@ -275,11 +271,10 @@ export function Header() {
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`flex items-center gap-3.5 py-3 px-3.5 rounded-xl text-base font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent ${
-                      active
+                    className={`flex items-center gap-3.5 py-3 px-3.5 rounded-xl text-base font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent ${active
                         ? 'bg-[#d49757]/10 text-[#d49757] font-bold border-r-2 border-[#d49757]'
                         : 'text-zinc-700 dark:text-zinc-300 hover:text-[#d49757] dark:hover:text-[#d49757] hover:bg-[#ede8e1]/40 dark:hover:bg-zinc-900/40'
-                    }`}
+                      }`}
                   >
                     <IconComponent className="h-4.5 w-4.5 text-zinc-400 shrink-0" strokeWidth={1.75} />
                     <span>{link.name}</span>
@@ -293,7 +288,7 @@ export function Header() {
           <div className="pt-6 border-t border-[#ede8e1] dark:border-zinc-800/80 flex flex-col gap-4">
             {/* Premium Telegram Channel Card */}
             <a
-              href="https://t.me/payvandishe"
+              href="https://t.me/mediay_islami"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMenuOpen(false)}

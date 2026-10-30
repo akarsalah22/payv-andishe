@@ -226,7 +226,7 @@ function AdminDashboard({ onLogout }: AdminDashboardProps) {
   const [filmYear, setFilmYear] = useState<number>(new Date().getFullYear());
   const [filmDuration, setFilmDuration] = useState('١ کاتژمێر و ٥٠ خولەک');
   const [filmPosterUrl, setFilmPosterUrl] = useState('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80');
-  const [filmTelegramUrl, setFilmTelegramUrl] = useState('https://t.me/payvandishe');
+  const [filmTelegramUrl, setFilmTelegramUrl] = useState('https://t.me/mediay_islami');
   const [filmDescription, setFilmDescription] = useState('');
 
   // Article Form State
@@ -447,7 +447,7 @@ function AdminDashboard({ onLogout }: AdminDashboardProps) {
     setFilmYear(new Date().getFullYear());
     setFilmDuration('١ کاتژمێر و ٥٠ خولەک');
     setFilmPosterUrl('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80');
-    setFilmTelegramUrl('https://t.me/payvandishe');
+    setFilmTelegramUrl('https://t.me/mediay_islami');
     setFilmDescription('');
   };
 
@@ -779,7 +779,7 @@ function AdminDashboard({ onLogout }: AdminDashboardProps) {
     genres: filmGenres ? filmGenres.split(/[,،]/).map((g) => g.trim()).filter(Boolean) : ['سینەمایی'],
     posterUrl: filmPosterUrl.trim() || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
     description: filmDescription.trim() || 'کورتەی ناساندنی فیلمەکە و تێڕوانینی فەلسەفی لەم شوێنەدا پیشاندەدرێت بە دوو دێڕی ڕێکخراو.',
-    telegramPostUrl: filmTelegramUrl.trim() || 'https://t.me/payvandishe',
+    telegramPostUrl: filmTelegramUrl.trim() || 'https://t.me/mediay_islami',
   }), [editingFilmId, filmTitleKurdish, filmOriginalTitle, filmYear, filmDuration, filmCategory, filmGenres, filmPosterUrl, filmDescription, filmTelegramUrl]);
 
   // Live Article Preview Object
@@ -1465,7 +1465,7 @@ function AdminDashboard({ onLogout }: AdminDashboardProps) {
                       required
                       value={filmTelegramUrl}
                       onChange={(e) => setFilmTelegramUrl(e.target.value)}
-                      placeholder="https://t.me/payvandishe/101"
+                      placeholder="https://t.me/mediay_islami/101"
                       dir="ltr"
                       className="w-full px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#d49757]"
                     />

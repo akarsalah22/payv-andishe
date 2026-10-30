@@ -21,12 +21,12 @@ export default async function HomePage() {
       <section className="w-full max-w-3xl mx-auto text-center space-y-6 pt-2 sm:pt-6 select-none">
         {/* Stately Kurdish Headline */}
         <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal sm:leading-relaxed">
-          پانتاییەک بۆ سینەما، ئەدەب و ئەندێشە
+          شوێنێک بۆ فیلم، نووسین و هەنێک سەرچاوەی ئیسلامی
         </h1>
 
         {/* Concise Subtitle (1-2 sentences) */}
         <p className="text-base sm:text-lg font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-normal">
-          ئەرشیڤێکی مۆدێرنی کوردییە بۆ ناساندنی شاکارەکانی سینەما و ئەنیمەیشن، هاوتەریب لەگەڵ خوێندنەوەی وتاری هزری و ناساندنی کتێبە ناوازەکان.
+          ئەرشیڤێکی کوردییە بۆ ناساندن کۆکردنەوەی فیلم و ئەنیمەیشن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەیەکان.
         </p>
 
         {/* Balanced Primary CTAs & Secondary Telegram Link */}
@@ -54,7 +54,7 @@ export default async function HomePage() {
 
           {/* Secondary Telegram Link */}
           <a
-            href="https://t.me/payvandishe"
+            href="https://t.me/mediay_islami"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl text-zinc-500 dark:text-zinc-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-500/10 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
@@ -99,7 +99,7 @@ export default async function HomePage() {
         <div className="flex items-end justify-between border-b border-[#ede8e1] dark:border-zinc-800/70 pb-4">
           <div>
             <span className="text-xs font-semibold font-sirwan text-[#d49757] tracking-normal block mb-1">
-              ئەدەب و هزر
+              ئەدەب و فیکر
             </span>
             <h2 className="text-xl sm:text-2xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
               نوێترین وتار و ڕامانەکان

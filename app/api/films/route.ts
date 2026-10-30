@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         newFilm.posterUrl?.trim() ||
         'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
       description: newFilm.description?.trim() || '',
-      telegramPostUrl: newFilm.telegramPostUrl?.trim() || 'https://t.me/payvandishe',
+      telegramPostUrl: newFilm.telegramPostUrl?.trim() || 'https://t.me/mediay_islami',
     };
 
     const updated = [filmToSave, ...films];

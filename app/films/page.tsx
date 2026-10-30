@@ -27,7 +27,7 @@ export default async function FilmsPage() {
         </div>
 
         <a
-          href="https://t.me/payvandishe"
+          href="https://t.me/mediay_islami"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 text-sky-600 dark:text-sky-400 hover:underline transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"

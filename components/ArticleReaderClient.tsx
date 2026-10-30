@@ -228,17 +228,17 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
             </div>
             <div>
               <h3 className="text-base font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-                کەناڵی فەرمیی پەیڤ و ئەندێشە
+                کەناڵی فەرمیی میدیای ئیسلامی
               </h3>
               <p className="text-xs font-sirwan text-zinc-600 dark:text-zinc-400">
-                بۆ خوێندنەوەی بەردەوامی وتاری هزری و بینینی شاکارەکانی سینەما
+                بۆ خوێندنەوەی بەردەوامی وتاری ئیسلامی و بینینی فیلمە پەروەردەیەکان
               </p>
             </div>
           </div>
 
           <div className="pt-1">
             <a
-              href="https://t.me/payvandishe"
+              href="https://t.me/mediay_islami"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[#d49757] hover:bg-[#c28747] text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"

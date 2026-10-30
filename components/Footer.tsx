@@ -21,10 +21,10 @@ export function Footer() {
           {/* Identity & Motto */}
           <div className="space-y-2 max-w-md text-right">
             <span className="text-xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 block">
-              پەیڤ و ئەندێشە
+              میدیای ئیسلامی
             </span>
             <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed tracking-normal">
-              ئەرشیڤێکی سەربەخۆی کوردییە بۆ ناساندنی شاکارەکانی سینەما، ئەدەب و هزر بە زمانی شیرینی کوردی.
+              ئەرشیڤێکی سەربەخۆی کوردییە بۆ ناساندنی فیلم و کارتۆنە ئیسلامێکان، وەدەقی ئیسلامی بە زمانی کوردی.
             </p>
           </div>
 
@@ -55,7 +55,7 @@ export function Footer() {
               دەربارە
             </Link>
             <a
-              href="https://t.me/payvandishe"
+              href="https://t.me/mediay_islami"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
@@ -69,7 +69,7 @@ export function Footer() {
         {/* Bottom copyright & Back to Top button */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-500 tracking-normal text-right">
           <div className="flex items-center gap-2">
-            <p>هەموو مافەکانی پارێزراوە © 2026 پەیڤ و ئەندێشە</p>
+            <p>هەموو مافەکانی پارێزراوە © 2026 میدیای ئیسلامی</p>
             <span className="text-zinc-300 dark:text-zinc-800">•</span>
             <Link
               href="/admin"

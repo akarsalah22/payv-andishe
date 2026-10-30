@@ -33,7 +33,7 @@ export const SAMPLE_FILMS: Film[] = [
     genres: ['ئەنیمەیشن', 'سەرکێشی'],
     posterUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
     description: 'شاکارێکی ئەفسوناوی میازاکی؛ کچۆڵەیەک دەکەوێتە جیهانی ڕۆحەکان و دەبێت بە ئازایەتی خێزانەکەی ڕزگار بکات.',
-    telegramPostUrl: 'https://t.me/payvandishe/101',
+    telegramPostUrl: 'https://t.me/mediay_islami',
   },
   {
     id: '2',
@@ -46,7 +46,7 @@ export const SAMPLE_FILMS: Film[] = [
     genres: ['زانستی خەیاڵی', 'دراما'],
     posterUrl: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80',
     description: 'گەشتێکی قووڵ و فەلسەفی لە نێو بۆشایی گەردووندا بۆ دۆزینەوەی نشینگەیەکی نوێ بۆ مرۆڤایەتی.',
-    telegramPostUrl: 'https://t.me/payvandishe/102',
+    telegramPostUrl: 'https://t.me/mediay_islami',
   },
   {
     id: '3',
@@ -59,7 +59,7 @@ export const SAMPLE_FILMS: Film[] = [
     genres: ['دراما', 'تاوان'],
     posterUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
     description: 'چیرۆکێکی کاریگەر لەسەر بەهای هیوا، دانبەخۆداگرتن و دۆستایەتی لە تاریکترین ڕۆژەکانی زینداندا.',
-    telegramPostUrl: 'https://t.me/payvandishe/103',
+    telegramPostUrl: 'https://t.me/mediay_islami',
   },
   {
     id: '4',
@@ -72,7 +72,7 @@ export const SAMPLE_FILMS: Film[] = [
     genres: ['ئەنیمەیشن', 'خێزانی'],
     posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
     description: 'سەرکێشییەکی پڕ لە پاکی و سۆزی منداڵانە لەگەڵ بوونەوەرە ئەفسوناوییەکانی دارستان لە گوندێکی ژاپۆن.',
-    telegramPostUrl: 'https://t.me/payvandishe/104',
+    telegramPostUrl: 'https://t.me/mediay_islami',
   },
   {
     id: '5',
@@ -85,7 +85,7 @@ export const SAMPLE_FILMS: Film[] = [
     genres: ['کورتە فیلم', 'خەیاڵی'],
     posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
     description: 'کورتە فیلمێکی شاکاری فەڕەنسی لەسەر دۆستایەتی سۆزدارانەی کوڕێکی بچووک و باڵۆنێکی جادوویی لە پاریس.',
-    telegramPostUrl: 'https://t.me/payvandishe/105',
+    telegramPostUrl: 'https://t.me/mediay_islami',
   },
   {
     id: '6',
@@ -98,6 +98,6 @@ export const SAMPLE_FILMS: Film[] = [
     genres: ['دراما', 'مێژوویی'],
     posterUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
     description: 'خەباتی پیانۆژەنێکی بەتوانا بۆ مانەوە لە ژیاندا لە نێو جەنگ و وێرانییەکانی پۆڵۆنیادا.',
-    telegramPostUrl: 'https://t.me/payvandishe/106',
+    telegramPostUrl: 'https://t.me/mediay_islami',
   },
 ];

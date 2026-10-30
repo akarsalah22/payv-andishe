@@ -47,14 +47,14 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) setAllFilms(data);
       })
-      .catch(() => {});
+      .catch(() => { });
 
     fetch('/api/articles')
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) setAllArticles(data);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, [isOpen]);
 
   // Auto-focus input when modal opens & reset on close
@@ -240,9 +240,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
           {/* Searched & Results Found with Smooth Opacity Transition */}
           {hasSearched && totalResults > 0 && (
             <div
-              className={`space-y-6 transition-opacity duration-200 ease-out ${
-                isSearching ? 'opacity-70' : 'opacity-100'
-              }`}
+              className={`space-y-6 transition-opacity duration-200 ease-out ${isSearching ? 'opacity-70' : 'opacity-100'
+                }`}
             >
               {/* Group 1: فیلم و کارتۆن */}
               {matchingFilms.length > 0 && (
@@ -383,7 +382,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
         {/* 3. Modal Bottom Bar */}
         <div className="px-4 py-2.5 border-t border-[#ede8e1]/80 dark:border-zinc-800/80 bg-stone-50/50 dark:bg-zinc-950/40 flex items-center justify-between text-[11px] font-sirwan text-zinc-400 dark:text-zinc-500">
           <span>کرتە بکە بۆ کردنەوە یان داگرتنی بابەتەکە</span>
-          <span className="font-sans">پەیڤ و ئەندێشە</span>
+          <span className="font-sans"> میدیای ئیسلامی</span>
         </div>
       </div>
     </div>
