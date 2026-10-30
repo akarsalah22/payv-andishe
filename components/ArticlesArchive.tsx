@@ -31,14 +31,15 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
   );
 
   // Synchronize state when URL query parameters change externally
+  const qFromParams = searchParams.get('q') || searchParams.get('search') || '';
+  const categoryFromParams = searchParams.get('category') || 'هەمووی';
+
   useEffect(() => {
-    const q = searchParams.get('q') || searchParams.get('search') || '';
-    setSearchQuery(q);
-    const cat = searchParams.get('category') || 'هەمووی';
-    if (ARTICLE_CATEGORIES.includes(cat as 'هەمووی' | ArticleCategory)) {
-      setActiveCategory(cat as 'هەمووی' | ArticleCategory);
+    setSearchQuery(qFromParams);
+    if (ARTICLE_CATEGORIES.includes(categoryFromParams as 'هەمووی' | ArticleCategory)) {
+      setActiveCategory(categoryFromParams as 'هەمووی' | ArticleCategory);
     }
-  }, [searchParams]);
+  }, [qFromParams, categoryFromParams]);
 
   // Push updated query parameters to the URL
   const updateUrlParams = useCallback(

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Send, ChevronLeft } from 'lucide-react';
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: 'دەربارەی میدیای ئیسلامی | شوێنێک بۆ سینەما و ئەدەب',
   description: 'ئەرشیڤێکی سەربەخۆ بۆ فیلم و کارتۆنە پەروەردەیەکان، نووسینی ئیسلامی بە زمانی کوردی',

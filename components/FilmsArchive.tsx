@@ -31,14 +31,15 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
   );
 
   // Synchronize state when URL query parameters change externally
+  const qFromParams = searchParams.get('q') || searchParams.get('search') || '';
+  const categoryFromParams = searchParams.get('category') || 'هەمووی';
+
   useEffect(() => {
-    const q = searchParams.get('q') || searchParams.get('search') || '';
-    setSearchQuery(q);
-    const cat = searchParams.get('category') || 'هەمووی';
-    if (FILM_CATEGORIES.includes(cat as 'هەمووی' | FilmCategory)) {
-      setActiveCategory(cat as 'هەمووی' | FilmCategory);
+    setSearchQuery(qFromParams);
+    if (FILM_CATEGORIES.includes(categoryFromParams as 'هەمووی' | FilmCategory)) {
+      setActiveCategory(categoryFromParams as 'هەمووی' | FilmCategory);
     }
-  }, [searchParams]);
+  }, [qFromParams, categoryFromParams]);
 
   // Push updated query parameters to the URL
   const updateUrlParams = useCallback(

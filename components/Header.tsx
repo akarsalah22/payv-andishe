@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -37,41 +37,22 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
   const pathname = usePathname();
-  const hasFetchedSessionRef = useRef(false);
 
-  // Check if admin is currently authenticated in session (runs strictly once on mount)
+  // Check if admin is currently authenticated via synchronous client cookie (runs strictly once on mount)
   useEffect(() => {
-    // 1. Fast client-side cookie check
-    const hasClientCookie =
+    const isAuth =
       typeof document !== 'undefined' &&
       document.cookie.includes('admin_logged_in=true');
-
-    if (hasClientCookie) {
-      setIsAdminAuthenticated(true);
-      return;
-    }
-
-    // 2. Fetch session strictly once on mount if cookie is absent
-    if (hasFetchedSessionRef.current) return;
-    hasFetchedSessionRef.current = true;
-
-    fetch('/api/admin/session')
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        setIsAdminAuthenticated(Boolean(data?.authenticated));
-      })
-      .catch(() => {
-        setIsAdminAuthenticated(false);
-      });
+    setIsAdminAuthenticated(isAuth);
   }, []);
 
   // Listen to cross-tab storage changes (e.g. login/logout in another window)
   useEffect(() => {
     const handleStorageChange = () => {
-      const hasClientCookie =
+      const isAuth =
         typeof document !== 'undefined' &&
         document.cookie.includes('admin_logged_in=true');
-      setIsAdminAuthenticated(hasClientCookie);
+      setIsAdminAuthenticated(isAuth);
     };
 
     window.addEventListener('storage', handleStorageChange);
@@ -112,11 +93,14 @@ export function Header() {
   }, []);
 
   // Check if a link is currently active
-  const isLinkActive = (href: string, isExternal?: boolean) => {
-    if (isExternal || href.startsWith('#')) return false;
-    if (href === '/') return pathname === '/';
-    return pathname.startsWith(href);
-  };
+  const isLinkActive = useCallback(
+    (href: string, isExternal?: boolean) => {
+      if (isExternal || href.startsWith('#')) return false;
+      if (href === '/') return pathname === '/';
+      return pathname.startsWith(href);
+    },
+    [pathname]
+  );
 
   return (
     <>
