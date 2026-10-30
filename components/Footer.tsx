@@ -32,24 +32,28 @@ export function Footer() {
           <nav className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm font-medium font-sirwan text-zinc-600 dark:text-zinc-400 tracking-normal">
             <Link
               href="/"
+              prefetch={false}
               className="hover:text-[#d49757] transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
               سەرەکی
             </Link>
             <Link
               href="/films"
+              prefetch={false}
               className="hover:text-[#d49757] transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
               فیلم و کارتۆن
             </Link>
             <Link
               href="/articles"
+              prefetch={false}
               className="hover:text-[#d49757] transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
               نووسین و وتار
             </Link>
             <Link
               href="/about"
+              prefetch={false}
               className="hover:text-[#d49757] transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
               دەربارە

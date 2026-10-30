@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -37,39 +37,48 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
   const pathname = usePathname();
+  const hasFetchedSessionRef = useRef(false);
 
-  // Check if admin is currently authenticated in session
+  // Check if admin is currently authenticated in session (runs strictly once on mount)
   useEffect(() => {
-    const checkAuth = () => {
-      try {
-        const hasClientCookie = typeof document !== 'undefined' && document.cookie.includes('admin_logged_in=true');
-        if (hasClientCookie) {
-          setIsAdminAuthenticated(true);
-          return;
-        }
+    // 1. Fast client-side cookie check
+    const hasClientCookie =
+      typeof document !== 'undefined' &&
+      document.cookie.includes('admin_logged_in=true');
 
-        // Verify with session API
-        fetch('/api/admin/session')
-          .then((res) => res.json())
-          .then((data) => {
-            setIsAdminAuthenticated(!!data.authenticated);
-          })
-          .catch(() => {
-            setIsAdminAuthenticated(false);
-          });
-      } catch {
+    if (hasClientCookie) {
+      setIsAdminAuthenticated(true);
+      return;
+    }
+
+    // 2. Fetch session strictly once on mount if cookie is absent
+    if (hasFetchedSessionRef.current) return;
+    hasFetchedSessionRef.current = true;
+
+    fetch('/api/admin/session')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        setIsAdminAuthenticated(Boolean(data?.authenticated));
+      })
+      .catch(() => {
         setIsAdminAuthenticated(false);
-      }
+      });
+  }, []);
+
+  // Listen to cross-tab storage changes (e.g. login/logout in another window)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const hasClientCookie =
+        typeof document !== 'undefined' &&
+        document.cookie.includes('admin_logged_in=true');
+      setIsAdminAuthenticated(hasClientCookie);
     };
 
-    checkAuth();
-    window.addEventListener('storage', checkAuth);
-    window.addEventListener('focus', checkAuth);
+    window.addEventListener('storage', handleStorageChange);
     return () => {
-      window.removeEventListener('storage', checkAuth);
-      window.removeEventListener('focus', checkAuth);
+      window.removeEventListener('storage', handleStorageChange);
     };
-  }, [pathname]);
+  }, []);
 
   // Prevent mobile scroll chaining / lock body scroll when drawer is open
   useEffect(() => {
@@ -131,6 +140,7 @@ export function Header() {
                 <Link
                   key={link.name}
                   href={link.href}
+                  prefetch={false}
                   className={`rounded-xl px-3.5 py-1.5 text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent ${active
                       ? 'bg-[#d49757]/10 text-[#d49757] border border-[#d49757]/30 font-bold'
                       : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#ede8e1]/60 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/60'
@@ -281,6 +291,7 @@ export function Header() {
                   <Link
                     key={link.name}
                     href={link.href}
+                    prefetch={false}
                     onClick={() => setIsMenuOpen(false)}
                     className={`flex items-center gap-3.5 py-3 px-3.5 rounded-xl text-base font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent ${active
                         ? 'bg-[#d49757]/10 text-[#d49757] font-bold border-r-2 border-[#d49757]'
