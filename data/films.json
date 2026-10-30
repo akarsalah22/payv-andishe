@@ -1,66 +1,18 @@
 [
   {
-    "id": "1",
-    "slug": "spirited-away",
-    "titleKurdish": "ڕۆشتووی ڕۆحەکان",
-    "originalTitle": "Spirited Away",
-    "year": 2001,
-    "duration": "٢ کاتژمێر و ٥ خولەک",
-    "category": "ئەنیمەیشن",
-    "genres": [
-      "ئەنیمەیشن",
-      "سەرکێشی"
-    ],
-    "posterUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
-    "description": "شاکارێکی ئەفسوناوی میازاکی؛ کچۆڵەیەک دەکەوێتە جیهانی ڕۆحەکان و دەبێت بە ئازایەتی خێزانەکەی ڕزگار بکات.",
-    "telegramPostUrl": "https://t.me/mediay_islami"
-  },
-  {
-    "id": "2",
-    "slug": "interstellar",
-    "titleKurdish": "نێوان ئەستێرەکان",
-    "originalTitle": "Interstellar",
-    "year": 2014,
-    "duration": "٢ کاتژمێر و ٤٩ خولەک",
-    "category": "سینەمایی",
-    "genres": [
-      "زانستی خەیاڵی",
-      "دراما"
-    ],
-    "posterUrl": "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80",
-    "description": "گەشتێکی قووڵ و فەلسەفی لە نێو بۆشایی گەردووندا بۆ دۆزینەوەی نشینگەیەکی نوێ بۆ مرۆڤایەتی.",
-    "telegramPostUrl": "https://t.me/mediay_islami"
-  },
-  {
-    "id": "3",
-    "slug": "the-shawshank-redemption",
-    "titleKurdish": "ڕزگاربوون لە شاوڕەنگ",
-    "originalTitle": "The Shawshank Redemption",
-    "year": 1994,
-    "duration": "٢ کاتژمێر و ٢٢ خولەک",
+    "id": "6",
+    "slug": "the-pianist",
+    "titleKurdish": "پیانۆژەن",
+    "originalTitle": "The Pianist",
+    "year": 2002,
+    "duration": "٢ کاتژمێر و ٣٠ خولەک",
     "category": "سینەمایی",
     "genres": [
       "دراما",
-      "تاوان"
+      "مێژوویی"
     ],
-    "posterUrl": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80",
-    "description": "چیرۆکێکی کاریگەر لەسەر بەهای هیوا، دانبەخۆداگرتن و دۆستایەتی لە تاریکترین ڕۆژەکانی زینداندا.",
-    "telegramPostUrl": "https://t.me/mediay_islami"
-  },
-  {
-    "id": "4",
-    "slug": "my-neighbor-totoro",
-    "titleKurdish": "تۆتۆرۆی دراوسێم",
-    "originalTitle": "My Neighbor Totoro",
-    "year": 1988,
-    "duration": "١ کاتژمێر و ٢٦ خولەک",
-    "category": "ئەنیمەیشن",
-    "genres": [
-      "ئەنیمەیشن",
-      "خێزانی"
-    ],
-    "posterUrl": "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80",
-    "description": "سەرکێشییەکی پڕ لە پاکی و سۆزی منداڵانە لەگەڵ بوونەوەرە ئەفسوناوییەکانی دارستان لە گوندێکی ژاپۆن.",
+    "posterUrl": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+    "description": "خەباتی پیانۆژەنێکی بەتوانا بۆ مانەوە لە ژیاندا لە نێو جەنگ و وێرانییەکانی پۆڵۆنیادا.",
     "telegramPostUrl": "https://t.me/mediay_islami"
   },
   {
@@ -80,19 +32,67 @@
     "telegramPostUrl": "https://t.me/mediay_islami"
   },
   {
-    "id": "6",
-    "slug": "the-pianist",
-    "titleKurdish": "پیانۆژەن",
-    "originalTitle": "The Pianist",
-    "year": 2002,
-    "duration": "٢ کاتژمێر و ٣٠ خولەک",
+    "id": "4",
+    "slug": "my-neighbor-totoro",
+    "titleKurdish": "تۆتۆرۆی دراوسێم",
+    "originalTitle": "My Neighbor Totoro",
+    "year": 1988,
+    "duration": "١ کاتژمێر و ٢٦ خولەک",
+    "category": "ئەنیمەیشن",
+    "genres": [
+      "ئەنیمەیشن",
+      "خێزانی"
+    ],
+    "posterUrl": "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80",
+    "description": "سەرکێشییەکی پڕ لە پاکی و سۆزی منداڵانە لەگەڵ بوونەوەرە ئەفسوناوییەکانی دارستان لە گوندێکی ژاپۆن.",
+    "telegramPostUrl": "https://t.me/mediay_islami"
+  },
+  {
+    "id": "3",
+    "slug": "the-shawshank-redemption",
+    "titleKurdish": "ڕزگاربوون لە شاوڕەنگ",
+    "originalTitle": "The Shawshank Redemption",
+    "year": 1994,
+    "duration": "٢ کاتژمێر و ٢٢ خولەک",
     "category": "سینەمایی",
     "genres": [
       "دراما",
-      "مێژوویی"
+      "تاوان"
     ],
-    "posterUrl": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
-    "description": "خەباتی پیانۆژەنێکی بەتوانا بۆ مانەوە لە ژیاندا لە نێو جەنگ و وێرانییەکانی پۆڵۆنیادا.",
+    "posterUrl": "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80",
+    "description": "چیرۆکێکی کاریگەر لەسەر بەهای هیوا، دانبەخۆداگرتن و دۆستایەتی لە تاریکترین ڕۆژەکانی زینداندا.",
+    "telegramPostUrl": "https://t.me/mediay_islami"
+  },
+  {
+    "id": "2",
+    "slug": "interstellar",
+    "titleKurdish": "نێوان ئەستێرەکان",
+    "originalTitle": "Interstellar",
+    "year": 2014,
+    "duration": "٢ کاتژمێر و ٤٩ خولەک",
+    "category": "سینەمایی",
+    "genres": [
+      "زانستی خەیاڵی",
+      "دراما"
+    ],
+    "posterUrl": "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80",
+    "description": "گەشتێکی قووڵ و فەلسەفی لە نێو بۆشایی گەردووندا بۆ دۆزینەوەی نشینگەیەکی نوێ بۆ مرۆڤایەتی.",
+    "telegramPostUrl": "https://t.me/mediay_islami"
+  },
+  {
+    "id": "1",
+    "slug": "spirited-away",
+    "titleKurdish": "ڕۆشتووی ڕۆحەکان",
+    "originalTitle": "Spirited Away",
+    "year": 2001,
+    "duration": "٢ کاتژمێر و ٥ خولەک",
+    "category": "ئەنیمەیشن",
+    "genres": [
+      "ئەنیمەیشن",
+      "سەرکێشی"
+    ],
+    "posterUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+    "description": "شاکارێکی ئەفسوناوی میازاکی؛ کچۆڵەیەک دەکەوێتە جیهانی ڕۆحەکان و دەبێت بە ئازایەتی خێزانەکەی ڕزگار بکات.",
     "telegramPostUrl": "https://t.me/mediay_islami"
   }
 ]

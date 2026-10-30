@@ -16,7 +16,7 @@ export default async function FilmsPage() {
   const films = await readFilms();
 
   return (
-    <div dir="rtl" className="flex-1 flex flex-col items-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full py-10 space-y-10 text-right">
+    <div dir="rtl" className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto w-full py-8 sm:py-12 space-y-10 text-right">
       {/* Top Breadcrumb */}
       <div className="w-full flex items-center justify-between pb-6 border-b border-[#ede8e1] dark:border-zinc-800/80 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400 tracking-normal">
         <div className="flex items-center gap-2">
@@ -31,7 +31,7 @@ export default async function FilmsPage() {
           href="https://t.me/mediay_islami"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sky-600 dark:text-sky-400 hover:underline transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
         >
           <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
           <span>کەناڵی تێلیگرام</span>
@@ -53,7 +53,7 @@ export default async function FilmsPage() {
         </p>
       </div>
 
-      {/* Interactive Filters & 2-Column Responsive Grid */}
+      {/* Interactive Filters & 3-Column Responsive Grid */}
       <Suspense fallback={<div className="w-full py-16 text-center text-xs font-sirwan text-zinc-400">چاوەڕوانبە...</div>}>
         <FilmsArchive initialFilms={films} />
       </Suspense>
@@ -62,7 +62,7 @@ export default async function FilmsPage() {
       <div className="pt-8 text-center">
         <Link
           href="/"
-          className="inline-flex items-center gap-1.5 text-sm font-semibold font-sirwan text-zinc-700 hover:text-[#d49757] dark:text-zinc-300 dark:hover:text-[#d49757] tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-stone-100 hover:bg-stone-200/80 dark:bg-zinc-800/80 dark:hover:bg-zinc-800 border border-stone-300/60 dark:border-zinc-700/60 text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent group"
         >
           <span>گەڕانەوە بۆ لاپەڕەی سەرەکی</span>
           <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" strokeWidth={1.75} />

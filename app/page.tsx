@@ -9,13 +9,13 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const [films, articles] = await Promise.all([readFilms(), readArticles()]);
-  const featuredFilms = films.slice(0, 4);
+  const featuredFilms = films.slice(0, 6);
   const featuredArticles = articles.slice(0, 3);
 
   return (
     <main
       dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full py-12 sm:py-20 space-y-20 sm:space-y-28 text-right"
+      className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto w-full py-10 sm:py-16 space-y-16 sm:space-y-24 text-right"
     >
       {/* 1. Hero Section */}
       <section className="w-full max-w-3xl mx-auto text-center space-y-6 pt-2 sm:pt-6 select-none">
@@ -79,15 +79,15 @@ export default async function HomePage() {
 
           <Link
             href="/films"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 hover:text-[#d49757] dark:hover:text-[#d49757] tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200/80 dark:bg-zinc-800/80 dark:hover:bg-zinc-800 border border-stone-300/60 dark:border-zinc-700/60 text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent group"
           >
             <span>بینینی هەمووی</span>
             <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" strokeWidth={1.75} />
           </Link>
         </div>
 
-        {/* Responsive Grid with refined FilmCard component */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        {/* Responsive Grid with 2:3 aspect ratio vertical FilmCards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredFilms.map((film, index) => (
             <FilmCard key={film.id} film={film} priority={index < 2} />
           ))}
@@ -108,7 +108,7 @@ export default async function HomePage() {
 
           <Link
             href="/articles"
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 hover:text-[#d49757] dark:hover:text-[#d49757] tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200/80 dark:bg-zinc-800/80 dark:hover:bg-zinc-800 border border-stone-300/60 dark:border-zinc-700/60 text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent group"
           >
             <span>گشت وتارەکان</span>
             <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" strokeWidth={1.75} />
@@ -116,7 +116,7 @@ export default async function HomePage() {
         </div>
 
         {/* Responsive Grid of Article Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {featuredArticles.map((article, index) => (
             <ArticleCard key={article.id} article={article} priority={index === 0} />
           ))}

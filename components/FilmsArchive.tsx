@@ -185,9 +185,9 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
         </div>
       )}
 
-      {/* Responsive Grid: 1 column on mobile, 2 columns on tablet & desktop */}
+      {/* Responsive Grid: 1 column on mobile, 2 columns on tablet, 3 columns on desktop */}
       {filteredFilms.length > 0 ? (
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-5 min-h-[300px]">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 min-h-[300px]">
           {filteredFilms.map((film, index) => (
             <FilmCard key={film.id} film={film} priority={index < 2} />
           ))}

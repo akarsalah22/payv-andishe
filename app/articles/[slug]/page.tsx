@@ -81,7 +81,7 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
   return (
     <article
       dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full py-10 sm:py-16 space-y-10 text-right"
+      className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-4xl mx-auto w-full py-8 sm:py-16 space-y-10 text-right"
     >
       {/* Top Back Navigation */}
       <div className="w-full flex items-center justify-between pb-6 border-b border-[#ede8e1] dark:border-zinc-800/80">
@@ -144,8 +144,8 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
         </div>
       </header>
 
-      {/* Cover Image Container */}
-      <div className="w-full max-w-3xl mx-auto relative aspect-[16/9] sm:aspect-[21/9] rounded-2xl overflow-hidden bg-stone-200 dark:bg-zinc-800 border border-[#ede8e1] dark:border-zinc-800 shadow-md">
+      {/* Cover Image Container with strictly defined 16:9 Aspect Ratio */}
+      <div className="w-full max-w-3xl mx-auto relative aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden bg-stone-200 dark:bg-zinc-800 border border-stone-200/80 dark:border-zinc-800 shadow-md">
         <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
         <Image
           src={imageSource}

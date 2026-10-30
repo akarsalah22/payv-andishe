@@ -13,7 +13,7 @@ export default function AboutPage() {
   return (
     <main
       dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto w-full py-12 sm:py-20 space-y-16 text-right select-none"
+      className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-3xl mx-auto w-full py-8 sm:py-16 space-y-12 sm:space-y-16 text-right select-none"
     >
       {/* Top Breadcrumb */}
       <div className="w-full flex items-center justify-between pb-6 border-b border-stone-200/80 dark:border-zinc-800/80 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400 tracking-normal">
