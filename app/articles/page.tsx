@@ -16,7 +16,7 @@ export default async function ArticlesPage() {
   const articles = await readArticles();
 
   return (
-    <div dir="rtl" className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto w-full py-8 sm:py-12 space-y-10 text-right">
+    <div dir="rtl" className="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-1 flex flex-col space-y-10 text-right">
       {/* Top Breadcrumb */}
       <div className="w-full flex items-center justify-between pb-6 border-b border-[#ede8e1] dark:border-zinc-800/80 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400 tracking-normal">
         <div className="flex items-center gap-2">

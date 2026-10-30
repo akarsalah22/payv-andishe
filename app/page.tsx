@@ -15,7 +15,7 @@ export default async function HomePage() {
   return (
     <main
       dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto w-full py-10 sm:py-16 space-y-16 sm:space-y-24 text-right"
+      className="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-1 flex flex-col space-y-16 text-right"
     >
       {/* 1. Hero Section */}
       <section className="w-full max-w-3xl mx-auto text-center space-y-6 pt-2 sm:pt-6 select-none">

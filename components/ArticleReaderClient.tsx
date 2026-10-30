@@ -169,10 +169,10 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
         )}
       </header>
 
-      {/* Cover Image Container with strictly defined 16:9 Aspect Ratio */}
+      {/* Cover Image Container with strictly defined 16:9 Aspect Ratio & fixed height */}
       {imageSource && (
-        <div className="w-full max-w-3xl mx-auto relative aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden bg-stone-200 dark:bg-zinc-800 border border-stone-200/80 dark:border-zinc-800 shadow-md">
-          <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
+        <div className="w-full max-w-3xl mx-auto relative aspect-[16/9] sm:h-72 rounded-2xl overflow-hidden bg-zinc-800 border border-zinc-800 shadow-md">
+          <div className="absolute inset-0 bg-gradient-to-tr from-zinc-900 via-zinc-800 to-zinc-900 animate-pulse pointer-events-none" />
           <Image
             src={imageSource}
             alt={article.title}
@@ -180,7 +180,7 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
             priority
             unoptimized={imageSource.startsWith('data:')}
             sizes="(max-width: 1024px) 100vw, 896px"
-            className="object-cover"
+            className="w-full h-full object-cover"
           />
         </div>
       )}
