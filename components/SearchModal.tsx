@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { SAMPLE_FILMS } from '@/data/films';
 import { SAMPLE_ARTICLES } from '@/data/articles';
+import { matchesSearchQuery } from '@/lib/search';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -106,37 +107,42 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Real-time filtering engine using debounced query
-  const cleanQuery = debouncedQuery.trim().toLowerCase();
+  // Real-time filtering engine using debounced query with Kurdish/Arabic normalization
+  const cleanQuery = debouncedQuery.trim();
 
   const matchingFilms = useMemo(() => {
     if (!cleanQuery) return [];
-    return allFilms.filter((film) => {
-      const kurdishTitle = film.titleKurdish.toLowerCase();
-      const originalTitle = film.originalTitle.toLowerCase();
-      const genres = film.genres.join(' ').toLowerCase();
-      const description = film.description.toLowerCase();
-      const year = film.year.toString();
-      return (
-        kurdishTitle.includes(cleanQuery) ||
-        originalTitle.includes(cleanQuery) ||
-        genres.includes(cleanQuery) ||
-        description.includes(cleanQuery) ||
-        year.includes(cleanQuery)
-      );
-    });
+    return allFilms.filter((film) =>
+      matchesSearchQuery(
+        [
+          film.titleKurdish,
+          film.originalTitle,
+          ...film.genres,
+          film.description,
+          film.year.toString(),
+        ],
+        cleanQuery
+      )
+    );
   }, [cleanQuery, allFilms]);
 
   const matchingArticles = useMemo(() => {
     if (!cleanQuery) return [];
     return allArticles.filter((article) => {
-      const title = article.title.toLowerCase();
-      const category = article.category.toLowerCase();
-      const excerpt = article.excerpt.toLowerCase();
-      return (
-        title.includes(cleanQuery) ||
-        category.includes(cleanQuery) ||
-        excerpt.includes(cleanQuery)
+      const content = Array.isArray(article.content)
+        ? article.content.join(' ')
+        : typeof article.content === 'string'
+        ? article.content
+        : '';
+      return matchesSearchQuery(
+        [
+          article.title,
+          article.category,
+          article.excerpt,
+          article.author,
+          content,
+        ],
+        cleanQuery
       );
     });
   }, [cleanQuery, allArticles]);
@@ -264,10 +270,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         <div className="flex items-center gap-3 min-w-0">
                           {/* Poster Thumbnail */}
                           <div className="relative w-11 h-14 rounded-lg overflow-hidden shrink-0 bg-stone-200 dark:bg-zinc-800 shadow-2xs">
+                            <div className="absolute inset-0 bg-stone-200 dark:bg-zinc-800 animate-pulse pointer-events-none" />
                             <Image
                               src={film.posterUrl}
                               alt={film.titleKurdish}
                               fill
+                              loading="lazy"
                               unoptimized={film.posterUrl.startsWith('data:')}
                               sizes="44px"
                               className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -320,10 +328,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         <div className="flex items-center gap-3 min-w-0">
                           {/* Cover Thumbnail */}
                           <div className="relative w-11 h-14 rounded-lg overflow-hidden shrink-0 bg-stone-200 dark:bg-zinc-800 shadow-2xs">
+                            <div className="absolute inset-0 bg-stone-200 dark:bg-zinc-800 animate-pulse pointer-events-none" />
                             <Image
                               src={article.coverImage || article.imageUrl}
                               alt={article.title}
                               fill
+                              loading="lazy"
                               unoptimized={(article.coverImage || article.imageUrl)?.startsWith('data:')}
                               sizes="44px"
                               className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -374,6 +384,20 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 <p className="text-xs sm:text-sm font-sirwan text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto tracking-normal">
                   هیچ فیلمێک یان بابەتێک بە وشەی «{debouncedQuery}» لە ئەرشیڤدا بەردەست نییە.
                 </p>
+              </div>
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery('');
+                    setDebouncedQuery('');
+                    inputRef.current?.focus();
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#d49757]/15 hover:bg-[#d49757] text-[#d49757] hover:text-zinc-950 border border-[#d49757]/30 text-xs font-semibold font-sirwan transition-all cursor-pointer shadow-2xs select-none"
+                >
+                  <X className="w-3.5 h-3.5" />
+                  <span>پاککردنەوەی گەڕان</span>
+                </button>
               </div>
             </div>
           )}

@@ -4,24 +4,28 @@ import type { Film } from '@/data/films';
 
 interface FilmCardProps {
   film: Film;
+  priority?: boolean;
 }
 
-export function FilmCard({ film }: FilmCardProps) {
+export function FilmCard({ film, priority = false }: FilmCardProps) {
   return (
     <article
       dir="rtl"
       className="group relative rounded-2xl border border-[#ede8e1] dark:border-zinc-800/70 bg-white/70 dark:bg-[#16171b] p-3.5 sm:p-4 transition-all duration-200 hover:border-[#d49757]/40 dark:hover:border-[#d49757]/30 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] flex flex-row gap-3.5 sm:gap-4 overflow-hidden text-right min-h-[156px] sm:min-h-[172px] select-none tap-highlight-transparent"
     >
-      {/* Right Side: Movie Poster Thumbnail (In RTL, 1st flex item is naturally at start/right) */}
+      {/* Right Side: Movie Poster Thumbnail with Skeleton Loader */}
       <div className="relative w-24 sm:w-28 md:w-32 shrink-0 aspect-[2/3] rounded-xl overflow-hidden bg-stone-200 dark:bg-zinc-800 shadow-xs">
+        {/* Shimmer skeleton placeholder */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
         <Image
           src={film.posterUrl}
           alt={film.titleKurdish}
           fill
+          priority={priority}
           unoptimized={film.posterUrl.startsWith('data:')}
           sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 128px"
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          loading="lazy"
+          loading={priority ? undefined : "lazy"}
         />
       </div>
 

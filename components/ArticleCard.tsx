@@ -17,13 +17,15 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
       className="group rounded-2xl border border-stone-200 dark:border-zinc-800/70 hover:border-amber-500/30 dark:hover:border-amber-500/30 bg-white dark:bg-[#16171b] p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] flex flex-col justify-between text-right select-none tap-highlight-transparent"
     >
       <div className="space-y-4">
-        {/* Aspect Ratio Cover Image (16:9) */}
+        {/* Aspect Ratio Cover Image (16:9) with Skeleton Loader */}
         <Link
           href={`/articles/${article.slug}`}
           className="relative aspect-video w-full rounded-xl overflow-hidden block bg-stone-200 dark:bg-zinc-800 shadow-2xs"
           tabIndex={-1}
           aria-hidden="true"
         >
+          {/* Shimmer skeleton placeholder */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
           <Image
             src={imageSource}
             alt={article.title}

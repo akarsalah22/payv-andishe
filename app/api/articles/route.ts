@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 import { readArticles, writeArticles } from '@/lib/storage';
+import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/auth';
 import type { Article } from '@/data/articles';
 
 // GET: Fetch all articles from disk
@@ -16,6 +18,12 @@ export async function GET() {
 // POST: Create a new article and write permanently to disk
 export async function POST(req: Request) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!(await verifySessionToken(token))) {
+      return NextResponse.json({ error: 'Unauthorized: دەسەڵاتی کارگێڕی بوونی نییە' }, { status: 401 });
+    }
+
     const newArticle = await req.json();
 
     if (!newArticle.title || !newArticle.title.trim()) {
@@ -67,6 +75,12 @@ export async function POST(req: Request) {
 // PUT: Update existing article permanently on disk
 export async function PUT(req: Request) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!(await verifySessionToken(token))) {
+      return NextResponse.json({ error: 'Unauthorized: دەسەڵاتی کارگێڕی بوونی نییە' }, { status: 401 });
+    }
+
     const updatedArticle = await req.json();
 
     if (!updatedArticle.id) {
@@ -121,6 +135,12 @@ export async function PATCH(req: Request) {
 // DELETE: Delete article permanently from disk
 export async function DELETE(req: Request) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!(await verifySessionToken(token))) {
+      return NextResponse.json({ error: 'Unauthorized: دەسەڵاتی کارگێڕی بوونی نییە' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Send, ChevronUp, Lock } from 'lucide-react';
+import { Send, ChevronUp } from 'lucide-react';
 
 export function Footer() {
   const scrollToTop = () => {
@@ -70,15 +70,6 @@ export function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-500 tracking-normal text-right">
           <div className="flex items-center gap-2">
             <p>هەموو مافەکانی پارێزراوە © 2026 میدیای ئیسلامی</p>
-            <span className="text-zinc-300 dark:text-zinc-800">•</span>
-            <Link
-              href="/admin"
-              title="کارگێڕیی پلاتفۆرم"
-              className="inline-flex items-center gap-1 text-[11px] font-sirwan text-zinc-400 hover:text-amber-600 dark:text-zinc-600 dark:hover:text-amber-400 transition-colors opacity-70 hover:opacity-100 cursor-pointer"
-            >
-              <Lock className="w-3 h-3" strokeWidth={1.75} />
-              <span>کارگێڕی</span>
-            </Link>
           </div>
 
           <button

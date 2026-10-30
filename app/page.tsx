@@ -88,8 +88,8 @@ export default async function HomePage() {
 
         {/* Responsive Grid with refined FilmCard component */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          {featuredFilms.map((film) => (
-            <FilmCard key={film.id} film={film} />
+          {featuredFilms.map((film, index) => (
+            <FilmCard key={film.id} film={film} priority={index < 2} />
           ))}
         </div>
       </section>

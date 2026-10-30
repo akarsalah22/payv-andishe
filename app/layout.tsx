@@ -13,12 +13,12 @@ import {
 } from "@/lib/fonts";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://payvandishe.com'),
+  metadataBase: new URL('https://payv-andishe.vercel.app'),
   title: {
-    default: "پەیڤ و ئەندێشە | پانتاییەک بۆ سینەما و ئەدەب",
-    template: "%s | پەیڤ و ئەندێشە",
+    default: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
+    template: "%s | میدیای ئیسلامی",
   },
-  description: "ئەرشیڤێکی مۆدێرنی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری هزری و ناساندنی کتێبە ناوازەکان",
+  description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
   keywords: [
     "سینەما",
     "فیلم",
@@ -28,33 +28,33 @@ export const metadata: Metadata = {
     "وتار",
     "فیکر",
     "کوردی",
-    "پەیڤ و ئەندێشە",
+    "میدیای ئیسلامی",
   ],
-  authors: [{ name: "پەیڤ و ئەندێشە" }],
-  creator: "پەیڤ و ئەندێشە",
-  publisher: "پەیڤ و ئەندێشە",
+  authors: [{ name: "میدیای ئیسلامی" }],
+  creator: "میدیای ئیسلامی",
+  publisher: "میدیای ئیسلامی ",
   openGraph: {
     type: "website",
     locale: "ckb_IQ",
-    url: "https://payvandishe.com",
-    siteName: "پەیڤ و ئەندێشە",
-    title: "پەیڤ و ئەندێشە | پانتاییەک بۆ سینەما و ئەدەب",
-    description: "ئەرشیڤێکی مۆدێرنی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری هزری و ناساندنی کتێبە ناوازەکان",
+    url: "https://payv-andishe.vercel.app",
+    siteName: "میدیای ئیسلامی",
+    title: " میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
+    description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
     images: [
       {
-        url: "/og-preview.png",
+        url: "https://payv-andishe.vercel.app/og-preview.png",
         width: 1200,
         height: 630,
-        alt: "پەیڤ و ئەندێشە | پانتاییەک بۆ سینەما و ئەدەب",
+        alt: " میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "پەیڤ و ئەندێشە | پانتاییەک بۆ سینەما و ئەدەب",
-    description: "ئەرشیڤێکی مۆدێرنی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری هزری و ناساندنی کتێبە ناوازەکان",
-    images: ["/og-preview.png"],
+    title: " میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
+    description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
+    images: ["https://payv-andishe.vercel.app/og-preview.png"],
   },
   icons: {
     icon: [

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import Link from 'next/link';
 import { Send, ChevronLeft } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -53,7 +54,9 @@ export default async function FilmsPage() {
       </div>
 
       {/* Interactive Filters & 2-Column Responsive Grid */}
-      <FilmsArchive initialFilms={films} />
+      <Suspense fallback={<div className="w-full py-16 text-center text-xs font-sirwan text-zinc-400">چاوەڕوانبە...</div>}>
+        <FilmsArchive initialFilms={films} />
+      </Suspense>
 
       {/* Return to Home Helper */}
       <div className="pt-8 text-center">

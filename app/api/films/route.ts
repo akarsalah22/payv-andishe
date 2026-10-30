@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
+import { cookies } from 'next/headers';
 import { readFilms, writeFilms } from '@/lib/storage';
+import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/auth';
 import type { Film } from '@/data/films';
 
 // Helper to generate a clean URL slug from title
@@ -28,6 +30,12 @@ export async function GET() {
 // POST: Add a new film and write permanently to disk
 export async function POST(req: Request) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!(await verifySessionToken(token))) {
+      return NextResponse.json({ error: 'Unauthorized: دەسەڵاتی کارگێڕی بوونی نییە' }, { status: 401 });
+    }
+
     const newFilm = await req.json();
 
     if (!newFilm.titleKurdish || !newFilm.titleKurdish.trim()) {
@@ -70,6 +78,12 @@ export async function POST(req: Request) {
 // PUT: Update an existing film permanently on disk
 export async function PUT(req: Request) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!(await verifySessionToken(token))) {
+      return NextResponse.json({ error: 'Unauthorized: دەسەڵاتی کارگێڕی بوونی نییە' }, { status: 401 });
+    }
+
     const updatedFilm = await req.json();
 
     if (!updatedFilm.id) {
@@ -104,6 +118,12 @@ export async function PUT(req: Request) {
 // DELETE: Remove a film permanently from disk
 export async function DELETE(req: Request) {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
+    if (!(await verifySessionToken(token))) {
+      return NextResponse.json({ error: 'Unauthorized: دەسەڵاتی کارگێڕی بوونی نییە' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(req.url);
     const idFromQuery = searchParams.get('id');
 

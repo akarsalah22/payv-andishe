@@ -42,10 +42,21 @@ export function Header() {
   useEffect(() => {
     const checkAuth = () => {
       try {
-        const isAuth =
-          sessionStorage.getItem('admin_auth') === 'true' ||
-          sessionStorage.getItem('payvandishe_admin_session') === 'true';
-        setIsAdminAuthenticated(isAuth);
+        const hasClientCookie = typeof document !== 'undefined' && document.cookie.includes('admin_logged_in=true');
+        if (hasClientCookie) {
+          setIsAdminAuthenticated(true);
+          return;
+        }
+
+        // Verify with session API
+        fetch('/api/admin/session')
+          .then((res) => res.json())
+          .then((data) => {
+            setIsAdminAuthenticated(!!data.authenticated);
+          })
+          .catch(() => {
+            setIsAdminAuthenticated(false);
+          });
       } catch {
         setIsAdminAuthenticated(false);
       }

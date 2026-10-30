@@ -90,7 +90,7 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
 
   const imageSource = article.coverImage || article.imageUrl;
   const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-    `https://payvandishe.com/articles/${article.slug}`
+    `https://payv-andishe.vercel.app/articles/${article.slug}`
   )}&text=${encodeURIComponent(article.title)}`;
 
   return (
@@ -172,6 +172,7 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
       {/* Cover Image Container */}
       {imageSource && (
         <div className="w-full max-w-3xl mx-auto relative aspect-[16/9] sm:aspect-[21/9] rounded-2xl overflow-hidden bg-stone-200 dark:bg-zinc-800 border border-[#ede8e1] dark:border-zinc-800 shadow-md">
+          <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
           <Image
             src={imageSource}
             alt={article.title}
