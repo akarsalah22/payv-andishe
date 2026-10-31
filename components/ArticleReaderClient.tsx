@@ -89,7 +89,7 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
 
   const imageSource = article.coverImage || article.imageUrl;
   const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-    `https://payv-andishe.vercel.app/articles/${article.slug}`
+    `https://medyay-islami.vercel.app/articles/${article.slug}`
   )}&text=${encodeURIComponent(article.title)}`;
 
   return (

@@ -13,7 +13,7 @@ import {
 } from "@/lib/fonts";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://payv-andishe.vercel.app'),
+  metadataBase: new URL('https://medyay-islami.vercel.app'),
   title: {
     default: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
     template: "%s | میدیای ئیسلامی",
@@ -36,25 +36,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ckb_IQ",
-    url: "https://payv-andishe.vercel.app",
+    url: "https://medyay-islami.vercel.app",
     siteName: "میدیای ئیسلامی",
-    title: " میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
+    title: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
     description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
     images: [
       {
-        url: "https://payv-andishe.vercel.app/og-preview.png",
+        url: "https://medyay-islami.vercel.app/og-preview.png",
         width: 1200,
         height: 630,
-        alt: " میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
+        alt: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: " میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
+    title: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
     description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
-    images: ["https://payv-andishe.vercel.app/og-preview.png"],
+    images: ["https://medyay-islami.vercel.app/og-preview.png"],
   },
   icons: {
     icon: [

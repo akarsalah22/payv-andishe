@@ -43,10 +43,10 @@ export async function generateMetadata({
       description: article.excerpt,
       type: 'article',
       locale: 'ckb_IQ',
-      url: `https://payv-andishe.vercel.app/articles/${article.slug}`,
+      url: `https://medyay-islami.vercel.app/articles/${article.slug}`,
       images: [
         {
-          url: imageSource.startsWith('http') ? imageSource : `https://payv-andishe.vercel.app${imageSource}`,
+          url: imageSource.startsWith('http') ? imageSource : `https://medyay-islami.vercel.app${imageSource}`,
           width: 1200,
           height: 630,
           alt: article.title,
@@ -57,7 +57,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: article.title,
       description: article.excerpt,
-      images: [imageSource.startsWith('http') ? imageSource : `https://payv-andishe.vercel.app${imageSource}`],
+      images: [imageSource.startsWith('http') ? imageSource : `https://medyay-islami.vercel.app${imageSource}`],
     },
   };
 }
@@ -74,7 +74,7 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
 
   const imageSource = article.coverImage || article.imageUrl;
   const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-    `https://payv-andishe.vercel.app/articles/${article.slug}`
+    `https://medyay-islami.vercel.app/articles/${article.slug}`
   )}&text=${encodeURIComponent(article.title)}`;
 
   return (
