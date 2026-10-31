@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Send, ChevronLeft } from 'lucide-react';
 import type { Film } from '@/data/films';
 import type { Article } from '@/data/articles';
@@ -91,20 +90,20 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                 className="group rounded-2xl border border-[#ede8e1] dark:border-zinc-800/80 bg-white/70 dark:bg-[#16171b] p-3 sm:p-3.5 transition-all duration-200 hover:border-[#d49757]/40 dark:hover:border-[#d49757]/30 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] flex flex-col justify-between select-none tap-highlight-transparent"
               >
                 <div className="space-y-3">
-                  {/* Poster container with ambient overlay & skeleton loader */}
+                  {/* Poster container with ambient overlay */}
                   <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden bg-stone-200 dark:bg-zinc-800 shadow-xs">
-                    {/* Shimmer skeleton placeholder */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
-                    <Image
-                      src={film.posterUrl}
+                    <img
+                      src={film.posterUrl || '/placeholder.jpg'}
                       alt={film.titleKurdish}
-                      fill
-                      priority={index === 0}
-                      loading={index === 0 ? undefined : "lazy"}
-                      unoptimized={true}
+                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
                       referrerPolicy="no-referrer"
-                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      decoding="async"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (target.src !== '/placeholder.jpg') {
+                          target.src = '/placeholder.jpg';
+                        }
+                      }}
                     />
                     {/* Ambient Dark Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />

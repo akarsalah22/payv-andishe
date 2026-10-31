@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   ChevronRight,
   Clock,
@@ -146,16 +145,12 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
 
       {/* Cover Image Container with strictly defined 16:9 Aspect Ratio & fixed height */}
       <div className="w-full max-w-3xl mx-auto relative aspect-[16/9] sm:h-72 rounded-2xl overflow-hidden bg-stone-100 dark:bg-zinc-800 border border-amber-200/60 dark:border-zinc-800 shadow-md">
-        <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
-        <Image
-          src={imageSource}
+        <img
+          src={imageSource || '/placeholder.jpg'}
           alt={article.title}
-          fill
-          priority
-          unoptimized={true}
+          className="w-full h-full object-cover object-center"
           referrerPolicy="no-referrer"
-          sizes="(max-width: 1024px) 100vw, 896px"
-          className="w-full h-full object-cover"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
       </div>

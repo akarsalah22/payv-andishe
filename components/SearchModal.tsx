@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   Search,
   X,
@@ -270,16 +269,18 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         <div className="flex items-center gap-3 min-w-0">
                           {/* Poster Thumbnail */}
                           <div className="relative w-11 h-14 rounded-lg overflow-hidden shrink-0 bg-stone-200 dark:bg-zinc-800 shadow-2xs">
-                            <div className="absolute inset-0 bg-stone-200 dark:bg-zinc-800 animate-pulse pointer-events-none" />
-                            <Image
-                              src={film.posterUrl}
+                            <img
+                              src={film.posterUrl || '/placeholder.jpg'}
                               alt={film.titleKurdish}
-                              fill
-                              loading="lazy"
-                              unoptimized={true}
+                              className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                               referrerPolicy="no-referrer"
-                              sizes="44px"
-                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              decoding="async"
+                              onError={(e) => {
+                                const target = e.currentTarget;
+                                if (target.src !== '/placeholder.jpg') {
+                                  target.src = '/placeholder.jpg';
+                                }
+                              }}
                             />
                           </div>
 
@@ -329,16 +330,18 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         <div className="flex items-center gap-3 min-w-0">
                           {/* Cover Thumbnail */}
                           <div className="relative w-11 h-14 rounded-lg overflow-hidden shrink-0 bg-stone-200 dark:bg-zinc-800 shadow-2xs">
-                            <div className="absolute inset-0 bg-stone-200 dark:bg-zinc-800 animate-pulse pointer-events-none" />
-                            <Image
-                              src={article.coverImage || article.imageUrl}
+                            <img
+                              src={article.coverImage || article.imageUrl || '/placeholder.jpg'}
                               alt={article.title}
-                              fill
-                              loading="lazy"
-                              unoptimized={true}
+                              className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                               referrerPolicy="no-referrer"
-                              sizes="44px"
-                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              decoding="async"
+                              onError={(e) => {
+                                const target = e.currentTarget;
+                                if (target.src !== '/placeholder.jpg') {
+                                  target.src = '/placeholder.jpg';
+                                }
+                              }}
                             />
                           </div>
 

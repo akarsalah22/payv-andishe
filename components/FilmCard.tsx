@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from 'react';
 import { Send, Calendar, Clock, Film as FilmIcon } from 'lucide-react';
 import type { Film } from '@/data/films';
 
@@ -9,47 +8,36 @@ interface FilmCardProps {
   priority?: boolean;
 }
 
-export function FilmCard({ film, priority = false }: FilmCardProps) {
-  const [imgSrc, setImgSrc] = useState(film.posterUrl);
-  const [hasError, setHasError] = useState(!film.posterUrl);
-
-  useEffect(() => {
-    setImgSrc(film.posterUrl);
-    setHasError(!film.posterUrl);
-  }, [film.posterUrl]);
+export function FilmCard({ film }: FilmCardProps) {
+  const posterSrc = film.posterUrl || (film as any).image || '/placeholder.jpg';
 
   return (
     <article
       dir="rtl"
       className="bg-white/90 border border-amber-200/60 shadow-sm dark:bg-zinc-900/90 dark:border-zinc-800 dark:shadow-none rounded-2xl overflow-hidden p-3.5 sm:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3 md:gap-2.5 justify-between hover:border-amber-500/50 dark:hover:border-amber-500/50 hover:shadow-md transition-all select-none group"
     >
-      {/* Poster Image Thumbnail (Compact row on mobile, toned down aspect-[16/10] on desktop) */}
+      {/* Poster Image Thumbnail (Compact row on mobile, balanced portrait poster on desktop) */}
       <a
         href={film.telegramPostUrl}
         target="_blank"
         rel="noopener noreferrer"
         tabIndex={-1}
         aria-hidden="true"
-        className="relative w-20 h-28 sm:w-24 sm:h-32 md:w-full md:aspect-[16/10] md:h-44 shrink-0 rounded-xl overflow-hidden bg-stone-100 dark:bg-zinc-800 shadow-xs border border-amber-100/60 dark:border-zinc-800/80 block cursor-pointer"
+        className="relative w-20 h-28 sm:w-24 sm:h-32 md:w-full md:aspect-[3/4] md:max-h-72 shrink-0 rounded-xl overflow-hidden bg-stone-100 dark:bg-zinc-800 shadow-xs border border-amber-100/60 dark:border-zinc-800/80 block cursor-pointer"
       >
-        {/* Shimmer skeleton placeholder */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
-
-        {hasError || !imgSrc ? (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-zinc-800 text-stone-400 dark:text-zinc-500 p-2 text-center select-none">
-            <FilmIcon className="w-6 h-6 md:w-8 md:h-8 mb-1 text-amber-500/70" strokeWidth={1.5} />
-            <span className="text-[10px] md:text-xs font-sirwan text-zinc-500 dark:text-zinc-400 line-clamp-1">{film.titleKurdish}</span>
-          </div>
-        ) : (
-          <img
-            src={imgSrc}
-            alt={film.titleKurdish}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            onError={() => setHasError(true)}
-          />
-        )}
+        <img
+          src={posterSrc}
+          alt={film.titleKurdish || (film as any).title || ''}
+          className="w-full h-full object-cover object-center"
+          referrerPolicy="no-referrer"
+          decoding="async"
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (target.src !== '/placeholder.jpg') {
+              target.src = '/placeholder.jpg';
+            }
+          }}
+        />
 
         {/* Subtle Ambient Overlay (Desktop only) */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none hidden md:block" />

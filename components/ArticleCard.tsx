@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Clock, Calendar, ChevronLeft, BookOpen } from 'lucide-react';
+import { Clock, Calendar, ChevronLeft } from 'lucide-react';
 import type { Article } from '@/data/articles';
 
 interface ArticleCardProps {
@@ -10,47 +9,34 @@ interface ArticleCardProps {
   priority?: boolean;
 }
 
-export function ArticleCard({ article, priority = false }: ArticleCardProps) {
-  const initialSource = article.coverImage || article.imageUrl;
-  const [imgSrc, setImgSrc] = useState(initialSource);
-  const [hasError, setHasError] = useState(!initialSource);
-
-  useEffect(() => {
-    const src = article.coverImage || article.imageUrl;
-    setImgSrc(src);
-    setHasError(!src);
-  }, [article.coverImage, article.imageUrl]);
+export function ArticleCard({ article }: ArticleCardProps) {
+  const coverSrc = article.coverImage || article.imageUrl || (article as any).image || '/placeholder.jpg';
 
   return (
     <article
       dir="rtl"
       className="bg-white/90 border border-amber-200/60 shadow-sm dark:bg-zinc-900/90 dark:border-zinc-800 dark:shadow-none rounded-2xl overflow-hidden p-3.5 sm:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3 md:gap-2.5 justify-between hover:border-amber-500/50 dark:hover:border-amber-500/50 hover:shadow-md transition-all select-none group"
     >
-      {/* Cover Image Thumbnail (Compact row on mobile, toned down aspect-[16/10] on desktop) */}
+      {/* Cover Image Thumbnail (Compact row on mobile, natural aspect-[16/10] on desktop) */}
       <Link
         href={`/articles/${article.slug}`}
         tabIndex={-1}
         aria-hidden="true"
-        className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-full md:aspect-[16/10] md:h-44 shrink-0 rounded-xl overflow-hidden bg-stone-100 dark:bg-zinc-800 shadow-xs border border-amber-100/60 dark:border-zinc-800/80 block cursor-pointer"
+        className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-full md:aspect-[16/10] shrink-0 rounded-xl overflow-hidden bg-stone-100 dark:bg-zinc-800 shadow-xs border border-amber-100/60 dark:border-zinc-800/80 block cursor-pointer"
       >
-        {/* Shimmer skeleton placeholder */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
-
-        {hasError || !imgSrc ? (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-zinc-800 text-stone-400 dark:text-zinc-500 p-2 text-center select-none">
-            <BookOpen className="w-6 h-6 md:w-8 md:h-8 mb-1 text-amber-500/70" strokeWidth={1.5} />
-            <span className="text-[10px] md:text-xs font-sirwan text-zinc-500 dark:text-zinc-400 line-clamp-1">{article.title}</span>
-          </div>
-        ) : (
-          <img
-            src={imgSrc}
-            alt={article.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            onError={() => setHasError(true)}
-          />
-        )}
+        <img
+          src={coverSrc}
+          alt={article.title}
+          className="w-full h-full object-cover object-center"
+          referrerPolicy="no-referrer"
+          decoding="async"
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (target.src !== '/placeholder.jpg') {
+              target.src = '/placeholder.jpg';
+            }
+          }}
+        />
 
         {/* Subtle Ambient Hover Overlay (Desktop only) */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none hidden md:block" />
