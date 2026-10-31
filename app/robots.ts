@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin', '/api/admin/'],
       },
     ],
-    sitemap: 'https://medyay-islami.vercel.app/sitemap.xml',
+    sitemap: 'https://mediay-islamy.vercel.app/sitemap.xml',
   };
 }
 

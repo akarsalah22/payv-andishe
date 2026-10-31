@@ -13,7 +13,7 @@ import {
 } from "@/lib/fonts";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://medyay-islami.vercel.app'),
+  metadataBase: new URL('https://mediay-islamy.vercel.app'),
   title: {
     default: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
     template: "%s | میدیای ئیسلامی",
@@ -36,13 +36,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ckb_IQ",
-    url: "https://medyay-islami.vercel.app",
+    url: "https://mediay-islamy.vercel.app",
     siteName: "میدیای ئیسلامی",
     title: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
     description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
     images: [
       {
-        url: "https://medyay-islami.vercel.app/og-preview.png",
+        url: "https://mediay-islamy.vercel.app/og-preview.png",
         width: 1200,
         height: 630,
         alt: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
     description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
-    images: ["https://medyay-islami.vercel.app/og-preview.png"],
+    images: ["https://mediay-islamy.vercel.app/og-preview.png"],
   },
   icons: {
     icon: [
