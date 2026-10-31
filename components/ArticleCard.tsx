@@ -27,9 +27,10 @@ export function ArticleCard({ article }: ArticleCardProps) {
         <img
           src={coverSrc}
           alt={article.title}
-          className="w-full h-full object-cover object-center"
-          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover object-top"
+          loading="lazy"
           decoding="async"
+          referrerPolicy="no-referrer"
           onError={(e) => {
             const target = e.currentTarget;
             if (target.src !== '/placeholder.jpg') {

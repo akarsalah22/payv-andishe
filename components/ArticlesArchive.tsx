@@ -206,7 +206,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
       {filteredArticles.length > 0 ? (
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 min-h-[350px]">
           {filteredArticles.map((article, index) => (
-            <ArticleCard key={article.id} article={article} priority={index === 0} />
+            <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={index === 0} />
           ))}
         </div>
       ) : (

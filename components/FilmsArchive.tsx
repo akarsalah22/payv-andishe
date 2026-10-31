@@ -189,7 +189,7 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
       {filteredFilms.length > 0 ? (
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 min-h-[300px]">
           {filteredFilms.map((film, index) => (
-            <FilmCard key={film.id} film={film} priority={index < 2} />
+            <FilmCard key={film.id || (film as any)._id || index} film={film} priority={index < 2} />
           ))}
         </div>
       ) : (

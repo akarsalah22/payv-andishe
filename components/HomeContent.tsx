@@ -86,7 +86,7 @@ export function HomeContent({ films, articles }: HomeContentProps) {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {displayedFilms.map((film, index) => (
               <div
-                key={film.id}
+                key={film.id || (film as any)._id || index}
                 className="group rounded-2xl border border-[#ede8e1] dark:border-zinc-800/80 bg-white/70 dark:bg-[#16171b] p-3 sm:p-3.5 transition-all duration-200 hover:border-[#d49757]/40 dark:hover:border-[#d49757]/30 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] flex flex-col justify-between select-none tap-highlight-transparent"
               >
                 <div className="space-y-3">
