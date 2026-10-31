@@ -847,7 +847,8 @@ export function AdminDashboardClient() {
                         alt={film.titleKurdish}
                         fill
                         loading="lazy"
-                        unoptimized={film.posterUrl.startsWith('data:') || film.posterUrl.includes('ibb.co')}
+                        unoptimized={true}
+                        referrerPolicy="no-referrer"
                         sizes="56px"
                         className="object-cover"
                       />
@@ -1040,7 +1041,8 @@ export function AdminDashboardClient() {
                           alt={article.title}
                           fill
                           loading="lazy"
-                          unoptimized={cover.startsWith('data:') || cover.includes('ibb.co')}
+                          unoptimized={true}
+                          referrerPolicy="no-referrer"
                           sizes="80px"
                           className="object-cover"
                         />

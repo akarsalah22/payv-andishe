@@ -276,7 +276,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                               alt={film.titleKurdish}
                               fill
                               loading="lazy"
-                              unoptimized={film.posterUrl.startsWith('data:') || film.posterUrl.includes('ibb.co')}
+                              unoptimized={true}
+                              referrerPolicy="no-referrer"
                               sizes="44px"
                               className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
@@ -334,7 +335,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                               alt={article.title}
                               fill
                               loading="lazy"
-                              unoptimized={(article.coverImage || article.imageUrl)?.startsWith('data:') || (article.coverImage || article.imageUrl)?.includes('ibb.co')}
+                              unoptimized={true}
+                              referrerPolicy="no-referrer"
                               sizes="44px"
                               className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />

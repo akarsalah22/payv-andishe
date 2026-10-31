@@ -19,12 +19,6 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
     setHasError(!film.posterUrl);
   }, [film.posterUrl]);
 
-  const isUnoptimized =
-    !imgSrc ||
-    imgSrc.startsWith('data:') ||
-    imgSrc.includes('ibb.co') ||
-    imgSrc.startsWith('http://');
-
   return (
     <article
       dir="rtl"
@@ -53,7 +47,8 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
             alt={film.titleKurdish}
             fill
             priority={priority}
-            unoptimized={isUnoptimized}
+            unoptimized={true}
+            referrerPolicy="no-referrer"
             sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, (max-width: 1024px) 50vw, 33vw"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading={priority ? undefined : "lazy"}

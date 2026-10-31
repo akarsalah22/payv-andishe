@@ -22,12 +22,6 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
     setHasError(!src);
   }, [article.coverImage, article.imageUrl]);
 
-  const isUnoptimized =
-    !imgSrc ||
-    imgSrc.startsWith('data:') ||
-    imgSrc.includes('ibb.co') ||
-    imgSrc.startsWith('http://');
-
   return (
     <article
       dir="rtl"
@@ -54,7 +48,8 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
             alt={article.title}
             fill
             priority={priority}
-            unoptimized={isUnoptimized}
+            unoptimized={true}
+            referrerPolicy="no-referrer"
             sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, (max-width: 1024px) 50vw, 33vw"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading={priority ? undefined : "lazy"}

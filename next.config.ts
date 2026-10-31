@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
     "192.168.*",
   ],
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
