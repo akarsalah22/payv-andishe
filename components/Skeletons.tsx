@@ -2,15 +2,15 @@ export function HorizontalFilmCardSkeleton() {
   return (
     <div
       dir="rtl"
-      className="rounded-xl md:rounded-2xl border border-stone-200/80 dark:border-zinc-800/70 bg-white/70 dark:bg-[#16171b] p-2.5 sm:p-3 md:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3 sm:gap-3.5 md:gap-4 overflow-hidden text-right select-none animate-pulse"
+      className="rounded-2xl border border-stone-200/80 dark:border-zinc-800/70 bg-white/70 dark:bg-[#16171b] p-3.5 sm:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3 md:gap-2.5 overflow-hidden text-right select-none animate-pulse"
       aria-hidden="true"
     >
       {/* Right Side: Poster thumbnail with matching dimensions */}
-      <div className="relative w-20 h-28 sm:w-28 sm:h-36 md:w-full md:aspect-[2/3] md:h-72 shrink-0 rounded-lg md:rounded-2xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
+      <div className="relative w-20 h-28 sm:w-24 sm:h-32 md:w-full md:aspect-[16/10] md:h-44 shrink-0 rounded-xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
 
       {/* Left Side: Info & Button */}
-      <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0">
-        <div className="space-y-1 sm:space-y-1.5 md:space-y-2">
+      <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0 md:space-y-2">
+        <div className="space-y-1 sm:space-y-1.5">
           {/* Title line */}
           <div className="h-4 sm:h-5 md:h-6 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-3/4" />
           {/* Meta line */}
@@ -23,8 +23,8 @@ export function HorizontalFilmCardSkeleton() {
         </div>
 
         {/* Button placeholder */}
-        <div className="pt-2 md:pt-4 md:mt-4 md:border-t md:border-stone-200/60 md:dark:border-zinc-800/60">
-          <div className="h-6 md:h-9 w-24 md:w-full rounded-lg md:rounded-xl bg-stone-200/60 dark:bg-zinc-800/40" />
+        <div className="pt-2 md:pt-2.5 md:mt-2.5 md:border-t md:border-stone-200/60 md:dark:border-zinc-800/60">
+          <div className="h-8 md:h-9 w-24 md:w-full rounded-xl bg-stone-200/60 dark:bg-zinc-800/40" />
         </div>
       </div>
     </div>
@@ -39,15 +39,15 @@ export function ArticleCardSkeleton() {
   return (
     <article
       dir="rtl"
-      className="rounded-xl md:rounded-2xl border border-stone-200/80 dark:border-zinc-800/70 bg-white/70 dark:bg-[#16171b] p-2.5 sm:p-3 md:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3 sm:gap-3.5 md:gap-4 overflow-hidden text-right select-none animate-pulse"
+      className="rounded-2xl border border-stone-200/80 dark:border-zinc-800/70 bg-white/70 dark:bg-[#16171b] p-3.5 sm:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3 md:gap-2.5 overflow-hidden text-right select-none animate-pulse"
       aria-hidden="true"
     >
       {/* Thumbnail */}
-      <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-full md:aspect-[16/9] md:h-52 shrink-0 rounded-xl md:rounded-2xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
+      <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-full md:aspect-[16/10] md:h-44 shrink-0 rounded-xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
 
       {/* Info & Button */}
-      <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0">
-        <div className="space-y-1 sm:space-y-1.5 md:space-y-2">
+      <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0 md:space-y-2">
+        <div className="space-y-1 sm:space-y-1.5">
           {/* Title line */}
           <div className="h-4 sm:h-5 md:h-6 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-3/4" />
           {/* Meta line */}
@@ -60,8 +60,8 @@ export function ArticleCardSkeleton() {
         </div>
 
         {/* Button placeholder */}
-        <div className="pt-2 md:pt-4 md:mt-4 md:border-t md:border-stone-200/60 md:dark:border-zinc-800/60">
-          <div className="h-6 md:h-9 w-24 md:w-full rounded-lg md:rounded-xl bg-stone-200/60 dark:bg-zinc-800/40" />
+        <div className="pt-2 md:pt-2.5 md:mt-2.5 md:border-t md:border-stone-200/60 md:dark:border-zinc-800/60">
+          <div className="h-8 md:h-9 w-24 md:w-full rounded-xl bg-stone-200/60 dark:bg-zinc-800/40" />
         </div>
       </div>
     </article>
