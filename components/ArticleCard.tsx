@@ -1,6 +1,9 @@
+"use client";
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Clock, Calendar, ChevronLeft } from 'lucide-react';
+import { Clock, Calendar, ChevronLeft, BookOpen } from 'lucide-react';
 import type { Article } from '@/data/articles';
 
 interface ArticleCardProps {
@@ -9,7 +12,21 @@ interface ArticleCardProps {
 }
 
 export function ArticleCard({ article, priority = false }: ArticleCardProps) {
-  const imageSource = article.coverImage || article.imageUrl;
+  const initialSource = article.coverImage || article.imageUrl;
+  const [imgSrc, setImgSrc] = useState(initialSource);
+  const [hasError, setHasError] = useState(!initialSource);
+
+  useEffect(() => {
+    const src = article.coverImage || article.imageUrl;
+    setImgSrc(src);
+    setHasError(!src);
+  }, [article.coverImage, article.imageUrl]);
+
+  const isUnoptimized =
+    !imgSrc ||
+    imgSrc.startsWith('data:') ||
+    imgSrc.includes('ibb.co') ||
+    imgSrc.startsWith('http://');
 
   return (
     <article
@@ -25,16 +42,26 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
       >
         {/* Shimmer skeleton placeholder */}
         <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
-        <Image
-          src={imageSource}
-          alt={article.title}
-          fill
-          priority={priority}
-          unoptimized={imageSource?.startsWith('data:')}
-          sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, (max-width: 1024px) 50vw, 33vw"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading={priority ? undefined : "lazy"}
-        />
+
+        {hasError || !imgSrc ? (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-zinc-800 text-stone-400 dark:text-zinc-500 p-2 text-center select-none">
+            <BookOpen className="w-6 h-6 md:w-8 md:h-8 mb-1 text-amber-500/70" strokeWidth={1.5} />
+            <span className="text-[10px] md:text-xs font-sirwan text-zinc-500 dark:text-zinc-400 line-clamp-1">{article.title}</span>
+          </div>
+        ) : (
+          <Image
+            src={imgSrc}
+            alt={article.title}
+            fill
+            priority={priority}
+            unoptimized={isUnoptimized}
+            sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, (max-width: 1024px) 50vw, 33vw"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading={priority ? undefined : "lazy"}
+            onError={() => setHasError(true)}
+          />
+        )}
+
         {/* Subtle Ambient Hover Overlay (Desktop only) */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none hidden md:block" />
 

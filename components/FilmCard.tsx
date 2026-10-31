@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Send, Calendar, Clock, Film as FilmIcon } from 'lucide-react';
 import type { Film } from '@/data/films';
@@ -8,6 +11,20 @@ interface FilmCardProps {
 }
 
 export function FilmCard({ film, priority = false }: FilmCardProps) {
+  const [imgSrc, setImgSrc] = useState(film.posterUrl);
+  const [hasError, setHasError] = useState(!film.posterUrl);
+
+  useEffect(() => {
+    setImgSrc(film.posterUrl);
+    setHasError(!film.posterUrl);
+  }, [film.posterUrl]);
+
+  const isUnoptimized =
+    !imgSrc ||
+    imgSrc.startsWith('data:') ||
+    imgSrc.includes('ibb.co') ||
+    imgSrc.startsWith('http://');
+
   return (
     <article
       dir="rtl"
@@ -24,16 +41,26 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
       >
         {/* Shimmer skeleton placeholder */}
         <div className="absolute inset-0 bg-gradient-to-tr from-stone-200 via-stone-100 to-stone-200 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 animate-pulse pointer-events-none" />
-        <Image
-          src={film.posterUrl}
-          alt={film.titleKurdish}
-          fill
-          priority={priority}
-          unoptimized={film.posterUrl.startsWith('data:')}
-          sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, (max-width: 1024px) 50vw, 33vw"
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading={priority ? undefined : "lazy"}
-        />
+
+        {hasError || !imgSrc ? (
+          <div className="w-full h-full flex flex-col items-center justify-center bg-stone-100 dark:bg-zinc-800 text-stone-400 dark:text-zinc-500 p-2 text-center select-none">
+            <FilmIcon className="w-6 h-6 md:w-8 md:h-8 mb-1 text-amber-500/70" strokeWidth={1.5} />
+            <span className="text-[10px] md:text-xs font-sirwan text-zinc-500 dark:text-zinc-400 line-clamp-1">{film.titleKurdish}</span>
+          </div>
+        ) : (
+          <Image
+            src={imgSrc}
+            alt={film.titleKurdish}
+            fill
+            priority={priority}
+            unoptimized={isUnoptimized}
+            sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, (max-width: 1024px) 50vw, 33vw"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading={priority ? undefined : "lazy"}
+            onError={() => setHasError(true)}
+          />
+        )}
+
         {/* Subtle Ambient Overlay (Desktop only) */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none hidden md:block" />
 

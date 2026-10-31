@@ -152,6 +152,7 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
           alt={article.title}
           fill
           priority
+          unoptimized={imageSource?.startsWith('data:') || imageSource?.includes('ibb.co')}
           sizes="(max-width: 1024px) 100vw, 896px"
           className="w-full h-full object-cover"
         />
