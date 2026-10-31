@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Send, ChevronUp } from 'lucide-react';
+import { InstagramIcon } from './InstagramIcon';
 
 export function Footer() {
   const scrollToTop = () => {
@@ -66,6 +67,15 @@ export function Footer() {
             >
               <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
               <span>تێلیگرام</span>
+            </a>
+            <a
+              href="https://instagram.com/hamahang_bwn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
+            >
+              <InstagramIcon className="w-3.5 h-3.5" strokeWidth={1.75} />
+              <span>ئینستاگرام</span>
             </a>
           </nav>
         </div>
