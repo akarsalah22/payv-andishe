@@ -17,7 +17,6 @@ import {
 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { SearchModal } from './SearchModal';
-import { InstagramIcon } from './InstagramIcon';
 
 interface NavLinkItem {
   name: string;
@@ -175,18 +174,6 @@ export function Header() {
               <Send className="h-4.5 w-4.5" strokeWidth={1.75} />
             </a>
 
-            {/* Instagram Contact Icon Button */}
-            <a
-              href="https://instagram.com/hamahang_bwn"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="پەیجی ئینستاگرام (@hamahang_bwn)"
-              title="پەیجی فەرمی لە ئینستاگرام (@hamahang_bwn)"
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-600 hover:text-pink-600 hover:bg-pink-500/10 dark:text-zinc-400 dark:hover:text-pink-400 dark:hover:bg-pink-500/10 transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-            >
-              <InstagramIcon className="h-4.5 w-4.5" strokeWidth={1.75} />
-            </a>
-
             {/* Theme Toggle Button */}
             <ThemeToggle />
 
@@ -323,26 +310,6 @@ export function Header() {
                 </div>
               </div>
               <ExternalLink className="w-4 h-4 text-[#d49757] group-hover:translate-x-[-2px] transition-transform" strokeWidth={1.75} />
-            </a>
-
-            {/* Instagram Contact & Feedback Card */}
-            <a
-              href="https://instagram.com/hamahang_bwn"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsMenuOpen(false)}
-              className="group flex items-center justify-between p-3.5 rounded-2xl bg-pink-500/10 hover:bg-pink-500/15 border border-pink-500/20 text-zinc-900 dark:text-zinc-100 transition-all duration-200 active:scale-[0.98] cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <InstagramIcon className="w-4.5 h-4.5" strokeWidth={2} />
-                </div>
-                <div className="flex flex-col text-right">
-                  <span className="text-xs sm:text-sm font-bold font-peshang tracking-normal">پەیجی فەرمی ئینستاگرام</span>
-                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono" dir="ltr">@hamahang_bwn</span>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-pink-600 dark:text-pink-400 group-hover:translate-x-[-2px] transition-transform" strokeWidth={1.75} />
             </a>
 
             {/* Compact Theme Switcher */}
