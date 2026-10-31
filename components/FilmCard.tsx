@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { Send, Calendar, Clock, Film as FilmIcon } from 'lucide-react';
 import type { Film } from '@/data/films';
 
@@ -42,16 +41,12 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
             <span className="text-[10px] md:text-xs font-sirwan text-zinc-500 dark:text-zinc-400 line-clamp-1">{film.titleKurdish}</span>
           </div>
         ) : (
-          <Image
+          <img
             src={imgSrc}
             alt={film.titleKurdish}
-            fill
-            priority={priority}
-            unoptimized={true}
-            referrerPolicy="no-referrer"
-            sizes="(max-width: 640px) 80px, (max-width: 768px) 112px, (max-width: 1024px) 50vw, 33vw"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading={priority ? undefined : "lazy"}
+            loading="lazy"
+            referrerPolicy="no-referrer"
             onError={() => setHasError(true)}
           />
         )}

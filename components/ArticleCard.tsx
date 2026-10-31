@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Clock, Calendar, ChevronLeft, BookOpen } from 'lucide-react';
 import type { Article } from '@/data/articles';
 
@@ -43,16 +42,12 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
             <span className="text-[10px] md:text-xs font-sirwan text-zinc-500 dark:text-zinc-400 line-clamp-1">{article.title}</span>
           </div>
         ) : (
-          <Image
+          <img
             src={imgSrc}
             alt={article.title}
-            fill
-            priority={priority}
-            unoptimized={true}
-            referrerPolicy="no-referrer"
-            sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, (max-width: 1024px) 50vw, 33vw"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading={priority ? undefined : "lazy"}
+            loading="lazy"
+            referrerPolicy="no-referrer"
             onError={() => setHasError(true)}
           />
         )}
