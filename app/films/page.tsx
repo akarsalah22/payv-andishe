@@ -39,16 +39,16 @@ export default async function FilmsPage() {
       </div>
 
       {/* Minimalist Header */}
-      <div className="w-full max-w-2xl text-center space-y-3 py-2">
-        <span className="text-xs font-semibold font-sirwan text-[#d49757] tracking-normal block">
+      <div className="w-full max-w-3xl mx-auto flex flex-col items-center justify-center text-center space-y-4 py-2 select-none">
+        <span className="text-xs font-semibold font-sirwan text-[#d49757] tracking-normal block text-center mx-auto">
           ئەرشیڤی بینراو
         </span>
 
-        <h1 className="text-3xl sm:text-4xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
+        <h1 className="text-3xl sm:text-4xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal text-center mx-auto">
           فیلم و ئەنیمەیشن
         </h1>
 
-        <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed tracking-normal">
+        <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-normal text-center">
           کۆکراوەی شاکارە سینەمایییەکان و ئەنیمەیشنە هەڵبژێردراوەکان بە پەخشی ڕاستەوخۆ لە کەناڵی تێلیگرام.
         </p>
       </div>

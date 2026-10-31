@@ -15,10 +15,10 @@ export default function ArticlesLoading() {
       </div>
 
       {/* Header Skeleton */}
-      <div className="w-full max-w-2xl text-center space-y-3 py-2">
+      <div className="w-full max-w-3xl mx-auto flex flex-col items-center justify-center text-center space-y-4 py-2">
         <div className="h-4 w-24 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 mx-auto" />
         <div className="h-8 sm:h-10 w-56 rounded-xl bg-stone-200/60 dark:bg-zinc-800/40 mx-auto" />
-        <div className="h-4 w-3/4 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 mx-auto" />
+        <div className="h-4 w-3/4 max-w-md rounded-md bg-stone-200/60 dark:bg-zinc-800/40 mx-auto" />
       </div>
 
       {/* Filter pills skeleton */}
