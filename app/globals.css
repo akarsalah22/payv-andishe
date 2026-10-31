@@ -139,26 +139,20 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Custom Sleek Scrollbar for modals and containers */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(160, 160, 160, 0.25) transparent;
+/* Hide scrollbar for Chrome, Safari, Edge, and Opera */
+*::-webkit-scrollbar,
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 5px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(160, 160, 160, 0.25);
-  border-radius: 9999px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(212, 151, 87, 0.5);
+/* Hide scrollbar for Firefox and IE/Edge */
+html,
+body,
+* {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and older Edge */
 }
 
