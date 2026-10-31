@@ -2,29 +2,29 @@ export function HorizontalFilmCardSkeleton() {
   return (
     <div
       dir="rtl"
-      className="rounded-2xl border border-stone-200/80 dark:border-zinc-800/70 bg-white/70 dark:bg-[#16171b] p-3.5 sm:p-4 flex flex-row gap-3.5 sm:gap-4 overflow-hidden text-right min-h-[156px] sm:min-h-[172px] select-none animate-pulse"
+      className="rounded-xl md:rounded-2xl border border-stone-200/80 dark:border-zinc-800/70 bg-white/70 dark:bg-[#16171b] p-2.5 sm:p-3 md:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3 sm:gap-3.5 md:gap-4 overflow-hidden text-right select-none animate-pulse"
       aria-hidden="true"
     >
-      {/* Right Side: Poster thumbnail with matching 2/3 aspect ratio */}
-      <div className="relative w-24 sm:w-28 md:w-32 shrink-0 aspect-[2/3] rounded-xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
+      {/* Right Side: Poster thumbnail with matching dimensions */}
+      <div className="relative w-20 h-28 sm:w-28 sm:h-36 md:w-full md:aspect-[2/3] md:h-72 shrink-0 rounded-lg md:rounded-2xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
 
       {/* Left Side: Info & Button */}
-      <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
-        <div className="space-y-2">
+      <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0">
+        <div className="space-y-1 sm:space-y-1.5 md:space-y-2">
           {/* Title line */}
-          <div className="h-5 sm:h-6 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-3/4" />
+          <div className="h-4 sm:h-5 md:h-6 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-3/4" />
           {/* Meta line */}
-          <div className="h-3.5 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-1/3" />
-          {/* Synopsis (2 lines) */}
-          <div className="space-y-1.5 pt-1">
+          <div className="h-3 sm:h-3.5 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-1/2 md:w-1/3" />
+          {/* Synopsis (hidden on mobile, visible on desktop) */}
+          <div className="hidden md:block space-y-1.5 pt-1">
             <div className="h-3 rounded-md bg-stone-200/50 dark:bg-zinc-800/30 w-full" />
             <div className="h-3 rounded-md bg-stone-200/50 dark:bg-zinc-800/30 w-4/5" />
           </div>
         </div>
 
         {/* Button placeholder */}
-        <div className="pt-2 sm:pt-3">
-          <div className="h-7 w-36 rounded-full bg-stone-200/60 dark:bg-zinc-800/40" />
+        <div className="pt-2 md:pt-4 md:mt-4 md:border-t md:border-stone-200/60 md:dark:border-zinc-800/60">
+          <div className="h-6 md:h-9 w-24 md:w-full rounded-lg md:rounded-xl bg-stone-200/60 dark:bg-zinc-800/40" />
         </div>
       </div>
     </div>

@@ -86,8 +86,8 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        {/* Responsive Grid with 2:3 aspect ratio vertical FilmCards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Responsive Grid: 1 column of compact rows on mobile, 3 columns on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
           {featuredFilms.map((film, index) => (
             <FilmCard key={film.id} film={film} priority={index < 2} />
           ))}

@@ -28,9 +28,9 @@ export default function FilmsLoading() {
         ))}
       </div>
 
-      {/* 2-Column Responsive Film Card Grid strictly matching FilmCard */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 min-h-[300px]">
-        {Array.from({ length: 4 }).map((_, i) => (
+      {/* 3-Column Responsive Film Card Grid strictly matching FilmCard */}
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 min-h-[300px]">
+        {Array.from({ length: 6 }).map((_, i) => (
           <HorizontalFilmCardSkeleton key={i} />
         ))}
       </div>
