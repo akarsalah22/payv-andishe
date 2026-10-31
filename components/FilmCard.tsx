@@ -88,9 +88,9 @@ export function FilmCard({ film }: FilmCardProps) {
             )}
           </div>
 
-          {/* Description (hidden on mobile to keep compact row height, visible on desktop) */}
-          <p className="hidden md:block line-clamp-2 text-xs md:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-300 leading-relaxed">
-            {film.description}
+          {/* Description directly below metadata on mobile & desktop */}
+          <p className="text-xs md:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 line-clamp-2 mt-1 leading-relaxed">
+            {film.description || (film as any).story || (film as any).synopsis}
           </p>
         </div>
 

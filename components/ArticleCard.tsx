@@ -85,8 +85,8 @@ export function ArticleCard({ article }: ArticleCardProps) {
             )}
           </div>
 
-          {/* Excerpt (hidden on mobile to keep compact row height, visible on desktop) */}
-          <p className="hidden md:block line-clamp-2 text-xs md:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-300 leading-relaxed">
+          {/* Excerpt directly below metadata on mobile & desktop */}
+          <p className="text-xs md:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 line-clamp-2 mt-1 leading-relaxed">
             {article.excerpt}
           </p>
         </div>
