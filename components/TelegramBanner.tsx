@@ -5,7 +5,7 @@ export function TelegramBanner() {
     <section
       id="about"
       dir="rtl"
-      className="w-full relative rounded-2xl border border-amber-200/60 bg-white/90 text-zinc-900 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/90 dark:text-zinc-100 dark:shadow-none p-6 sm:p-8 text-right select-none transition-colors duration-200 overflow-hidden"
+      className="w-full relative rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/90 text-zinc-900 shadow-sm dark:bg-zinc-900/90 dark:text-zinc-100 dark:shadow-none p-6 sm:p-8 text-right select-none backdrop-blur-sm transition-all duration-200 overflow-hidden"
     >
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-3 max-w-2xl">
@@ -34,9 +34,9 @@ export function TelegramBanner() {
             href="https://t.me/mediay_islami"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-sm transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none"
+            className="group/btn inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-md hover:shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all duration-200 cursor-pointer touch-manipulation select-none"
           >
-            <Send className="w-4 h-4" strokeWidth={1.75} />
+            <Send className="w-4 h-4 transition-transform duration-200 group-hover/btn:-translate-x-1" strokeWidth={1.75} />
             <span>بەشداری لە کەناڵ</span>
           </a>
         </div>

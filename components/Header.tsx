@@ -125,9 +125,9 @@ export function Header() {
                   key={link.name}
                   href={link.href}
                   prefetch={false}
-                  className={`rounded-xl px-3.5 py-1.5 text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent ${active
-                      ? 'bg-[#d49757]/10 text-[#d49757] border border-[#d49757]/30 font-bold'
-                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-[#ede8e1]/60 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/60'
+                  className={`rounded-xl px-3.5 py-1.5 text-sm font-medium font-sirwan tracking-normal transition-all duration-200 ease-out active:scale-95 select-none tap-highlight-transparent ${active
+                      ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-bold'
+                      : 'text-zinc-600 hover:text-amber-500 hover:bg-amber-500/10 dark:text-zinc-400 dark:hover:text-amber-400 dark:hover:bg-amber-500/10'
                     }`}
                 >
                   {link.name}
@@ -144,7 +144,7 @@ export function Header() {
                 href="/admin"
                 aria-label="پەنێڵی بەڕێوەبردن"
                 title="پەنێڵی بەڕێوەبردن"
-                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-[#d49757] text-xs font-semibold font-sirwan transition-all duration-150 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent"
+                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-[#d49757] text-xs font-semibold font-sirwan transition-all duration-200 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent"
               >
                 <ShieldCheck className="w-3.5 h-3.5 text-[#d49757]" strokeWidth={1.75} />
                 <span className="hidden sm:inline">بەڕێوەبردن</span>
@@ -157,7 +157,7 @@ export function Header() {
               onClick={() => setIsSearchOpen(true)}
               aria-label="گەڕان"
               title="گەڕان"
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-600 hover:text-zinc-900 hover:bg-[#ede8e1]/60 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/60 transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-600 hover:text-amber-500 hover:bg-amber-500/10 dark:text-zinc-400 dark:hover:text-amber-400 dark:hover:bg-amber-500/10 transition-all duration-200 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
               <Search className="h-4.5 w-4.5 text-[#d49757]" strokeWidth={1.75} />
             </button>
@@ -169,7 +169,7 @@ export function Header() {
               rel="noopener noreferrer"
               aria-label="کەناڵی تێلیگرام"
               title="کەناڵی فەرمی لە تێلیگرام"
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-600 hover:text-sky-600 hover:bg-sky-500/10 dark:text-zinc-400 dark:hover:text-sky-400 dark:hover:bg-sky-500/10 transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-600 hover:text-sky-500 hover:bg-sky-500/10 dark:text-zinc-400 dark:hover:text-sky-400 dark:hover:bg-sky-500/10 transition-all duration-200 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
               <Send className="h-4.5 w-4.5" strokeWidth={1.75} />
             </a>
@@ -183,7 +183,7 @@ export function Header() {
               onClick={() => setIsMenuOpen(true)}
               aria-label="کردنەوەی مێنیو"
               aria-expanded={isMenuOpen}
-              className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-700 hover:text-zinc-900 hover:bg-[#ede8e1]/60 dark:text-zinc-300 dark:hover:text-zinc-100 dark:hover:bg-zinc-800/60 transition-transform duration-150 ease-out active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d49757]/40 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-700 hover:text-amber-500 hover:bg-amber-500/10 dark:text-zinc-300 dark:hover:text-amber-400 dark:hover:bg-amber-500/10 transition-all duration-200 ease-out active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d49757]/40 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
               <Menu className="h-5 w-5" strokeWidth={1.75} />
             </button>

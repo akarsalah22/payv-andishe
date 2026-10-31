@@ -87,15 +87,15 @@ export function HomeContent({ films, articles }: HomeContentProps) {
             {displayedFilms.map((film, index) => (
               <div
                 key={film.id || (film as any)._id || index}
-                className="group rounded-2xl border border-[#ede8e1] dark:border-zinc-800/80 bg-white/70 dark:bg-[#16171b] p-3 sm:p-3.5 transition-all duration-200 hover:border-[#d49757]/40 dark:hover:border-[#d49757]/30 hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] flex flex-col justify-between select-none tap-highlight-transparent"
+                className="group rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-[#16171b] backdrop-blur-sm p-3 sm:p-3.5 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-500/40 dark:hover:border-amber-400/30 active:scale-[0.98] flex flex-col justify-between select-none tap-highlight-transparent"
               >
                 <div className="space-y-3">
                   {/* Poster container with ambient overlay */}
-                  <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden bg-stone-200 dark:bg-zinc-800 shadow-xs">
+                  <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden bg-zinc-950 shadow-xs">
                     <img
                       src={film.posterUrl || '/placeholder.jpg'}
                       alt={film.titleKurdish}
-                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]"
+                      className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
                       referrerPolicy="no-referrer"
                       decoding="async"
                       onError={(e) => {
@@ -110,7 +110,7 @@ export function HomeContent({ films, articles }: HomeContentProps) {
 
                     {/* Top Start: Genre Badge */}
                     <div className="absolute top-2 start-2">
-                      <span className="px-2 py-0.5 rounded-md text-[10px] sm:text-[11px] font-medium font-sirwan bg-black/60 backdrop-blur-md text-white border border-white/10 tracking-normal">
+                      <span className="px-2 py-0.5 rounded-md text-[10px] sm:text-[11px] font-medium font-sirwan bg-black/60 backdrop-blur-md text-white border border-white/10 tracking-normal transition-colors duration-200 hover:bg-amber-500/20">
                         {film.genres[0]}
                       </span>
                     </div>
@@ -132,7 +132,7 @@ export function HomeContent({ films, articles }: HomeContentProps) {
 
                   {/* Content details (Unified baseline for Kurdish typography) */}
                   <div className="space-y-1 text-right">
-                    <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-[#d49757] transition-colors leading-normal">
+                    <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors leading-normal">
                       {film.titleKurdish}
                     </h3>
                     <p className="text-[11px] text-zinc-500 font-sans truncate">
@@ -142,14 +142,14 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                 </div>
 
                 {/* Direct Telegram Action Button */}
-                <div className="pt-3 mt-2 border-t border-[#ede8e1]/70 dark:border-zinc-800/70">
+                <div className="pt-3 mt-2 border-t border-zinc-200/80 dark:border-zinc-800/80">
                   <a
                     href={film.telegramPostUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-1.5 w-full py-1.5 sm:py-2 rounded-xl bg-[#d49757]/10 hover:bg-[#d49757] text-[#d49757] hover:text-zinc-950 border border-[#d49757]/25 text-xs font-semibold font-sirwan tracking-normal transition-transform duration-150 ease-out active:scale-95 shadow-2xs cursor-pointer touch-manipulation select-none"
+                    className="group/btn inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-amber-500/15 text-amber-900 border border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20 hover:bg-amber-500 hover:text-black hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200 text-xs font-semibold font-sirwan tracking-normal cursor-pointer touch-manipulation select-none"
                   >
-                    <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
+                    <Send className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:-translate-x-1" strokeWidth={1.75} />
                     <span>بینین لە تێلیگرام</span>
                   </a>
                 </div>
