@@ -6,7 +6,7 @@ export function HorizontalFilmCardSkeleton() {
       aria-hidden="true"
     >
       {/* Right Side: Poster thumbnail with matching dimensions */}
-      <div className="relative w-20 h-28 sm:w-24 sm:h-32 md:w-full md:aspect-[16/10] md:h-44 shrink-0 rounded-xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
+      <div className="relative w-20 h-28 sm:w-28 sm:h-40 md:w-full md:aspect-[2/3] md:h-80 shrink-0 rounded-xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
 
       {/* Left Side: Info & Button */}
       <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0 md:space-y-2">
@@ -43,7 +43,7 @@ export function ArticleCardSkeleton() {
       aria-hidden="true"
     >
       {/* Thumbnail */}
-      <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-full md:aspect-[16/10] md:h-44 shrink-0 rounded-xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
+      <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-full md:aspect-[16/10] shrink-0 rounded-xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
 
       {/* Info & Button */}
       <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0 md:space-y-2">
