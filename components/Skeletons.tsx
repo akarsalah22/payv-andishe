@@ -39,29 +39,29 @@ export function ArticleCardSkeleton() {
   return (
     <article
       dir="rtl"
-      className="rounded-2xl border border-stone-200/80 dark:border-zinc-800/70 bg-white/70 dark:bg-[#16171b] p-3.5 sm:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3 md:gap-2.5 overflow-hidden text-right select-none animate-pulse"
+      className="rounded-2xl border border-stone-200/80 dark:border-zinc-800/70 bg-white/70 dark:bg-[#16171b] overflow-hidden flex flex-col justify-between text-right select-none animate-pulse"
       aria-hidden="true"
     >
-      {/* Thumbnail */}
-      <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-full md:aspect-[16/10] shrink-0 rounded-xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
+      {/* Landscape Header */}
+      <div className="relative w-full aspect-[16/9] rounded-t-2xl sm:rounded-xl overflow-hidden bg-stone-200/60 dark:bg-zinc-800/40" />
 
       {/* Info & Button */}
-      <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0 md:space-y-2">
-        <div className="space-y-1 sm:space-y-1.5">
-          {/* Title line */}
-          <div className="h-4 sm:h-5 md:h-6 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-3/4" />
+      <div className="p-4 sm:p-4.5 flex-1 flex flex-col justify-between space-y-3">
+        <div className="space-y-2">
           {/* Meta line */}
-          <div className="h-3 sm:h-3.5 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-1/2 md:w-1/3" />
-          {/* Synopsis (hidden on mobile, visible on desktop) */}
-          <div className="hidden md:block space-y-1.5 pt-1">
+          <div className="h-3.5 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-1/3" />
+          {/* Title line */}
+          <div className="h-5 rounded-md bg-stone-200/60 dark:bg-zinc-800/40 w-3/4" />
+          {/* Synopsis */}
+          <div className="space-y-1.5 pt-1">
             <div className="h-3 rounded-md bg-stone-200/50 dark:bg-zinc-800/30 w-full" />
             <div className="h-3 rounded-md bg-stone-200/50 dark:bg-zinc-800/30 w-4/5" />
           </div>
         </div>
 
         {/* Button placeholder */}
-        <div className="pt-2 md:pt-2.5 md:mt-2.5 md:border-t md:border-stone-200/60 md:dark:border-zinc-800/60">
-          <div className="h-8 md:h-9 w-24 md:w-full rounded-xl bg-stone-200/60 dark:bg-zinc-800/40" />
+        <div className="pt-3 border-t border-stone-200/60 dark:border-zinc-800/60">
+          <div className="h-9 w-full rounded-xl bg-stone-200/60 dark:bg-zinc-800/40" />
         </div>
       </div>
     </article>
