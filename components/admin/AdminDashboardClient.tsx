@@ -84,7 +84,7 @@ export function AdminDashboardClient() {
   const [articleCoverImage, setArticleCoverImage] = useState('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80');
   const [articleExcerpt, setArticleExcerpt] = useState('');
   const [articleContent, setArticleContent] = useState('');
-  const [articleAuthor, setArticleAuthor] = useState('پەیڤ و ئەندێشە');
+  const [articleAuthor, setArticleAuthor] = useState('میدیای ئیسلامی');
 
   // Fetch films from API and synchronize with localStorage
   const fetchFilms = async () => {
@@ -306,7 +306,7 @@ export function AdminDashboardClient() {
     setArticleCoverImage('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80');
     setArticleExcerpt('');
     setArticleContent('');
-    setArticleAuthor('پەیڤ و ئەندێشە');
+    setArticleAuthor('میدیای ئیسلامی');
   };
 
   // Start Editing Film
@@ -416,7 +416,7 @@ export function AdminDashboardClient() {
     setArticleCoverImage(article.coverImage || article.imageUrl || '');
     setArticleExcerpt(article.excerpt);
     setArticleContent(Array.isArray(article.content) ? article.content.join('\n\n') : (article.content || ''));
-    setArticleAuthor(article.author || 'پەیڤ و ئەندێشە');
+    setArticleAuthor(article.author || 'میدیای ئیسلامی');
     setActiveTab('create');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -477,7 +477,7 @@ export function AdminDashboardClient() {
           date: dateFormatted,
           coverImage: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
           imageUrl: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
-          author: articleAuthor.trim() || 'پەیڤ و ئەندێشە',
+          author: articleAuthor.trim() || 'میدیای ئیسلامی',
         };
 
     try {
@@ -630,7 +630,7 @@ export function AdminDashboardClient() {
     date: editingArticle?.date || 'ئەمڕۆ',
     coverImage: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
     imageUrl: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
-    author: articleAuthor.trim() || 'پەیڤ و ئەندێشە',
+    author: articleAuthor.trim() || 'میدیای ئیسلامی',
   }), [editingArticle, articleTitle, articleSlug, articleExcerpt, articleContent, articleCategory, articleReadTime, articleCoverImage, articleAuthor]);
 
   return (
@@ -646,7 +646,7 @@ export function AdminDashboardClient() {
             <span>بەخێربێیت بەڕێوەبەر</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100">
-            بەڕێوەبردنی پەیڤ و ئەندێشە
+            بەڕێوەبردنی میدیای ئیسلامی
           </h1>
           <p className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400">
             پەنێڵی تەواوی دەستکاریکردن، سڕینەوە و زیادکردنی فیلم و وتارەکان
@@ -1479,7 +1479,7 @@ export function AdminDashboardClient() {
                         type="text"
                         value={articleAuthor}
                         onChange={(e) => setArticleAuthor(e.target.value)}
-                        placeholder="پەیڤ و ئەندێشە"
+                        placeholder="میدیای ئیسلامی"
                         className="w-full px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757]"
                       />
                     </div>

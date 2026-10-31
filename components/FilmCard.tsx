@@ -14,7 +14,7 @@ export function FilmCard({ film }: FilmCardProps) {
   return (
     <article
       dir="rtl"
-      className="bg-white/90 dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800/80 backdrop-blur-sm rounded-2xl overflow-hidden p-3.5 sm:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3 md:gap-2.5 justify-between group transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-500/40 dark:hover:border-amber-400/30 active:scale-[0.98] select-none tap-highlight-transparent"
+      className="bg-white/95 dark:bg-zinc-900/85 border border-amber-900/10 dark:border-zinc-800/80 backdrop-blur-sm rounded-2xl overflow-hidden p-3.5 sm:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3.5 md:gap-3 justify-between group transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-500/40 dark:hover:border-amber-400/30 active:scale-[0.98] select-none tap-highlight-transparent"
     >
       {/* Poster Image Thumbnail (Compact row on mobile, portrait poster on desktop) */}
       <a
@@ -28,7 +28,7 @@ export function FilmCard({ film }: FilmCardProps) {
         <img
           src={posterSrc}
           alt={film.titleKurdish || (film as any).title || ''}
-          className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
+          className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105"
           loading="lazy"
           decoding="async"
           referrerPolicy="no-referrer"

@@ -65,7 +65,7 @@ export async function ensureDbInitialized(): Promise<boolean> {
         date TEXT NOT NULL,
         cover_image TEXT NOT NULL,
         image_url TEXT,
-        author TEXT NOT NULL DEFAULT 'پەیڤ و ئەندێشە',
+        author TEXT NOT NULL DEFAULT 'میدیای ئیسلامی',
         created_at TIMESTAMPTZ DEFAULT NOW(),
         updated_at TIMESTAMPTZ DEFAULT NOW()
       );
@@ -317,7 +317,7 @@ export async function getArticlesFromDb(): Promise<Article[] | null> {
       date: r.date,
       coverImage: r.coverImage,
       imageUrl: r.imageUrl || r.coverImage,
-      author: r.author || 'پەیڤ و ئەندێشە',
+      author: r.author || 'میدیای ئیسلامی',
     }));
   } catch (err) {
     console.error('Failed to get articles from DB:', err);

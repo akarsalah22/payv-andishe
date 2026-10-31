@@ -81,7 +81,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${vazirmatnFont.variable} ${peshangFont.variable} ${sirwanFont.variable} ${sirwan001Font.variable} ${sirwan003Font.variable} scroll-smooth`}
     >
-      <body className={`${vazirmatnFont.className} min-h-screen bg-[#faf8f5] text-[#1c1b18] antialiased transition-colors duration-200 dark:bg-[#121316] dark:text-[#eeeff2] flex flex-col selection:bg-[#d49757]/20 selection:text-[#d49757] text-right`}>
+      <body className={`${vazirmatnFont.className} min-h-screen bg-[#faf8f5] text-zinc-900 antialiased transition-colors duration-200 dark:bg-[#121214] dark:text-zinc-100 flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-right`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

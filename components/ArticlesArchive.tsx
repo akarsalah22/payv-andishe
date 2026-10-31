@@ -144,10 +144,10 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="گەڕان لە نێو نووسین و وتارەکان (بە کوردی یان عەرەبی)..."
-            className="w-full pr-11 pl-11 py-3 rounded-2xl border border-stone-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/70 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 text-sm font-sirwan shadow-xs focus:outline-none focus:border-[#d49757] focus:ring-1 focus:ring-[#d49757] transition-all"
+            className="w-full pr-11 pl-11 py-3 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/80 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 text-sm font-sirwan shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all"
             dir="rtl"
           />
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[#d49757] pointer-events-none">
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-amber-500 pointer-events-none">
             <Search className="w-4 h-4" strokeWidth={2} />
           </div>
 
@@ -155,7 +155,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
             <button
               type="button"
               onClick={handleClearSearch}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 p-1 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-stone-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 p-1 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
               title="پاککردنەوەی گەڕان"
               aria-label="پاککردنەوەی گەڕان"
             >
@@ -175,8 +175,8 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
                 onClick={() => handleCategoryChange(category)}
                 className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-200 ease-in-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${
                   isActive
-                    ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
-                    : 'bg-white/70 dark:bg-zinc-900/60 text-zinc-600 dark:text-zinc-400 border border-[#ede8e1] dark:border-zinc-800/80 hover:text-zinc-900 dark:hover:text-zinc-100 hover:border-[#d49757]/30'
+                    ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
+                    : 'bg-white/80 dark:bg-zinc-900/70 text-zinc-600 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-800/80 hover:text-zinc-900 dark:hover:text-zinc-100 hover:border-amber-500/30'
                 }`}
               >
                 {category}
@@ -188,14 +188,14 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
 
       {/* Results Count & Active Search Indicator */}
       {hasActiveFilters && (
-        <div className="flex items-center justify-between text-xs font-sirwan text-zinc-500 dark:text-zinc-400 px-1 border-b border-[#ede8e1]/70 dark:border-zinc-800/70 pb-3">
+        <div className="flex items-center justify-between text-xs font-sirwan text-zinc-500 dark:text-zinc-400 px-1 border-b border-zinc-200/70 dark:border-zinc-800/70 pb-3">
           <span>
             {filteredArticles.length} وتار دۆزرایەوە لە کۆی {articles.length}
           </span>
           <button
             type="button"
             onClick={handleResetAll}
-            className="text-[#d49757] hover:underline cursor-pointer"
+            className="text-amber-600 dark:text-amber-400 hover:underline cursor-pointer"
           >
             پیشاندانی هەمووی
           </button>
@@ -211,8 +211,8 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
         </div>
       ) : (
         /* Empty State UI */
-        <div className="w-full py-16 px-4 text-center space-y-4 rounded-2xl border border-stone-200/80 dark:border-zinc-800/80 bg-white/50 dark:bg-zinc-900/40 animate-in fade-in duration-200">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center mx-auto text-[#d49757] shadow-xs">
+        <div className="w-full py-16 px-4 text-center space-y-4 rounded-2xl border border-amber-900/10 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center mx-auto text-amber-500 shadow-xs">
             <SearchX className="w-6 h-6" strokeWidth={1.75} />
           </div>
           <div className="space-y-1.5 max-w-md mx-auto">
@@ -229,7 +229,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
             <button
               type="button"
               onClick={handleResetAll}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#d49757]/15 hover:bg-[#d49757] text-[#d49757] hover:text-zinc-950 border border-[#d49757]/30 text-xs font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer shadow-2xs select-none"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-900 dark:text-amber-400 hover:text-zinc-950 dark:hover:text-zinc-950 border border-amber-500/30 text-xs font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer shadow-2xs select-none"
             >
               <X className="w-3.5 h-3.5" />
               <span>پاککردنەوەی گەڕان و پیشاندانی هەمووی</span>

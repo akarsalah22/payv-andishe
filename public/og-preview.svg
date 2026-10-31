@@ -59,17 +59,17 @@
   <!-- Typography (Centered, High contrast, RTL friendly) -->
   <!-- Site Title -->
   <text x="600" y="275" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" fill="#f4f4f5" text-anchor="middle" letter-spacing="0">
-    پەیڤ و ئەندێشە
+    میدیای ئیسلامی
   </text>
 
   <!-- Subtitle / Tagline -->
   <text x="600" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="500" fill="#e0a96d" text-anchor="middle">
-    پانتاییەک بۆ سینەما، ئەدەب و هزری نوێ
+    پانتاییەک بۆ سینەما و ئەدەبی ئیسلامی
   </text>
 
   <!-- Inviting Description -->
   <text x="600" y="395" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="400" fill="#a1a1aa" text-anchor="middle">
-    ئەرشیڤێکی مۆدێرنی کوردی بۆ ناساندنی شاکارەکانی سینەما و بڵاوکردنەوەی وتاری هزری
+    ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی
   </text>
 
   <!-- Bottom Pills: Features & Telegram Link -->

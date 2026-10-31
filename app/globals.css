@@ -46,12 +46,12 @@
 
 :root {
   --background: #faf8f5;
-  --foreground: #1c1b18;
+  --foreground: #18181b;
 }
 
 .dark {
-  --background: #121316;
-  --foreground: #eeeff2;
+  --background: #121214;
+  --foreground: #f4f4f5;
 }
 
 /* Ensure Kurdish/Arabic letter connectivity and touch defaults */

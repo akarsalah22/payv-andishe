@@ -15,10 +15,16 @@ export default async function HomePage() {
   return (
     <main
       dir="rtl"
-      className="max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full flex-1 flex flex-col space-y-16 text-right"
+      className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full flex-1 flex flex-col space-y-16 text-right"
     >
       {/* 1. Hero Section */}
-      <section className="w-full max-w-3xl mx-auto text-center space-y-6 pt-2 sm:pt-6 select-none">
+      <section className="w-full max-w-3xl mx-auto text-center space-y-6 pt-2 sm:pt-4 select-none">
+        {/* Subtle Brand Badge */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 text-xs font-semibold font-sirwan tracking-normal shadow-2xs">
+          <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+          <span>پانتاییەک بۆ سینەما و ئەدەبی ئیسلامی</span>
+        </div>
+
         {/* Stately Kurdish Headline */}
         <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal sm:leading-relaxed">
           شوێنێک بۆ فیلم، نووسین و هەنێک سەرچاوەی ئیسلامی
@@ -26,7 +32,7 @@ export default async function HomePage() {
 
         {/* Concise Subtitle (1-2 sentences) */}
         <p className="text-base sm:text-lg font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-normal">
-          ئەرشیڤێکی کوردییە بۆ ناساندن کۆکردنەوەی فیلم و ئەنیمەیشن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەیەکان.
+          ئەرشیڤێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و ئەنیمەیشن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەیەکان.
         </p>
 
         {/* Balanced Primary CTAs & Secondary Telegram Link */}
@@ -36,18 +42,18 @@ export default async function HomePage() {
             {/* Button 1: فیلم و ئەنیمەیشن -> /films */}
             <Link
               href="/films"
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-stone-100 hover:bg-stone-200/80 active:bg-stone-200 dark:bg-zinc-900/70 dark:hover:bg-zinc-800 dark:active:bg-zinc-800 border border-stone-300/70 hover:border-amber-500/40 dark:border-zinc-700/60 dark:hover:border-amber-500/40 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium font-sirwan text-sm tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-2xl bg-white/95 dark:bg-zinc-900/85 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 border border-zinc-200/90 hover:border-amber-500/40 dark:border-zinc-800/90 dark:hover:border-amber-500/40 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium font-sirwan text-sm tracking-normal transition-all duration-200 ease-out hover:shadow-lg hover:shadow-amber-500/10 active:scale-[0.98] cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
-              <Clapperboard className="w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0" strokeWidth={1.75} />
+              <Clapperboard className="w-4 h-4 text-amber-500 shrink-0" strokeWidth={1.75} />
               <span>فیلم و ئەنیمەیشن</span>
             </Link>
 
             {/* Button 2: نووسین و وتار -> /articles */}
             <Link
               href="/articles"
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-stone-100 hover:bg-stone-200/80 active:bg-stone-200 dark:bg-zinc-900/70 dark:hover:bg-zinc-800 dark:active:bg-zinc-800 border border-stone-300/70 hover:border-amber-500/40 dark:border-zinc-700/60 dark:hover:border-amber-500/40 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium font-sirwan text-sm tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-2xl bg-white/95 dark:bg-zinc-900/85 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 border border-zinc-200/90 hover:border-amber-500/40 dark:border-zinc-800/90 dark:hover:border-amber-500/40 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium font-sirwan text-sm tracking-normal transition-all duration-200 ease-out hover:shadow-lg hover:shadow-amber-500/10 active:scale-[0.98] cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
-              <BookOpen className="w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0" strokeWidth={1.75} />
+              <BookOpen className="w-4 h-4 text-amber-500 shrink-0" strokeWidth={1.75} />
               <span>نووسین و وتار</span>
             </Link>
           </div>
@@ -67,9 +73,9 @@ export default async function HomePage() {
 
       {/* 2. Featured Cinema Section ("شاکارە هەڵبژێردراوەکان") */}
       <section className="w-full space-y-6">
-        <div className="flex items-end justify-between border-b border-[#ede8e1] dark:border-zinc-800/70 pb-4">
+        <div className="flex items-end justify-between border-b border-zinc-200/80 dark:border-zinc-800/70 pb-4">
           <div>
-            <span className="text-xs font-semibold font-sirwan text-[#d49757] tracking-normal block mb-1">
+            <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 tracking-normal block mb-1">
               سینەما و ئەنیمەیشن
             </span>
             <h2 className="text-xl sm:text-2xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
@@ -79,7 +85,7 @@ export default async function HomePage() {
 
           <Link
             href="/films"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200/80 dark:bg-zinc-800/80 dark:hover:bg-zinc-800 border border-stone-300/60 dark:border-zinc-700/60 text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent group"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-zinc-900/70 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 border border-zinc-200/80 dark:border-zinc-800/80 hover:border-amber-500/30 text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent group"
           >
             <span>بینینی هەمووی</span>
             <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" strokeWidth={1.75} />
@@ -96,9 +102,9 @@ export default async function HomePage() {
 
       {/* 3. Featured Literature Section ("نوێترین وتار و ڕامانەکان") */}
       <section className="w-full space-y-6">
-        <div className="flex items-end justify-between border-b border-[#ede8e1] dark:border-zinc-800/70 pb-4">
+        <div className="flex items-end justify-between border-b border-zinc-200/80 dark:border-zinc-800/70 pb-4">
           <div>
-            <span className="text-xs font-semibold font-sirwan text-[#d49757] tracking-normal block mb-1">
+            <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 tracking-normal block mb-1">
               ئەدەب و فیکر
             </span>
             <h2 className="text-xl sm:text-2xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
@@ -108,7 +114,7 @@ export default async function HomePage() {
 
           <Link
             href="/articles"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200/80 dark:bg-zinc-800/80 dark:hover:bg-zinc-800 border border-stone-300/60 dark:border-zinc-700/60 text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent group"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/80 dark:bg-zinc-900/70 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 border border-zinc-200/80 dark:border-zinc-800/80 hover:border-amber-500/30 text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent group"
           >
             <span>گشت وتارەکان</span>
             <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" strokeWidth={1.75} />

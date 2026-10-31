@@ -38,7 +38,7 @@ export const SAMPLE_ARTICLES: Article[] = [
     date: '٢٤ی کانوونی دووەم',
     coverImage: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80',
     imageUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80',
-    author: 'پەیڤ و ئەندێشە',
+    author: 'میدیای ئیسلامی',
   },
   {
     id: '2',
@@ -55,7 +55,7 @@ export const SAMPLE_ARTICLES: Article[] = [
     date: '١٨ی کانوونی دووەم',
     coverImage: 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
     imageUrl: 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
-    author: 'پەیڤ و ئەندێشە',
+    author: 'میدیای ئیسلامی',
   },
   {
     id: '3',
@@ -72,7 +72,7 @@ export const SAMPLE_ARTICLES: Article[] = [
     date: '١٢ی کانوونی دووەم',
     coverImage: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80',
     imageUrl: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1200&q=80',
-    author: 'پەیڤ و ئەندێشە',
+    author: 'میدیای ئیسلامی',
   },
   {
     id: '4',
@@ -89,7 +89,7 @@ export const SAMPLE_ARTICLES: Article[] = [
     date: '٥ی کانوونی دووەم',
     coverImage: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80',
     imageUrl: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80',
-    author: 'پەیڤ و ئەندێشە',
+    author: 'میدیای ئیسلامی',
   },
   {
     id: '5',
@@ -106,7 +106,7 @@ export const SAMPLE_ARTICLES: Article[] = [
     date: '٢٨ی کانوونی یەکەم',
     coverImage: 'https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?auto=format&fit=crop&w=1200&q=80',
     imageUrl: 'https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?auto=format&fit=crop&w=1200&q=80',
-    author: 'پەیڤ و ئەندێشە',
+    author: 'میدیای ئیسلامی',
   },
 ];
 

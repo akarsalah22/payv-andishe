@@ -19,7 +19,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
   return (
     <article
       dir="rtl"
-      className="bg-white/90 dark:bg-zinc-900/90 border border-zinc-200/80 dark:border-zinc-800/80 backdrop-blur-sm rounded-2xl overflow-hidden flex flex-col justify-between group transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-500/40 dark:hover:border-amber-400/30 active:scale-[0.98] select-none tap-highlight-transparent"
+      className="bg-white/95 dark:bg-zinc-900/85 border border-amber-900/10 dark:border-zinc-800/80 backdrop-blur-sm rounded-2xl overflow-hidden flex flex-col justify-between group transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-500/40 dark:hover:border-amber-400/30 active:scale-[0.98] select-none tap-highlight-transparent"
     >
       {/* Classic Editorial / Blog Landscape Header */}
       <Link

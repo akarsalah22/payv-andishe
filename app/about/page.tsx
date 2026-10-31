@@ -17,7 +17,7 @@ export default function AboutPage() {
       className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-3xl mx-auto w-full py-8 sm:py-16 space-y-12 sm:space-y-16 text-right select-none"
     >
       {/* Top Breadcrumb */}
-      <div className="w-full flex items-center justify-between pb-6 border-b border-stone-200/80 dark:border-zinc-800/80 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400 tracking-normal">
+      <div className="w-full flex items-center justify-between pb-6 border-b border-zinc-200/80 dark:border-zinc-800/80 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400 tracking-normal">
         <div className="flex items-center gap-2">
           <Link href="/" className="hover:text-amber-500 transition-colors">
             سەرەکی
@@ -26,7 +26,7 @@ export default function AboutPage() {
           <span className="text-zinc-900 dark:text-zinc-200">دەربارە</span>
         </div>
 
-        <span className="text-zinc-400 dark:text-zinc-500"> میدیای ئیسلامی</span>
+        <span className="text-zinc-400 dark:text-zinc-500">میدیای ئیسلامی</span>
       </div>
 
       {/* 1. Dignified Page Header (No AI Sparkle Badge) */}
@@ -44,7 +44,7 @@ export default function AboutPage() {
       <article className="w-full space-y-10 text-zinc-800 dark:text-zinc-200 font-sirwan text-base sm:text-[17px] leading-[2.3] tracking-normal text-justify">
         {/* Section 1: بۆچی ئەم ئەرشیفە؟ */}
         <section className="space-y-4">
-          <h2 className="text-xl sm:text-2xl font-bold font-peshang text-zinc-900 dark:text-zinc-100 tracking-normal border-b border-stone-200/60 dark:border-zinc-800/80 pb-2.5">
+          <h2 className="text-xl sm:text-2xl font-bold font-peshang text-zinc-900 dark:text-zinc-100 tracking-normal border-b border-zinc-200/80 dark:border-zinc-800/80 pb-2.5">
             بۆچی ئەم ئەرشیفە؟
           </h2>
           <p>
@@ -57,30 +57,69 @@ export default function AboutPage() {
 
         {/* Section 2: ڕوانگەی ئێمە بۆ سینەما و ئەدەب */}
         <section className="space-y-4">
-          <h2 className="text-xl sm:text-2xl font-bold font-peshang text-zinc-900 dark:text-zinc-100 tracking-normal border-b border-stone-200/60 dark:border-zinc-800/80 pb-2.5">
+          <h2 className="text-xl sm:text-2xl font-bold font-peshang text-zinc-900 dark:text-zinc-100 tracking-normal border-b border-zinc-200/80 dark:border-zinc-800/80 pb-2.5">
             ڕوانگەی ئێمە بۆ سینەما و ئەدەب
           </h2>
           <p>
             ئێمە لەڕێگەی سینەماوە ئەتوانین پەروەردەیەکی باش بڵاوبکەینەوە، بەڵام سینەمای جیهانی بە ئینسان ئەڵی وەک حەیوان بەو یا ئەڵێ تۆش حەیوانی.
           </p>
           <p>
-            هاوتەریب لەگەڵ شریتەکانی فیلم، کارتۆن ڕووبەرێکە بۆ وتاری ئیسلامی و خوێندنەوەی کتێب.  .
+            هاوتەریب لەگەڵ شریتەکانی فیلم، کارتۆن ڕووبەرێکە بۆ وتاری ئیسلامی و خوێندنەوەی کتێب.
           </p>
         </section>
 
         {/* Section 3: ئەرشیفی هەمیشەیی */}
         <section className="space-y-4">
-          <h2 className="text-xl sm:text-2xl font-bold font-peshang text-zinc-900 dark:text-zinc-100 tracking-normal border-b border-stone-200/60 dark:border-zinc-800/80 pb-2.5">
+          <h2 className="text-xl sm:text-2xl font-bold font-peshang text-zinc-900 dark:text-zinc-100 tracking-normal border-b border-zinc-200/80 dark:border-zinc-800/80 pb-2.5">
             ئەرشیفی هەمیشەیی لە تێلیگرام
           </h2>
           <p>
-            بۆ کۆکردنەوەی ئەم فیلم و کارتۆنانە لەهەر کوێ شتێکمان بینیبێ هێناومانە و لۆگۆ و ڕەمزی ئەو شوێنەی هەرپێوە ماوە، کەناڵی تێلیگرامی «میدیای ئیسلامی» وەک ئەرشیفێکی هەمیشەیی کاردەکات. هەر فیلمێک، کورتەفیلمێک یان بابەتێکی پێشکەشکراو.
+            بۆ کۆکردنەوەی ئەم فیلم و کارتۆنانە لەهەر کوێ شتێکمان بینیبێ هێناومانە و لۆگۆ و ڕەمزی ئەو شوێنەی هەرپێوە ماوە، کەناڵی تێلیگرامی «میدیای ئیسلامی» وەک ئەرشیفێکی هەمیشەیی کاردەکات. هەر فیلمێک، کورتەفیلمێک یان بابەتێکی پێشکەشکراو لەوێ پارێزراوە.
           </p>
         </section>
       </article>
 
-      {/* 3. Dedicated Feedback & Contact Callout */}
-      <section className="w-full rounded-2xl border border-amber-200/70 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 p-6 sm:p-8 text-center space-y-5 shadow-xs">
+      {/* 3. Three Ethos Pillars Grid */}
+      <section className="w-full grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="p-5 rounded-2xl bg-white/95 dark:bg-zinc-900/85 border border-amber-900/10 dark:border-zinc-800/80 space-y-2 text-right shadow-xs">
+          <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 block">
+            ٠١ / پێوەر
+          </span>
+          <h3 className="text-base font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+            سینەما و ئەنیمەیشن
+          </h3>
+          <p className="text-xs font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            ناساندن و هەڵبژاردنی فیلم و ئەنیمەیشنەکان بە دیدێکی پەروەردەیی و بەهاخواز.
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-white/95 dark:bg-zinc-900/85 border border-amber-900/10 dark:border-zinc-800/80 space-y-2 text-right shadow-xs">
+          <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 block">
+            ٠٢ / فیکر
+          </span>
+          <h3 className="text-base font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+            ئەدەب و وتار
+          </h3>
+          <p className="text-xs font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            تێڕامان لە نووسین، فیکری ئیسلامی و ناساندنی کتێبە ناوازەکان بە زمانی کوردی.
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-white/95 dark:bg-zinc-900/85 border border-amber-900/10 dark:border-zinc-800/80 space-y-2 text-right shadow-xs">
+          <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 block">
+            ٠٣ / ئازادی
+          </span>
+          <h3 className="text-base font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+            بێ بەرامبەر و هەمیشەیی
+          </h3>
+          <p className="text-xs font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            هەموو بەرهەم و سەرچاوەکان بێ بەرامبەر لە کەناڵی فەرمی تێلیگرام بەردەستن.
+          </p>
+        </div>
+      </section>
+
+      {/* 4. Dedicated Feedback & Contact Callout */}
+      <section className="w-full rounded-2xl border border-amber-900/10 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/85 p-6 sm:p-8 text-center space-y-5 shadow-xs">
         <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center mx-auto shadow-sm">
           <InstagramIcon className="w-6 h-6" strokeWidth={1.75} />
         </div>
@@ -116,7 +155,7 @@ export default function AboutPage() {
             href="https://instagram.com/hamahang_bwn"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl border border-stone-300/80 dark:border-zinc-700/80 bg-stone-100/80 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium font-sirwan text-xs sm:text-sm tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl border border-zinc-200/90 dark:border-zinc-700/80 bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium font-sirwan text-xs sm:text-sm tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
           >
             <span>سەردانی پەیج</span>
             <ExternalLink className="w-3.5 h-3.5" strokeWidth={1.75} />
@@ -124,8 +163,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 4. Grounded & Modest Telegram Invitation */}
-      <section className="w-full pt-10 border-t border-stone-200/80 dark:border-zinc-800/80 text-center space-y-4">
+      {/* 5. Grounded & Modest Telegram Invitation */}
+      <section className="w-full pt-10 border-t border-zinc-200/80 dark:border-zinc-800/80 text-center space-y-4">
         <div className="space-y-2">
           <h3 className="text-lg sm:text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
             بەشداربوون لە کەناڵی تێلیگرام
@@ -140,7 +179,7 @@ export default function AboutPage() {
             href="https://t.me/mediay_islami"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-zinc-950 font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation tap-highlight-transparent"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation tap-highlight-transparent"
           >
             <Send className="w-4 h-4" strokeWidth={1.75} />
             <span>پەیوەستبوون بە کەناڵی تێلیگرام</span>
@@ -148,7 +187,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 4. Clean Navigation: Return to Home */}
+      {/* 6. Clean Navigation: Return to Home */}
       <div className="pt-4 text-center">
         <Link
           href="/"

@@ -29,14 +29,14 @@ export async function generateMetadata({
 
   if (!article) {
     return {
-      title: 'وتار نەدۆزرایەوە | پەیڤ و ئەندێشە',
+      title: 'وتار نەدۆزرایەوە | میدیای ئیسلامی',
     };
   }
 
   const imageSource = article.coverImage || article.imageUrl;
 
   return {
-    title: `${article.title} | پەیڤ و ئەندێشە`,
+    title: `${article.title} | میدیای ئیسلامی`,
     description: article.excerpt,
     openGraph: {
       title: article.title,
@@ -83,10 +83,10 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
       className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-4xl mx-auto w-full py-8 sm:py-16 space-y-10 text-right"
     >
       {/* Top Back Navigation */}
-      <div className="w-full flex items-center justify-between pb-6 border-b border-[#ede8e1] dark:border-zinc-800/80">
+      <div className="w-full flex items-center justify-between pb-6 border-b border-zinc-200/80 dark:border-zinc-800/80">
         <Link
           href="/articles"
-          className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 hover:text-[#d49757] dark:text-zinc-400 dark:hover:text-[#d49757] tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group"
+          className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 hover:text-amber-500 dark:text-zinc-400 dark:hover:text-amber-400 tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group"
         >
           <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={1.75} />
           <span>گەڕانەوە بۆ وتارەکان</span>
@@ -113,19 +113,19 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
       <header className="w-full max-w-2xl mx-auto space-y-6 text-right">
         {/* Category & Meta pills */}
         <div className="flex flex-wrap items-center gap-3">
-          <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-[#d49757]/15 text-[#d49757] border border-[#d49757]/30 tracking-normal shadow-2xs">
+          <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 tracking-normal shadow-2xs">
             {article.category}
           </span>
 
           <span className="inline-flex items-center gap-1.5 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400">
-            <Clock className="w-3.5 h-3.5 text-[#d49757]" strokeWidth={1.75} />
+            <Clock className="w-3.5 h-3.5 text-amber-500" strokeWidth={1.75} />
             <span>{article.readTime}</span>
           </span>
 
           <span className="text-zinc-300 dark:text-zinc-700">•</span>
 
           <span className="inline-flex items-center gap-1.5 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400">
-            <Calendar className="w-3.5 h-3.5" strokeWidth={1.75} />
+            <Calendar className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" strokeWidth={1.75} />
             <span>{article.date}</span>
           </span>
         </div>
@@ -136,7 +136,7 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
         </h1>
 
         {/* 2-line Lead Teaser */}
-        <div className="p-4 rounded-xl bg-stone-100/70 dark:bg-zinc-900/50 border-s-4 border-[#d49757] border-y border-e border-[#ede8e1] dark:border-zinc-800/80">
+        <div className="p-4 rounded-xl bg-white/70 dark:bg-zinc-900/50 border-s-4 border-amber-500 border-y border-e border-zinc-200/80 dark:border-zinc-800/80">
           <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed tracking-normal">
             {article.excerpt}
           </p>

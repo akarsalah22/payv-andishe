@@ -54,7 +54,7 @@ export async function POST(req: Request) {
         newArticle.coverImage ||
         newArticle.imageUrl ||
         'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
-      author: newArticle.author || 'پەیڤ و ئەندێشە',
+      author: newArticle.author || 'میدیای ئیسلامی',
     };
 
     await saveSingleArticle(articleToSave);
@@ -109,7 +109,7 @@ export async function PUT(req: Request) {
         date: updatedArticle.date || 'ئەمڕۆ',
         coverImage: updatedArticle.coverImage || '',
         imageUrl: updatedArticle.coverImage || '',
-        author: updatedArticle.author || 'پەیڤ و ئەندێشە',
+        author: updatedArticle.author || 'میدیای ئیسلامی',
       }),
       ...updatedArticle,
       content: paragraphs.length > 0 ? paragraphs : [''],
