@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ToastProvider } from "@/components/ToastContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { FloatingInstagramContact } from "@/components/FloatingInstagramContact";
 import {
   vazirmatnFont,
   peshangFont,
@@ -95,7 +94,6 @@ export default function RootLayout({
               {children}
             </div>
             <Footer />
-            <FloatingInstagramContact />
           </ToastProvider>
         </ThemeProvider>
       </body>
