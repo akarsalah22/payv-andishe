@@ -139,6 +139,18 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.no-scrollbar {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
 /* Hide scrollbar for Chrome, Safari, Edge, and Opera */
 *::-webkit-scrollbar,
 html::-webkit-scrollbar,

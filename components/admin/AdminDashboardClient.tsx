@@ -68,7 +68,7 @@ export function AdminDashboardClient() {
   // Film Form State
   const [filmTitleKurdish, setFilmTitleKurdish] = useState('');
   const [filmOriginalTitle, setFilmOriginalTitle] = useState('');
-  const [filmCategory, setFilmCategory] = useState<FilmCategory>('سینەمایی');
+  const [filmCategory, setFilmCategory] = useState<FilmCategory>('فیلم');
   const [filmGenres, setFilmGenres] = useState('دراما، سینەما');
   const [filmYear, setFilmYear] = useState<number>(new Date().getFullYear());
   const [filmDuration, setFilmDuration] = useState('١ کاتژمێر و ٥٠ خولەک');
@@ -289,7 +289,7 @@ export function AdminDashboardClient() {
   const resetFilmForm = () => {
     setFilmTitleKurdish('');
     setFilmOriginalTitle('');
-    setFilmCategory('سینەمایی');
+    setFilmCategory('فیلم');
     setFilmGenres('دراما، سینەما');
     setFilmYear(new Date().getFullYear());
     setFilmDuration('١ کاتژمێر و ٥٠ خولەک');
@@ -1245,8 +1245,10 @@ export function AdminDashboardClient() {
                         onChange={(e) => setFilmCategory(e.target.value as FilmCategory)}
                         className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757]"
                       >
-                        <option value="سینەمایی">سینەمایی</option>
-                        <option value="ئەنیمەیشن">ئەنیمەیشن</option>
+                        <option value="فیلم">فیلم</option>
+                        <option value="زنجیرەفیلم">زنجیرەفیلم</option>
+                        <option value="کارتۆن">کارتۆن</option>
+                        <option value="زنجیرەکارتۆن">زنجیرەکارتۆن</option>
                         <option value="کورتە فیلم">کورتە فیلم</option>
                       </select>
                     </div>

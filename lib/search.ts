@@ -98,7 +98,13 @@ export function filterFilms(films: Film[], query: string, category?: string): Fi
   let result = films;
 
   if (category && category !== 'هەمووی') {
-    result = result.filter((film) => film.category === category);
+    result = result.filter((film) => {
+      if (film.category === category) return true;
+      // Backward compatibility aliases for legacy category strings
+      if (category === 'فیلم' && (film.category === ('سینەمایی' as any) || (film as any).type === 'فیلم')) return true;
+      if (category === 'کارتۆن' && (film.category === ('ئەنیمەیشن' as any) || (film as any).type === 'کارتۆن')) return true;
+      return false;
+    });
   }
 
   const cleanQuery = query.trim();

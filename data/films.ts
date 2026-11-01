@@ -1,4 +1,11 @@
-export type FilmCategory = 'ئەنیمەیشن' | 'سینەمایی' | 'کورتە فیلم';
+export type FilmCategory =
+  | 'فیلم'
+  | 'زنجیرەفیلم'
+  | 'کارتۆن'
+  | 'زنجیرەکارتۆن'
+  | 'کورتە فیلم'
+  | 'سینەمایی' // پشتیوانی پێشوو
+  | 'ئەنیمەیشن'; // پشتیوانی پێشوو
 
 export interface Film {
   id: string;
@@ -16,10 +23,20 @@ export interface Film {
 
 export const FILM_CATEGORIES: ('هەمووی' | FilmCategory)[] = [
   'هەمووی',
-  'ئەنیمەیشن',
-  'سینەمایی',
+  'فیلم',
+  'زنجیرەفیلم',
+  'کارتۆن',
+  'زنجیرەکارتۆن',
   'کورتە فیلم',
 ];
+
+export const ADMIN_FILM_CATEGORIES = [
+  'فیلم',
+  'زنجیرەفیلم',
+  'کارتۆن',
+  'زنجیرەکارتۆن',
+  'کورتە فیلم',
+] as const;
 
 export const SAMPLE_FILMS: Film[] = [
   {
@@ -29,8 +46,8 @@ export const SAMPLE_FILMS: Film[] = [
     originalTitle: 'Spirited Away',
     year: 2001,
     duration: '٢ کاتژمێر و ٥ خولەک',
-    category: 'ئەنیمەیشن',
-    genres: ['ئەنیمەیشن', 'سەرکێشی'],
+    category: 'کارتۆن',
+    genres: ['کارتۆن', 'سەرکێشی'],
     posterUrl: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80',
     description: 'شاکارێکی ئەفسوناوی میازاکی؛ کچۆڵەیەک دەکەوێتە جیهانی ڕۆحەکان و دەبێت بە ئازایەتی خێزانەکەی ڕزگار بکات.',
     telegramPostUrl: 'https://t.me/mediay_islamy',
@@ -42,7 +59,7 @@ export const SAMPLE_FILMS: Film[] = [
     originalTitle: 'Interstellar',
     year: 2014,
     duration: '٢ کاتژمێر و ٤٩ خولەک',
-    category: 'سینەمایی',
+    category: 'فیلم',
     genres: ['زانستی خەیاڵی', 'دراما'],
     posterUrl: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80',
     description: 'گەشتێکی قووڵ و فەلسەفی لە نێو بۆشایی گەردووندا بۆ دۆزینەوەی نشینگەیەکی نوێ بۆ مرۆڤایەتی.',
@@ -55,7 +72,7 @@ export const SAMPLE_FILMS: Film[] = [
     originalTitle: 'The Shawshank Redemption',
     year: 1994,
     duration: '٢ کاتژمێر و ٢٢ خولەک',
-    category: 'سینەمایی',
+    category: 'فیلم',
     genres: ['دراما', 'تاوان'],
     posterUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
     description: 'چیرۆکێکی کاریگەر لەسەر بەهای هیوا، دانبەخۆداگرتن و دۆستایەتی لە تاریکترین ڕۆژەکانی زینداندا.',
@@ -63,15 +80,15 @@ export const SAMPLE_FILMS: Film[] = [
   },
   {
     id: '4',
-    slug: 'my-neighbor-totoro',
-    titleKurdish: 'تۆتۆرۆی دراوسێم',
-    originalTitle: 'My Neighbor Totoro',
-    year: 1988,
-    duration: '١ کاتژمێر و ٢٦ خولەک',
-    category: 'ئەنیمەیشن',
-    genres: ['ئەنیمەیشن', 'خێزانی'],
-    posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
-    description: 'سەرکێشییەکی پڕ لە پاکی و سۆزی منداڵانە لەگەڵ بوونەوەرە ئەفسوناوییەکانی دارستان لە گوندێکی ژاپۆن.',
+    slug: 'prophet-joseph',
+    titleKurdish: 'زنجیرەی حەزرەتی یوسف (س.خ)',
+    originalTitle: 'Prophet Joseph Series',
+    year: 2008,
+    duration: '٤٥ ئەڵقە',
+    category: 'زنجیرەفیلم',
+    genres: ['مێژوویی', 'ئیسلامی'],
+    posterUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+    description: 'شاکارێکی مێژوویی و ئیسلامی پڕ لە پەند و وانەی ژیان کە بە وردی چیرۆکی ژیانی پێغەمبەر یوسف (س.خ) دەگێڕێتەوە.',
     telegramPostUrl: 'https://t.me/mediay_islamy',
   },
   {
@@ -89,12 +106,38 @@ export const SAMPLE_FILMS: Film[] = [
   },
   {
     id: '6',
+    slug: 'quran-stories-series',
+    titleKurdish: 'چیرۆکەکانی قورئان بۆ منداڵان',
+    originalTitle: 'Quran Stories Animation Series',
+    year: 2018,
+    duration: '٣٠ ئەڵقە',
+    category: 'زنجیرەکارتۆن',
+    genres: ['کارتۆن', 'پەروەردەیی'],
+    posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
+    description: 'زنجیرەیەکی کارتۆنی بەپێز و پەروەردەیی بۆ منداڵان لەسەر پەند و چیرۆکە جوانەکانی قورئانی پیرۆز.',
+    telegramPostUrl: 'https://t.me/mediay_islamy',
+  },
+  {
+    id: '7',
+    slug: 'my-neighbor-totoro',
+    titleKurdish: 'تۆتۆرۆی دراوسێم',
+    originalTitle: 'My Neighbor Totoro',
+    year: 1988,
+    duration: '١ کاتژمێر و ٢٦ خولەک',
+    category: 'کارتۆن',
+    genres: ['کارتۆن', 'خێزانی'],
+    posterUrl: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
+    description: 'سەرکێشییەکی پڕ لە پاکی و سۆزی منداڵانە لەگەڵ بوونەوەرە ئەفسوناوییەکانی دارستان لە گوندێکی ژاپۆن.',
+    telegramPostUrl: 'https://t.me/mediay_islamy',
+  },
+  {
+    id: '8',
     slug: 'the-pianist',
     titleKurdish: 'پیانۆژەن',
     originalTitle: 'The Pianist',
     year: 2002,
     duration: '٢ کاتژمێر و ٣٠ خولەک',
-    category: 'سینەمایی',
+    category: 'فیلم',
     genres: ['دراما', 'مێژوویی'],
     posterUrl: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80',
     description: 'خەباتی پیانۆژەنێکی بەتوانا بۆ مانەوە لە ژیاندا لە نێو جەنگ و وێرانییەکانی پۆڵۆنیادا.',

@@ -8,8 +8,8 @@ import { FilmsArchive } from '@/components/FilmsArchive';
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: 'فیلم و ئەنیمەیشن | میدیای ئیسلامی',
-  description: 'ئەرشیڤی شاکارە سینەمایییەکان و ئەنیمەیشنە ناوازەکان بە پەخشی ڕاستەوخۆ لە کەناڵی تێلیگرام',
+  title: 'فیلم، زنجیرە و کارتۆن | میدیای ئیسلامی',
+  description: 'ئەرشیڤی شاکارە سینەمایییەکان، زنجیرەفیلم، کارتۆن و کورتە فیلمەکان بە پەخشی ڕاستەوخۆ لە کەناڵی تێلیگرام',
 };
 
 export default async function FilmsPage() {
@@ -24,7 +24,7 @@ export default async function FilmsPage() {
             سەرەکی
           </Link>
           <span>/</span>
-          <span className="text-zinc-900 dark:text-zinc-200">فیلم و ئەنیمەیشن</span>
+          <span className="text-zinc-900 dark:text-zinc-200">فیلم و زنجیرەکان</span>
         </div>
 
         <a
@@ -45,11 +45,11 @@ export default async function FilmsPage() {
         </span>
 
         <h1 className="text-3xl sm:text-4xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal text-center mx-auto">
-          فیلم و ئەنیمەیشن
+          فیلم، زنجیرە و کارتۆن
         </h1>
 
         <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-normal text-center">
-          کۆکراوەی شاکارە سینەمایییەکان و ئەنیمەیشنە هەڵبژێردراوەکان بە پەخشی ڕاستەوخۆ لە کەناڵی تێلیگرام.
+          کۆکراوەی شاکارە سینەمایییەکان، زنجیرەفیلم، کارتۆن و بەرهەمە هەڵبژێردراوەکان بە پەخشی ڕاستەوخۆ لە کەناڵی تێلیگرام.
         </p>
       </div>
 

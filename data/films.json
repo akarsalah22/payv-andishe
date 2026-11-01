@@ -6,13 +6,77 @@
     "originalTitle": "Lion Of The Desert",
     "year": 1981,
     "duration": "٢ کاتژمێر و ٤٤ خولەک",
-    "category": "سینەمایی",
+    "category": "فیلم",
     "genres": [
       "مێژووی - جەنگ - ژیاننامە"
     ],
     "posterUrl": "https://i.ibb.co/JRDzYCXm/31e22cfaca72a260a5e530b62da79401.jpg",
     "description": "لە ماوەی فەرمانڕەوایی مۆسۆلینی، ئەم چیرۆکە ئەفسانەییە بە دەوری سەرکردەی لیبیا عومەر موختار دەخولێتەوە. عومەر: سەرهەڵداوانێکی موسڵمانی عەرەبی هێرش دەکاتە سەر ئیتاڵیا کە بە ئاراستەی داگیرکردنی لیبیایە.",
     "telegramPostUrl": "https://youtu.be/3lvdV0yOiYE?si=mhd6qHFY91-7rynJ"
+  },
+  {
+    "id": "2",
+    "slug": "interstellar",
+    "titleKurdish": "نێوان ئەستێرەکان",
+    "originalTitle": "Interstellar",
+    "year": 2014,
+    "duration": "٢ کاتژمێر و ٤٩ خولەک",
+    "category": "فیلم",
+    "genres": [
+      "زانستی خەیاڵی",
+      "دراما"
+    ],
+    "posterUrl": "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80",
+    "description": "گەشتێکی قووڵ و فەلسەفی لە نێو بۆشایی گەردووندا بۆ دۆزینەوەی نشینگەیەکی نوێ بۆ مرۆڤایەتی.",
+    "telegramPostUrl": "https://t.me/mediay_islamy"
+  },
+  {
+    "id": "4",
+    "slug": "prophet-joseph",
+    "titleKurdish": "زنجیرەی حەزرەتی یوسف (س.خ)",
+    "originalTitle": "Prophet Joseph Series",
+    "year": 2008,
+    "duration": "٤٥ ئەڵقە",
+    "category": "زنجیرەفیلم",
+    "genres": [
+      "مێژوویی",
+      "ئیسلامی"
+    ],
+    "posterUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
+    "description": "شاکارێکی مێژوویی و ئیسلامی پڕ لە پەند و وانەی ژیان کە بە وردی چیرۆکی ژیانی پێغەمبەر یوسف (س.خ) دەگێڕێتەوە.",
+    "telegramPostUrl": "https://t.me/mediay_islamy"
+  },
+  {
+    "id": "1",
+    "slug": "spirited-away",
+    "titleKurdish": "ڕۆشتووی ڕۆحەکان",
+    "originalTitle": "Spirited Away",
+    "year": 2001,
+    "duration": "٢ کاتژمێر و ٥ خولەک",
+    "category": "کارتۆن",
+    "genres": [
+      "کارتۆن",
+      "سەرکێشی"
+    ],
+    "posterUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+    "description": "شاکارێکی ئەفسوناوی میازاکی؛ کچۆڵەیەک دەکەوێتە جیهانی ڕۆحەکان و دەبێت بە ئازایەتی خێزانەکەی ڕزگار بکات.",
+    "telegramPostUrl": "https://t.me/mediay_islamy"
+  },
+  {
+    "id": "6",
+    "slug": "quran-stories-series",
+    "titleKurdish": "چیرۆکەکانی قورئان بۆ منداڵان",
+    "originalTitle": "Quran Stories Animation Series",
+    "year": 2018,
+    "duration": "٣٠ ئەڵقە",
+    "category": "زنجیرەکارتۆن",
+    "genres": [
+      "کارتۆن",
+      "پەروەردەیی"
+    ],
+    "posterUrl": "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80",
+    "description": "زنجیرەیەکی کارتۆنی بەپێز و پەروەردەیی بۆ منداڵان لەسەر پەند و چیرۆکە جوانەکانی قورئانی پیرۆز.",
+    "telegramPostUrl": "https://t.me/mediay_islamy"
   },
   {
     "id": "5",
@@ -28,22 +92,6 @@
     ],
     "posterUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80",
     "description": "کورتە فیلمێکی شاکاری فەڕەنسی لەسەر دۆستایەتی سۆزدارانەی کوڕێکی بچووک و باڵۆنێکی جادوویی لە پاریس.",
-    "telegramPostUrl": "https://t.me/mediay_islami"
-  },
-  {
-    "id": "2",
-    "slug": "interstellar",
-    "titleKurdish": "نێوان ئەستێرەکان",
-    "originalTitle": "Interstellar",
-    "year": 2014,
-    "duration": "٢ کاتژمێر و ٤٩ خولەک",
-    "category": "سینەمایی",
-    "genres": [
-      "زانستی خەیاڵی",
-      "دراما"
-    ],
-    "posterUrl": "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80",
-    "description": "گەشتێکی قووڵ و فەلسەفی لە نێو بۆشایی گەردووندا بۆ دۆزینەوەی نشینگەیەکی نوێ بۆ مرۆڤایەتی.",
-    "telegramPostUrl": "https://t.me/mediay_islami"
+    "telegramPostUrl": "https://t.me/mediay_islamy"
   }
 ]
