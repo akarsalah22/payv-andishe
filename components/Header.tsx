@@ -141,7 +141,7 @@ export function Header() {
             {/* Authenticated Admin Quick-Link */}
             {isAdminAuthenticated && (
               <Link
-                href="/admin"
+                href="/admin/dashboard"
                 aria-label="پەنێڵی بەڕێوەبردن"
                 title="پەنێڵی بەڕێوەبردن"
                 className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold font-sirwan transition-all duration-200 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent"
@@ -254,7 +254,7 @@ export function Header() {
               {/* Authenticated Admin Link in Drawer */}
               {isAdminAuthenticated && (
                 <Link
-                  href="/admin"
+                  href="/admin/dashboard"
                   onClick={() => setIsMenuOpen(false)}
                   className="flex items-center justify-between p-3 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 dark:text-amber-400 text-sm font-semibold font-sirwan transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent mb-1"
                 >

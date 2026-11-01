@@ -54,8 +54,8 @@ export function AdminLoginClient() {
       const data = await res.json().catch(() => ({}));
 
       if (res.ok && data.success) {
-        // Success: refresh to load server-rendered AdminDashboard
-        window.location.reload();
+        // Success: redirect to admin dashboard
+        window.location.href = '/admin/dashboard';
         return;
       }
 

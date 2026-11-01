@@ -44,7 +44,7 @@ export function AdminDashboardClient() {
     } catch {
       // ignore
     }
-    window.location.reload();
+    window.location.href = '/admin';
   };
   // Tab Navigation & Edit Modes
   const [activeTab, setActiveTab] = useState<AdminTab>('films');
