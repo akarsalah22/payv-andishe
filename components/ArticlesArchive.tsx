@@ -138,25 +138,26 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
       {/* Search Input Bar & Category Filters */}
       <div className="w-full max-w-2xl mx-auto space-y-5">
         {/* Search Input */}
-        <div className="relative w-full group">
+        <div className="w-full relative group transition-all duration-300">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="گەڕان لە نێو نووسین و وتارەکان (بە کوردی یان عەرەبی)..."
-            className="w-full px-5 py-3.5 pr-12 pl-11 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 bg-white/90 dark:bg-zinc-900/60 backdrop-blur-md rounded-2xl border border-zinc-200/90 dark:border-white/10 outline-none transition-all duration-300 ease-in-out hover:border-amber-500/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/70 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] focus:border-amber-500 focus:bg-white dark:focus:bg-zinc-900/90 focus:ring-4 focus:ring-amber-500/20 focus:shadow-[0_0_25px_rgba(245,158,11,0.25)] font-sirwan"
+            className="w-full py-3 px-12 text-sm rounded-2xl outline-none transition-all duration-300 font-sirwan bg-white text-zinc-900 placeholder-zinc-400 border border-zinc-200/80 shadow-sm hover:border-amber-500/60 hover:shadow-[0_0_16px_rgba(245,158,11,0.15)] focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 dark:bg-zinc-900/80 dark:text-white dark:placeholder-zinc-500 dark:border-zinc-700 dark:hover:border-amber-500/60 dark:hover:shadow-[0_0_18px_rgba(245,158,11,0.25)] dark:focus:border-amber-500 dark:focus:ring-amber-500/30"
             dir="rtl"
           />
           {/* Search Icon with synchronized hover state */}
-          <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-zinc-400 transition-colors duration-300 group-hover:text-amber-400 group-focus-within:text-amber-400">
-            <Search className="w-5 h-5" strokeWidth={2} />
-          </span>
+          <Search
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 dark:text-zinc-500 pointer-events-none transition-colors duration-300 group-hover:text-amber-500 group-focus-within:text-amber-500 dark:group-hover:text-amber-400 dark:group-focus-within:text-amber-400"
+            strokeWidth={2}
+          />
 
           {searchQuery && (
             <button
               type="button"
               onClick={handleClearSearch}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 p-1.5 rounded-xl text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 p-1.5 rounded-xl text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
               title="پاککردنەوەی گەڕان"
               aria-label="پاککردنەوەی گەڕان"
             >
@@ -176,8 +177,8 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
                 onClick={() => handleCategoryChange(category)}
                 className={`shrink-0 px-4 py-2 sm:py-1.5 rounded-full text-xs sm:text-sm font-sirwan tracking-normal active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent transition-colors duration-200 ${
                   isActive
-                    ? 'bg-amber-500 text-black font-semibold shadow-xs'
-                    : 'bg-zinc-800/80 text-zinc-300 hover:bg-zinc-700/80 transition-colors'
+                    ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs border border-amber-500'
+                    : 'bg-zinc-100/90 hover:bg-zinc-200/80 text-zinc-600 hover:text-zinc-900 border border-zinc-200/80 dark:bg-zinc-800/80 dark:hover:bg-zinc-700/80 dark:text-zinc-300 dark:hover:text-white dark:border-transparent'
                 }`}
               >
                 {category}
