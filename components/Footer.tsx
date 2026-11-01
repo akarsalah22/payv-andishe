@@ -20,10 +20,17 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-zinc-200/70 dark:border-zinc-800/50">
           {/* Identity & Motto */}
-          <div className="space-y-2 max-w-md text-right">
-            <span className="text-xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 block">
-              میدیای ئیسلامی
-            </span>
+          <div className="space-y-3 max-w-md text-right">
+            <Link href="/" className="inline-flex items-center gap-2.5 group select-none">
+              <img
+                src="/images/logo.jpg"
+                alt="میدیای ئیسلامی"
+                className="h-9 w-auto rounded-xl object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+              <span className="text-xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 group-hover:text-amber-500 transition-colors">
+                میدیای ئیسلامی
+              </span>
+            </Link>
             <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed tracking-normal">
               ئەرشیڤێکی سەربەخۆی کوردییە بۆ ناساندنی فیلم و کارتۆنە ئیسلامێکان، وەدەقی ئیسلامی بە زمانی کوردی.
             </p>

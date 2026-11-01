@@ -109,9 +109,14 @@ export function Header() {
           {/* Brand Logo / Clean Title */}
           <Link
             href="/"
-            className="group flex items-center gap-2 text-zinc-900 dark:text-zinc-100 transition-colors select-none"
+            className="flex items-center gap-2.5 group select-none"
           >
-            <span className="text-xl sm:text-2xl font-bold font-peshang tracking-normal group-hover:text-amber-500 transition-colors">
+            <img
+              src="/images/logo.jpg"
+              alt="میدیای ئیسلامی"
+              className="h-9 w-auto rounded-xl object-contain transition-transform duration-200 group-hover:scale-105"
+            />
+            <span className="font-bold text-lg sm:text-xl font-peshang tracking-normal text-zinc-900 dark:text-white group-hover:text-amber-500 transition-colors">
               میدیای ئیسلامی
             </span>
           </Link>
@@ -218,9 +223,14 @@ export function Header() {
               <Link
                 href="/"
                 onClick={() => setIsMenuOpen(false)}
-                className="select-none"
+                className="flex items-center gap-2.5 group select-none"
               >
-                <span className="text-lg font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100">
+                <img
+                  src="/images/logo.jpg"
+                  alt="میدیای ئیسلامی"
+                  className="h-8 w-auto rounded-lg object-contain transition-transform duration-200 group-hover:scale-105"
+                />
+                <span className="font-bold text-lg font-peshang tracking-normal text-zinc-900 dark:text-white">
                   میدیای ئیسلامی
                 </span>
               </Link>
