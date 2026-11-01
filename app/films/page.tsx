@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
-import { Send, ChevronLeft } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import type { Metadata } from 'next';
 import { readFilms } from '@/lib/storage';
 import { FilmsArchive } from '@/components/FilmsArchive';
@@ -27,15 +27,7 @@ export default async function FilmsPage() {
           <span className="text-zinc-900 dark:text-zinc-200">فیلم و زنجیرەکان</span>
         </div>
 
-        <a
-          href="https://t.me/mediay_islamy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
-        >
-          <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
-          <span>کەناڵی تێلیگرام</span>
-        </a>
+        <span className="text-zinc-400 dark:text-zinc-500">میدیای ئیسلامی</span>
       </div>
 
       {/* Minimalist Header */}
