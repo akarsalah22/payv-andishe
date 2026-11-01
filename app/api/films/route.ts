@@ -55,7 +55,7 @@ export async function POST(req: Request) {
         newFilm.posterUrl?.trim() ||
         'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
       description: newFilm.description?.trim() || '',
-      telegramPostUrl: newFilm.telegramPostUrl?.trim() || 'https://t.me/mediay_islami',
+      telegramPostUrl: newFilm.telegramPostUrl?.trim() || 'https://t.me/mediay_islamy',
     };
 
     await saveSingleFilm(filmToSave);
@@ -102,7 +102,7 @@ export async function PUT(req: Request) {
         genres: updatedFilm.genres || ['سینەما'],
         posterUrl: updatedFilm.posterUrl || '',
         description: updatedFilm.description || '',
-        telegramPostUrl: updatedFilm.telegramPostUrl || 'https://t.me/mediay_islami',
+        telegramPostUrl: updatedFilm.telegramPostUrl || 'https://t.me/mediay_islamy',
       }),
       ...updatedFilm,
       year: Number(updatedFilm.year) || (existing ? existing.year : 2024),

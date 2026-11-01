@@ -176,7 +176,7 @@ export default function AboutPage() {
 
         <div className="pt-2">
           <a
-            href="https://t.me/mediay_islami"
+            href="https://t.me/mediay_islamy"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation tap-highlight-transparent"

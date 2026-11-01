@@ -28,7 +28,7 @@ export default async function FilmsPage() {
         </div>
 
         <a
-          href="https://t.me/mediay_islami"
+          href="https://t.me/mediay_islamy"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"

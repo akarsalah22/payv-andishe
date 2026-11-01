@@ -14,7 +14,7 @@ export function TelegramBanner() {
             <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
             <span>کەناڵی فەرمی</span>
             <span className="text-zinc-400 dark:text-zinc-500">•</span>
-            <span dir="ltr" className="font-mono text-[11px] font-bold">@mediay_islami</span>
+            <span dir="ltr" className="font-mono text-[11px] font-bold">@mediay_islamy</span>
           </div>
 
           {/* Stately Heading */}
@@ -31,7 +31,7 @@ export function TelegramBanner() {
         {/* Direct CTA Action Button */}
         <div className="shrink-0 w-full sm:w-auto">
           <a
-            href="https://t.me/mediay_islami"
+            href="https://t.me/mediay_islamy"
             target="_blank"
             rel="noopener noreferrer"
             className="group/btn inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-md hover:shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all duration-200 cursor-pointer touch-manipulation select-none"

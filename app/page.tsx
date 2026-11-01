@@ -60,7 +60,7 @@ export default async function HomePage() {
 
           {/* Secondary Telegram Link */}
           <a
-            href="https://t.me/mediay_islami"
+            href="https://t.me/mediay_islamy"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl text-zinc-500 dark:text-zinc-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-500/10 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"

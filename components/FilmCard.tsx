@@ -10,6 +10,8 @@ interface FilmCardProps {
 
 export function FilmCard({ film }: FilmCardProps) {
   const posterSrc = film.posterUrl || (film as any).image || '/placeholder.jpg';
+  const rawTelegramUrl = film.telegramPostUrl || (film as any).telegramUrl || 'https://t.me/mediay_islamy';
+  const telegramUrl = rawTelegramUrl.replace('t.me/mediay_islami', 't.me/mediay_islamy');
 
   return (
     <article
@@ -18,7 +20,7 @@ export function FilmCard({ film }: FilmCardProps) {
     >
       {/* Poster Image Thumbnail (Compact row on mobile, portrait poster on desktop) */}
       <a
-        href={film.telegramPostUrl}
+        href={telegramUrl}
         target="_blank"
         rel="noopener noreferrer"
         tabIndex={-1}
@@ -97,7 +99,7 @@ export function FilmCard({ film }: FilmCardProps) {
         {/* Action Button: Alive & responsive button */}
         <div className="pt-2 md:pt-2.5 md:mt-2.5 md:border-t md:border-zinc-200/80 md:dark:border-zinc-800/80">
           <a
-            href={film.telegramPostUrl}
+            href={telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="group/btn inline-flex items-center justify-center gap-1.5 w-auto self-start md:w-full py-2 px-3 text-xs md:text-sm font-medium rounded-xl bg-amber-500/15 text-amber-900 border border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20 hover:bg-amber-500 hover:text-black hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200 select-none cursor-pointer"

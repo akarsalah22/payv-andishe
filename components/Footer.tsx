@@ -60,7 +60,7 @@ export function Footer() {
               دەربارە
             </Link>
             <a
-              href="https://t.me/mediay_islami"
+              href="https://t.me/mediay_islamy"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"

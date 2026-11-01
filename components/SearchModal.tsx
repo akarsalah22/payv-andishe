@@ -260,7 +260,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     {matchingFilms.map((film) => (
                       <a
                         key={film.id}
-                        href={film.telegramPostUrl}
+                        href={(film.telegramPostUrl || 'https://t.me/mediay_islamy').replace('t.me/mediay_islami', 't.me/mediay_islamy')}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group flex items-center justify-between gap-3 p-2 sm:p-2.5 rounded-xl bg-white/80 dark:bg-zinc-900/40 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/40 border border-zinc-200/80 dark:border-zinc-800/80 hover:border-amber-500/40 dark:hover:border-amber-500/30 transition-all duration-150 ease-out active:scale-[0.99] cursor-pointer touch-manipulation select-none tap-highlight-transparent min-h-[68px]"

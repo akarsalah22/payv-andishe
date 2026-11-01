@@ -164,7 +164,7 @@ export function Header() {
 
             {/* Telegram Channel Icon Button */}
             <a
-              href="https://t.me/mediay_islami"
+              href="https://t.me/mediay_islamy"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="کەناڵی تێلیگرام"
@@ -294,7 +294,7 @@ export function Header() {
           <div className="pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col gap-4">
             {/* Premium Telegram Channel Card */}
             <a
-              href="https://t.me/mediay_islami"
+              href="https://t.me/mediay_islamy"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMenuOpen(false)}

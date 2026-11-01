@@ -209,10 +209,10 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
 
           <div className="pt-1">
             <a
-              href="https://t.me/mediay_islami"
+              href="https://t.me/mediay_islamy"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-[#d49757] hover:bg-[#c28747] text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
               <Send className="w-4 h-4" strokeWidth={1.75} />
               <span>پەیوەستبوون بە کەناڵی تێلیگرام</span>

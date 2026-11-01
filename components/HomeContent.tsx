@@ -144,7 +144,7 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                 {/* Direct Telegram Action Button */}
                 <div className="pt-3 mt-2 border-t border-zinc-200/80 dark:border-zinc-800/80">
                   <a
-                    href={film.telegramPostUrl}
+                    href={(film.telegramPostUrl || 'https://t.me/mediay_islamy').replace('t.me/mediay_islami', 't.me/mediay_islamy')}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group/btn inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-amber-500/15 text-amber-900 border border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20 hover:bg-amber-500 hover:text-black hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200 text-xs font-semibold font-sirwan tracking-normal cursor-pointer touch-manipulation select-none"
