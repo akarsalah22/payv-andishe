@@ -8,8 +8,8 @@ import { ArticlesArchive } from '@/components/ArticlesArchive';
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: 'نووسین، وتار و ئەندێشە | میدیای ئیسلامی',
-  description: 'کۆکراوەی وتاری هزری، ڕامانی فەلسەفی و ناساندنی کتێبە ناوازەکان بە زمانی شیرینی کوردی',
+  title: 'نووسین، دەق و وتارەکان | میدیای ئیسلامی',
+  description: 'کۆکراوەی تێڕامان لە ئایەتەکان، دەقە بەپێزەکان، ناساندنی کتێب و شیعری کوردی بە زمانی شیرینی کوردی',
 };
 
 export default async function ArticlesPage() {
@@ -33,15 +33,15 @@ export default async function ArticlesPage() {
       {/* Minimalist Header */}
       <div className="w-full max-w-3xl mx-auto flex flex-col items-center justify-center text-center space-y-4 py-2 select-none">
         <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 tracking-normal block text-center mx-auto">
-          ئەرشیڤی ئەدەب و هزر
+          ئەرشیڤی دەق و هزر
         </span>
 
         <h1 className="text-3xl sm:text-4xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal text-center mx-auto">
-          نووسین، وتار و ئەندێشە
+          نووسین و وتارەکان
         </h1>
 
         <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-normal text-center">
-          وتاری هزری، ڕامانی قووڵ بۆ کتێبە شاکارەکان و لێکۆڵینەوەی ئەدەبی بە زمانی کوردی.
+          تێڕامان لە ئایەتە پیرۆزەکان، دەقە دانسقەکان، ناساندنی کتێبە ناوازەکان و شیعری کوردی.
         </p>
       </div>
 

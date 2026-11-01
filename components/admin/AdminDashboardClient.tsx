@@ -79,7 +79,7 @@ export function AdminDashboardClient() {
   // Article Form State
   const [articleTitle, setArticleTitle] = useState('');
   const [articleSlug, setArticleSlug] = useState('');
-  const [articleCategory, setArticleCategory] = useState<ArticleCategory>('ڕامان');
+  const [articleCategory, setArticleCategory] = useState<ArticleCategory>('ئایەت');
   const [articleReadTime, setArticleReadTime] = useState('٥ خولەک خوێندنەوە');
   const [articleCoverImage, setArticleCoverImage] = useState('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80');
   const [articleExcerpt, setArticleExcerpt] = useState('');
@@ -301,7 +301,7 @@ export function AdminDashboardClient() {
   const resetArticleForm = () => {
     setArticleTitle('');
     setArticleSlug('');
-    setArticleCategory('ڕامان');
+    setArticleCategory('ئایەت');
     setArticleReadTime('٥ خولەک خوێندنەوە');
     setArticleCoverImage('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80');
     setArticleExcerpt('');
@@ -1452,9 +1452,10 @@ export function AdminDashboardClient() {
                         onChange={(e) => setArticleCategory(e.target.value as ArticleCategory)}
                         className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757]"
                       >
-                        <option value="ڕامان">ڕامان</option>
-                        <option value="سینەما و هزر">سینەما و هزر</option>
-                        <option value="کتێبناسی">کتێبناسی</option>
+                        <option value="ئایەت">ئایەت</option>
+                        <option value="دەق">دەق</option>
+                        <option value="کتێب">کتێب</option>
+                        <option value="شیعر">شیعر</option>
                       </select>
                     </div>
                   </div>

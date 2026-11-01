@@ -164,8 +164,8 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
           )}
         </div>
 
-        {/* Category Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2">
+        {/* Category Pills (Responsive: Smooth horizontal scroll on mobile, centered wrap on desktop) */}
+        <div className="w-full flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar py-1 gap-2 flex-nowrap sm:flex-wrap px-1">
           {ARTICLE_CATEGORIES.map((category) => {
             const isActive = activeCategory === category;
             return (
@@ -173,10 +173,10 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
                 key={category}
                 type="button"
                 onClick={() => handleCategoryChange(category)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-200 ease-in-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${
+                className={`shrink-0 px-4 py-2 sm:py-1.5 rounded-full text-xs sm:text-sm font-sirwan tracking-normal active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent transition-colors duration-200 ${
                   isActive
-                    ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
-                    : 'bg-white/80 dark:bg-zinc-900/70 text-zinc-600 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-800/80 hover:text-zinc-900 dark:hover:text-zinc-100 hover:border-amber-500/30'
+                    ? 'bg-amber-500 text-black font-semibold shadow-xs'
+                    : 'bg-zinc-800/80 text-zinc-300 hover:bg-zinc-700/80 transition-colors'
                 }`}
               >
                 {category}

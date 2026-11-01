@@ -131,7 +131,14 @@ export function filterArticles(articles: Article[], query: string, category?: st
   let result = articles;
 
   if (category && category !== 'هەمووی') {
-    result = result.filter((article) => article.category === category);
+    result = result.filter((article) => {
+      if (article.category === category) return true;
+      // Backward compatibility aliases for legacy category strings
+      if (category === 'کتێب' && (article.category === ('کتێبناسی' as any) || (article as any).type === 'کتێب')) return true;
+      if (category === 'شیعر' && (article.category === ('ئەدەب' as any) || (article as any).type === 'شیعر')) return true;
+      if (category === 'دەق' && (article.category === ('ڕامان' as any) || article.category === ('سینەما و هزر' as any))) return true;
+      return false;
+    });
   }
 
   const cleanQuery = query.trim();
