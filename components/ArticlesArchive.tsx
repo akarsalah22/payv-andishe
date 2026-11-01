@@ -138,24 +138,25 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
       {/* Search Input Bar & Category Filters */}
       <div className="w-full max-w-2xl mx-auto space-y-5">
         {/* Search Input */}
-        <div className="relative w-full">
+        <div className="relative w-full group">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="گەڕان لە نێو نووسین و وتارەکان (بە کوردی یان عەرەبی)..."
-            className="w-full pr-11 pl-11 py-3 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white/90 dark:bg-zinc-900/80 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 text-sm font-sirwan shadow-xs focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all"
+            className="w-full px-5 py-3.5 pr-12 pl-11 text-sm text-zinc-900 dark:text-white placeholder-zinc-400 bg-white/90 dark:bg-zinc-900/60 backdrop-blur-md rounded-2xl border border-zinc-200/90 dark:border-white/10 outline-none transition-all duration-300 ease-in-out hover:border-amber-500/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/70 hover:shadow-[0_0_20px_rgba(245,158,11,0.15)] focus:border-amber-500 focus:bg-white dark:focus:bg-zinc-900/90 focus:ring-4 focus:ring-amber-500/20 focus:shadow-[0_0_25px_rgba(245,158,11,0.25)] font-sirwan"
             dir="rtl"
           />
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-amber-500 pointer-events-none">
-            <Search className="w-4 h-4" strokeWidth={2} />
-          </div>
+          {/* Search Icon with synchronized hover state */}
+          <span className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-zinc-400 transition-colors duration-300 group-hover:text-amber-400 group-focus-within:text-amber-400">
+            <Search className="w-5 h-5" strokeWidth={2} />
+          </span>
 
           {searchQuery && (
             <button
               type="button"
               onClick={handleClearSearch}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 p-1 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 p-1.5 rounded-xl text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
               title="پاککردنەوەی گەڕان"
               aria-label="پاککردنەوەی گەڕان"
             >

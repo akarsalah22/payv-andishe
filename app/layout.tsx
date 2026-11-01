@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { ToastProvider } from "@/components/ToastContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import {
   vazirmatnFont,
   peshangFont,
@@ -96,6 +97,7 @@ export default function RootLayout({
               {children}
             </div>
             <Footer />
+            <ScrollToTop />
           </ToastProvider>
         </ThemeProvider>
       </body>
