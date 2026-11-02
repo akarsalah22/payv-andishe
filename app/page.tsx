@@ -26,8 +26,8 @@ export default async function HomePage() {
         </div>
 
         {/* Stately Kurdish Headline */}
-        <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal sm:leading-relaxed">
-          شوێنێک بۆ فیلم، نووسین و هەنێک سەرچاوەی ئیسلامی
+        <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal sm:leading-relaxed">
+          شوێنێک بۆ فیلم و نووسینی ئیسلامی
         </h1>
 
         {/* Concise Subtitle (1-2 sentences) */}
@@ -92,10 +92,10 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        {/* Responsive Grid: 1 column of compact rows on mobile, 3 columns on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
+        {/* Responsive Grid: 2 columns on mobile, scaling up to 6 on desktop */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-5">
           {featuredFilms.map((film, index) => (
-            <FilmCard key={film.id || (film as any)._id || index} film={film} priority={index < 2} />
+            <FilmCard key={film.id || (film as any)._id || index} film={film} priority={index < 4} />
           ))}
         </div>
       </section>

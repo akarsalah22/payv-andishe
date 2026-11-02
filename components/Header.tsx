@@ -6,12 +6,10 @@ import { usePathname } from 'next/navigation';
 import {
   Menu,
   X,
-  Send,
   Home,
   Film,
   FileText,
   Info,
-  ExternalLink,
   Search,
   ShieldCheck,
 } from 'lucide-react';
@@ -141,8 +139,8 @@ export function Header() {
             })}
           </nav>
 
-          {/* Actions (Admin Quick-Link, Search, Telegram, Theme Toggle, Mobile Hamburger Button) */}
-          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+          {/* Actions (Admin Quick-Link, Search, Theme Toggle, Mobile Hamburger Button) */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Authenticated Admin Quick-Link */}
             {isAdminAuthenticated && (
               <Link
@@ -166,18 +164,6 @@ export function Header() {
             >
               <Search className="w-5 h-5 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
             </button>
-
-            {/* Telegram Channel Icon Button */}
-            <a
-              href="https://t.me/mediay_islamy"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="کەناڵی تێلیگرام"
-              title="کەناڵی فەرمی لە تێلیگرام"
-              className="p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-            >
-              <Send className="w-5 h-5 text-sky-500 dark:text-sky-400" strokeWidth={1.75} />
-            </a>
 
             {/* Theme Toggle Button */}
             <ThemeToggle />
@@ -300,33 +286,10 @@ export function Header() {
             </nav>
           </div>
 
-          {/* Bottom Area: Telegram Card & Compact Theme Switcher */}
-          <div className="pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col gap-4">
-            {/* Premium Telegram Channel Card */}
-            <a
-              href="https://t.me/mediay_islamy"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsMenuOpen(false)}
-              className="group flex items-center justify-between p-3.5 rounded-2xl bg-amber-500/10 hover:bg-amber-500/15 border border-amber-500/25 text-zinc-900 dark:text-zinc-100 transition-all duration-200 active:scale-[0.98] cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-amber-500 text-zinc-950 flex items-center justify-center shrink-0 shadow-xs">
-                  <Send className="w-4 h-4" strokeWidth={1.75} />
-                </div>
-                <div className="flex flex-col text-right">
-                  <span className="text-xs sm:text-sm font-bold font-peshang tracking-normal">کەناڵی فەرمی تێلیگرام</span>
-                  <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-sirwan">بۆ بینینی فیلم و بابەتەکان</span>
-                </div>
-              </div>
-              <ExternalLink className="w-4 h-4 text-amber-500 group-hover:translate-x-[-2px] transition-transform" strokeWidth={1.75} />
-            </a>
-
-            {/* Compact Theme Switcher */}
-            <div className="flex items-center justify-between pt-1">
-              <span className="text-xs font-medium font-sirwan text-zinc-600 dark:text-zinc-400">ڕووکاری تاریک / ڕووناک</span>
-              <ThemeToggle />
-            </div>
+          {/* Bottom Area: Compact Theme Switcher */}
+          <div className="pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 flex items-center justify-between">
+            <span className="text-xs font-medium font-sirwan text-zinc-600 dark:text-zinc-400">ڕووکاری تاریک / ڕووناک</span>
+            <ThemeToggle />
           </div>
         </div>
       </div>

@@ -187,11 +187,11 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
         </div>
       )}
 
-      {/* Responsive Grid: 1 column of compact rows on mobile, 3 columns on desktop */}
+      {/* Responsive Grid: 2 columns on mobile, scaling up smoothly to 5 columns on desktop */}
       {filteredFilms.length > 0 ? (
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 min-h-[300px]">
+        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-5 min-h-[300px]">
           {filteredFilms.map((film, index) => (
-            <FilmCard key={film.id || (film as any)._id || index} film={film} priority={index < 2} />
+            <FilmCard key={film.id || (film as any)._id || index} film={film} priority={index < 4} />
           ))}
         </div>
       ) : (
