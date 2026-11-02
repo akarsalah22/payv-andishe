@@ -144,3 +144,12 @@ export const SAMPLE_FILMS: Film[] = [
     telegramPostUrl: 'https://t.me/mediay_islamy',
   },
 ];
+
+export function getFilmById(id: string): Film | undefined {
+  return SAMPLE_FILMS.find((film) => film.id === id || film.slug === id);
+}
+
+export function getFilmBySlug(slug: string): Film | undefined {
+  return SAMPLE_FILMS.find((film) => film.slug === slug || film.id === slug);
+}
+

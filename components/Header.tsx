@@ -142,7 +142,7 @@ export function Header() {
           </nav>
 
           {/* Actions (Admin Quick-Link, Search, Telegram, Theme Toggle, Mobile Hamburger Button) */}
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
             {/* Authenticated Admin Quick-Link */}
             {isAdminAuthenticated && (
               <Link
@@ -162,9 +162,9 @@ export function Header() {
               onClick={() => setIsSearchOpen(true)}
               aria-label="گەڕان"
               title="گەڕان"
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-600 hover:text-amber-600 hover:bg-amber-500/10 dark:text-zinc-400 dark:hover:text-amber-400 dark:hover:bg-amber-500/10 transition-all duration-200 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
-              <Search className="h-4.5 w-4.5 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
+              <Search className="w-5 h-5 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
             </button>
 
             {/* Telegram Channel Icon Button */}
@@ -174,9 +174,9 @@ export function Header() {
               rel="noopener noreferrer"
               aria-label="کەناڵی تێلیگرام"
               title="کەناڵی فەرمی لە تێلیگرام"
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-600 hover:text-sky-500 hover:bg-sky-500/10 dark:text-zinc-400 dark:hover:text-sky-400 dark:hover:bg-sky-500/10 transition-all duration-200 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
-              <Send className="h-4.5 w-4.5" strokeWidth={1.75} />
+              <Send className="w-5 h-5 text-sky-500 dark:text-sky-400" strokeWidth={1.75} />
             </a>
 
             {/* Theme Toggle Button */}
@@ -188,9 +188,9 @@ export function Header() {
               onClick={() => setIsMenuOpen(true)}
               aria-label="کردنەوەی مێنیو"
               aria-expanded={isMenuOpen}
-              className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl p-2.5 text-zinc-700 hover:text-amber-600 hover:bg-amber-500/10 dark:text-zinc-300 dark:hover:text-amber-400 dark:hover:bg-amber-500/10 transition-all duration-200 ease-out active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="md:hidden p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
-              <Menu className="h-5 w-5" strokeWidth={1.75} />
+              <Menu className="w-5 h-5" strokeWidth={1.75} />
             </button>
           </div>
         </div>

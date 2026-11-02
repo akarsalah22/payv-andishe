@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import { Send, Calendar, Clock, Film as FilmIcon } from 'lucide-react';
 import type { Film } from '@/data/films';
 
@@ -9,6 +10,7 @@ interface FilmCardProps {
 }
 
 export function FilmCard({ film }: FilmCardProps) {
+  const filmDetailsUrl = `/films/${film.id || film.slug}`;
   const posterSrc = film.posterUrl || (film as any).image || '/placeholder.jpg';
   const rawTelegramUrl = film.telegramPostUrl || (film as any).telegramUrl || 'https://t.me/mediay_islamy';
   const telegramUrl = rawTelegramUrl.replace('t.me/mediay_islami', 't.me/mediay_islamy');
@@ -16,16 +18,18 @@ export function FilmCard({ film }: FilmCardProps) {
   return (
     <article
       dir="rtl"
-      className="bg-white/95 dark:bg-zinc-900/85 border border-amber-900/10 dark:border-zinc-800/80 backdrop-blur-sm rounded-2xl overflow-hidden p-3.5 sm:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3.5 md:gap-3 justify-between group transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-500/40 dark:hover:border-amber-400/30 active:scale-[0.98] select-none tap-highlight-transparent"
+      className="relative bg-white/95 dark:bg-zinc-900/85 border border-amber-900/10 dark:border-zinc-800/80 backdrop-blur-sm rounded-2xl overflow-hidden p-3.5 sm:p-4 flex flex-row md:flex-col items-center md:items-stretch gap-3.5 md:gap-3 justify-between group transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-500/10 hover:border-amber-500/40 dark:hover:border-amber-400/30 active:scale-[0.98] select-none tap-highlight-transparent cursor-pointer"
     >
+      {/* Full Card Navigable Link Overlay to Details Page */}
+      <Link
+        href={filmDetailsUrl}
+        className="absolute inset-0 z-10"
+        aria-label={film.titleKurdish}
+      />
+
       {/* Poster Image Thumbnail (Compact row on mobile, portrait poster on desktop) */}
-      <a
-        href={telegramUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        tabIndex={-1}
-        aria-hidden="true"
-        className="relative w-20 h-28 sm:w-28 sm:h-40 md:w-full md:aspect-[2/3] md:h-80 shrink-0 overflow-hidden rounded-xl bg-zinc-950 shadow-xs border border-zinc-200/80 dark:border-zinc-800/80 backdrop-blur-sm block cursor-pointer"
+      <div
+        className="relative w-20 h-28 sm:w-28 sm:h-40 md:w-full md:aspect-[2/3] md:h-80 shrink-0 overflow-hidden rounded-xl bg-zinc-950 shadow-xs border border-zinc-200/80 dark:border-zinc-800/80 backdrop-blur-sm block"
       >
         <img
           src={posterSrc}
@@ -46,21 +50,25 @@ export function FilmCard({ film }: FilmCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none hidden md:block" />
 
         {/* Badges on Poster (hidden on compact mobile rows, visible on desktop cards) */}
-        <div className="absolute top-2.5 start-2.5 hidden md:block">
-          <span className="px-2 py-0.5 rounded-lg text-xs font-semibold font-sirwan bg-black/75 text-amber-300 dark:text-amber-400 backdrop-blur-md border border-amber-500/30 shadow-xs transition-colors duration-200 hover:bg-amber-500/20">
-            {film.genres[0]}
-          </span>
-        </div>
+        {film.genres && film.genres[0] && (
+          <div className="absolute top-2.5 start-2.5 hidden md:block pointer-events-none">
+            <span className="px-2 py-0.5 rounded-lg text-xs font-semibold font-sirwan bg-black/75 text-amber-300 dark:text-amber-400 backdrop-blur-md border border-amber-500/30 shadow-xs transition-colors duration-200 hover:bg-amber-500/20">
+              {film.genres[0]}
+            </span>
+          </div>
+        )}
 
-        <div className="absolute top-2.5 end-2.5 hidden md:block">
-          <span className="px-2 py-0.5 rounded-lg text-xs font-bold font-sans bg-black/75 text-zinc-100 dark:text-zinc-200 backdrop-blur-md border border-white/10 shadow-xs">
-            {film.year}
-          </span>
-        </div>
-      </a>
+        {film.year && (
+          <div className="absolute top-2.5 end-2.5 hidden md:block pointer-events-none">
+            <span className="px-2 py-0.5 rounded-lg text-xs font-bold font-sans bg-black/75 text-zinc-100 dark:text-zinc-200 backdrop-blur-md border border-white/10 shadow-xs">
+              {film.year}
+            </span>
+          </div>
+        )}
+      </div>
 
       {/* Film Content: Title, Metadata, Description & Action Button */}
-      <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0 text-right md:space-y-2">
+      <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch md:self-auto py-0.5 md:py-0 text-right md:space-y-2 pointer-events-none">
         <div className="space-y-1 sm:space-y-1.5">
           {/* Film Title */}
           <h3 className="text-base md:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors leading-snug line-clamp-1 md:line-clamp-2">
@@ -69,16 +77,22 @@ export function FilmCard({ film }: FilmCardProps) {
 
           {/* Clean Inline Badges / Muted Metadata */}
           <div className="text-xs text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap">
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-900 dark:bg-amber-500/10 dark:text-amber-400 border border-amber-500/25 font-medium text-xs transition-colors duration-200 hover:bg-amber-500/20">
-              <FilmIcon className="w-3 h-3 text-amber-700 dark:text-amber-400" strokeWidth={1.75} />
-              <span className="md:hidden">{film.genres[0]}</span>
-              <span className="hidden md:inline">{film.genres.join('، ')}</span>
-            </span>
-            <span className="text-zinc-400 dark:text-zinc-600">•</span>
-            <span className="inline-flex items-center gap-1">
-              <Calendar className="w-3 h-3 text-zinc-400 dark:text-zinc-500" strokeWidth={1.75} />
-              <span>{film.year}</span>
-            </span>
+            {film.genres && film.genres.length > 0 && (
+              <>
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-900 dark:bg-amber-500/10 dark:text-amber-400 border border-amber-500/25 font-medium text-xs transition-colors duration-200 hover:bg-amber-500/20">
+                  <FilmIcon className="w-3 h-3 text-amber-700 dark:text-amber-400" strokeWidth={1.75} />
+                  <span className="md:hidden">{film.genres[0]}</span>
+                  <span className="hidden md:inline">{film.genres.join('، ')}</span>
+                </span>
+                <span className="text-zinc-400 dark:text-zinc-600">•</span>
+              </>
+            )}
+            {film.year && (
+              <span className="inline-flex items-center gap-1">
+                <Calendar className="w-3 h-3 text-zinc-400 dark:text-zinc-500" strokeWidth={1.75} />
+                <span>{film.year}</span>
+              </span>
+            )}
             {film.duration && (
               <>
                 <span className="text-zinc-400 dark:text-zinc-600">•</span>
@@ -96,12 +110,13 @@ export function FilmCard({ film }: FilmCardProps) {
           </p>
         </div>
 
-        {/* Action Button: Alive & responsive button */}
-        <div className="pt-2 md:pt-2.5 md:mt-2.5 md:border-t md:border-zinc-200/80 md:dark:border-zinc-800/80">
+        {/* Action Button: Alive & responsive button - interactive z-20 */}
+        <div className="pt-2 md:pt-2.5 md:mt-2.5 md:border-t md:border-zinc-200/80 md:dark:border-zinc-800/80 pointer-events-auto relative z-20">
           <a
             href={telegramUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
             className="group/btn inline-flex items-center justify-center gap-1.5 w-auto self-start md:w-full py-2 px-3 text-xs md:text-sm font-medium rounded-xl bg-amber-500/15 text-amber-900 border border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20 hover:bg-amber-500 hover:text-black hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200 select-none cursor-pointer"
           >
             <Send className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:-translate-x-1" strokeWidth={1.75} />

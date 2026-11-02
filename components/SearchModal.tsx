@@ -258,11 +258,10 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
 
                   <div className="space-y-1.5">
                     {matchingFilms.map((film) => (
-                      <a
+                      <Link
                         key={film.id}
-                        href={(film.telegramPostUrl || 'https://t.me/mediay_islamy').replace('t.me/mediay_islami', 't.me/mediay_islamy')}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href={`/films/${film.id || film.slug}`}
+                        onClick={onClose}
                         className="group flex items-center justify-between gap-3 p-2 sm:p-2.5 rounded-xl bg-white/80 dark:bg-zinc-900/40 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/40 border border-zinc-200/80 dark:border-zinc-800/80 hover:border-amber-500/40 dark:hover:border-amber-500/30 transition-all duration-150 ease-out active:scale-[0.99] cursor-pointer touch-manipulation select-none tap-highlight-transparent min-h-[68px]"
                       >
                         {/* Right: Poster & Info */}
@@ -299,12 +298,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                           </div>
                         </div>
 
-                        {/* Left: Telegram Action Badge */}
+                        {/* Left: View Details Action Badge */}
                         <div className="shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/10 group-hover:bg-amber-500 text-amber-600 dark:text-amber-400 group-hover:text-zinc-950 border border-amber-500/25 text-xs font-semibold font-sirwan transition-all duration-150">
-                          <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
-                          <span className="hidden sm:inline">تێلیگرام</span>
+                          <span>بینین</span>
+                          <span className="transition-transform group-hover:-translate-x-0.5">‹</span>
                         </div>
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
