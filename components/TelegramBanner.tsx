@@ -1,4 +1,4 @@
-import { Send } from 'lucide-react';
+import { TelegramIcon } from '@/components/TelegramIcon';
 
 export function TelegramBanner() {
   return (
@@ -36,7 +36,7 @@ export function TelegramBanner() {
             rel="noopener noreferrer"
             className="group/btn inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-md hover:shadow-lg hover:shadow-amber-500/20 active:scale-95 transition-all duration-200 cursor-pointer touch-manipulation select-none"
           >
-            <Send className="w-4 h-4 transition-transform duration-200 group-hover/btn:-translate-x-1" strokeWidth={1.75} />
+            <TelegramIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover/btn:scale-110" />
             <span>بەشداری لە کەناڵ</span>
           </a>
         </div>

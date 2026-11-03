@@ -2,17 +2,19 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
   ChevronRight,
+  ChevronLeft,
   Calendar,
   Clock,
   Film as FilmIcon,
-  Send,
   Sparkles,
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import { readFilms } from '@/lib/storage';
-import { SAMPLE_FILMS, getFilmById, getFilmBySlug } from '@/data/films';
+import { SAMPLE_FILMS, getFilmById, getFilmBySlug, getFilmPlatform, getFilmWatchUrl } from '@/data/films';
 import { FilmCard } from '@/components/FilmCard';
 import { CopyLinkButton } from '@/components/CopyLinkButton';
+import { TelegramIcon } from '@/components/TelegramIcon';
+import { YouTubeIcon } from '@/components/YouTubeIcon';
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -84,8 +86,9 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
   }
 
   const posterSrc = film.posterUrl || (film as any).image || '/placeholder.jpg';
-  const rawTelegramUrl = film.telegramPostUrl || (film as any).telegramUrl || 'https://t.me/mediay_islamy';
-  const telegramUrl = rawTelegramUrl.replace('t.me/mediay_islami', 't.me/mediay_islamy');
+  const watchUrl = getFilmWatchUrl(film);
+  const platform = getFilmPlatform(film);
+  const isYouTube = platform === 'youtube';
   const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
     `https://mediay-islamy.vercel.app/films/${film.id || film.slug}`
   )}&text=${encodeURIComponent(film.titleKurdish)}`;
@@ -119,10 +122,10 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
             href={shareTelegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none"
+            className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none"
             title="هاوبەشکردن لە تێلیگرام"
           >
-            <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
+            <TelegramIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
             <span className="hidden sm:inline">هاوبەشکردن</span>
           </a>
         </div>
@@ -173,9 +176,6 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
                   {g}
                 </span>
               ))}
-              <span className="px-2.5 py-1 rounded-full text-[11px] font-bold font-sans bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                1080p Full HD
-              </span>
             </div>
 
             {/* Title & Original Title */}
@@ -207,16 +207,24 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               )}
             </div>
 
-            {/* Action Buttons: Watch on Telegram & Share */}
+            {/* Action Buttons: Watch on Telegram / YouTube & Share */}
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3">
               <a
-                href={telegramUrl}
+                href={watchUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-amber-500 text-zinc-950 font-bold font-sirwan text-sm sm:text-base shadow-lg shadow-amber-500/25 hover:bg-amber-400 active:scale-95 transition-all duration-200 cursor-pointer"
+                className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base active:scale-95 transition-all duration-200 cursor-pointer ${
+                  isYouTube
+                    ? 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/25'
+                    : 'bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-lg shadow-amber-500/25'
+                }`}
               >
-                <Send className="w-4 h-4" strokeWidth={2} />
-                <span>بینینی فیلم لە تێلیگرام</span>
+                {isYouTube ? (
+                  <YouTubeIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                ) : (
+                  <TelegramIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                )}
+                <span>{isYouTube ? 'بینینی فیلم لە یووتووب' : 'بینینی فیلم لە تێلیگرام'}</span>
               </a>
 
               <CopyLinkButton
@@ -245,22 +253,18 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
       </section>
 
       {/* Information Grid Cards */}
-      <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
+      <div className="w-full grid grid-cols-3 gap-2.5 sm:gap-4">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
           <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-sirwan block">پۆلێن</span>
-          <span className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100">{film.category}</span>
+          <span className="text-xs sm:text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100">{film.category}</span>
         </div>
-        <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
           <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-sirwan block">ساڵی بەرهەم</span>
-          <span className="text-sm font-bold font-sans text-zinc-900 dark:text-zinc-100">{film.year}</span>
+          <span className="text-xs sm:text-sm font-bold font-sans text-zinc-900 dark:text-zinc-100">{film.year}</span>
         </div>
-        <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
+        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
           <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-sirwan block">ماوە</span>
-          <span className="text-sm font-bold font-sirwan text-zinc-900 dark:text-zinc-100">{film.duration || 'دیارینەکراو'}</span>
-        </div>
-        <div className="p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-sirwan block">کوالێتی پەخش</span>
-          <span className="text-sm font-bold font-sans text-emerald-600 dark:text-emerald-400">1080p Full HD</span>
+          <span className="text-xs sm:text-sm font-bold font-sirwan text-zinc-900 dark:text-zinc-100">{film.duration || 'دیارینەکراو'}</span>
         </div>
       </div>
 
@@ -276,9 +280,10 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
             </div>
             <Link
               href="/films"
-              className="text-xs sm:text-sm font-semibold font-sirwan text-amber-600 dark:text-amber-400 hover:underline"
+              className="group inline-flex items-center gap-1 text-xs sm:text-sm font-semibold font-sirwan text-amber-600 dark:text-amber-400 hover:text-amber-500 dark:hover:text-amber-300 transition-colors"
             >
-              گشت فیلمەکان ‹
+              <span>گشت فیلمەکان</span>
+              <ChevronLeft className="w-4 h-4 shrink-0 transition-transform group-hover:-translate-x-1" strokeWidth={2} />
             </Link>
           </div>
 

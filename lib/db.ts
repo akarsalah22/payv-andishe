@@ -47,9 +47,20 @@ export async function ensureDbInitialized(): Promise<boolean> {
         poster_url TEXT NOT NULL,
         description TEXT NOT NULL DEFAULT '',
         telegram_post_url TEXT NOT NULL,
+        platform TEXT DEFAULT 'telegram',
+        watch_url TEXT,
         created_at TIMESTAMPTZ DEFAULT NOW(),
         updated_at TIMESTAMPTZ DEFAULT NOW()
       );
+    `);
+
+    // Ensure columns exist if table was created in an earlier migration
+    await sql.query(`
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS platform TEXT DEFAULT 'telegram';
+    `);
+
+    await sql.query(`
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS watch_url TEXT;
     `);
 
     // 2. Create articles table
@@ -71,7 +82,16 @@ export async function ensureDbInitialized(): Promise<boolean> {
       );
     `);
 
-    // 3. Seed films if empty
+    // 3. Create site_settings table for dynamic settings like About page
+    await sql.query(`
+      CREATE TABLE IF NOT EXISTS site_settings (
+        key TEXT PRIMARY KEY,
+        value JSONB NOT NULL,
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      );
+    `);
+
+    // 4. Seed films if empty
     const filmCountResult = await sql.query('SELECT COUNT(*)::int AS count FROM films;');
     const filmCount = (filmCountResult[0] as { count: number })?.count || 0;
 
@@ -153,6 +173,8 @@ interface FilmDbRow {
   posterUrl: string;
   description: string | null;
   telegramPostUrl: string;
+  platform?: Film['platform'];
+  watchUrl?: string;
 }
 
 interface ArticleDbRow {
@@ -190,24 +212,32 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
         genres,
         poster_url AS "posterUrl",
         description,
-        telegram_post_url AS "telegramPostUrl"
+        telegram_post_url AS "telegramPostUrl",
+        platform,
+        watch_url AS "watchUrl"
       FROM films
       ORDER BY created_at DESC;
     `);
 
-    return (rows as unknown as FilmDbRow[]).map((r) => ({
-      id: r.id,
-      slug: r.slug,
-      titleKurdish: r.titleKurdish,
-      originalTitle: r.originalTitle || r.titleKurdish,
-      year: Number(r.year),
-      duration: r.duration,
-      category: r.category,
-      genres: Array.isArray(r.genres) ? r.genres : JSON.parse(typeof r.genres === 'string' ? r.genres : '[]'),
-      posterUrl: r.posterUrl,
-      description: r.description || '',
-      telegramPostUrl: r.telegramPostUrl,
-    }));
+    return (rows as unknown as FilmDbRow[]).map((r) => {
+      const activeUrl = r.watchUrl || r.telegramPostUrl || '';
+      const activePlatform = r.platform || (activeUrl.includes('youtu') ? 'youtube' : 'telegram');
+      return {
+        id: r.id,
+        slug: r.slug,
+        titleKurdish: r.titleKurdish,
+        originalTitle: r.originalTitle || r.titleKurdish,
+        year: Number(r.year),
+        duration: r.duration,
+        category: r.category,
+        genres: Array.isArray(r.genres) ? r.genres : JSON.parse(typeof r.genres === 'string' ? r.genres : '[]'),
+        posterUrl: r.posterUrl,
+        description: r.description || '',
+        platform: activePlatform,
+        watchUrl: activeUrl,
+        telegramPostUrl: r.telegramPostUrl || activeUrl,
+      };
+    });
   } catch (err) {
     console.error('Failed to get films from DB:', err);
     return null;
@@ -223,12 +253,16 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
 
   try {
     await ensureDbInitialized();
+    const watchLink = film.watchUrl || film.telegramPostUrl || '';
+    const platform = film.platform || (watchLink.includes('youtu') ? 'youtube' : 'telegram');
+
     await sql.query(
       `
       INSERT INTO films (
         id, slug, title_kurdish, original_title, year, duration,
-        category, genres, poster_url, description, telegram_post_url, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW())
+        category, genres, poster_url, description, telegram_post_url,
+        platform, watch_url, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW())
       ON CONFLICT (id) DO UPDATE SET
         slug = EXCLUDED.slug,
         title_kurdish = EXCLUDED.title_kurdish,
@@ -240,6 +274,8 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         poster_url = EXCLUDED.poster_url,
         description = EXCLUDED.description,
         telegram_post_url = EXCLUDED.telegram_post_url,
+        platform = EXCLUDED.platform,
+        watch_url = EXCLUDED.watch_url,
         updated_at = NOW();
       `,
       [
@@ -253,7 +289,9 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         JSON.stringify(film.genres),
         film.posterUrl,
         film.description,
-        film.telegramPostUrl,
+        film.telegramPostUrl || watchLink,
+        platform,
+        watchLink,
       ]
     );
     return true;
@@ -390,4 +428,52 @@ export async function deleteArticleFromDb(id: string): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * Get dynamic key-value setting from Neon Postgres.
+ */
+export async function getSettingFromDb<T>(key: string): Promise<T | null> {
+  const sql = getSql();
+  if (!sql) return null;
+
+  try {
+    await ensureDbInitialized();
+    const rows = await sql.query('SELECT value FROM site_settings WHERE key = $1 LIMIT 1;', [key]);
+    if (rows && rows.length > 0) {
+      const val = (rows[0] as { value: any }).value;
+      return typeof val === 'string' ? JSON.parse(val) : val;
+    }
+    return null;
+  } catch (err) {
+    console.error(`Failed to get setting ${key} from DB:`, err);
+    return null;
+  }
+}
+
+/**
+ * Set dynamic key-value setting in Neon Postgres.
+ */
+export async function setSettingInDb<T>(key: string, value: T): Promise<boolean> {
+  const sql = getSql();
+  if (!sql) return false;
+
+  try {
+    await ensureDbInitialized();
+    await sql.query(
+      `
+      INSERT INTO site_settings (key, value, updated_at)
+      VALUES ($1, $2, NOW())
+      ON CONFLICT (key) DO UPDATE SET
+        value = EXCLUDED.value,
+        updated_at = NOW();
+      `,
+      [key, JSON.stringify(value)]
+    );
+    return true;
+  } catch (err) {
+    console.error(`Failed to set setting ${key} in DB:`, err);
+    return false;
+  }
+}
+
 

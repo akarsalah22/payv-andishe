@@ -7,6 +7,8 @@ export type FilmCategory =
   | 'سینەمایی' // پشتیوانی پێشوو
   | 'ئەنیمەیشن'; // پشتیوانی پێشوو
 
+export type FilmPlatform = 'telegram' | 'youtube';
+
 export interface Film {
   id: string;
   slug: string;
@@ -18,7 +20,26 @@ export interface Film {
   genres: string[];
   posterUrl: string;
   description: string;
+  platform?: FilmPlatform;
+  watchUrl?: string;
   telegramPostUrl: string;
+}
+
+export function getFilmPlatform(film: Partial<Film>): FilmPlatform {
+  if (film.platform === 'youtube' || film.platform === 'telegram') {
+    return film.platform;
+  }
+  const url = film.watchUrl || film.telegramPostUrl || (film as any)?.telegramUrl || '';
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    return 'youtube';
+  }
+  return 'telegram';
+}
+
+export function getFilmWatchUrl(film: Partial<Film>): string {
+  const url = film.watchUrl || film.telegramPostUrl || (film as any)?.telegramUrl || '';
+  if (!url) return 'https://t.me/mediay_islamy';
+  return url.replace('t.me/mediay_islami', 't.me/mediay_islamy');
 }
 
 export const FILM_CATEGORIES: ('هەمووی' | FilmCategory)[] = [

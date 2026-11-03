@@ -1,8 +1,9 @@
 "use client";
 
 import Link from 'next/link';
-import { Send, ChevronUp, ShieldCheck } from 'lucide-react';
+import { ChevronUp, ShieldCheck } from 'lucide-react';
 import { InstagramIcon } from './InstagramIcon';
+import { TelegramIcon } from './TelegramIcon';
 
 export function Footer() {
   const scrollToTop = () => {
@@ -70,9 +71,9 @@ export function Footer() {
               href="https://t.me/mediay_islamy"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
+              className="group inline-flex items-center gap-1.5 text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
-              <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
+              <TelegramIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
               <span>تێلیگرام</span>
             </a>
             <a

@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { SAMPLE_FILMS, type Film } from "@/data/films";
 import { SAMPLE_ARTICLES, type Article } from "@/data/articles";
+import { DEFAULT_ABOUT_CONTENT, type AboutContent } from "@/data/about";
 import {
   getFilmsFromDb,
   upsertFilmToDb,
@@ -9,11 +10,14 @@ import {
   getArticlesFromDb,
   upsertArticleToDb,
   deleteArticleFromDb,
+  getSettingFromDb,
+  setSettingInDb,
 } from "./db";
 
 const dataDir = path.join(process.cwd(), "data");
 const filmsFilePath = path.join(dataDir, "films.json");
 const articlesFilePath = path.join(dataDir, "articles.json");
+const aboutFilePath = path.join(dataDir, "about.json");
 
 async function ensureDirectory() {
   try {
@@ -228,3 +232,69 @@ export async function removeSingleArticle(id: string): Promise<boolean> {
 
   return dbSuccess;
 }
+
+/**
+ * Reads local backup for About content.
+ */
+export async function readLocalAbout(): Promise<AboutContent> {
+  try {
+    await ensureDirectory();
+    try {
+      await fs.access(aboutFilePath);
+    } catch {
+      await fs.writeFile(aboutFilePath, JSON.stringify(DEFAULT_ABOUT_CONTENT, null, 2), "utf-8");
+      return DEFAULT_ABOUT_CONTENT;
+    }
+
+    const data = await fs.readFile(aboutFilePath, "utf-8");
+    if (!data.trim()) return DEFAULT_ABOUT_CONTENT;
+    const parsed = JSON.parse(data);
+    return parsed && typeof parsed === "object" ? { ...DEFAULT_ABOUT_CONTENT, ...parsed } : DEFAULT_ABOUT_CONTENT;
+  } catch (error) {
+    console.error("Error reading local about backup:", error);
+    return DEFAULT_ABOUT_CONTENT;
+  }
+}
+
+/**
+ * Writes local backup for About content.
+ */
+export async function writeLocalAbout(content: AboutContent): Promise<void> {
+  try {
+    await ensureDirectory();
+    await fs.writeFile(aboutFilePath, JSON.stringify(content, null, 2), "utf-8");
+  } catch (error) {
+    console.error("Error writing local about backup:", error);
+  }
+}
+
+/**
+ * Reads About content actively from Neon Postgres, falling back to local file.
+ */
+export async function readAboutContent(): Promise<AboutContent> {
+  try {
+    const dbAbout = await getSettingFromDb<AboutContent>("about_content");
+    if (dbAbout && typeof dbAbout === "object" && dbAbout.title) {
+      writeLocalAbout(dbAbout).catch(() => {});
+      return { ...DEFAULT_ABOUT_CONTENT, ...dbAbout };
+    }
+  } catch (err) {
+    console.error("Neon DB readAboutContent error, falling back to local file:", err);
+  }
+
+  return await readLocalAbout();
+}
+
+/**
+ * Saves About content to Neon Postgres and updates local backup.
+ */
+export async function saveAboutContent(content: AboutContent): Promise<boolean> {
+  await writeLocalAbout(content);
+  try {
+    return await setSettingInDb("about_content", content);
+  } catch (err) {
+    console.error("Failed to sync about content to Neon DB:", err);
+    return false;
+  }
+}
+

@@ -42,6 +42,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'تکایە ناوی کوردیی فیلم بنووسە' }, { status: 400 });
     }
 
+    const watchLink =
+      newFilm.watchUrl?.trim() ||
+      newFilm.telegramPostUrl?.trim() ||
+      'https://t.me/mediay_islamy';
+    const platform =
+      newFilm.platform ||
+      (watchLink.includes('youtu') ? 'youtube' : 'telegram');
+
     const filmToSave: Film = {
       id: newFilm.id || `film-${Date.now()}`,
       slug: newFilm.slug || generateSlug(newFilm.titleKurdish),
@@ -49,13 +57,15 @@ export async function POST(req: Request) {
       originalTitle: newFilm.originalTitle?.trim() || newFilm.titleKurdish.trim(),
       year: Number(newFilm.year) || new Date().getFullYear(),
       duration: newFilm.duration?.trim() || '٢ کاتژمێر',
-      category: newFilm.category || 'سینەمایی',
+      category: newFilm.category || 'فیلم',
       genres: Array.isArray(newFilm.genres) && newFilm.genres.length > 0 ? newFilm.genres : ['سینەما'],
       posterUrl:
         newFilm.posterUrl?.trim() ||
         'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
       description: newFilm.description?.trim() || '',
-      telegramPostUrl: newFilm.telegramPostUrl?.trim() || 'https://t.me/mediay_islamy',
+      platform,
+      watchUrl: watchLink,
+      telegramPostUrl: watchLink,
     };
 
     await saveSingleFilm(filmToSave);
@@ -90,6 +100,16 @@ export async function PUT(req: Request) {
     const films = await readFilms();
     const existing = films.find((f) => f.id === updatedFilm.id);
 
+    const watchLink =
+      updatedFilm.watchUrl?.trim() ||
+      updatedFilm.telegramPostUrl?.trim() ||
+      existing?.watchUrl ||
+      existing?.telegramPostUrl ||
+      'https://t.me/mediay_islamy';
+    const platform =
+      updatedFilm.platform ||
+      (watchLink.includes('youtu') ? 'youtube' : 'telegram');
+
     const mergedFilm: Film = {
       ...(existing || {
         id: updatedFilm.id,
@@ -98,14 +118,19 @@ export async function PUT(req: Request) {
         originalTitle: updatedFilm.originalTitle || '',
         year: Number(updatedFilm.year) || 2024,
         duration: updatedFilm.duration || '٢ کاتژمێر',
-        category: updatedFilm.category || 'سینەمایی',
+        category: updatedFilm.category || 'فیلم',
         genres: updatedFilm.genres || ['سینەما'],
         posterUrl: updatedFilm.posterUrl || '',
         description: updatedFilm.description || '',
-        telegramPostUrl: updatedFilm.telegramPostUrl || 'https://t.me/mediay_islamy',
+        telegramPostUrl: watchLink,
+        platform,
+        watchUrl: watchLink,
       }),
       ...updatedFilm,
       year: Number(updatedFilm.year) || (existing ? existing.year : 2024),
+      platform,
+      watchUrl: watchLink,
+      telegramPostUrl: watchLink,
     };
 
     await saveSingleFilm(mergedFilm);

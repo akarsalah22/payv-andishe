@@ -2,7 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Send, ChevronLeft } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
+import { TelegramIcon } from './TelegramIcon';
+import { YouTubeIcon } from './YouTubeIcon';
 import type { Film } from '@/data/films';
 import type { Article } from '@/data/articles';
 import { ArticleCard } from './ArticleCard';
@@ -141,17 +143,29 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                   </div>
                 </div>
 
-                {/* Direct Telegram Action Button */}
+                {/* Direct Action Button (Telegram or YouTube) */}
                 <div className="pt-3 mt-2 border-t border-zinc-200/80 dark:border-zinc-800/80">
-                  <a
-                    href={(film.telegramPostUrl || 'https://t.me/mediay_islamy').replace('t.me/mediay_islami', 't.me/mediay_islamy')}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group/btn inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-amber-500/15 text-amber-900 border border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20 hover:bg-amber-500 hover:text-black hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200 text-xs font-semibold font-sirwan tracking-normal cursor-pointer touch-manipulation select-none"
-                  >
-                    <Send className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:-translate-x-1" strokeWidth={1.75} />
-                    <span>بینین لە تێلیگرام</span>
-                  </a>
+                  {film.platform === 'youtube' || (film.watchUrl?.includes('youtu') || film.telegramPostUrl?.includes('youtu')) ? (
+                    <a
+                      href={film.watchUrl || film.telegramPostUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/btn inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-red-500/15 text-red-900 border border-red-500/30 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20 hover:bg-red-600 hover:text-white hover:shadow-md hover:shadow-red-500/20 active:scale-95 transition-all duration-200 text-xs font-semibold font-sirwan tracking-normal cursor-pointer touch-manipulation select-none"
+                    >
+                      <YouTubeIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover/btn:scale-110" />
+                      <span>بینین لە یووتووب</span>
+                    </a>
+                  ) : (
+                    <a
+                      href={(film.watchUrl || film.telegramPostUrl || 'https://t.me/mediay_islamy').replace('t.me/mediay_islami', 't.me/mediay_islamy')}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/btn inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-amber-500/15 text-amber-900 border border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20 hover:bg-amber-500 hover:text-black hover:shadow-md hover:shadow-amber-500/20 active:scale-95 transition-all duration-200 text-xs font-semibold font-sirwan tracking-normal cursor-pointer touch-manipulation select-none"
+                    >
+                      <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover/btn:scale-110" />
+                      <span>بینین لە تێلیگرام</span>
+                    </a>
+                  )}
                 </div>
               </div>
             ))}

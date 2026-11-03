@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { Clapperboard, BookOpen, Send, ChevronLeft } from 'lucide-react';
+import { Clapperboard, BookOpen, ChevronLeft } from 'lucide-react';
 import { readFilms, readArticles } from '@/lib/storage';
 import { FilmCard } from '@/components/FilmCard';
 import { ArticleCard } from '@/components/ArticleCard';
 import { TelegramBanner } from '@/components/TelegramBanner';
+import { TelegramIcon } from '@/components/TelegramIcon';
 
 export const dynamic = "force-dynamic";
 
@@ -63,9 +64,9 @@ export default async function HomePage() {
             href="https://t.me/mediay_islamy"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl text-zinc-500 dark:text-zinc-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-500/10 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+            className="group inline-flex items-center gap-2 px-4 py-1.5 rounded-xl text-zinc-500 dark:text-zinc-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-500/10 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
           >
-            <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
+            <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
             <span>کەناڵی تێلیگرام</span>
           </a>
         </div>

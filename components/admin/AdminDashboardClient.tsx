@@ -12,21 +12,26 @@ import {
   LogOut,
   X,
   Clapperboard,
-  Send,
   Upload,
   Pencil,
   Search,
   ShieldCheck,
   Copy,
+  Info,
+  Sparkles,
+  Check,
 } from 'lucide-react';
 import { useToast } from '@/components/ToastContext';
-import { SAMPLE_FILMS, type Film, type FilmCategory } from '@/data/films';
+import { SAMPLE_FILMS, type Film, type FilmCategory, type FilmPlatform } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article, type ArticleCategory } from '@/data/articles';
+import { DEFAULT_ABOUT_CONTENT, type AboutContent, type AboutFeature } from '@/data/about';
 import { FilmCard } from '@/components/FilmCard';
+import { TelegramIcon } from '@/components/TelegramIcon';
+import { YouTubeIcon } from '@/components/YouTubeIcon';
 import { ArticleCard } from '@/components/ArticleCard';
 import { matchesSearchQuery } from '@/lib/search';
 
-type AdminTab = 'films' | 'articles' | 'create';
+type AdminTab = 'films' | 'articles' | 'about' | 'create';
 type CreateItemType = 'film' | 'article';
 
 export function AdminDashboardClient() {
@@ -73,6 +78,7 @@ export function AdminDashboardClient() {
   const [filmYear, setFilmYear] = useState<number>(new Date().getFullYear());
   const [filmDuration, setFilmDuration] = useState('١ کاتژمێر و ٥٠ خولەک');
   const [filmPosterUrl, setFilmPosterUrl] = useState('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80');
+  const [filmPlatform, setFilmPlatform] = useState<FilmPlatform>('telegram');
   const [filmTelegramUrl, setFilmTelegramUrl] = useState('https://t.me/mediay_islamy');
   const [filmDescription, setFilmDescription] = useState('');
 
@@ -85,6 +91,15 @@ export function AdminDashboardClient() {
   const [articleExcerpt, setArticleExcerpt] = useState('');
   const [articleContent, setArticleContent] = useState('');
   const [articleAuthor, setArticleAuthor] = useState('میدیای ئیسلامی');
+
+  // About Page Form State
+  const [aboutTitle, setAboutTitle] = useState(DEFAULT_ABOUT_CONTENT.title);
+  const [aboutSubtitle, setAboutSubtitle] = useState(DEFAULT_ABOUT_CONTENT.subtitle);
+  const [aboutMissionTitle, setAboutMissionTitle] = useState(DEFAULT_ABOUT_CONTENT.missionTitle);
+  const [aboutMissionText, setAboutMissionText] = useState(DEFAULT_ABOUT_CONTENT.missionText);
+  const [aboutFeatures, setAboutFeatures] = useState<AboutFeature[]>(DEFAULT_ABOUT_CONTENT.features);
+  const [isAboutSubmitting, setIsAboutSubmitting] = useState(false);
+  const [isAboutLoading, setIsAboutLoading] = useState(false);
 
   // Fetch films from API and synchronize with localStorage
   const fetchFilms = async () => {
@@ -152,10 +167,33 @@ export function AdminDashboardClient() {
     }
   };
 
+  // Fetch About page content from API
+  const fetchAbout = async () => {
+    setIsAboutLoading(true);
+    try {
+      const res = await fetch('/api/about');
+      if (res.ok) {
+        const data: AboutContent = await res.json();
+        if (data && data.title) {
+          setAboutTitle(data.title);
+          setAboutSubtitle(data.subtitle || '');
+          setAboutMissionTitle(data.missionTitle || DEFAULT_ABOUT_CONTENT.missionTitle);
+          setAboutMissionText(data.missionText || '');
+          setAboutFeatures(Array.isArray(data.features) ? data.features : DEFAULT_ABOUT_CONTENT.features);
+        }
+      }
+    } catch (e) {
+      console.error('Error fetching about content:', e);
+    } finally {
+      setIsAboutLoading(false);
+    }
+  };
+
   // Initial load of data from disk API
   useEffect(() => {
     fetchFilms();
     fetchArticles();
+    fetchAbout();
   }, []);
 
   // Sync films to localStorage
@@ -294,6 +332,7 @@ export function AdminDashboardClient() {
     setFilmYear(new Date().getFullYear());
     setFilmDuration('١ کاتژمێر و ٥٠ خولەک');
     setFilmPosterUrl('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80');
+    setFilmPlatform('telegram');
     setFilmTelegramUrl('https://t.me/mediay_islamy');
     setFilmDescription('');
   };
@@ -321,7 +360,10 @@ export function AdminDashboardClient() {
     setFilmYear(film.year);
     setFilmDuration(film.duration);
     setFilmPosterUrl(film.posterUrl);
-    setFilmTelegramUrl(film.telegramPostUrl);
+    const link = film.watchUrl || film.telegramPostUrl || '';
+    const platform = film.platform || (link.includes('youtu') ? 'youtube' : 'telegram');
+    setFilmPlatform(platform);
+    setFilmTelegramUrl(link);
     setFilmDescription(film.description);
     setActiveTab('create');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -338,7 +380,7 @@ export function AdminDashboardClient() {
   const handleSaveFilm = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!filmTitleKurdish.trim() || !filmTelegramUrl.trim()) {
-      triggerToast('تکایە ناوی فیلم و بەستەری تێلیگرام بنووسە', undefined, 'error');
+      triggerToast('تکایە ناوی فیلم و بەستەری بینین بنووسە', undefined, 'error');
       return;
     }
 
@@ -362,7 +404,9 @@ export function AdminDashboardClient() {
       posterUrl:
         filmPosterUrl.trim() ||
         'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
-      description: filmDescription.trim() || 'ناساندنی ئەم شاکارە سینەمایییە لە کەناڵی تێلیگرام.',
+      description: filmDescription.trim() || 'ناساندنی ئەم شاکارە سینەمایییە.',
+      platform: filmPlatform,
+      watchUrl: filmTelegramUrl.trim(),
       telegramPostUrl: filmTelegramUrl.trim(),
     };
 
@@ -556,6 +600,74 @@ export function AdminDashboardClient() {
     }
   };
 
+  // Handle About Save
+  const handleSaveAbout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!aboutTitle.trim() || !aboutMissionTitle.trim()) {
+      triggerToast('تکایە ناونیشان و پەیام بە تەواوی بنووسە', undefined, 'error');
+      return;
+    }
+
+    setIsAboutSubmitting(true);
+    try {
+      const res = await fetch('/api/about', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: aboutTitle,
+          subtitle: aboutSubtitle,
+          missionTitle: aboutMissionTitle,
+          missionText: aboutMissionText,
+          features: aboutFeatures,
+        }),
+      });
+
+      if (res.ok) {
+        triggerToast('زانیارییەکانی دەربارە بە سەرکەوتوویی نوێکرانەوە', { href: '/about', label: 'بینینی پەڕە' }, 'success');
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        triggerToast(errData.error || 'هەڵەیەک ڕوویدا لە پاشەکەوتکردن', undefined, 'error');
+      }
+    } catch {
+      triggerToast('هەڵەیەک ڕوویدا لە پەیوەندیکردن بە سێرڤەر', undefined, 'error');
+    } finally {
+      setIsAboutSubmitting(false);
+    }
+  };
+
+  const handleFeatureChange = (index: number, field: 'title' | 'desc', value: string) => {
+    setAboutFeatures((prev) => {
+      const copy = [...prev];
+      copy[index] = { ...copy[index], [field]: value };
+      return copy;
+    });
+  };
+
+  const handleAddFeature = () => {
+    if (aboutFeatures.length >= 6) {
+      triggerToast('ناتوانیت زیاتر لە ٦ تایبەتمەندی دابنێیت', undefined, 'error');
+      return;
+    }
+    setAboutFeatures((prev) => [...prev, { title: 'تایبەتمەندی نوێ', desc: 'وەسفی کورت...' }]);
+  };
+
+  const handleRemoveFeature = (index: number) => {
+    if (aboutFeatures.length <= 1) {
+      triggerToast('پێویستە لانی کەم یەک تایبەتمەندی هەبێت', undefined, 'error');
+      return;
+    }
+    setAboutFeatures((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleResetAbout = () => {
+    setAboutTitle(DEFAULT_ABOUT_CONTENT.title);
+    setAboutSubtitle(DEFAULT_ABOUT_CONTENT.subtitle);
+    setAboutMissionTitle(DEFAULT_ABOUT_CONTENT.missionTitle);
+    setAboutMissionText(DEFAULT_ABOUT_CONTENT.missionText);
+    setAboutFeatures(DEFAULT_ABOUT_CONTENT.features);
+    triggerToast('زانیارییەکان گەڕێندرانەوە بۆ سەر دۆخی بنەڕەتی', undefined, 'info');
+  };
+
   // Filtered Collections with Kurdish/Arabic normalization
   const filteredFilms = useMemo(() => {
     const q = filmsSearchQuery.trim();
@@ -615,8 +727,10 @@ export function AdminDashboardClient() {
     genres: filmGenres ? filmGenres.split(/[,،]/).map((g) => g.trim()).filter(Boolean) : ['سینەمایی'],
     posterUrl: filmPosterUrl.trim() || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
     description: filmDescription.trim() || 'کورتەی ناساندنی فیلمەکە و تێڕوانینی فەلسەفی لەم شوێنەدا پیشاندەدرێت بە دوو دێڕی ڕێکخراو.',
+    platform: filmPlatform,
+    watchUrl: filmTelegramUrl.trim() || 'https://t.me/mediay_islamy',
     telegramPostUrl: filmTelegramUrl.trim() || 'https://t.me/mediay_islamy',
-  }), [editingFilmId, filmTitleKurdish, filmOriginalTitle, filmYear, filmDuration, filmCategory, filmGenres, filmPosterUrl, filmDescription, filmTelegramUrl]);
+  }), [editingFilmId, filmTitleKurdish, filmOriginalTitle, filmYear, filmDuration, filmCategory, filmGenres, filmPosterUrl, filmDescription, filmTelegramUrl, filmPlatform]);
 
   // Live Article Preview Object
   const liveArticleSample: Article = useMemo(() => ({
@@ -716,6 +830,19 @@ export function AdminDashboardClient() {
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-black/10 dark:bg-white/10 font-sans font-bold">
               {articles.length}
             </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('about')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${
+              activeTab === 'about'
+                ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+            }`}
+          >
+            <Info className="w-4 h-4" />
+            <span>بەڕێوەبردنی دەربارە</span>
           </button>
 
           <button
@@ -890,16 +1017,29 @@ export function AdminDashboardClient() {
 
                   {/* Left Side: Action Buttons */}
                   <div className="flex items-center justify-end gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100 dark:border-zinc-800/80">
-                    <a
-                      href={film.telegramPostUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-sky-500/20 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 text-xs font-semibold font-sirwan transition-colors cursor-pointer"
-                      title="تاقیکردنەوەی بەستەری تێلیگرام"
-                    >
-                      <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
-                      <span className="hidden md:inline">تێلیگرام</span>
-                    </a>
+                    {film.platform === 'youtube' || (film.watchUrl?.includes('youtu') || film.telegramPostUrl?.includes('youtu')) ? (
+                      <a
+                        href={film.watchUrl || film.telegramPostUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-red-500/20 bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 text-xs font-semibold font-sirwan transition-colors cursor-pointer"
+                        title="تاقیکردنەوەی بەستەری یووتووب"
+                      >
+                        <YouTubeIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                        <span className="hidden md:inline">یووتووب</span>
+                      </a>
+                    ) : (
+                      <a
+                        href={film.watchUrl || film.telegramPostUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-sky-500/20 bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 text-xs font-semibold font-sirwan transition-colors cursor-pointer"
+                        title="تاقیکردنەوەی بەستەری تێلیگرام"
+                      >
+                        <TelegramIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                        <span className="hidden md:inline">تێلیگرام</span>
+                      </a>
+                    )}
 
                     <button
                       type="button"
@@ -1338,16 +1478,74 @@ export function AdminDashboardClient() {
                     </div>
                   </div>
 
+                  {/* Streaming Platform Selector */}
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-2">
+                      سەکۆی پەخش (Streaming Platform) <span className="text-rose-500">*</span>
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFilmPlatform('telegram');
+                          if (filmTelegramUrl.includes('youtu')) {
+                            setFilmTelegramUrl('https://t.me/mediay_islamy');
+                          }
+                        }}
+                        className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${
+                          filmPlatform === 'telegram'
+                            ? 'bg-amber-500/15 border-amber-500 text-amber-900 dark:text-amber-400 font-bold shadow-xs'
+                            : 'border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-amber-500/40'
+                        }`}
+                      >
+                        <TelegramIcon className="w-4 h-4 text-sky-500 shrink-0" />
+                        <span>تێلیگرام (Telegram)</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFilmPlatform('youtube');
+                          if (filmTelegramUrl.includes('t.me')) {
+                            setFilmTelegramUrl('https://www.youtube.com/watch?v=');
+                          }
+                        }}
+                        className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${
+                          filmPlatform === 'youtube'
+                            ? 'bg-red-500/15 border-red-500 text-red-700 dark:text-red-400 font-bold shadow-xs'
+                            : 'border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-red-500/40'
+                        }`}
+                      >
+                        <YouTubeIcon className="w-4 h-4 text-red-600 shrink-0" />
+                        <span>یووتووب (YouTube)</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Watch Link Input */}
                   <div>
                     <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
-                      بەستەری پۆستی تێلیگرام <span className="text-rose-500">*</span>
+                      {filmPlatform === 'youtube' ? 'لینکی فیلم لە یووتووب' : 'لینکی فیلم لە تێلیگرام'}{' '}
+                      <span className="text-rose-500">*</span>
                     </label>
                     <input
                       type="url"
                       required
                       value={filmTelegramUrl}
-                      onChange={(e) => setFilmTelegramUrl(e.target.value)}
-                      placeholder="https://t.me/mediay_islamy/101"
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setFilmTelegramUrl(val);
+                        if (val.includes('youtu.be') || val.includes('youtube.com')) {
+                          setFilmPlatform('youtube');
+                        } else if (val.includes('t.me/')) {
+                          setFilmPlatform('telegram');
+                        }
+                      }}
+                      placeholder={
+                        filmPlatform === 'youtube'
+                          ? 'https://www.youtube.com/watch?v=... یان https://youtu.be/...'
+                          : 'https://t.me/mediay_islamy/101'
+                      }
                       dir="ltr"
                       className="w-full px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#d49757]"
                     />
@@ -1598,6 +1796,269 @@ export function AdminDashboardClient() {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 4: ABOUT PAGE MANAGEMENT (دەربارە)                    */}
+      {/* ========================================================= */}
+      {activeTab === 'about' && (
+        <div className="w-full space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800 text-right shadow-2xs">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 text-xs font-semibold font-sirwan">
+                <Info className="w-3.5 h-3.5" />
+                <span>دەستکاریکردنی پەڕەی دەربارە</span>
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+                بەڕێوەبردنی زانیاری، پەیام و تایبەتمەندییەکان
+              </h2>
+              <p className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400">
+                دەقی سەرەکی و پەیامی دەربارەی میدیای ئیسلامی بگۆڕە و ڕاستەوخۆ لە ماڵپەڕ نیشان دەدرێت.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Link
+                href="/about"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-100/80 dark:bg-zinc-800 text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 hover:text-amber-600 transition-colors"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-amber-500" />
+                <span>پەڕەی دەربارە ↗</span>
+              </Link>
+
+              <button
+                type="button"
+                onClick={handleResetAbout}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-100/80 dark:bg-zinc-800 text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 hover:text-amber-600 transition-colors cursor-pointer"
+                title="گەڕاندنەوە بۆ دەقی پێشینە"
+              >
+                <RefreshCw className="w-3.5 h-3.5" />
+                <span>گەڕاندنەوە بۆ بنەڕەت</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Form Side (7 cols) */}
+            <div className="lg:col-span-7">
+              <form
+                onSubmit={handleSaveAbout}
+                className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800 space-y-6 text-right shadow-2xs"
+              >
+                {/* 1. Page Title & Subtitle */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>سەرپەڕ و ناونیشان</span>
+                  </h3>
+
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
+                      ناونیشانی سەرەکی (Title) *
+                    </label>
+                    <input
+                      type="text"
+                      value={aboutTitle}
+                      onChange={(e) => setAboutTitle(e.target.value)}
+                      required
+                      placeholder="دەربارەی میدیای ئیسلامی"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
+                      ژێرنووس و پوختە (Subtitle)
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={aboutSubtitle}
+                      onChange={(e) => setAboutSubtitle(e.target.value)}
+                      placeholder="پلاتفۆرمێکی تایبەتمەند بۆ ناساندن و کۆکردنەوەی بەرهەمە شاکارە سینەمایی و ئەدەبییە ئیسلامییەکان بە کوردی."
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757] resize-none leading-relaxed"
+                    />
+                  </div>
+                </div>
+
+                {/* 2. Mission Section */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>پەیامی ئێمە (Mission)</span>
+                  </h3>
+
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
+                      ناونیشانی پەیام *
+                    </label>
+                    <input
+                      type="text"
+                      value={aboutMissionTitle}
+                      onChange={(e) => setAboutMissionTitle(e.target.value)}
+                      required
+                      placeholder="پەیامی ئێمە"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
+                      دەقی پەیام *
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={aboutMissionText}
+                      onChange={(e) => setAboutMissionText(e.target.value)}
+                      required
+                      placeholder="فەراهەمکردنی سینەمایەکی پاک، بەهاکێش و هۆشیارکەرەوە..."
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757] resize-none leading-relaxed"
+                    />
+                  </div>
+                </div>
+
+                {/* 3. Features & Pillars */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-amber-500" />
+                      <span>تایبەتمەندی و بەشە سەرەکییەکان ({aboutFeatures.length})</span>
+                    </h3>
+
+                    {aboutFeatures.length < 6 && (
+                      <button
+                        type="button"
+                        onClick={handleAddFeature}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-400 hover:bg-amber-500 hover:text-zinc-950 text-xs font-semibold font-sirwan transition-all cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>زیادکردنی خاڵ</span>
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="space-y-3">
+                    {aboutFeatures.map((feat, index) => (
+                      <div
+                        key={index}
+                        className="p-4 rounded-xl border border-stone-200 dark:border-zinc-800 bg-stone-50/40 dark:bg-zinc-900/40 space-y-3"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-xs font-bold font-sirwan text-amber-600 dark:text-amber-400">
+                            خاڵی ٠{index + 1}
+                          </span>
+                          {aboutFeatures.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveFeature(index)}
+                              className="text-xs text-rose-500 hover:text-rose-700 dark:hover:text-rose-400 p-1 rounded-lg transition-colors cursor-pointer"
+                              title="سڕینەوەی ئەم خاڵە"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                          <div className="sm:col-span-1">
+                            <label className="block text-[11px] font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1">
+                              ناونیشان
+                            </label>
+                            <input
+                              type="text"
+                              value={feat.title}
+                              onChange={(e) => handleFeatureChange(index, 'title', e.target.value)}
+                              placeholder="ناونیشانی خاڵ"
+                              className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-sirwan focus:outline-none focus:border-[#d49757]"
+                            />
+                          </div>
+
+                          <div className="sm:col-span-2">
+                            <label className="block text-[11px] font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1">
+                              وەسف و ڕوونکردنەوە
+                            </label>
+                            <input
+                              type="text"
+                              value={feat.desc}
+                              onChange={(e) => handleFeatureChange(index, 'desc', e.target.value)}
+                              placeholder="وەسفی کورت..."
+                              className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-sirwan focus:outline-none focus:border-[#d49757]"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Submit Action Button */}
+                <div className="pt-4 border-t border-stone-100 dark:border-zinc-800 flex items-center gap-3">
+                  <button
+                    type="submit"
+                    disabled={isAboutSubmitting}
+                    className="flex-1 py-3 px-6 rounded-xl bg-[#d49757] hover:bg-[#c28445] text-zinc-950 font-bold font-sirwan text-sm transition-all duration-150 active:scale-[0.98] cursor-pointer shadow-md disabled:opacity-50"
+                  >
+                    {isAboutSubmitting ? 'پاشەکەوتکردن...' : 'پاشەکەوتکردنی گۆڕانکارییەکانی دەربارە'}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* Live Preview Side (5 cols) */}
+            <div className="lg:col-span-5 space-y-4 sticky top-24">
+              <div className="flex items-center gap-1.5 text-xs font-semibold font-sirwan text-zinc-500 dark:text-zinc-400">
+                <Eye className="w-4 h-4 text-[#d49757]" />
+                <span>پێشبینینی ڕاستەوخۆ (Live Preview):</span>
+              </div>
+
+              {/* Preview Container */}
+              <div className="p-5 rounded-2xl sm:rounded-3xl bg-white/95 dark:bg-zinc-900/90 border border-stone-200/80 dark:border-zinc-800 space-y-6 text-right shadow-sm">
+                <div className="text-center space-y-2 border-b border-stone-100 dark:border-zinc-800 pb-4">
+                  <h3 className="text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100 leading-normal">
+                    {aboutTitle || 'دەربارەی میدیای ئیسلامی'}
+                  </h3>
+                  <p className="text-xs font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                    {aboutSubtitle || 'پلاتفۆرمێکی تایبەتمەند...'}
+                  </p>
+                </div>
+
+                {/* Mission Preview */}
+                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-2 text-right">
+                  <div className="inline-flex items-center gap-1.5 text-xs font-bold font-sirwan text-amber-700 dark:text-amber-400">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>{aboutMissionTitle || 'پەیامی ئێمە'}</span>
+                  </div>
+                  <p className="text-xs font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed">
+                    {aboutMissionText || 'دەقی پەیامی ئێمە...'}
+                  </p>
+                </div>
+
+                {/* Features Preview */}
+                <div className="space-y-2.5">
+                  <span className="text-[11px] font-bold font-sirwan text-zinc-500 block">
+                    تایبەتمەندییەکان:
+                  </span>
+                  <div className="space-y-2">
+                    {aboutFeatures.map((f, i) => (
+                      <div
+                        key={i}
+                        className="p-3 rounded-xl border border-stone-100 dark:border-zinc-800 bg-stone-50/50 dark:bg-zinc-800/40 text-right space-y-1"
+                      >
+                        <div className="text-xs font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+                          {f.title || `تایبەتمەندی ٠${i + 1}`}
+                        </div>
+                        <div className="text-[11px] font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                          {f.desc || 'وەسفی کورت...'}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </main>

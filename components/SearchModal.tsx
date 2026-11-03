@@ -7,7 +7,6 @@ import {
   X,
   Film,
   FileText,
-  Send,
   Clock,
   ChevronLeft,
   SearchX,
@@ -301,7 +300,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                         {/* Left: View Details Action Badge */}
                         <div className="shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/10 group-hover:bg-amber-500 text-amber-600 dark:text-amber-400 group-hover:text-zinc-950 border border-amber-500/25 text-xs font-semibold font-sirwan transition-all duration-150">
                           <span>بینین</span>
-                          <span className="transition-transform group-hover:-translate-x-0.5">‹</span>
+                          <ChevronLeft className="w-3.5 h-3.5 shrink-0 transition-transform group-hover:-translate-x-0.5" strokeWidth={2} />
                         </div>
                       </Link>
                     ))}

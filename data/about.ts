@@ -1,0 +1,34 @@
+export interface AboutFeature {
+  title: string;
+  desc: string;
+}
+
+export interface AboutContent {
+  title: string;
+  subtitle: string;
+  missionTitle: string;
+  missionText: string;
+  features: AboutFeature[];
+}
+
+export const DEFAULT_ABOUT_CONTENT: AboutContent = {
+  title: "دەربارەی میدیای ئیسلامی",
+  subtitle: "پلاتفۆرمێکی تایبەتمەند بۆ ناساندن و کۆکردنەوەی بەرهەمە شاکارە سینەمایی و ئەدەبییە ئیسلامییەکان بە کوردی.",
+  missionTitle: "پەیامی ئێمە",
+  missionText: "فەراهەمکردنی سینەمایەکی پاک، بەهاکێش و هۆشیارکەرەوە، لە پاڵ بڵاوکردنەوەی گەنجینەیەک لە وتار و دەقی فیکری و ئەدەبی بەرز.",
+  features: [
+    {
+      title: "سینەمای هەڵبژێردراو",
+      desc: "کۆکراوەی سەرنجڕاکێشترین فیلم، کارتۆن و بەڵگەفیلمە بەپێزەکان."
+    },
+    {
+      title: "نووسین و فیکر",
+      desc: "ئەرشیفێکی دەوڵەمەند لە وتار، تێڕامان، و ناساندنی سەرچاوە پەروەردەییەکان."
+    },
+    {
+      title: "دەستپێڕاگەیشتنی ئاسان",
+      desc: "بەستنەوەی ڕاستەوخۆی بەرهەمەکان بە کەناڵی فەرمی تێلیگرام بۆ سەیرکردنی بێ کێشە."
+    }
+  ]
+};
+

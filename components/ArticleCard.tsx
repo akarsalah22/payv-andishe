@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import { ChevronLeft } from 'lucide-react';
 import type { Article } from '@/data/articles';
 
 interface ArticleCardProps {
@@ -70,9 +71,9 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
         <p className="text-[10px] sm:text-xs text-zinc-300/90 line-clamp-1 sm:line-clamp-2 leading-relaxed">
           {article.excerpt || (article as any).summary || (article as any).description}
         </p>
-        <div className="mt-0.5 sm:mt-1 flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-amber-400">
+        <div className="mt-0.5 sm:mt-1 inline-flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-amber-400 group-hover:text-amber-300 transition-colors">
           <span>خوێندنەوەی وتار</span>
-          <span className="transition-transform duration-200 group-hover:-translate-x-1">‹</span>
+          <ChevronLeft className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:-translate-x-0.5" strokeWidth={2} />
         </div>
       </div>
     </Link>

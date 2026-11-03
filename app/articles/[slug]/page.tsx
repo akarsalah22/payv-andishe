@@ -3,7 +3,6 @@ import {
   ChevronRight,
   Clock,
   Calendar,
-  Send,
   BookOpen,
 } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -11,6 +10,7 @@ import { getArticleBySlug } from '@/data/articles';
 import { readArticles } from '@/lib/storage';
 import { ArticleReaderClient } from '@/components/ArticleReaderClient';
 import { CopyLinkButton } from '@/components/CopyLinkButton';
+import { TelegramIcon } from '@/components/TelegramIcon';
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -101,9 +101,9 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
             href={shareTelegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent cursor-pointer touch-manipulation"
+            className="group inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent cursor-pointer touch-manipulation"
           >
-            <Send className="w-3.5 h-3.5" strokeWidth={1.75} />
+            <TelegramIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
             <span>هاوبەشکردن</span>
           </a>
         </div>
@@ -184,9 +184,9 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
             href={shareTelegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
           >
-            <Send className="w-4 h-4" strokeWidth={1.75} />
+            <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
             <span>هاوبەشکردن لە تێلیگرام</span>
           </a>
         </div>
@@ -212,9 +212,9 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
               href="https://t.me/mediay_islamy"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="group inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
-              <Send className="w-4 h-4" strokeWidth={1.75} />
+              <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
               <span>پەیوەستبوون بە کەناڵی تێلیگرام</span>
             </a>
           </div>
