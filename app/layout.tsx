@@ -16,19 +16,18 @@ import {
 export const metadata: Metadata = {
   metadataBase: new URL('https://mediay-islamy.vercel.app'),
   title: {
-    default: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
+    default: "میدیای ئیسلامی | پانتاییەک بۆ فیلم و نووسینی ئیسلامی",
     template: "%s | میدیای ئیسلامی",
   },
-  description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
+  description: "ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و کارتۆن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.",
   keywords: [
-    "سینەما",
     "فیلم",
-    "ئەنیمەیشن",
-    "ئەدەب",
+    "کارتۆن",
+    "زنجیرە",
+    "ئایەت",
     "کتێب",
-    "وتار",
+    "شیعر",
     "فیکر",
-    "کوردی",
     "میدیای ئیسلامی",
   ],
   authors: [{ name: "میدیای ئیسلامی" }],
@@ -39,35 +38,27 @@ export const metadata: Metadata = {
     locale: "ckb_IQ",
     url: "https://mediay-islamy.vercel.app",
     siteName: "میدیای ئیسلامی",
-    title: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
-    description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
+    title: "میدیای ئیسلامی | پانتاییەک بۆ فیلم و نووسینی ئیسلامی",
+    description: "ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و کارتۆن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.",
     images: [
       {
-        url: "https://mediay-islamy.vercel.app/og-preview.png",
-        width: 1200,
-        height: 630,
-        alt: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
-        type: "image/png",
+        url: "/img/logo.svg",
+        alt: "میدیای ئیسلامی | پانتاییەک بۆ فیلم و نووسینی ئیسلامی",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەب",
-    description: "ئەرشیڤێکی کوردی تایبەت بە فیلم، ئەنیمەیشن، وتاری ئیسلامی",
-    images: ["https://mediay-islamy.vercel.app/og-preview.png"],
+    title: "میدیای ئیسلامی | پانتاییەک بۆ فیلم و نووسینی ئیسلامی",
+    description: "ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و کارتۆن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.",
+    images: ["/img/logo.svg"],
   },
   icons: {
     icon: [
-      { url: "/images/logo.jpg", type: "image/jpeg" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' }
     ],
-    apple: [
-      { url: "/images/logo.jpg", sizes: "180x180", type: "image/jpeg" },
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    shortcut: "/images/logo.jpg",
+    apple: '/apple-touch-icon.png',
   },
   manifest: "/manifest.json",
 };
@@ -79,11 +70,16 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="ku"
+      lang="ckb"
       dir="rtl"
       suppressHydrationWarning
       className={`${vazirmatnFont.variable} ${peshangFont.variable} ${sirwanFont.variable} ${sirwan001Font.variable} ${sirwan003Font.variable} scroll-smooth`}
     >
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      </head>
       <body className={`${vazirmatnFont.className} min-h-screen bg-[#faf8f5] text-zinc-900 antialiased transition-colors duration-200 dark:bg-[#121214] dark:text-zinc-100 flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-right`}>
         <ThemeProvider
           attribute="class"

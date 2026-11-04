@@ -200,23 +200,23 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
       </div>
 
       {/* Main Hero / Backdrop Showcase Card */}
-      <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-zinc-950 border border-zinc-200/80 dark:border-white/10 shadow-2xl">
-        {/* Ambient Blurred Backdrop */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="relative w-full rounded-3xl overflow-hidden p-6 sm:p-8 transition-colors duration-200 bg-white border border-zinc-200 shadow-md dark:bg-zinc-900 dark:border-zinc-800 dark:shadow-2xl">
+        {/* Ambient Blurred Backdrop (Dark mode only for cinematic glow, clean white in light mode) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none hidden dark:block">
           <img
             src={posterSrc}
             alt=""
             aria-hidden="true"
-            className="w-full h-full object-cover blur-2xl opacity-40 scale-110"
+            className="w-full h-full object-cover blur-2xl opacity-25 scale-110"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/85 to-zinc-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/85 to-zinc-900/40" />
         </div>
 
         {/* Hero Content Grid */}
-        <div className="relative z-10 p-5 sm:p-8 md:p-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
+        <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
           {/* Poster Card */}
-          <div className="relative w-44 sm:w-56 md:w-60 aspect-[2/3] shrink-0 rounded-2xl overflow-hidden shadow-2xl border border-white/15 bg-zinc-900 group">
+          <div className="relative w-44 sm:w-56 md:w-60 aspect-[2/3] shrink-0 rounded-2xl overflow-hidden shadow-xl border border-zinc-200/80 dark:border-white/15 bg-zinc-100 dark:bg-zinc-800 group">
             <img
               src={posterSrc}
               alt={film.titleKurdish}
@@ -226,20 +226,20 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               referrerPolicy="no-referrer"
             />
             {/* Subtle Gradient On Poster */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
           </div>
 
           {/* Details & Metadata Column */}
           <div className="flex-1 text-center md:text-right space-y-4 w-full">
             {/* Badges Bar */}
             <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap">
-              <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-amber-500 text-zinc-950 shadow-md">
+              <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-amber-500 text-zinc-950 shadow-sm">
                 {film.category}
               </span>
               {film.genres && film.genres.map((g) => (
                 <span
                   key={g}
-                  className="px-2.5 py-1 rounded-full text-xs font-medium font-sirwan bg-white/15 text-white backdrop-blur-md border border-white/15 shadow-2xs"
+                  className="px-2.5 py-1 rounded-full text-xs font-medium font-sirwan bg-zinc-100 text-zinc-700 dark:bg-white/10 dark:text-zinc-200 border border-zinc-200/80 dark:border-white/10 shadow-2xs"
                 >
                   {g}
                 </span>
@@ -248,27 +248,27 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
 
             {/* Title & Original Title */}
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-peshang text-white leading-normal">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-peshang text-zinc-900 dark:text-white leading-normal">
                 {film.titleKurdish}
               </h1>
               {film.originalTitle && (
-                <p className="text-xs sm:text-sm text-zinc-400 font-sans mt-1">
+                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-sans mt-1">
                   {film.originalTitle}
                 </p>
               )}
             </div>
 
             {/* Quick Metadata Row */}
-            <div className="flex items-center justify-center md:justify-start gap-4 text-xs sm:text-sm text-zinc-300 font-sirwan flex-wrap pt-1">
+            <div className="flex items-center justify-center md:justify-start gap-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 font-sirwan flex-wrap pt-1">
               <span className="inline-flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-amber-400" strokeWidth={1.75} />
+                <Calendar className="w-4 h-4 text-amber-500 dark:text-amber-400" strokeWidth={1.75} />
                 <span>ساڵی بەرهەمهێنان: {film.year}</span>
               </span>
               {film.duration && (
                 <>
-                  <span className="text-zinc-600">•</span>
+                  <span className="text-zinc-400 dark:text-zinc-600">•</span>
                   <span className="inline-flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-amber-400" strokeWidth={1.75} />
+                    <Clock className="w-4 h-4 text-amber-500 dark:text-amber-400" strokeWidth={1.75} />
                     <span>ماوە: {film.duration}</span>
                   </span>
                 </>
