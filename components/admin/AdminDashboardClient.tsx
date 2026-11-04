@@ -91,6 +91,8 @@ export function AdminDashboardClient() {
   const [articleExcerpt, setArticleExcerpt] = useState('');
   const [articleContent, setArticleContent] = useState('');
   const [articleAuthor, setArticleAuthor] = useState('میدیای ئیسلامی');
+  const [articlePdfUrl, setArticlePdfUrl] = useState('');
+  const [articleExternalUrl, setArticleExternalUrl] = useState('');
 
   // About Page Form State
   const [aboutTitle, setAboutTitle] = useState(DEFAULT_ABOUT_CONTENT.title);
@@ -346,6 +348,8 @@ export function AdminDashboardClient() {
     setArticleExcerpt('');
     setArticleContent('');
     setArticleAuthor('میدیای ئیسلامی');
+    setArticlePdfUrl('');
+    setArticleExternalUrl('');
   };
 
   // Start Editing Film
@@ -461,6 +465,8 @@ export function AdminDashboardClient() {
     setArticleExcerpt(article.excerpt);
     setArticleContent(Array.isArray(article.content) ? article.content.join('\n\n') : (article.content || ''));
     setArticleAuthor(article.author || 'میدیای ئیسلامی');
+    setArticlePdfUrl(article.pdfUrl || '');
+    setArticleExternalUrl(article.externalUrl || '');
     setActiveTab('create');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -509,6 +515,8 @@ export function AdminDashboardClient() {
           coverImage: articleCoverImage.trim() || editingArticle.coverImage,
           imageUrl: articleCoverImage.trim() || editingArticle.imageUrl,
           author: articleAuthor.trim() || editingArticle.author,
+          pdfUrl: articlePdfUrl.trim() || undefined,
+          externalUrl: articleExternalUrl.trim() || undefined,
         }
       : {
           id: `article-${Date.now()}`,
@@ -522,6 +530,8 @@ export function AdminDashboardClient() {
           coverImage: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
           imageUrl: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
           author: articleAuthor.trim() || 'میدیای ئیسلامی',
+          pdfUrl: articlePdfUrl.trim() || undefined,
+          externalUrl: articleExternalUrl.trim() || undefined,
         };
 
     try {
@@ -745,7 +755,9 @@ export function AdminDashboardClient() {
     coverImage: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
     imageUrl: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
     author: articleAuthor.trim() || 'میدیای ئیسلامی',
-  }), [editingArticle, articleTitle, articleSlug, articleExcerpt, articleContent, articleCategory, articleReadTime, articleCoverImage, articleAuthor]);
+    pdfUrl: articlePdfUrl.trim() || undefined,
+    externalUrl: articleExternalUrl.trim() || undefined,
+  }), [editingArticle, articleTitle, articleSlug, articleExcerpt, articleContent, articleCategory, articleReadTime, articleCoverImage, articleAuthor, articlePdfUrl, articleExternalUrl]);
 
   return (
     <main
@@ -1200,6 +1212,16 @@ export function AdminDashboardClient() {
                           <span className="px-2 py-0.5 rounded-md text-[11px] font-semibold font-sirwan bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/25">
                             {article.category}
                           </span>
+                          {article.pdfUrl && (
+                            <span className="px-1.5 py-0.5 rounded text-[10px] font-bold font-sans bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
+                              PDF
+                            </span>
+                          )}
+                          {article.externalUrl && (
+                            <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold font-sirwan bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                              سەرچاوە
+                            </span>
+                          )}
                           <span>•</span>
                           <span>{article.date}</span>
                           <span>•</span>
@@ -1757,6 +1779,43 @@ export function AdminDashboardClient() {
                       placeholder="دەقی تەواوی وتارەکە لێرەدا بنووسە..."
                       className="w-full px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757] leading-loose"
                     />
+                  </div>
+
+                  {/* Additional Attachments: PDF Document & External Link */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-stone-50/70 dark:bg-zinc-900/50 border border-stone-200/80 dark:border-zinc-800">
+                    <div>
+                      <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
+                        فایلی PDF (داگرتن / خوێندنەوەی پەڕتووک یان وتار)
+                      </label>
+                      <input
+                        type="url"
+                        value={articlePdfUrl}
+                        onChange={(e) => setArticlePdfUrl(e.target.value)}
+                        placeholder="https://.../document.pdf"
+                        dir="ltr"
+                        className="w-full px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#d49757]"
+                      />
+                      <p className="text-[11px] font-sirwan text-zinc-500 dark:text-zinc-400 mt-1">
+                        بەستەری ڕاستەوخۆ بۆ خوێندنەوە یان داگرتنی فایلی PDF
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
+                        بەستەری دەرەکی (External Link / سەرچاوەی بابەت)
+                      </label>
+                      <input
+                        type="url"
+                        value={articleExternalUrl}
+                        onChange={(e) => setArticleExternalUrl(e.target.value)}
+                        placeholder="https://example.com/source"
+                        dir="ltr"
+                        className="w-full px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#d49757]"
+                      />
+                      <p className="text-[11px] font-sirwan text-zinc-500 dark:text-zinc-400 mt-1">
+                        لینکی ماڵپەڕ یان سەرچاوەی ئەسڵیی دەرەکی
+                      </p>
+                    </div>
                   </div>
 
                   {/* Action Buttons: Unified Save & Cancel */}

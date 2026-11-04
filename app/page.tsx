@@ -4,7 +4,6 @@ import { readFilms, readArticles } from '@/lib/storage';
 import { FilmCard } from '@/components/FilmCard';
 import { ArticleCard } from '@/components/ArticleCard';
 import { TelegramBanner } from '@/components/TelegramBanner';
-import { TelegramIcon } from '@/components/TelegramIcon';
 
 export const dynamic = "force-dynamic";
 
@@ -36,8 +35,8 @@ export default async function HomePage() {
           ئەرشیڤێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و ئەنیمەیشن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەیەکان.
         </p>
 
-        {/* Balanced Primary CTAs & Secondary Telegram Link */}
-        <div className="flex flex-col items-center gap-3.5 pt-2">
+        {/* Balanced Primary CTAs */}
+        <div className="pt-2">
           {/* Two Balanced Primary Section Buttons */}
           <div className="grid grid-cols-2 gap-3 w-full max-w-sm mx-auto sm:flex sm:w-auto sm:items-center sm:justify-center">
             {/* Button 1: فیلم و ئەنیمەیشن -> /films */}
@@ -58,17 +57,6 @@ export default async function HomePage() {
               <span>نووسین و وتار</span>
             </Link>
           </div>
-
-          {/* Secondary Telegram Link */}
-          <a
-            href="https://t.me/mediay_islamy"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 px-4 py-1.5 rounded-xl text-zinc-500 dark:text-zinc-400 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-500/10 text-xs sm:text-sm font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-          >
-            <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-            <span>کەناڵی تێلیگرام</span>
-          </a>
         </div>
       </section>
 

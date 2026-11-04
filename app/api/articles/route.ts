@@ -55,6 +55,8 @@ export async function POST(req: Request) {
         newArticle.imageUrl ||
         'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
       author: newArticle.author || 'میدیای ئیسلامی',
+      pdfUrl: newArticle.pdfUrl ? newArticle.pdfUrl.trim() : undefined,
+      externalUrl: newArticle.externalUrl ? newArticle.externalUrl.trim() : undefined,
     };
 
     await saveSingleArticle(articleToSave);
@@ -115,6 +117,8 @@ export async function PUT(req: Request) {
       content: paragraphs.length > 0 ? paragraphs : [''],
       coverImage: updatedArticle.coverImage || updatedArticle.imageUrl || existing?.coverImage || '',
       imageUrl: updatedArticle.coverImage || updatedArticle.imageUrl || existing?.imageUrl || '',
+      pdfUrl: updatedArticle.pdfUrl !== undefined ? (updatedArticle.pdfUrl ? updatedArticle.pdfUrl.trim() : undefined) : existing?.pdfUrl,
+      externalUrl: updatedArticle.externalUrl !== undefined ? (updatedArticle.externalUrl ? updatedArticle.externalUrl.trim() : undefined) : existing?.externalUrl,
     };
 
     await saveSingleArticle(mergedArticle);

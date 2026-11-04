@@ -22,12 +22,14 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-zinc-200/70 dark:border-zinc-800/50">
           {/* Identity & Motto */}
           <div className="space-y-3 max-w-md text-right">
-            <Link href="/" className="inline-flex items-center gap-2.5 group select-none">
-              <img
-                src="/images/logo.jpg"
-                alt="میدیای ئیسلامی"
-                className="h-9 w-auto rounded-xl object-contain transition-transform duration-200 group-hover:scale-105"
-              />
+            <Link href="/" className="inline-flex items-center gap-2.5 sm:gap-3 group select-none">
+              <div className="relative flex items-center justify-center">
+                <img
+                  src="/img/logo.svg"
+                  alt="میدیای ئیسلامی"
+                  className="h-9 w-auto max-w-[160px] object-contain transition-transform duration-200 group-hover:scale-105"
+                />
+              </div>
               <span className="text-xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 group-hover:text-amber-500 transition-colors">
                 میدیای ئیسلامی
               </span>

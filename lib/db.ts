@@ -77,9 +77,19 @@ export async function ensureDbInitialized(): Promise<boolean> {
         cover_image TEXT NOT NULL,
         image_url TEXT,
         author TEXT NOT NULL DEFAULT 'میدیای ئیسلامی',
+        pdf_url TEXT,
+        external_url TEXT,
         created_at TIMESTAMPTZ DEFAULT NOW(),
         updated_at TIMESTAMPTZ DEFAULT NOW()
       );
+    `);
+
+    await sql.query(`
+      ALTER TABLE articles ADD COLUMN IF NOT EXISTS pdf_url TEXT;
+    `);
+
+    await sql.query(`
+      ALTER TABLE articles ADD COLUMN IF NOT EXISTS external_url TEXT;
     `);
 
     // 3. Create site_settings table for dynamic settings like About page
@@ -189,6 +199,8 @@ interface ArticleDbRow {
   coverImage: string;
   imageUrl: string | null;
   author: string | null;
+  pdfUrl?: string | null;
+  externalUrl?: string | null;
 }
 
 /**
@@ -339,7 +351,9 @@ export async function getArticlesFromDb(): Promise<Article[] | null> {
         date,
         cover_image AS "coverImage",
         image_url AS "imageUrl",
-        author
+        author,
+        pdf_url AS "pdfUrl",
+        external_url AS "externalUrl"
       FROM articles
       ORDER BY created_at DESC;
     `);
@@ -356,6 +370,8 @@ export async function getArticlesFromDb(): Promise<Article[] | null> {
       coverImage: r.coverImage,
       imageUrl: r.imageUrl || r.coverImage,
       author: r.author || 'میدیای ئیسلامی',
+      pdfUrl: r.pdfUrl || undefined,
+      externalUrl: r.externalUrl || undefined,
     }));
   } catch (err) {
     console.error('Failed to get articles from DB:', err);
@@ -376,8 +392,8 @@ export async function upsertArticleToDb(article: Article): Promise<boolean> {
       `
       INSERT INTO articles (
         id, slug, title, excerpt, content, category, read_time,
-        date, cover_image, image_url, author, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, NOW())
+        date, cover_image, image_url, author, pdf_url, external_url, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW())
       ON CONFLICT (id) DO UPDATE SET
         slug = EXCLUDED.slug,
         title = EXCLUDED.title,
@@ -389,6 +405,8 @@ export async function upsertArticleToDb(article: Article): Promise<boolean> {
         cover_image = EXCLUDED.cover_image,
         image_url = EXCLUDED.image_url,
         author = EXCLUDED.author,
+        pdf_url = EXCLUDED.pdf_url,
+        external_url = EXCLUDED.external_url,
         updated_at = NOW();
       `,
       [
@@ -403,6 +421,8 @@ export async function upsertArticleToDb(article: Article): Promise<boolean> {
         article.coverImage,
         article.imageUrl || article.coverImage,
         article.author,
+        article.pdfUrl || null,
+        article.externalUrl || null,
       ]
     );
     return true;

@@ -27,35 +27,73 @@ export async function generateMetadata({
   params,
 }: FilmPageProps): Promise<Metadata> {
   const { id } = await params;
-  const decodedId = decodeURIComponent(id);
+  const rawId = id ? String(id).trim() : '';
+  let decodedId = rawId;
+  try {
+    decodedId = decodeURIComponent(rawId).trim();
+  } catch {
+    // ignore
+  }
+
   const films = await readFilms();
   const film =
-    films.find((f) => String(f.id) === decodedId || f.slug === decodedId) ||
-    SAMPLE_FILMS.find((f) => String(f.id) === decodedId || f.slug === decodedId) ||
+    films.find(
+      (f) =>
+        f.id === rawId ||
+        f.id === decodedId ||
+        f.slug === rawId ||
+        f.slug === decodedId ||
+        f.id?.toLowerCase() === rawId.toLowerCase() ||
+        f.id?.toLowerCase() === decodedId.toLowerCase() ||
+        f.slug?.toLowerCase() === rawId.toLowerCase() ||
+        f.slug?.toLowerCase() === decodedId.toLowerCase()
+    ) ||
+    SAMPLE_FILMS.find(
+      (f) =>
+        f.id === rawId ||
+        f.id === decodedId ||
+        f.slug === rawId ||
+        f.slug === decodedId ||
+        f.id?.toLowerCase() === rawId.toLowerCase() ||
+        f.id?.toLowerCase() === decodedId.toLowerCase() ||
+        f.slug?.toLowerCase() === rawId.toLowerCase() ||
+        f.slug?.toLowerCase() === decodedId.toLowerCase()
+    ) ||
     getFilmById(decodedId) ||
     getFilmBySlug(decodedId);
 
   if (!film) {
     return {
       title: 'فیلم نەدۆزرایەوە | میدیای ئیسلامی',
+      description: 'فیلمی داواکراو بوونی نییە یان سڕدراوەتەوە.',
     };
   }
 
   const posterSrc = film.posterUrl || (film as any).image || '/placeholder.jpg';
-  const description = film.description || `${film.titleKurdish} - پەخشی ڕاستەوخۆ لە کەناڵی تێلیگرام`;
+  const description =
+    film.description ||
+    `${film.titleKurdish} (${film.year}) - لە پۆلینی ${film.category}. تەماشای بکە لە میدیای ئیسلامی.`;
+  const shareableUrl = `https://mediay-islamy.vercel.app/films/${encodeURIComponent(film.slug || film.id)}`;
+  const fullPosterUrl = posterSrc.startsWith('http')
+    ? posterSrc
+    : `https://mediay-islamy.vercel.app${posterSrc.startsWith('/') ? posterSrc : `/${posterSrc}`}`;
 
   return {
     title: `${film.titleKurdish} | میدیای ئیسلامی`,
     description,
+    alternates: {
+      canonical: shareableUrl,
+    },
     openGraph: {
-      title: film.titleKurdish,
+      title: `${film.titleKurdish} | میدیای ئیسلامی`,
       description,
       type: 'video.movie',
       locale: 'ckb_IQ',
-      url: `https://mediay-islamy.vercel.app/films/${film.id || film.slug}`,
+      url: shareableUrl,
+      siteName: 'میدیای ئیسلامی',
       images: [
         {
-          url: posterSrc.startsWith('http') ? posterSrc : `https://mediay-islamy.vercel.app${posterSrc}`,
+          url: fullPosterUrl,
           width: 1200,
           height: 630,
           alt: film.titleKurdish,
@@ -64,20 +102,47 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'summary_large_image',
-      title: film.titleKurdish,
+      title: `${film.titleKurdish} | میدیای ئیسلامی`,
       description,
-      images: [posterSrc.startsWith('http') ? posterSrc : `https://mediay-islamy.vercel.app${posterSrc}`],
+      images: [fullPosterUrl],
     },
   };
 }
 
 export default async function FilmDetailsPage({ params }: FilmPageProps) {
   const { id } = await params;
-  const decodedId = decodeURIComponent(id);
+  const rawId = id ? String(id).trim() : '';
+  let decodedId = rawId;
+  try {
+    decodedId = decodeURIComponent(rawId).trim();
+  } catch {
+    // ignore
+  }
+
   const films = await readFilms();
   const film =
-    films.find((f) => String(f.id) === decodedId || f.slug === decodedId) ||
-    SAMPLE_FILMS.find((f) => String(f.id) === decodedId || f.slug === decodedId) ||
+    films.find(
+      (f) =>
+        f.id === rawId ||
+        f.id === decodedId ||
+        f.slug === rawId ||
+        f.slug === decodedId ||
+        f.id?.toLowerCase() === rawId.toLowerCase() ||
+        f.id?.toLowerCase() === decodedId.toLowerCase() ||
+        f.slug?.toLowerCase() === rawId.toLowerCase() ||
+        f.slug?.toLowerCase() === decodedId.toLowerCase()
+    ) ||
+    SAMPLE_FILMS.find(
+      (f) =>
+        f.id === rawId ||
+        f.id === decodedId ||
+        f.slug === rawId ||
+        f.slug === decodedId ||
+        f.id?.toLowerCase() === rawId.toLowerCase() ||
+        f.id?.toLowerCase() === decodedId.toLowerCase() ||
+        f.slug?.toLowerCase() === rawId.toLowerCase() ||
+        f.slug?.toLowerCase() === decodedId.toLowerCase()
+    ) ||
     getFilmById(decodedId) ||
     getFilmBySlug(decodedId);
 
@@ -89,8 +154,9 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
   const watchUrl = getFilmWatchUrl(film);
   const platform = getFilmPlatform(film);
   const isYouTube = platform === 'youtube';
+  const shareFilmUrl = `https://mediay-islamy.vercel.app/films/${encodeURIComponent(film.slug || film.id)}`;
   const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-    `https://mediay-islamy.vercel.app/films/${film.id || film.slug}`
+    shareFilmUrl
   )}&text=${encodeURIComponent(film.titleKurdish)}`;
 
   // Related films from the same category or other featured films
@@ -114,8 +180,10 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
         </Link>
 
         <div className="flex items-center gap-2">
-          {/* Copy Link Button */}
-          <CopyLinkButton url={`https://mediay-islamy.vercel.app/films/${film.id || film.slug}`} />
+          {/* Top Copy Link Button */}
+          <CopyLinkButton
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-stone-100 hover:bg-stone-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 border border-stone-200 dark:border-zinc-700 transition-all duration-150 ease-out active:scale-95 cursor-pointer select-none"
+          />
 
           {/* Share to Telegram Button */}
           <a
@@ -207,8 +275,8 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               )}
             </div>
 
-            {/* Action Buttons: Watch on Telegram / YouTube & Share */}
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3">
+            {/* Primary Action Buttons: Watch on Telegram / YouTube & Copy Link */}
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 w-full">
               <a
                 href={watchUrl}
                 target="_blank"
@@ -227,10 +295,7 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
                 <span>{isYouTube ? 'بینینی فیلم لە یووتووب' : 'بینینی فیلم لە تێلیگرام'}</span>
               </a>
 
-              <CopyLinkButton
-                url={`https://mediay-islamy.vercel.app/films/${film.id || film.slug}`}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-medium font-sirwan text-sm border border-white/15 backdrop-blur-md active:scale-95 transition-all duration-200 cursor-pointer"
-              />
+              <CopyLinkButton />
             </div>
           </div>
         </div>

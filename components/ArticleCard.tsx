@@ -49,10 +49,17 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
 
       {/* Top Badges (Header) */}
       <div className="absolute top-2 sm:top-3 inset-x-0 px-2.5 sm:px-3 flex items-center justify-between z-20 pointer-events-none" dir="rtl">
-        {/* Category Badge on the right */}
-        <span className="shrink-0 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-bold font-sirwan rounded-full bg-amber-500 text-zinc-950 shadow-md">
-          {article.category}
-        </span>
+        {/* Category & Resource Badges on the right */}
+        <div className="flex items-center gap-1.5">
+          <span className="shrink-0 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-bold font-sirwan rounded-full bg-amber-500 text-zinc-950 shadow-md">
+            {article.category}
+          </span>
+          {article.pdfUrl && (
+            <span className="shrink-0 px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-bold font-sans rounded-full bg-rose-600/90 text-white shadow-sm">
+              PDF
+            </span>
+          )}
+        </div>
 
         {/* Reading Time Badge on the left */}
         <span className="shrink-0 inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[9px] sm:text-[11px] font-medium font-sirwan rounded-full bg-black/60 backdrop-blur-md text-zinc-200 border border-white/10 shadow-sm">

@@ -20,6 +20,8 @@ export interface Article {
   coverImage: string;
   imageUrl: string; // for backward compatibility with existing components
   author: string;
+  pdfUrl?: string;
+  externalUrl?: string;
 }
 
 export const ARTICLE_CATEGORIES: ('هەمووی' | ArticleCategory)[] = [

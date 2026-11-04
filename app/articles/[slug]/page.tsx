@@ -4,6 +4,9 @@ import {
   Clock,
   Calendar,
   BookOpen,
+  FileText,
+  Download,
+  ExternalLink,
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getArticleBySlug } from '@/data/articles';
@@ -141,6 +144,36 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
             {article.excerpt}
           </p>
         </div>
+
+        {/* Interactive Resource Actions: PDF Download / View & External Link */}
+        {(article.pdfUrl || article.externalUrl) && (
+          <div className="flex flex-wrap items-center justify-start gap-3 pt-1">
+            {article.pdfUrl && (
+              <a
+                href={article.pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-md shadow-rose-600/20 active:scale-95 transition-all duration-150 ease-out cursor-pointer select-none"
+              >
+                <FileText className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
+                <span>خوێندنەوە و داگرتنی PDF</span>
+                <Download className="w-3.5 h-3.5 opacity-80" />
+              </a>
+            )}
+
+            {article.externalUrl && (
+              <a
+                href={article.externalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/95 dark:bg-zinc-800/90 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-semibold font-sirwan text-xs sm:text-sm border border-zinc-200/90 dark:border-zinc-700/80 hover:border-amber-500/40 dark:hover:border-amber-500/40 shadow-xs active:scale-95 transition-all duration-150 ease-out cursor-pointer select-none"
+              >
+                <ExternalLink className="w-4 h-4 text-amber-500 shrink-0 transition-transform group-hover:scale-110" />
+                <span>سەرچاوەی دەرەکی</span>
+              </a>
+            )}
+          </div>
+        )}
       </header>
 
       {/* Cover Image Container with strictly defined 16:9 Aspect Ratio & fixed height */}

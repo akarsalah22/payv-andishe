@@ -5,7 +5,7 @@ export function TelegramBanner() {
     <section
       id="about"
       dir="rtl"
-      className="w-full relative rounded-2xl border border-amber-900/10 dark:border-zinc-800/80 bg-white/95 text-zinc-900 shadow-xs dark:bg-zinc-900/85 dark:text-zinc-100 p-6 sm:p-8 text-right select-none backdrop-blur-sm transition-all duration-300 overflow-hidden"
+      className="relative w-full rounded-3xl p-6 sm:p-8 transition-colors duration-300 bg-white border border-zinc-200/80 shadow-lg shadow-zinc-200/50 dark:bg-zinc-900/90 dark:border-zinc-800 dark:shadow-2xl text-zinc-900 dark:text-zinc-100 text-right select-none overflow-hidden"
     >
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-3 max-w-2xl">
