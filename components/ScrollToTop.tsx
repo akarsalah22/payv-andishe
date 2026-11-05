@@ -35,13 +35,13 @@ export function ScrollToTop() {
       onClick={scrollToTop}
       aria-label="گەڕانەوە بۆ سەرەوە"
       title="گەڕانەوە بۆ سەرەوە"
-      className={`fixed bottom-6 right-6 z-50 w-11 h-11 rounded-2xl flex items-center justify-center bg-zinc-900 text-white hover:bg-zinc-800 shadow-lg border border-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200 dark:shadow-white/10 dark:border-zinc-200 hover:scale-110 active:scale-95 transition-all duration-300 ease-in-out cursor-pointer select-none tap-highlight-transparent ${
+      className={`group fixed bottom-6 right-6 z-50 w-11 h-11 rounded-full flex items-center justify-center shadow-lg border cursor-pointer select-none tap-highlight-transparent transition-all duration-300 ease-in-out hover:scale-105 active:scale-90 active:opacity-90 bg-zinc-900 text-white border-zinc-700 hover:bg-amber-500 hover:text-black hover:border-amber-500 active:bg-amber-600 dark:bg-white dark:text-zinc-900 dark:border-zinc-200 dark:shadow-white/5 dark:hover:bg-amber-500 dark:hover:text-black dark:hover:border-amber-400 dark:active:bg-amber-500 ${
         isVisible
           ? 'opacity-100 translate-y-0 pointer-events-auto'
           : 'opacity-0 translate-y-4 pointer-events-none'
       }`}
     >
-      <ChevronUp className="w-5 h-5 transition-transform duration-200" strokeWidth={2.5} />
+      <ChevronUp className="w-5 h-5 transition-transform duration-200 group-hover:-translate-y-0.5" strokeWidth={2.5} />
     </button>
   );
 }
