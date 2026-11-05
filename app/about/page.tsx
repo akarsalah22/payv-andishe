@@ -92,7 +92,7 @@ export default async function AboutPage() {
           </div>
 
           <h2 className="text-xl sm:text-2xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-            پەیوەندی و پێشنیازەکان
+            پەیوەندی و پێشنیارەکان
           </h2>
 
           <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -102,24 +102,16 @@ export default async function AboutPage() {
 
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
-            href="https://ig.me/m/hamahang_bwn"
+            href="https://instagram.com/hamahang_bwn"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-95 text-white font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
           >
             <InstagramIcon className="w-4.5 h-4.5" strokeWidth={2} />
-            <span>ناردنی پەیام لە ئینستاگرام (Direct)</span>
+            <span>ناردنی پەیام لە ئینستاگرام </span>
           </a>
 
-          <a
-            href="https://instagram.com/hamahang_bwn"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl border border-zinc-200/90 dark:border-zinc-700/80 bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 hover:text-pink-600 dark:hover:text-pink-400 font-medium font-sirwan text-xs sm:text-sm tracking-normal transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-          >
-            <span>سەردانی پەیج</span>
-            <ExternalLink className="w-3.5 h-3.5" strokeWidth={1.75} />
-          </a>
+
         </div>
       </section>
 
