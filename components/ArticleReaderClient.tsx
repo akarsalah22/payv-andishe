@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ChevronRight, Clock, Calendar, BookOpen, Copy } from 'lucide-react';
+import { ChevronRight, Clock, Calendar, Copy } from 'lucide-react';
 import type { Article } from '@/data/articles';
 import { useToast } from '@/components/ToastContext';
 import { TelegramIcon } from '@/components/TelegramIcon';
@@ -219,35 +219,6 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
             <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
             <span>هاوبەشکردن لە تێلیگرام</span>
           </a>
-        </div>
-
-        {/* Telegram Official Channel Invitation Card */}
-        <div className="p-6 rounded-2xl bg-[#d49757]/10 border border-[#d49757]/25 text-right space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#d49757] text-zinc-950 flex items-center justify-center shrink-0 shadow-xs">
-              <BookOpen className="w-5 h-5" strokeWidth={1.75} />
-            </div>
-            <div>
-              <h3 className="text-base font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-                کەناڵی فەرمیی میدیای ئیسلامی
-              </h3>
-              <p className="text-xs font-sirwan text-zinc-600 dark:text-zinc-400">
-                بۆ خوێندنەوەی بەردەوامی وتاری ئیسلامی و بینینی فیلمە پەروەردەیەکان
-              </p>
-            </div>
-          </div>
-
-          <div className="pt-1">
-            <a
-              href="https://t.me/mediay_islamy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-            >
-              <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-              <span>پەیوەستبوون بە کەناڵی تێلیگرام</span>
-            </a>
-          </div>
         </div>
 
         {/* Back to archive navigation */}
