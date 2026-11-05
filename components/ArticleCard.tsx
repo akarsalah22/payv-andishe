@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ChevronLeft } from 'lucide-react';
 import type { Article } from '@/data/articles';
 
@@ -31,28 +30,34 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
       className="group flex flex-col w-full overflow-hidden rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-zinc-900/80 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10 active:scale-[0.99] select-none tap-highlight-transparent text-right"
     >
       {/* 1. Dedicated Image Container with object-contain to prevent cropping book covers/sheets */}
-      <div className="relative w-full aspect-[16/10] sm:aspect-video overflow-hidden bg-zinc-100/90 dark:bg-zinc-950/60 flex items-center justify-center border-b border-zinc-100 dark:border-zinc-800/60">
+      <div className="relative w-full h-52 sm:h-60 overflow-hidden bg-zinc-100/90 dark:bg-zinc-950/60 flex items-center justify-center border-b border-zinc-100 dark:border-zinc-800/60 p-2.5 sm:p-3">
         {/* Subtle blurred backdrop to blend any image aspect ratio seamlessly */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-25 blur-lg scale-110">
-          <Image
+          <img
             src={coverSrc}
             alt=""
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
             aria-hidden="true"
-            className="object-cover"
+            className="w-full h-full object-cover"
+            loading="lazy"
+            referrerPolicy="no-referrer"
           />
         </div>
 
         {/* Crisp foreground image: 100% visible, preserves original aspect ratio without aggressive cropping */}
-        <Image
+        <img
           src={coverSrc}
           alt={article.title}
-          fill
-          sizes="(max-width: 768px) 100vw, 50vw"
-          priority={priority}
-          className="relative z-10 object-contain p-2 sm:p-2.5 transition-transform duration-500 ease-out group-hover:scale-105"
-          onError={() => setCoverSrc('/placeholder-article.jpg')}
+          className="relative z-10 max-h-full max-w-full w-auto h-auto object-contain rounded-lg shadow-xs transition-transform duration-500 ease-out group-hover:scale-105"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
+          decoding="async"
+          referrerPolicy="no-referrer"
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (target.src !== '/placeholder-article.jpg') {
+              target.src = '/placeholder-article.jpg';
+            }
+          }}
         />
 
         {/* Top Badges */}

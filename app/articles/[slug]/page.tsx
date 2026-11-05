@@ -176,18 +176,17 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
         )}
       </header>
 
-      {/* Cover Image Container with strictly defined 16:9 Aspect Ratio & fixed height */}
-      <div className="w-full max-w-3xl mx-auto relative aspect-[16/9] sm:h-72 rounded-2xl overflow-hidden bg-stone-100 dark:bg-zinc-800 border border-amber-200/60 dark:border-zinc-800 shadow-md">
+      {/* Cover Image Container displaying full document/book cover with natural proportions */}
+      <div className="relative w-full max-w-xl mx-auto my-6 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-2 sm:p-4 flex items-center justify-center shadow-sm">
         <img
           src={imageSource || '/placeholder.jpg'}
           alt={article.title}
-          className="w-full h-full object-cover object-center"
+          className="w-auto h-auto max-h-[75vh] max-w-full rounded-xl object-contain shadow-md"
           referrerPolicy="no-referrer"
           loading="eager"
           fetchPriority="high"
           decoding="async"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
       </div>
 
       {/* Focused Reading Body Text */}

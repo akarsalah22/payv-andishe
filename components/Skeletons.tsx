@@ -27,7 +27,7 @@ export function ArticleCardSkeleton() {
       className="flex flex-col w-full overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 shadow-sm select-none animate-pulse"
       aria-hidden="true"
     >
-      <div className="w-full aspect-[16/10] sm:aspect-video bg-zinc-200/60 dark:bg-zinc-800/60" />
+      <div className="w-full h-52 sm:h-60 bg-zinc-200/60 dark:bg-zinc-800/60" />
       <div className="p-4 sm:p-5 flex flex-col gap-2.5">
         <div className="h-4 w-3/4 rounded-md bg-zinc-200 dark:bg-zinc-800" />
         <div className="h-3 w-full rounded-md bg-zinc-200/70 dark:bg-zinc-800/70" />
