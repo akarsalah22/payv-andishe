@@ -2149,8 +2149,7 @@ export function AdminDashboardClient() {
 
                 {/* Mission Preview */}
                 <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-2 text-right">
-                  <div className="inline-flex items-center gap-1.5 text-xs font-bold font-sirwan text-amber-700 dark:text-amber-400">
-                    <Sparkles className="w-3.5 h-3.5" />
+                  <div className="inline-flex items-center text-xs font-bold font-sirwan text-amber-700 dark:text-amber-400">
                     <span>{aboutMissionTitle || 'پەیامی ئێمە'}</span>
                   </div>
                   <p className="text-xs font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed">

@@ -121,8 +121,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4. Telegram Channel Showcase Banner */}
-      <TelegramBanner />
+     
     </main>
   );
 }

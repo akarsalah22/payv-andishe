@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { ChevronLeft, ExternalLink, Sparkles } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { TelegramIcon } from '@/components/TelegramIcon';
 import { readAboutContent } from '@/lib/storage';
@@ -49,8 +49,7 @@ export default async function AboutPage() {
 
       {/* 2. Mission Section (پەیامی ئێمە) */}
       <section className="w-full p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-amber-500/5 dark:bg-amber-500/5 border border-amber-500/20 dark:border-amber-500/20 space-y-3.5 text-right shadow-xs">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs font-semibold font-sirwan text-amber-900 dark:text-amber-400">
-          <Sparkles className="w-3.5 h-3.5" />
+        <div className="inline-flex items-center px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs font-semibold font-sirwan text-amber-900 dark:text-amber-400">
           <span>{about.missionTitle}</span>
         </div>
         <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed sm:leading-loose">
@@ -122,7 +121,7 @@ export default async function AboutPage() {
             بەشداربوون لە کەناڵی تێلیگرام
           </h3>
           <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
-            بۆ داگرتن و بینینی بەرهەمەکان و ئاگاداربوون لە وتارە نوێیەکان، دەتوانیت هاوڕێمان بیت لە تێلیگرام.
+            بۆ داگرتن و بینینی بەرهەمەکان و ئاگاداربوون لە شتە نوێیەکان، دەتوانیت هاوڕێمان بیت لە تێلیگرام.
           </p>
         </div>
 
