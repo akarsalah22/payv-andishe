@@ -25,13 +25,14 @@ import { useToast } from '@/components/ToastContext';
 import { SAMPLE_FILMS, type Film, type FilmCategory, type FilmPlatform } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article, type ArticleCategory } from '@/data/articles';
 import { DEFAULT_ABOUT_CONTENT, type AboutContent, type AboutFeature } from '@/data/about';
+import { DEFAULT_HOME_SETTINGS, type HomeSettings } from '@/data/homeSettings';
 import { FilmCard } from '@/components/FilmCard';
 import { TelegramIcon } from '@/components/TelegramIcon';
 import { YouTubeIcon } from '@/components/YouTubeIcon';
 import { ArticleCard } from '@/components/ArticleCard';
 import { matchesSearchQuery } from '@/lib/search';
 
-type AdminTab = 'films' | 'articles' | 'about' | 'create';
+type AdminTab = 'films' | 'articles' | 'about' | 'home' | 'create';
 type CreateItemType = 'film' | 'article';
 
 export function AdminDashboardClient() {
@@ -102,6 +103,13 @@ export function AdminDashboardClient() {
   const [aboutFeatures, setAboutFeatures] = useState<AboutFeature[]>(DEFAULT_ABOUT_CONTENT.features);
   const [isAboutSubmitting, setIsAboutSubmitting] = useState(false);
   const [isAboutLoading, setIsAboutLoading] = useState(false);
+
+  // Home Hero Settings Form State
+  const [homeBadgeText, setHomeBadgeText] = useState(DEFAULT_HOME_SETTINGS.badgeText);
+  const [homeTitle, setHomeTitle] = useState(DEFAULT_HOME_SETTINGS.title);
+  const [homeSubtitle, setHomeSubtitle] = useState(DEFAULT_HOME_SETTINGS.subtitle);
+  const [isHomeSubmitting, setIsHomeSubmitting] = useState(false);
+  const [isHomeLoading, setIsHomeLoading] = useState(false);
 
   // Fetch films from API and synchronize with localStorage
   const fetchFilms = async () => {
@@ -191,11 +199,32 @@ export function AdminDashboardClient() {
     }
   };
 
+  // Fetch Home page hero settings from API
+  const fetchHome = async () => {
+    setIsHomeLoading(true);
+    try {
+      const res = await fetch('/api/settings/home');
+      if (res.ok) {
+        const data: HomeSettings = await res.json();
+        if (data) {
+          if (data.badgeText) setHomeBadgeText(data.badgeText);
+          if (data.title) setHomeTitle(data.title);
+          if (data.subtitle) setHomeSubtitle(data.subtitle);
+        }
+      }
+    } catch (e) {
+      console.error('Error fetching home settings:', e);
+    } finally {
+      setIsHomeLoading(false);
+    }
+  };
+
   // Initial load of data from disk API
   useEffect(() => {
     fetchFilms();
     fetchArticles();
     fetchAbout();
+    fetchHome();
   }, []);
 
   // Sync films to localStorage
@@ -645,6 +674,39 @@ export function AdminDashboardClient() {
     }
   };
 
+  // Handle Home Settings Save
+  const handleSaveHome = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!homeTitle.trim()) {
+      triggerToast('تکایە ناونیشانی سەرەکی بنووسە', undefined, 'error');
+      return;
+    }
+
+    setIsHomeSubmitting(true);
+    try {
+      const res = await fetch('/api/settings/home', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          badgeText: homeBadgeText,
+          title: homeTitle,
+          subtitle: homeSubtitle,
+        }),
+      });
+
+      if (res.ok) {
+        triggerToast('ڕێکخستنەکانی پەڕەی سەرەکی بە سەرکەوتوویی نوێکرانەوە', { href: '/', label: 'بینینی پەڕە' }, 'success');
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        triggerToast(errData.error || 'هەڵەیەک ڕوویدا لە پاشەکەوتکردن', undefined, 'error');
+      }
+    } catch {
+      triggerToast('هەڵەیەک ڕوویدا لە پەیوەندیکردن بە سێرڤەر', undefined, 'error');
+    } finally {
+      setIsHomeSubmitting(false);
+    }
+  };
+
   const handleFeatureChange = (index: number, field: 'title' | 'desc', value: string) => {
     setAboutFeatures((prev) => {
       const copy = [...prev];
@@ -855,6 +917,19 @@ export function AdminDashboardClient() {
           >
             <Info className="w-4 h-4" />
             <span>بەڕێوەبردنی دەربارە</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('home')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${
+              activeTab === 'home'
+                ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+            }`}
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>پەڕەی سەرەکی</span>
           </button>
 
           <button
@@ -2113,6 +2188,169 @@ export function AdminDashboardClient() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 5: HOME HERO SETTINGS (پەڕەی سەرەکی)                     */}
+      {/* ========================================================= */}
+      {activeTab === 'home' && (
+        <div className="w-full space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800 text-right shadow-2xs">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 text-xs font-semibold font-sirwan">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>دەستکاریکردنی پەڕەی سەرەکی</span>
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+                بەڕێوەبردنی بەشی سەرەکی (Hero Section)
+              </h2>
+              <p className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400">
+                نیشانە، ناونیشان و وەسفی سەرەکی ماڵپەڕ بگۆڕە و ڕاستەوخۆ لە پەڕەی سەرەکی نوێ دەبێتەوە.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={fetchHome}
+                disabled={isHomeLoading}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 hover:bg-stone-100 dark:hover:bg-zinc-800 text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer disabled:opacity-50"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isHomeLoading ? 'animate-spin' : ''}`} />
+                <span>نوێکردنەوە</span>
+              </button>
+              <Link
+                href="/"
+                target="_blank"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/15 text-amber-800 dark:text-amber-300 hover:bg-amber-500/25 text-xs font-semibold font-sirwan transition-colors cursor-pointer"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>بینینی ماڵپەڕ</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Form Side (7 cols) */}
+            <div className="lg:col-span-7">
+              <form
+                onSubmit={handleSaveHome}
+                className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800 space-y-6 text-right shadow-2xs"
+              >
+                {/* 1. Badge Text */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>نیشانەی سەرەوە (Badge Text)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقی نیشانە کورتەکە
+                    </label>
+                    <input
+                      type="text"
+                      value={homeBadgeText}
+                      onChange={(e) => setHomeBadgeText(e.target.value)}
+                      placeholder="پانتاییەک بۆ سینەما و ئەدەبی ئیسلامی"
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* 2. Main Title */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>ناونیشانی سەرەکی (Headline)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      ناونیشانی گەورەی سەرەکی
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={homeTitle}
+                      onChange={(e) => setHomeTitle(e.target.value)}
+                      placeholder="شوێنێک بۆ فیلم و نووسینی ئیسلامی"
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-peshang focus:outline-none focus:border-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* 3. Subtitle / Description */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>پێناسە و دەقی ژێرەوە (Subtitle)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقی کورت و ڕوونکردنەوە
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={homeSubtitle}
+                      onChange={(e) => setHomeSubtitle(e.target.value)}
+                      placeholder="ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و ئەنیمەیشن..."
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors leading-relaxed"
+                    />
+                  </div>
+                </div>
+
+                {/* Submit Action Button */}
+                <div className="pt-2 flex items-center gap-3">
+                  <button
+                    type="submit"
+                    disabled={isHomeSubmitting}
+                    className="flex-1 py-3 px-6 rounded-xl bg-[#d49757] hover:bg-[#c28445] text-zinc-950 font-bold font-sirwan text-sm transition-all duration-150 active:scale-[0.98] cursor-pointer shadow-md disabled:opacity-50"
+                  >
+                    {isHomeSubmitting ? 'پاشەکەوتکردن...' : 'پاشەکەوتکردنی ڕێکخستنەکانی پەڕەی سەرەکی'}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* Live Preview Side (5 cols) */}
+            <div className="lg:col-span-5 space-y-4 sticky top-24">
+              <div className="flex items-center gap-1.5 text-xs font-semibold font-sirwan text-zinc-500 dark:text-zinc-400">
+                <Eye className="w-4 h-4 text-[#d49757]" />
+                <span>پێشبینینی ڕاستەوخۆ (Live Preview):</span>
+              </div>
+
+              {/* Preview Container */}
+              <div className="p-6 rounded-2xl sm:rounded-3xl bg-white/95 dark:bg-zinc-900/90 border border-stone-200/80 dark:border-zinc-800 space-y-6 text-center shadow-sm">
+                {/* Subtle Brand Badge Preview */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 text-xs font-semibold font-sirwan tracking-normal shadow-2xs mx-auto">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                  <span>{homeBadgeText || 'نیشانەی سەرەوە'}</span>
+                </div>
+
+                {/* Stately Kurdish Headline Preview */}
+                <h1 className="text-2xl sm:text-3xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
+                  {homeTitle || 'ناونیشانی سەرەکی'}
+                </h1>
+
+                {/* Concise Subtitle Preview */}
+                <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-md mx-auto leading-relaxed tracking-normal">
+                  {homeSubtitle || 'دەقی پێناسە و کورتەی پەڕەی سەرەکی...'}
+                </p>
+
+                {/* CTA Buttons Preview */}
+                <div className="pt-2 flex items-center justify-center gap-2 pointer-events-none opacity-80">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/95 dark:bg-zinc-900/85 border border-zinc-200 dark:border-zinc-800 text-xs font-medium font-sirwan text-zinc-700 dark:text-zinc-300">
+                    <Clapperboard className="w-3.5 h-3.5 text-amber-500" />
+                    <span>فیلم و کارتۆن</span>
+                  </div>
+                  <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/95 dark:bg-zinc-900/85 border border-zinc-200 dark:border-zinc-800 text-xs font-medium font-sirwan text-zinc-700 dark:text-zinc-300">
+                    <BookOpen className="w-3.5 h-3.5 text-amber-500" />
+                    <span>نووسین</span>
                   </div>
                 </div>
               </div>

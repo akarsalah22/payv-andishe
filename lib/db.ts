@@ -1,6 +1,7 @@
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 import { SAMPLE_FILMS, type Film } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article } from '@/data/articles';
+import { DEFAULT_HOME_SETTINGS, type HomeSettings } from '@/data/homeSettings';
 
 function getDatabaseUrl(): string | undefined {
   return (
@@ -99,6 +100,23 @@ export async function ensureDbInitialized(): Promise<boolean> {
         value JSONB NOT NULL,
         updated_at TIMESTAMPTZ DEFAULT NOW()
       );
+    `);
+
+    // 4. Create home_settings table for dynamic homepage hero settings
+    await sql.query(`
+      CREATE TABLE IF NOT EXISTS home_settings (
+        id TEXT PRIMARY KEY DEFAULT 'hero',
+        badge_text TEXT DEFAULT 'پانتاییەک بۆ سینەما و ئەدەبی ئیسلامی',
+        title TEXT DEFAULT 'شوێنێک بۆ فیلم و نووسینی ئیسلامی',
+        subtitle TEXT DEFAULT 'ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و ئەنیمەیشن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.',
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await sql.query(`
+      INSERT INTO home_settings (id, badge_text, title, subtitle)
+      VALUES ('hero', 'پانتاییەک بۆ سینەما و ئەدەبی ئیسلامی', 'شوێنێک بۆ فیلم و نووسینی ئیسلامی', 'ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و ئەنیمەیشن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.')
+      ON CONFLICT (id) DO NOTHING;
     `);
 
     // 4. Seed films if empty
@@ -492,6 +510,77 @@ export async function setSettingInDb<T>(key: string, value: T): Promise<boolean>
     return true;
   } catch (err) {
     console.error(`Failed to set setting ${key} in DB:`, err);
+    return false;
+  }
+}
+
+/**
+ * Get dynamic home hero settings from Neon Postgres.
+ */
+export async function getHomeSettingsFromDb(): Promise<HomeSettings | null> {
+  const sql = getSql();
+  if (!sql) return null;
+
+  try {
+    await ensureDbInitialized();
+    const rows = await sql.query(`
+      SELECT id, badge_text, title, subtitle, updated_at
+      FROM home_settings
+      WHERE id = 'hero'
+      LIMIT 1;
+    `);
+
+    if (rows && rows.length > 0) {
+      const row = rows[0] as {
+        id?: string;
+        badge_text?: string;
+        title?: string;
+        subtitle?: string;
+        updated_at?: string;
+      };
+      return {
+        id: row.id || 'hero',
+        badgeText: row.badge_text ?? DEFAULT_HOME_SETTINGS.badgeText,
+        title: row.title ?? DEFAULT_HOME_SETTINGS.title,
+        subtitle: row.subtitle ?? DEFAULT_HOME_SETTINGS.subtitle,
+        updatedAt: row.updated_at ? String(row.updated_at) : undefined,
+      };
+    }
+    return null;
+  } catch (err) {
+    console.error('Failed to get home settings from DB:', err);
+    return null;
+  }
+}
+
+/**
+ * Update dynamic home hero settings in Neon Postgres.
+ */
+export async function updateHomeSettingsInDb(settings: Partial<HomeSettings>): Promise<boolean> {
+  const sql = getSql();
+  if (!sql) return false;
+
+  try {
+    await ensureDbInitialized();
+    const badgeText = settings.badgeText ?? DEFAULT_HOME_SETTINGS.badgeText;
+    const title = settings.title ?? DEFAULT_HOME_SETTINGS.title;
+    const subtitle = settings.subtitle ?? DEFAULT_HOME_SETTINGS.subtitle;
+
+    await sql.query(
+      `
+      INSERT INTO home_settings (id, badge_text, title, subtitle, updated_at)
+      VALUES ('hero', $1, $2, $3, NOW())
+      ON CONFLICT (id) DO UPDATE SET
+        badge_text = EXCLUDED.badge_text,
+        title = EXCLUDED.title,
+        subtitle = EXCLUDED.subtitle,
+        updated_at = NOW();
+      `,
+      [badgeText, title, subtitle]
+    );
+    return true;
+  } catch (err) {
+    console.error('Failed to update home settings in DB:', err);
     return false;
   }
 }

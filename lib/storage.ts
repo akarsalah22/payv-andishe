@@ -3,6 +3,7 @@ import path from "path";
 import { SAMPLE_FILMS, type Film } from "@/data/films";
 import { SAMPLE_ARTICLES, type Article } from "@/data/articles";
 import { DEFAULT_ABOUT_CONTENT, type AboutContent } from "@/data/about";
+import { DEFAULT_HOME_SETTINGS, type HomeSettings } from "@/data/homeSettings";
 import {
   getFilmsFromDb,
   upsertFilmToDb,
@@ -12,12 +13,15 @@ import {
   deleteArticleFromDb,
   getSettingFromDb,
   setSettingInDb,
+  getHomeSettingsFromDb,
+  updateHomeSettingsInDb,
 } from "./db";
 
 const dataDir = path.join(process.cwd(), "data");
 const filmsFilePath = path.join(dataDir, "films.json");
 const articlesFilePath = path.join(dataDir, "articles.json");
 const aboutFilePath = path.join(dataDir, "about.json");
+const homeSettingsFilePath = path.join(dataDir, "home_settings.json");
 
 async function ensureDirectory() {
   try {
@@ -294,6 +298,71 @@ export async function saveAboutContent(content: AboutContent): Promise<boolean> 
     return await setSettingInDb("about_content", content);
   } catch (err) {
     console.error("Failed to sync about content to Neon DB:", err);
+    return false;
+  }
+}
+
+/**
+ * Reads local backup for Homepage Hero settings.
+ */
+export async function readLocalHomeSettings(): Promise<HomeSettings> {
+  try {
+    await ensureDirectory();
+    try {
+      await fs.access(homeSettingsFilePath);
+    } catch {
+      await fs.writeFile(homeSettingsFilePath, JSON.stringify(DEFAULT_HOME_SETTINGS, null, 2), "utf-8");
+      return DEFAULT_HOME_SETTINGS;
+    }
+
+    const data = await fs.readFile(homeSettingsFilePath, "utf-8");
+    if (!data.trim()) return DEFAULT_HOME_SETTINGS;
+    const parsed = JSON.parse(data);
+    return parsed && typeof parsed === "object" ? { ...DEFAULT_HOME_SETTINGS, ...parsed } : DEFAULT_HOME_SETTINGS;
+  } catch (error) {
+    console.error("Error reading local home settings backup:", error);
+    return DEFAULT_HOME_SETTINGS;
+  }
+}
+
+/**
+ * Writes local backup for Homepage Hero settings.
+ */
+export async function writeLocalHomeSettings(settings: HomeSettings): Promise<void> {
+  try {
+    await ensureDirectory();
+    await fs.writeFile(homeSettingsFilePath, JSON.stringify(settings, null, 2), "utf-8");
+  } catch (error) {
+    console.error("Error writing local home settings backup:", error);
+  }
+}
+
+/**
+ * Reads Homepage Hero settings actively from Neon Postgres, falling back to local file.
+ */
+export async function readHomeSettings(): Promise<HomeSettings> {
+  try {
+    const dbSettings = await getHomeSettingsFromDb();
+    if (dbSettings && typeof dbSettings === "object" && dbSettings.title) {
+      writeLocalHomeSettings(dbSettings).catch(() => {});
+      return { ...DEFAULT_HOME_SETTINGS, ...dbSettings };
+    }
+  } catch (err) {
+    console.error("Neon DB readHomeSettings error, falling back to local file:", err);
+  }
+
+  return await readLocalHomeSettings();
+}
+
+/**
+ * Saves Homepage Hero settings to Neon Postgres and updates local backup.
+ */
+export async function saveHomeSettings(settings: HomeSettings): Promise<boolean> {
+  await writeLocalHomeSettings(settings);
+  try {
+    return await updateHomeSettingsInDb(settings);
+  } catch (err) {
+    console.error("Failed to sync home settings to Neon DB:", err);
     return false;
   }
 }

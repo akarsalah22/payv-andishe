@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Clapperboard, BookOpen, ChevronLeft } from 'lucide-react';
-import { readFilms, readArticles } from '@/lib/storage';
+import { readFilms, readArticles, readHomeSettings } from '@/lib/storage';
 import { FilmCard } from '@/components/FilmCard';
 import { ArticleCard } from '@/components/ArticleCard';
 import { TelegramBanner } from '@/components/TelegramBanner';
@@ -8,7 +8,11 @@ import { TelegramBanner } from '@/components/TelegramBanner';
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [films, articles] = await Promise.all([readFilms(), readArticles()]);
+  const [films, articles, homeSettings] = await Promise.all([
+    readFilms(),
+    readArticles(),
+    readHomeSettings(),
+  ]);
   const featuredFilms = films.slice(0, 6);
   const featuredArticles = articles.slice(0, 3);
 
@@ -22,17 +26,17 @@ export default async function HomePage() {
         {/* Subtle Brand Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 text-xs font-semibold font-sirwan tracking-normal shadow-2xs">
           <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-          <span>پانتاییەک بۆ ئەدەب و مێژووی ئیسلام</span>
+          <span>{homeSettings.badgeText || 'پانتاییەک بۆ سینەما و ئەدەبی ئیسلامی'}</span>
         </div>
 
         {/* Stately Kurdish Headline */}
         <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal sm:leading-relaxed">
-          شوێنێک بۆ فیلم و نووسینی ئیسلامی
+          {homeSettings.title || 'شوێنێک بۆ فیلم و نووسینی ئیسلامی'}
         </h1>
 
         {/* Concise Subtitle (1-2 sentences) */}
         <p className="text-base sm:text-lg font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-normal">
-          ئەرشیڤێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و کارتۆن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەیەکان.
+          {homeSettings.subtitle || 'ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و کارتۆن، لەگەڵ خوێندنەوەی دەقی ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.'}
         </p>
 
         {/* Balanced Primary CTAs */}

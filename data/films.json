@@ -1,5 +1,42 @@
 [
   {
+    "id": "film-1793821299934",
+    "slug": "پێغەمبەر-سولەیمان",
+    "titleKurdish": "پێغەمبەر سولەیمان",
+    "originalTitle": "The Kingdom of Solomon",
+    "year": 2010,
+    "duration": "١ کاتژمێر و ٥٠ خولەک",
+    "category": "فیلم",
+    "genres": [
+      "دراما",
+      "جەنگ",
+      "مێژووی"
+    ],
+    "posterUrl": "https://i.ibb.co/hRN369Kj/IMG-0c122154-42c7-48ba-b9da-afd85c8bff27.jpg",
+    "description": "سلێمان، پێغەمبەر، داوا لە خودا دەکات شانشینێکی بێوێنە و نموونەیی پێ ببەخشێت کە پێشتر بە هیچ کەسێک نەبەخشرابێت.",
+    "platform": "youtube",
+    "watchUrl": "https://youtu.be/sh1O0NSpgP0?si=pib_eM49JXfgvjTO",
+    "telegramPostUrl": "https://youtu.be/sh1O0NSpgP0?si=pib_eM49JXfgvjTO"
+  },
+  {
+    "id": "film-1793817179341",
+    "slug": "بیلال",
+    "titleKurdish": "بیلال",
+    "originalTitle": "Bilal",
+    "year": 2015,
+    "duration": "١ کاتژمێر و ٤٤ خولەک",
+    "category": "کارتۆن",
+    "genres": [
+      "مێژووی",
+      "ژیاننامە"
+    ],
+    "posterUrl": "https://i.ibb.co/PZ5bKtq8/c9133d06d822119afe892e3ddd84d98a.jpg",
+    "description": "بیلالی حەبەشی، یەکێکە لە سەحابەکان، کەم کەسمان ناو چیرۆکی ئەومان نەبیستووە.\n\nتێبینی: ، کارتۆنەکە بە سێ بەش دانراوە، بەس کێشەی نییە، بە دوای یەکا لە تێلیگرام دامانناوە.",
+    "platform": "telegram",
+    "watchUrl": "https://t.me/mediay_islamy/17  بەشی دووەم: https://t.me/mediay_islamy/19  بەشی سێیەم: https://t.me/mediay_islamy/21",
+    "telegramPostUrl": "https://t.me/mediay_islamy/17  بەشی دووەم: https://t.me/mediay_islamy/19  بەشی سێیەم: https://t.me/mediay_islamy/21"
+  },
+  {
     "id": "film-1793706744906",
     "slug": "ڕیسالە",
     "titleKurdish": "ڕیسالە",
