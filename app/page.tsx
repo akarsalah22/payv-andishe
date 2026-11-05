@@ -116,7 +116,7 @@ export default async function HomePage() {
         {/* Responsive Grid: 1 column of compact rows on mobile, 3 columns on desktop */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
           {featuredArticles.map((article, index) => (
-            <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={index === 0} />
+            <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={index < 3} />
           ))}
         </div>
       </section>

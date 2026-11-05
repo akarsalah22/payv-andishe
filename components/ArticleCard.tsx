@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronLeft } from 'lucide-react';
 import type { Article } from '@/data/articles';
 
@@ -10,11 +12,12 @@ interface ArticleCardProps {
 }
 
 export function ArticleCard({ article, priority = false }: ArticleCardProps) {
-  const coverSrc =
+  const initialCover =
     article.coverImage ||
     (article as any).image ||
     article.imageUrl ||
     '/placeholder-article.jpg';
+  const [coverSrc, setCoverSrc] = useState(initialCover);
 
   const readingTimeText =
     (article as any).readingTime ||
@@ -31,29 +34,25 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
       <div className="relative w-full aspect-[16/10] sm:aspect-video overflow-hidden bg-zinc-100/90 dark:bg-zinc-950/60 flex items-center justify-center border-b border-zinc-100 dark:border-zinc-800/60">
         {/* Subtle blurred backdrop to blend any image aspect ratio seamlessly */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-25 blur-lg scale-110">
-          <img
+          <Image
             src={coverSrc}
             alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
             aria-hidden="true"
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
+            className="object-cover"
           />
         </div>
 
         {/* Crisp foreground image: 100% visible, preserves original aspect ratio without aggressive cropping */}
-        <img
+        <Image
           src={coverSrc}
           alt={article.title}
-          className="relative z-10 max-h-full max-w-full w-auto h-auto object-contain p-2 sm:p-2.5 transition-transform duration-500 ease-out group-hover:scale-105"
-          loading={priority ? 'eager' : 'lazy'}
-          decoding="async"
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            const target = e.currentTarget;
-            if (target.src !== '/placeholder-article.jpg') {
-              target.src = '/placeholder-article.jpg';
-            }
-          }}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority={priority}
+          className="relative z-10 object-contain p-2 sm:p-2.5 transition-transform duration-500 ease-out group-hover:scale-105"
+          onError={() => setCoverSrc('/placeholder-article.jpg')}
         />
 
         {/* Top Badges */}

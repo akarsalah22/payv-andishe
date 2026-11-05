@@ -114,6 +114,9 @@ export function Header() {
                 src="/img/logo.svg"
                 alt="میدیای ئیسلامی"
                 className="h-8 w-auto sm:h-10 max-w-[140px] sm:max-w-[180px] object-contain transition-transform duration-200 group-hover:scale-105"
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
               />
             </div>
             <span className="text-sm sm:text-base lg:text-lg font-bold font-peshang whitespace-nowrap tracking-normal text-zinc-900 dark:text-white group-hover:text-amber-500 transition-colors">
@@ -218,6 +221,8 @@ export function Header() {
                     src="/img/logo.svg"
                     alt="میدیای ئیسلامی"
                     className="h-8 w-auto sm:h-9 max-w-[140px] sm:max-w-[180px] object-contain transition-transform duration-200 group-hover:scale-105"
+                    loading="eager"
+                    fetchPriority="high"
                   />
                 </div>
                 <span className="font-bold text-sm sm:text-base font-peshang whitespace-nowrap tracking-normal text-zinc-900 dark:text-white">

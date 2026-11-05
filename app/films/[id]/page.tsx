@@ -222,6 +222,7 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               alt={film.titleKurdish}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               loading="eager"
+              fetchPriority="high"
               decoding="async"
               referrerPolicy="no-referrer"
             />

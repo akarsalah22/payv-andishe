@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Film } from '@/data/films';
 
 interface FilmCardProps {
@@ -10,11 +12,12 @@ interface FilmCardProps {
 
 export function FilmCard({ film, priority = false }: FilmCardProps) {
   const filmDetailsUrl = `/films/${film.id || film.slug}`;
-  const posterSrc =
+  const initialPoster =
     film.posterUrl ||
     (film as any).image ||
     (film as any).backdropUrl ||
     '/placeholder.jpg';
+  const [posterSrc, setPosterSrc] = useState(initialPoster);
   const filmTitle = film.titleKurdish || (film as any).title || '';
 
   return (
@@ -23,20 +26,15 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
       dir="rtl"
       className="group relative block w-full aspect-[2/3] overflow-hidden rounded-xl sm:rounded-2xl bg-zinc-900 border border-white/10 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5),0_0_15px_rgba(245,158,11,0.15)] focus:outline-none select-none tap-highlight-transparent"
     >
-      {/* Poster Image */}
-      <img
+      {/* Poster Image with Next.js Image optimization & priority */}
+      <Image
         src={posterSrc}
         alt={filmTitle}
-        className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-        loading={priority ? 'eager' : 'lazy'}
-        decoding="async"
-        referrerPolicy="no-referrer"
-        onError={(e) => {
-          const target = e.currentTarget;
-          if (target.src !== '/placeholder.jpg') {
-            target.src = '/placeholder.jpg';
-          }
-        }}
+        fill
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+        priority={priority}
+        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+        onError={() => setPosterSrc('/placeholder.jpg')}
       />
 
       {/* Elegant Cinematic Gradient Overlay */}

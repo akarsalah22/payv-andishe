@@ -28,6 +28,8 @@ export function Footer() {
                   src="/img/logo.svg"
                   alt="میدیای ئیسلامی"
                   className="h-9 w-auto max-w-[160px] object-contain transition-transform duration-200 group-hover:scale-105"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <span className="text-xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 group-hover:text-amber-500 transition-colors">

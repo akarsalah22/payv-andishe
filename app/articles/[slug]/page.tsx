@@ -183,6 +183,8 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
           alt={article.title}
           className="w-full h-full object-cover object-center"
           referrerPolicy="no-referrer"
+          loading="eager"
+          fetchPriority="high"
           decoding="async"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
