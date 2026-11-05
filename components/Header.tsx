@@ -108,22 +108,22 @@ export function Header() {
           {/* Brand Logo / Clean Title */}
           <Link
             href="/"
-            className="flex items-center gap-1.5 sm:gap-2 group shrink-0 select-none cursor-pointer"
+            className="flex items-center gap-2 sm:gap-2.5 group shrink-0 select-none cursor-pointer"
           >
             {/* Logo Container */}
-            <div className="relative w-7 h-7 sm:w-8 sm:h-8 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+            <div className="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
               <Image
                 src="/img/logo_web.svg"
                 alt="میدیای ئیسلامی"
-                width={32}
-                height={32}
+                width={44}
+                height={44}
                 priority
                 className="w-full h-full object-contain"
               />
             </div>
 
             {/* Brand Text */}
-            <span className="font-bold font-peshang text-base sm:text-lg text-zinc-900 dark:text-white tracking-tight leading-none pt-0.5 sm:pt-0.5 transition-colors">
+            <span className="font-semibold text-sm sm:text-base text-zinc-900 dark:text-white tracking-normal leading-none select-none">
               میدیای ئیسلامی
             </span>
           </Link>
@@ -218,22 +218,22 @@ export function Header() {
               <Link
                 href="/"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-1.5 sm:gap-2 group shrink-0 select-none cursor-pointer"
+                className="flex items-center gap-2 sm:gap-2.5 group shrink-0 select-none cursor-pointer"
               >
                 {/* Logo Container */}
-                <div className="relative w-7 h-7 sm:w-8 sm:h-8 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+                <div className="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
                   <Image
                     src="/img/logo_web.svg"
                     alt="میدیای ئیسلامی"
-                    width={32}
-                    height={32}
+                    width={44}
+                    height={44}
                     priority
                     className="w-full h-full object-contain"
                   />
                 </div>
 
                 {/* Brand Text */}
-                <span className="font-bold font-peshang text-base sm:text-lg text-zinc-900 dark:text-white tracking-tight leading-none pt-0.5 sm:pt-0.5 transition-colors">
+                <span className="font-semibold text-sm sm:text-base text-zinc-900 dark:text-white tracking-normal leading-none select-none">
                   میدیای ئیسلامی
                 </span>
               </Link>

@@ -24,7 +24,7 @@ interface SearchModalProps {
 const QUICK_SUGGESTIONS = [
   ' عومەر موختار',
   'بیلال',
-  'سەعیدی نوورسی ',
+  'سەعید نوورسی ',
 
 ];
 
