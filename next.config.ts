@@ -14,26 +14,15 @@ const nextConfig: NextConfig = {
     "192.168.*",
   ],
   images: {
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'images.unsplash.com',
+        hostname: '**',
       },
       {
-        protocol: 'https',
-        hostname: 'i.ibb.co',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.ibb.co',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'ibb.co',
-        pathname: '/**',
+        protocol: 'http',
+        hostname: '**',
       },
     ],
   },

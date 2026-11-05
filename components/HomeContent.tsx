@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronLeft } from 'lucide-react';
 import { TelegramIcon } from './TelegramIcon';
 import { YouTubeIcon } from './YouTubeIcon';
@@ -94,18 +95,12 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                 <div className="space-y-3">
                   {/* Poster container with ambient overlay */}
                   <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden bg-zinc-950 shadow-xs">
-                    <img
+                    <Image
                       src={film.posterUrl || '/placeholder.jpg'}
                       alt={film.titleKurdish}
-                      className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
-                      referrerPolicy="no-referrer"
-                      decoding="async"
-                      onError={(e) => {
-                        const target = e.currentTarget;
-                        if (target.src !== '/placeholder.jpg') {
-                          target.src = '/placeholder.jpg';
-                        }
-                      }}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                      className="object-cover object-top transition-transform duration-500 ease-out group-hover:scale-105"
                     />
                     {/* Ambient Dark Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />

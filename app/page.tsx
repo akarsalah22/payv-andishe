@@ -88,7 +88,7 @@ export default async function HomePage() {
         {/* Responsive Grid: 2 columns on mobile, scaling up to 6 on desktop */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-5">
           {featuredFilms.map((film, index) => (
-            <FilmCard key={film.id || (film as any)._id || index} film={film} priority={index < 4} />
+            <FilmCard key={film.id || (film as any)._id || index} film={film} priority={index === 0} />
           ))}
         </div>
       </section>
@@ -116,7 +116,7 @@ export default async function HomePage() {
         {/* Responsive Grid: 1 column of compact rows on mobile, 3 columns on desktop */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
           {featuredArticles.map((article, index) => (
-            <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={index < 3} />
+            <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={false} />
           ))}
         </div>
       </section>

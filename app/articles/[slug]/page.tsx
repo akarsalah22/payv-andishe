@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   ChevronRight,
   Clock,
@@ -178,14 +179,14 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
 
       {/* Cover Image Container displaying full document/book cover with natural proportions */}
       <div className="relative w-full max-w-xl mx-auto my-6 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-2 sm:p-4 flex items-center justify-center shadow-sm">
-        <img
+        <Image
           src={imageSource || '/placeholder.jpg'}
           alt={article.title}
+          width={900}
+          height={1200}
+          priority
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 576px"
           className="w-auto h-auto max-h-[75vh] max-w-full rounded-xl object-contain shadow-md"
-          referrerPolicy="no-referrer"
-          loading="eager"
-          fetchPriority="high"
-          decoding="async"
         />
       </div>
 

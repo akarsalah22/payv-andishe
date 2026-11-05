@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronLeft } from 'lucide-react';
 import type { Article } from '@/data/articles';
 
@@ -31,34 +32,22 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
     >
       {/* 1. Dedicated Image Container with object-contain to prevent cropping book covers/sheets */}
       <div className="relative w-full h-52 sm:h-60 overflow-hidden bg-zinc-100/90 dark:bg-zinc-950/60 flex items-center justify-center border-b border-zinc-100 dark:border-zinc-800/60 p-2.5 sm:p-3">
-        {/* Subtle blurred backdrop to blend any image aspect ratio seamlessly */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20 dark:opacity-25 blur-lg scale-110">
-          <img
+        {/* Crisp foreground image: 100% visible, preserves original aspect ratio without aggressive cropping */}
+        <div className="relative w-full h-full flex items-center justify-center">
+          <Image
             src={coverSrc}
-            alt=""
-            aria-hidden="true"
-            className="w-full h-full object-cover"
-            loading="lazy"
-            referrerPolicy="no-referrer"
+            alt={article.title}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            priority={priority}
+            className="object-contain p-1.5 rounded-lg transition-transform duration-500 ease-out group-hover:scale-105"
+            onError={() => {
+              if (coverSrc !== '/placeholder-article.jpg') {
+                setCoverSrc('/placeholder-article.jpg');
+              }
+            }}
           />
         </div>
-
-        {/* Crisp foreground image: 100% visible, preserves original aspect ratio without aggressive cropping */}
-        <img
-          src={coverSrc}
-          alt={article.title}
-          className="relative z-10 max-h-full max-w-full w-auto h-auto object-contain rounded-lg shadow-xs transition-transform duration-500 ease-out group-hover:scale-105"
-          loading={priority ? 'eager' : 'lazy'}
-          fetchPriority={priority ? 'high' : 'auto'}
-          decoding="async"
-          referrerPolicy="no-referrer"
-          onError={(e) => {
-            const target = e.currentTarget;
-            if (target.src !== '/placeholder-article.jpg') {
-              target.src = '/placeholder-article.jpg';
-            }
-          }}
-        />
 
         {/* Top Badges */}
         <div className="absolute top-2.5 inset-x-0 px-2.5 sm:px-3 flex items-center justify-between z-20 pointer-events-none" dir="rtl">

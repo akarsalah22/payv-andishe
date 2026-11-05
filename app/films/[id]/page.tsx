@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import {
   ChevronRight,
@@ -203,12 +204,13 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
       <div className="relative w-full rounded-3xl overflow-hidden p-6 sm:p-8 transition-colors duration-200 bg-white border border-zinc-200 shadow-md dark:bg-zinc-900 dark:border-zinc-800 dark:shadow-2xl">
         {/* Ambient Blurred Backdrop (Dark mode only for cinematic glow, clean white in light mode) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none hidden dark:block">
-          <img
+          <Image
             src={posterSrc}
             alt=""
             aria-hidden="true"
-            className="w-full h-full object-cover blur-2xl opacity-25 scale-110"
-            referrerPolicy="no-referrer"
+            fill
+            sizes="100px"
+            className="object-cover blur-2xl opacity-25 scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/85 to-zinc-900/40" />
         </div>
@@ -217,14 +219,13 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
         <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
           {/* Poster Card */}
           <div className="relative w-44 sm:w-56 md:w-60 aspect-[2/3] shrink-0 rounded-2xl overflow-hidden shadow-xl border border-zinc-200/80 dark:border-white/15 bg-zinc-100 dark:bg-zinc-800 group">
-            <img
+            <Image
               src={posterSrc}
               alt={film.titleKurdish}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              referrerPolicy="no-referrer"
+              fill
+              priority
+              sizes="(max-width: 640px) 176px, (max-width: 768px) 224px, 240px"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
             {/* Subtle Gradient On Poster */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ChevronRight, Clock, Calendar, BookOpen, Copy } from 'lucide-react';
 import type { Article } from '@/data/articles';
@@ -169,15 +170,17 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
         )}
       </header>
 
-      {/* Cover Image Container with strictly defined 16:9 Aspect Ratio & fixed height */}
+      {/* Cover Image Container */}
       {imageSource && (
-        <div className="w-full max-w-3xl mx-auto relative aspect-[16/9] sm:h-72 rounded-2xl overflow-hidden bg-stone-100 dark:bg-zinc-800 border border-amber-200/60 dark:border-zinc-800 shadow-md">
-          <img
+        <div className="relative w-full max-w-xl mx-auto my-6 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-2 sm:p-4 flex items-center justify-center shadow-sm">
+          <Image
             src={imageSource || '/placeholder.jpg'}
             alt={article.title}
-            className="w-full h-full object-cover object-center"
-            referrerPolicy="no-referrer"
-            decoding="async"
+            width={900}
+            height={1200}
+            priority
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 576px"
+            className="w-auto h-auto max-h-[75vh] max-w-full rounded-xl object-contain shadow-md"
           />
         </div>
       )}

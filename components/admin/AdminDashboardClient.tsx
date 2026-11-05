@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Plus,
   BookOpen,
@@ -1054,18 +1055,12 @@ export function AdminDashboardClient() {
                   {/* Right Side: Poster Thumbnail + Meta */}
                   <div className="flex items-center gap-3.5 min-w-0">
                     <div className="relative w-14 h-20 rounded-xl overflow-hidden shrink-0 bg-stone-200 dark:bg-zinc-800 shadow-xs border border-black/5 dark:border-white/5">
-                      <img
+                      <Image
                         src={film.posterUrl || '/placeholder.jpg'}
                         alt={film.titleKurdish}
-                        className="w-full h-full object-cover object-center"
-                        referrerPolicy="no-referrer"
-                        decoding="async"
-                        onError={(e) => {
-                          const target = e.currentTarget;
-                          if (target.src !== '/placeholder.jpg') {
-                            target.src = '/placeholder.jpg';
-                          }
-                        }}
+                        fill
+                        sizes="56px"
+                        className="object-cover object-center"
                       />
                     </div>
 
@@ -1263,18 +1258,12 @@ export function AdminDashboardClient() {
                     {/* Right Side: Cover Thumbnail + Meta */}
                     <div className="flex items-center gap-3.5 min-w-0">
                       <div className="relative w-20 h-14 rounded-xl overflow-hidden shrink-0 bg-stone-200 dark:bg-zinc-800 shadow-xs border border-black/5 dark:border-white/5">
-                        <img
+                        <Image
                           src={cover || '/placeholder.jpg'}
                           alt={article.title}
-                          className="w-full h-full object-cover object-center"
-                          referrerPolicy="no-referrer"
-                          decoding="async"
-                          onError={(e) => {
-                            const target = e.currentTarget;
-                            if (target.src !== '/placeholder.jpg') {
-                              target.src = '/placeholder.jpg';
-                            }
-                          }}
+                          fill
+                          sizes="80px"
+                          className="object-cover object-center"
                         />
                       </div>
 
