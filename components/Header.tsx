@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   Menu,
@@ -107,19 +108,22 @@ export function Header() {
           {/* Brand Logo / Clean Title */}
           <Link
             href="/"
-            className="flex items-center gap-2 sm:gap-3 group shrink-0 select-none whitespace-nowrap"
+            className="flex items-center gap-1.5 sm:gap-2 group shrink-0 select-none cursor-pointer"
           >
-            <div className="relative flex items-center justify-center">
-              <img
-                src="/img/logo.svg"
+            {/* Logo Container */}
+            <div className="relative w-7 h-7 sm:w-8 sm:h-8 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+              <Image
+                src="/img/logo_web.svg"
                 alt="میدیای ئیسلامی"
-                className="h-8 w-auto sm:h-10 max-w-[140px] sm:max-w-[180px] object-contain transition-transform duration-200 group-hover:scale-105"
-                loading="eager"
-                fetchPriority="high"
-                decoding="sync"
+                width={32}
+                height={32}
+                priority
+                className="w-full h-full object-contain"
               />
             </div>
-            <span className="text-sm sm:text-base lg:text-lg font-bold font-peshang whitespace-nowrap tracking-normal text-zinc-900 dark:text-white group-hover:text-amber-500 transition-colors">
+
+            {/* Brand Text */}
+            <span className="font-bold font-peshang text-base sm:text-lg text-zinc-900 dark:text-white tracking-tight leading-none pt-0.5 sm:pt-0.5 transition-colors">
               میدیای ئیسلامی
             </span>
           </Link>
@@ -134,8 +138,8 @@ export function Header() {
                   href={link.href}
                   prefetch={false}
                   className={`rounded-xl px-3.5 py-1.5 text-sm font-medium font-sirwan tracking-normal transition-all duration-200 ease-out active:scale-95 select-none tap-highlight-transparent ${active
-                      ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-bold'
-                      : 'text-zinc-600 hover:text-amber-600 hover:bg-amber-500/10 dark:text-zinc-400 dark:hover:text-amber-400 dark:hover:bg-amber-500/10'
+                    ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-bold'
+                    : 'text-zinc-600 hover:text-amber-600 hover:bg-amber-500/10 dark:text-zinc-400 dark:hover:text-amber-400 dark:hover:bg-amber-500/10'
                     }`}
                 >
                   {link.name}
@@ -214,18 +218,22 @@ export function Header() {
               <Link
                 href="/"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-2 sm:gap-3 shrink-0 whitespace-nowrap group select-none"
+                className="flex items-center gap-1.5 sm:gap-2 group shrink-0 select-none cursor-pointer"
               >
-                <div className="relative flex items-center justify-center">
-                  <img
-                    src="/img/logo.svg"
+                {/* Logo Container */}
+                <div className="relative w-7 h-7 sm:w-8 sm:h-8 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+                  <Image
+                    src="/img/logo_web.svg"
                     alt="میدیای ئیسلامی"
-                    className="h-8 w-auto sm:h-9 max-w-[140px] sm:max-w-[180px] object-contain transition-transform duration-200 group-hover:scale-105"
-                    loading="eager"
-                    fetchPriority="high"
+                    width={32}
+                    height={32}
+                    priority
+                    className="w-full h-full object-contain"
                   />
                 </div>
-                <span className="font-bold text-sm sm:text-base font-peshang whitespace-nowrap tracking-normal text-zinc-900 dark:text-white">
+
+                {/* Brand Text */}
+                <span className="font-bold font-peshang text-base sm:text-lg text-zinc-900 dark:text-white tracking-tight leading-none pt-0.5 sm:pt-0.5 transition-colors">
                   میدیای ئیسلامی
                 </span>
               </Link>
@@ -251,7 +259,7 @@ export function Header() {
               className="mt-5 w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/60 text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm font-sirwan hover:text-zinc-900 dark:hover:text-zinc-100 hover:border-amber-500/40 transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
               <Search className="w-4 h-4 text-amber-500" strokeWidth={1.75} />
-              <span>گەڕان بۆ فیلم یان وتار...</span>
+              <span>گەڕان بۆ فیلم یان نووسین...</span>
             </button>
 
             {/* Navigation Links with generous tap targets */}
@@ -283,8 +291,8 @@ export function Header() {
                     prefetch={false}
                     onClick={() => setIsMenuOpen(false)}
                     className={`flex items-center gap-3.5 py-3 px-3.5 rounded-xl text-base font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent ${active
-                        ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold border-r-2 border-amber-500'
-                        : 'text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
+                      ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold border-r-2 border-amber-500'
+                      : 'text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
                       }`}
                   >
                     <IconComponent className="h-4.5 w-4.5 text-zinc-400 shrink-0" strokeWidth={1.75} />

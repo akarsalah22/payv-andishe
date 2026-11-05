@@ -277,8 +277,8 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               )}
             </div>
 
-            {/* Primary Action Buttons: Watch on Telegram / YouTube & Copy Link */}
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 w-full">
+            {/* Primary Action Button: Watch on Telegram / YouTube */}
+            <div className="pt-4 flex items-center justify-center md:justify-start w-full">
               <a
                 href={watchUrl}
                 target="_blank"
@@ -296,8 +296,6 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
                 )}
                 <span>{isYouTube ? 'بینینی فیلم لە یووتووب' : 'بینینی فیلم لە تێلیگرام'}</span>
               </a>
-
-              <CopyLinkButton />
             </div>
           </div>
         </div>
