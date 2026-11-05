@@ -24,17 +24,17 @@ export function ArticleCardSkeleton() {
   return (
     <article
       dir="rtl"
-      className="relative w-full aspect-[2/1] sm:aspect-[16/10] overflow-hidden rounded-xl sm:rounded-2xl border border-white/10 bg-zinc-900 shadow-sm select-none animate-pulse"
+      className="flex flex-col w-full overflow-hidden rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white dark:bg-zinc-900/80 shadow-sm select-none animate-pulse"
       aria-hidden="true"
     >
-      <div className="absolute inset-0 bg-stone-200/20 dark:bg-zinc-800/40" />
-      <div className="absolute top-2 sm:top-3 inset-x-0 px-2 sm:px-3 flex items-center justify-between">
-        <div className="h-4 sm:h-5 w-10 sm:w-12 rounded-full bg-zinc-700/60" />
-        <div className="h-4 sm:h-5 w-12 sm:w-14 rounded-full bg-zinc-700/60" />
-      </div>
-      <div className="absolute bottom-0 inset-x-0 p-2.5 sm:p-4 flex flex-col gap-1 sm:gap-1.5">
-        <div className="h-3 sm:h-4 w-3/4 rounded bg-zinc-700/60" />
-        <div className="h-2.5 sm:h-3 w-full rounded bg-zinc-700/40" />
+      <div className="w-full aspect-[16/10] sm:aspect-video bg-zinc-200/60 dark:bg-zinc-800/60" />
+      <div className="p-4 sm:p-5 flex flex-col gap-2.5">
+        <div className="h-4 w-3/4 rounded-md bg-zinc-200 dark:bg-zinc-800" />
+        <div className="h-3 w-full rounded-md bg-zinc-200/70 dark:bg-zinc-800/70" />
+        <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+          <div className="h-3 w-16 rounded bg-zinc-200/60 dark:bg-zinc-800/60" />
+          <div className="h-3 w-20 rounded bg-zinc-200/60 dark:bg-zinc-800/60" />
+        </div>
       </div>
     </article>
   );

@@ -21,12 +21,10 @@ interface SearchModalProps {
 }
 
 const QUICK_SUGGESTIONS = [
-  'ڕۆشتووی ڕۆحەکان',
-  'ئەنیمەیشن',
-  'نێوان ئەستێرەکان',
-  'تارکۆڤسکی',
-  'کافکا',
-  'تەنیایی',
+  ' عومەر موختار',
+  'بیلال',
+  'سەعیدی نوورسی ',
+
 ];
 
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
@@ -130,8 +128,8 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       const content = Array.isArray(article.content)
         ? article.content.join(' ')
         : typeof article.content === 'string'
-        ? article.content
-        : '';
+          ? article.content
+          : '';
       return matchesSearchQuery(
         [
           article.title,
@@ -178,7 +176,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="گەڕان بەدوای فیلم، ئەنیمەیشن، وتار و کتێب..."
+            placeholder="گەڕان بەدوای فیلم، کارتۆن، ئایەت و کتێب..."
             className="flex-1 min-w-0 bg-transparent text-sm sm:text-base font-sirwan text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none tracking-normal py-0.5"
           />
 
