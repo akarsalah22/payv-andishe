@@ -5,6 +5,7 @@ import { ToastProvider } from "@/components/ToastContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
 import {
   vazirmatnFont,
   peshangFont,
@@ -42,7 +43,9 @@ export const metadata: Metadata = {
     description: "ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و کارتۆن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.",
     images: [
       {
-        url: "/img/logo.svg",
+        url: "/logo.jpg",
+        width: 1200,
+        height: 630,
         alt: "میدیای ئیسلامی | پانتاییەک بۆ فیلم و نووسینی ئیسلامی",
       },
     ],
@@ -51,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "میدیای ئیسلامی | پانتاییەک بۆ فیلم و نووسینی ئیسلامی",
     description: "ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و کارتۆن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.",
-    images: ["/img/logo.svg"],
+    images: ["/logo.jpg"],
   },
   icons: {
     icon: [
@@ -60,7 +63,6 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-touch-icon.png',
   },
-  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -94,6 +96,7 @@ export default function RootLayout({
             </main>
             <Footer />
             <ScrollToTop />
+            <PwaInstallPrompt />
           </ToastProvider>
         </ThemeProvider>
       </body>
