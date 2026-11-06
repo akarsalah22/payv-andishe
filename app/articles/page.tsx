@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import { readArticles } from '@/lib/storage';
 import { ArticlesArchive } from '@/components/ArticlesArchive';
 
-export const dynamic = "force-dynamic";
+export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: 'نووسین، دەق و وتارەکان | میدیای ئیسلامی',

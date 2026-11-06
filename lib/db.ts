@@ -3,13 +3,30 @@ import { SAMPLE_FILMS, type Film } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article } from '@/data/articles';
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from '@/data/homeSettings';
 
+/**
+ * Automatically converts an unpooled Neon connection URL to a pooled connection URL (with -pooler)
+ * to prevent exhausting Neon's free-tier connection limits and compute hours.
+ */
+export function toPooledConnectionString(rawUrl?: string): string | undefined {
+  if (!rawUrl) return undefined;
+  if (rawUrl.includes('-pooler')) return rawUrl;
+
+  // Replace Neon endpoint hostname ep-xxx.xxx.neon.tech with ep-xxx-pooler.xxx.neon.tech
+  if (rawUrl.includes('.neon.tech')) {
+    return rawUrl.replace(/@(ep-[a-zA-Z0-9-]+)(?!-pooler)\./, '@$1-pooler.');
+  }
+  return rawUrl;
+}
+
 function getDatabaseUrl(): string | undefined {
-  return (
+  const url =
+    process.env.DATABASE_URL_POOLED ||
     process.env.DATABASE_URL ||
-    process.env.DATABASE_URL_UNPOOLED ||
     process.env.POSTGRES_URL ||
-    process.env.POSTGRES_PRISMA_URL
-  );
+    process.env.POSTGRES_PRISMA_URL ||
+    process.env.DATABASE_URL_UNPOOLED;
+
+  return toPooledConnectionString(url);
 }
 
 let sqlInstance: NeonQueryFunction<false, false> | null = null;

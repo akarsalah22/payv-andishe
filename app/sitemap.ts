@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { readArticles } from '@/lib/storage';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 1800;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://mediay-islamy.vercel.app';

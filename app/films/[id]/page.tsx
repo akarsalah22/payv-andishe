@@ -26,7 +26,7 @@ import { MediaViewer } from '@/components/MediaViewer';
 import { TelegramIcon } from '@/components/TelegramIcon';
 import { YouTubeIcon } from '@/components/YouTubeIcon';
 
-export const dynamic = "force-dynamic";
+export const revalidate = 1800;
 export const dynamicParams = true;
 
 interface FilmPageProps {

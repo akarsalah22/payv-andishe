@@ -4,7 +4,7 @@ import { readArticles } from '@/lib/storage';
 import { ArticleReaderView } from '@/components/ArticleReaderView';
 import { ArticleReaderClient } from '@/components/ArticleReaderClient';
 
-export const dynamic = "force-dynamic";
+export const revalidate = 1800;
 export const dynamicParams = true;
 
 interface WritingPageProps {

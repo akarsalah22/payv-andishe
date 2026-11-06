@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import { readFilms } from '@/lib/storage';
 import { FilmsArchive } from '@/components/FilmsArchive';
 
-export const dynamic = "force-dynamic";
+export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: 'فیلم، زنجیرە و کارتۆن | میدیای ئیسلامی',

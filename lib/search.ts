@@ -92,17 +92,68 @@ export function matchesSearchQuery(
 }
 
 /**
- * Filters a list of films by search query and optional category.
+ * Filters a list of films by search query and optional category / filter tag.
  */
 export function filterFilms(films: Film[], query: string, category?: string): Film[] {
   let result = films;
 
   if (category && category !== 'هەمووی') {
+    const target = category.trim();
+
     result = result.filter((film) => {
-      if (film.category === category) return true;
-      // Backward compatibility aliases for legacy category strings
-      if (category === 'فیلم' && (film.category === ('سینەمایی' as any) || (film as any).type === 'فیلم')) return true;
-      if (category === 'کارتۆن' && (film.category === ('ئەنیمەیشن' as any) || (film as any).type === 'کارتۆن')) return true;
+      // 1. Direct category match
+      if (film.category === target) return true;
+
+      // 2. فیلم
+      if (target === 'فیلم') {
+        return (
+          film.category === 'فیلم' ||
+          film.category === ('سینەمایی' as any) ||
+          (film as any).type === 'فیلم'
+        );
+      }
+
+      // 3. کارتۆن
+      if (target === 'کارتۆن') {
+        return (
+          film.category === 'کارتۆن' ||
+          film.category === 'زنجیرەکارتۆن' ||
+          film.category === ('ئەنیمەیشن' as any) ||
+          (film as any).type === 'کارتۆن'
+        );
+      }
+
+      // 4. زنجیرە
+      if (target === 'زنجیرە') {
+        return (
+          film.category === 'زنجیرەفیلم' ||
+          film.category === 'زنجیرەکارتۆن' ||
+          film.category?.includes('زنجیرە') ||
+          (film.genres || []).some((g) => g.includes('زنجیرە')) ||
+          film.titleKurdish?.includes('زنجیرە')
+        );
+      }
+
+      // 5. دۆبلاژ
+      if (target === 'دۆبلاژ') {
+        const fullInfo = `${film.titleKurdish} ${film.description} ${(film.genres || []).join(' ')}`;
+        return (
+          (film.genres || []).some((g) => g.includes('دۆبلاژ')) ||
+          normalizeKurdishText(fullInfo).includes('دوبلاژ') ||
+          fullInfo.includes('دۆبلاژ')
+        );
+      }
+
+      // 6. ژێرنووس
+      if (target === 'ژێرنووس') {
+        const fullInfo = `${film.titleKurdish} ${film.description} ${(film.genres || []).join(' ')}`;
+        return (
+          (film.genres || []).some((g) => g.includes('ژێرنووس')) ||
+          normalizeKurdishText(fullInfo).includes('ژیرنووس') ||
+          fullInfo.includes('ژێرنووس')
+        );
+      }
+
       return false;
     });
   }
@@ -116,8 +167,8 @@ export function filterFilms(films: Film[], query: string, category?: string): Fi
       film.originalTitle,
       film.description,
       film.category,
-      ...film.genres,
-      film.year.toString(),
+      ...(film.genres || []),
+      film.year?.toString() || '',
     ].join(' ');
 
     return matchesSearchQuery(searchableFields, cleanQuery);

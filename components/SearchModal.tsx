@@ -15,6 +15,7 @@ import {
 import { SAMPLE_FILMS } from '@/data/films';
 import { SAMPLE_ARTICLES } from '@/data/articles';
 import { matchesSearchQuery } from '@/lib/search';
+import { RandomMovieButton } from './RandomMovieButton';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -236,6 +237,11 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     {suggestion}
                   </button>
                 ))}
+              </div>
+
+              {/* Playful Surprise Me / Random Movie Discovery Button */}
+              <div className="pt-3">
+                <RandomMovieButton films={allFilms} onPick={onClose} />
               </div>
             </div>
           )}

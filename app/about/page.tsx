@@ -4,7 +4,7 @@ import { ChevronLeft } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { TelegramIcon } from '@/components/TelegramIcon';
 
-export const dynamic = "force-dynamic";
+export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: 'دەربارەی پلاتفۆرم | میدیای ئیسلامی',

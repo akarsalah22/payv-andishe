@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { SearchModal } from './SearchModal';
+import { RandomMovieButton } from './RandomMovieButton';
 
 interface NavLinkItem {
   name: string;
@@ -148,7 +149,7 @@ export function Header() {
             })}
           </nav>
 
-          {/* Actions (Admin Quick-Link, Search, Theme Toggle, Mobile Hamburger Button) */}
+          {/* Actions (Admin Quick-Link, Random Discovery, Search, Theme Toggle, Mobile Hamburger Button) */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Authenticated Admin Quick-Link */}
             {isAdminAuthenticated && (
@@ -162,6 +163,9 @@ export function Header() {
                 <span className="hidden sm:inline">بەڕێوەبردن</span>
               </Link>
             )}
+
+            {/* Playful Random Discovery Action (Desktop) */}
+            <RandomMovieButton variant="compact" className="hidden lg:inline-flex" />
 
             {/* Search Trigger Button */}
             <button
@@ -261,6 +265,15 @@ export function Header() {
               <Search className="w-4 h-4 text-amber-500" strokeWidth={1.75} />
               <span>گەڕان بۆ فیلم یان نووسین...</span>
             </button>
+
+            {/* Playful Random Discovery Action in Drawer */}
+            <div className="mt-2.5">
+              <RandomMovieButton
+                variant="subtle"
+                onPick={() => setIsMenuOpen(false)}
+                className="w-full justify-center"
+              />
+            </div>
 
             {/* Navigation Links with generous tap targets */}
             <nav className="mt-6 flex flex-col space-y-1.5">

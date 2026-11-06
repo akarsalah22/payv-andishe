@@ -5,7 +5,7 @@ import { FilmCard } from '@/components/FilmCard';
 import { ArticleCard } from '@/components/ArticleCard';
 import { TelegramBanner } from '@/components/TelegramBanner';
 
-export const dynamic = "force-dynamic";
+export const revalidate = 1800;
 
 export default async function HomePage() {
   const [films, articles, homeSettings] = await Promise.all([
