@@ -119,10 +119,10 @@ export function SearchBar({
           )}
         </div>
 
-        {/* Playful Discovery Button: "چی سەیر بکەم؟ 🎲 شتێکم بۆ هەڵبژێرە" */}
+        {/* Discovery Button: "شتێکم بۆ هەڵبژێرە" */}
         {showRandomButton && (
           <div className="shrink-0 flex justify-center sm:justify-start">
-            <RandomMovieButton films={films} />
+            <RandomMovieButton films={films} variant="search" />
           </div>
         )}
       </div>

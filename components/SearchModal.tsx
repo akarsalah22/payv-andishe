@@ -239,9 +239,9 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 ))}
               </div>
 
-              {/* Playful Surprise Me / Random Movie Discovery Button */}
-              <div className="pt-3">
-                <RandomMovieButton films={allFilms} onPick={onClose} />
+              {/* Random Movie Discovery Button */}
+              <div className="pt-3 flex justify-center">
+                <RandomMovieButton films={allFilms} onPick={onClose} variant="search" />
               </div>
             </div>
           )}

@@ -164,8 +164,8 @@ export function Header() {
               </Link>
             )}
 
-            {/* Playful Random Discovery Action (Desktop) */}
-            <RandomMovieButton variant="compact" className="hidden lg:inline-flex" />
+            {/* Random Discovery Action (Desktop) */}
+            <RandomMovieButton variant="header" className="hidden lg:inline-flex" />
 
             {/* Search Trigger Button */}
             <button
@@ -266,10 +266,10 @@ export function Header() {
               <span>گەڕان بۆ فیلم یان نووسین...</span>
             </button>
 
-            {/* Playful Random Discovery Action in Drawer */}
+            {/* Random Discovery Action in Drawer */}
             <div className="mt-2.5">
               <RandomMovieButton
-                variant="subtle"
+                variant="header"
                 onPick={() => setIsMenuOpen(false)}
                 className="w-full justify-center"
               />
