@@ -9,6 +9,12 @@ export type FilmCategory =
 
 export type FilmPlatform = 'telegram' | 'youtube';
 
+export interface FilmPart {
+  partNumber: number;
+  url: string;
+  quality?: string;
+}
+
 export interface Film {
   id: string;
   slug: string;
@@ -23,6 +29,34 @@ export interface Film {
   platform?: FilmPlatform;
   watchUrl?: string;
   telegramPostUrl: string;
+  youtubeId?: string;
+  parts?: FilmPart[];
+}
+
+export function extractYouTubeId(urlOrId?: string): string | null {
+  if (!urlOrId) return null;
+  const trimmed = urlOrId.trim();
+  if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+  const match = trimmed.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/
+  );
+  return match ? match[1] : null;
+}
+
+export function getFilmTelegramParts(film: Partial<Film>): FilmPart[] {
+  if (film.parts && Array.isArray(film.parts) && film.parts.length > 0) {
+    return film.parts;
+  }
+  const text = `${film.watchUrl || ''} ${film.telegramPostUrl || ''}`;
+  const matches = Array.from(text.matchAll(/https?:\/\/t\.me\/[^\s"']+/g));
+  const uniqueUrls = Array.from(new Set(matches.map((m) => m[0])));
+  if (uniqueUrls.length > 1) {
+    return uniqueUrls.map((url, index) => ({
+      partNumber: index + 1,
+      url,
+    }));
+  }
+  return [];
 }
 
 export function getFilmPlatform(film: Partial<Film>): FilmPlatform {

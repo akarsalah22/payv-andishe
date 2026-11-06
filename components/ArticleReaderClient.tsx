@@ -1,13 +1,9 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import { ChevronRight, Clock, Calendar, Copy } from 'lucide-react';
-import type { Article } from '@/data/articles';
-import { useToast } from '@/components/ToastContext';
-import { TelegramIcon } from '@/components/TelegramIcon';
+import { useEffect, useState } from "react";
+import { notFound } from "next/navigation";
+import type { Article } from "@/data/articles";
+import { ArticleReaderView } from "@/components/ArticleReaderView";
 
 interface ArticleReaderClientProps {
   slug: string;
@@ -16,35 +12,17 @@ interface ArticleReaderClientProps {
 export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
   const [article, setArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const { showToast } = useToast();
-
-  const handleCopyLink = async () => {
-    try {
-      const url = typeof window !== 'undefined' ? window.location.href : '';
-      if (navigator?.clipboard?.writeText) {
-        await navigator.clipboard.writeText(url);
-      } else {
-        const textArea = document.createElement("textarea");
-        textArea.value = url;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-      }
-      showToast('بەستەر کۆپی کرا', { type: 'success' });
-    } catch {
-      showToast('کردارەکە سەرکەوتوو نەبوو، دووبارە هەوڵبدەرەوە', { type: 'error' });
-    }
-  };
 
   useEffect(() => {
     const loadArticle = async () => {
       // 1. Try local storage first
       try {
-        const stored = localStorage.getItem('payvandishe_articles');
+        const stored = localStorage.getItem("payvandishe_articles");
         if (stored) {
           const parsed: Article[] = JSON.parse(stored);
-          const found = parsed.find((a) => a.slug === slug);
+          const found = parsed.find(
+            (a) => a.slug === slug || a.id === slug || a.slug === decodeURIComponent(slug)
+          );
           if (found) {
             setArticle(found);
             setIsLoading(false);
@@ -57,10 +35,12 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
 
       // 2. Try fetching from /api/articles
       try {
-        const res = await fetch('/api/articles');
+        const res = await fetch("/api/articles");
         if (res.ok) {
           const data: Article[] = await res.json();
-          const found = data.find((a) => a.slug === slug);
+          const found = data.find(
+            (a) => a.slug === slug || a.id === slug || a.slug === decodeURIComponent(slug)
+          );
           if (found) {
             setArticle(found);
             setIsLoading(false);
@@ -79,8 +59,8 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center py-20 text-xs font-sirwan text-zinc-400">
-        چاوەڕوان بە بۆ بارکردنی وتار...
+      <div className="flex-1 flex items-center justify-center py-24 text-xs font-sirwan text-zinc-400">
+        چاوەڕوان بە بۆ بارکردنی بابەت...
       </div>
     );
   }
@@ -89,150 +69,7 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
     notFound();
   }
 
-  const imageSource = article.coverImage || article.imageUrl;
-  const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-    `https://mediay-islamy.vercel.app/articles/${article.slug}`
-  )}&text=${encodeURIComponent(article.title)}`;
-
-  return (
-    <article
-      dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-4xl mx-auto w-full py-8 sm:py-16 space-y-10 text-right"
-    >
-      {/* Top Back Navigation */}
-      <div className="w-full flex items-center justify-between pb-6 border-b border-[#ede8e1] dark:border-zinc-800/80">
-        <Link
-          href="/articles"
-          className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 hover:text-[#d49757] dark:text-zinc-400 dark:hover:text-[#d49757] tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group"
-        >
-          <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={1.75} />
-          <span>گەڕانەوە بۆ وتارەکان</span>
-        </Link>
-
-        <div className="flex items-center gap-2">
-          {/* Copy Link Button */}
-          <button
-            type="button"
-            onClick={handleCopyLink}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-stone-100 hover:bg-stone-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 border border-stone-200 dark:border-zinc-700 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent cursor-pointer touch-manipulation"
-            title="کۆپیکردنی بەستەری وتار"
-          >
-            <Copy className="w-3.5 h-3.5" strokeWidth={1.75} />
-            <span className="hidden sm:inline">کۆپیکردنی بەستەر</span>
-          </button>
-
-          {/* Share Button (Top) */}
-          <a
-            href={shareTelegramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent cursor-pointer touch-manipulation"
-          >
-            <TelegramIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-            <span>هاوبەشکردن</span>
-          </a>
-        </div>
-      </div>
-
-      {/* Article Header */}
-      <header className="w-full max-w-2xl mx-auto space-y-6 text-right">
-        {/* Category & Meta pills */}
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-[#d49757]/15 text-[#d49757] border border-[#d49757]/30 tracking-normal shadow-2xs">
-            {article.category}
-          </span>
-
-          <span className="inline-flex items-center gap-1.5 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400">
-            <Clock className="w-3.5 h-3.5 text-[#d49757]" strokeWidth={1.75} />
-            <span>{article.readTime}</span>
-          </span>
-
-          <span className="text-zinc-300 dark:text-zinc-700">•</span>
-
-          <span className="inline-flex items-center gap-1.5 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400">
-            <Calendar className="w-3.5 h-3.5" strokeWidth={1.75} />
-            <span>{article.date}</span>
-          </span>
-        </div>
-
-        {/* Title */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal sm:leading-relaxed align-baseline">
-          {article.title}
-        </h1>
-
-        {/* Excerpt */}
-        {article.excerpt && (
-          <div className="p-4 rounded-xl bg-stone-100/70 dark:bg-zinc-900/50 border-s-4 border-[#d49757] border-y border-e border-[#ede8e1] dark:border-zinc-800/80">
-            <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed tracking-normal">
-              {article.excerpt}
-            </p>
-          </div>
-        )}
-      </header>
-
-      {/* Cover Image Container */}
-      {imageSource && (
-        <div className="relative w-full max-w-xl mx-auto my-6 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-2 sm:p-4 flex items-center justify-center shadow-sm">
-          <Image
-            src={imageSource || '/placeholder.jpg'}
-            alt={article.title}
-            width={900}
-            height={1200}
-            priority
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 576px"
-            className="w-auto h-auto max-h-[75vh] max-w-full rounded-xl object-contain shadow-md"
-          />
-        </div>
-      )}
-
-      {/* Focused Reading Body Text */}
-      <div className="w-full max-w-2xl mx-auto space-y-6 pt-2">
-        {article.content.map((paragraph, index) => (
-          <p
-            key={index}
-            className="text-base sm:text-[17px] font-normal font-sirwan text-zinc-800 dark:text-zinc-200 leading-[2.2] sm:leading-[2.4] tracking-normal text-justify"
-          >
-            {paragraph}
-          </p>
-        ))}
-      </div>
-
-      {/* Article Footer & Social Action */}
-      <footer className="w-full max-w-2xl mx-auto pt-10 border-t border-[#ede8e1] dark:border-zinc-800/80 space-y-8">
-        {/* Telegram Share Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#16171b] border border-[#ede8e1] dark:border-zinc-800 shadow-xs">
-          <div className="space-y-1 text-center sm:text-right">
-            <span className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 block">
-              ئەم وتارەت بەدڵ بوو؟
-            </span>
-            <p className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400">
-              دەتوانیت لەگەڵ هاوڕێکانت لە تێلیگرام هاوبەشی پێبکەیت.
-            </p>
-          </div>
-
-          <a
-            href={shareTelegramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-          >
-            <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-            <span>هاوبەشکردن لە تێلیگرام</span>
-          </a>
-        </div>
-
-        {/* Back to archive navigation */}
-        <div className="text-center pt-2">
-          <Link
-            href="/articles"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 hover:text-[#d49757] dark:hover:text-[#d49757] tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
-          >
-            <ChevronRight className="w-4 h-4" strokeWidth={1.75} />
-            <span>گەڕانەوە بۆ لیستی سەرجەم وتارەکان</span>
-          </Link>
-        </div>
-      </footer>
-    </article>
-  );
+  return <ArticleReaderView article={article} />;
 }
 
+export default ArticleReaderClient;

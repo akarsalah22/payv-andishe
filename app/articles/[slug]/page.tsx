@@ -1,19 +1,8 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import {
-  ChevronRight,
-  Clock,
-  Calendar,
-  FileText,
-  Download,
-  ExternalLink,
-} from 'lucide-react';
 import type { Metadata } from 'next';
 import { getArticleBySlug } from '@/data/articles';
 import { readArticles } from '@/lib/storage';
+import { ArticleReaderView } from '@/components/ArticleReaderView';
 import { ArticleReaderClient } from '@/components/ArticleReaderClient';
-import { CopyLinkButton } from '@/components/CopyLinkButton';
-import { TelegramIcon } from '@/components/TelegramIcon';
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -26,30 +15,50 @@ export async function generateMetadata({
   params,
 }: ArticlePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const decodedSlug = decodeURIComponent(slug);
+  const rawSlug = slug ? String(slug).trim() : '';
+  let decodedSlug = rawSlug;
+  try {
+    decodedSlug = decodeURIComponent(rawSlug).trim();
+  } catch {
+    // ignore
+  }
+
   const articles = await readArticles();
-  const article = articles.find((a) => a.slug === decodedSlug) || getArticleBySlug(decodedSlug);
+  const article =
+    articles.find((a) => a.slug === rawSlug || a.slug === decodedSlug || a.id === rawSlug || a.id === decodedSlug) ||
+    getArticleBySlug(decodedSlug);
 
   if (!article) {
     return {
       title: 'وتار نەدۆزرایەوە | میدیای ئیسلامی',
+      description: 'وتاری داواکراو بوونی نییە یان سڕدراوەتەوە.',
     };
   }
 
   const imageSource = article.coverImage || article.imageUrl;
+  const shareableUrl = `https://mediay-islamy.vercel.app/articles/${encodeURIComponent(article.slug || article.id)}`;
+  const fullCoverUrl = imageSource
+    ? imageSource.startsWith('http')
+      ? imageSource
+      : `https://mediay-islamy.vercel.app${imageSource.startsWith('/') ? imageSource : `/${imageSource}`}`
+    : 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1200&q=80';
 
   return {
     title: `${article.title} | میدیای ئیسلامی`,
-    description: article.excerpt,
+    description: article.excerpt || `${article.title} - لە بەشی وتار و پەڕتووکەکانی میدیای ئیسلامی`,
+    alternates: {
+      canonical: shareableUrl,
+    },
     openGraph: {
-      title: article.title,
-      description: article.excerpt,
+      title: `${article.title} | میدیای ئیسلامی`,
+      description: article.excerpt || article.title,
       type: 'article',
       locale: 'ckb_IQ',
-      url: `https://mediay-islamy.vercel.app/articles/${article.slug}`,
+      url: shareableUrl,
+      siteName: 'میدیای ئیسلامی',
       images: [
         {
-          url: imageSource.startsWith('http') ? imageSource : `https://mediay-islamy.vercel.app${imageSource}`,
+          url: fullCoverUrl,
           width: 1200,
           height: 630,
           alt: article.title,
@@ -58,185 +67,32 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.title,
-      description: article.excerpt,
-      images: [imageSource.startsWith('http') ? imageSource : `https://mediay-islamy.vercel.app${imageSource}`],
+      title: `${article.title} | میدیای ئیسلامی`,
+      description: article.excerpt || article.title,
+      images: [fullCoverUrl],
     },
   };
 }
 
 export default async function ArticleReaderPage({ params }: ArticlePageProps) {
   const { slug } = await params;
-  const decodedSlug = decodeURIComponent(slug);
-  const articles = await readArticles();
-  const article = articles.find((a) => a.slug === decodedSlug) || getArticleBySlug(decodedSlug);
+  const rawSlug = slug ? String(slug).trim() : '';
+  let decodedSlug = rawSlug;
+  try {
+    decodedSlug = decodeURIComponent(rawSlug).trim();
+  } catch {
+    // ignore
+  }
 
+  const articles = await readArticles();
+  const article =
+    articles.find((a) => a.slug === rawSlug || a.slug === decodedSlug || a.id === rawSlug || a.id === decodedSlug) ||
+    getArticleBySlug(decodedSlug);
+
+  // If not found in server DB/files, fallback to client reader for local storage / client fetch
   if (!article) {
     return <ArticleReaderClient slug={decodedSlug} />;
   }
 
-  const imageSource = article.coverImage || article.imageUrl;
-  const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-    `https://mediay-islamy.vercel.app/articles/${article.slug}`
-  )}&text=${encodeURIComponent(article.title)}`;
-
-  return (
-    <article
-      dir="rtl"
-      className="w-full py-8 sm:py-16 space-y-10 text-right flex-1 flex flex-col max-w-5xl mx-auto"
-    >
-      {/* Top Back Navigation */}
-      <div className="w-full flex items-center justify-between pb-6 border-b border-zinc-200/80 dark:border-zinc-800/80">
-        <Link
-          href="/articles"
-          className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 hover:text-amber-500 dark:text-zinc-400 dark:hover:text-amber-400 tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group"
-        >
-          <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" strokeWidth={1.75} />
-          <span>گەڕانەوە بۆ وتارەکان</span>
-        </Link>
-
-        <div className="flex items-center gap-2">
-          {/* Copy Link Button */}
-          <CopyLinkButton />
-
-          {/* Share Button (Top) */}
-          <a
-            href={shareTelegramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent cursor-pointer touch-manipulation"
-          >
-            <TelegramIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-            <span>هاوبەشکردن</span>
-          </a>
-        </div>
-      </div>
-
-      {/* Article Header (Editorial Hierarchy) */}
-      <header className="w-full max-w-2xl mx-auto space-y-6 text-right">
-        {/* Category & Meta pills */}
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 tracking-normal shadow-2xs">
-            {article.category}
-          </span>
-
-          <span className="inline-flex items-center gap-1.5 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400">
-            <Clock className="w-3.5 h-3.5 text-amber-500" strokeWidth={1.75} />
-            <span>{article.readTime}</span>
-          </span>
-
-          <span className="text-zinc-300 dark:text-zinc-700">•</span>
-
-          <span className="inline-flex items-center gap-1.5 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400">
-            <Calendar className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" strokeWidth={1.75} />
-            <span>{article.date}</span>
-          </span>
-        </div>
-
-        {/* Stately Kurdish Title (Unified baseline & generous line-height) */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal sm:leading-relaxed align-baseline">
-          {article.title}
-        </h1>
-
-        {/* 2-line Lead Teaser */}
-        <div className="p-4 rounded-xl bg-white/70 dark:bg-zinc-900/50 border-s-4 border-amber-500 border-y border-e border-zinc-200/80 dark:border-zinc-800/80">
-          <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed tracking-normal">
-            {article.excerpt}
-          </p>
-        </div>
-
-        {/* Interactive Resource Actions: PDF Download / View & External Link */}
-        {(article.pdfUrl || article.externalUrl) && (
-          <div className="flex flex-wrap items-center justify-start gap-3 pt-1">
-            {article.pdfUrl && (
-              <a
-                href={article.pdfUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-md shadow-rose-600/20 active:scale-95 transition-all duration-150 ease-out cursor-pointer select-none"
-              >
-                <FileText className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
-                <span>خوێندنەوە و داگرتنی PDF</span>
-                <Download className="w-3.5 h-3.5 opacity-80" />
-              </a>
-            )}
-
-            {article.externalUrl && (
-              <a
-                href={article.externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/95 dark:bg-zinc-800/90 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-semibold font-sirwan text-xs sm:text-sm border border-zinc-200/90 dark:border-zinc-700/80 hover:border-amber-500/40 dark:hover:border-amber-500/40 shadow-xs active:scale-95 transition-all duration-150 ease-out cursor-pointer select-none"
-              >
-                <ExternalLink className="w-4 h-4 text-amber-500 shrink-0 transition-transform group-hover:scale-110" />
-                <span>سەرچاوەی دەرەکی</span>
-              </a>
-            )}
-          </div>
-        )}
-      </header>
-
-      {/* Cover Image Container displaying full document/book cover with natural proportions */}
-      <div className="relative w-full max-w-xl mx-auto my-6 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-2 sm:p-4 flex items-center justify-center shadow-sm">
-        <Image
-          src={imageSource || '/placeholder.jpg'}
-          alt={article.title}
-          width={900}
-          height={1200}
-          priority
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 576px"
-          className="w-auto h-auto max-h-[75vh] max-w-full rounded-xl object-contain shadow-md"
-        />
-      </div>
-
-      {/* Focused Reading Body Text */}
-      <div className="w-full max-w-2xl mx-auto space-y-6 pt-2">
-        {article.content.map((paragraph, index) => (
-          <p
-            key={index}
-            className="text-base sm:text-[17px] font-normal font-sirwan text-zinc-800 dark:text-zinc-200 leading-[2.2] sm:leading-[2.4] tracking-normal text-justify"
-          >
-            {paragraph}
-          </p>
-        ))}
-      </div>
-
-      {/* Article Footer & Social Action */}
-      <footer className="w-full max-w-2xl mx-auto pt-10 border-t border-[#ede8e1] dark:border-zinc-800/80 space-y-8">
-        {/* Telegram Share Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#16171b] border border-[#ede8e1] dark:border-zinc-800 shadow-xs">
-          <div className="space-y-1 text-center sm:text-right">
-            <span className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 block">
-              ئەم وتارەت بەدڵ بوو؟
-            </span>
-            <p className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400">
-              دەتوانیت لەگەڵ هاوڕێکانت لە تێلیگرام هاوبەشی پێبکەیت.
-            </p>
-          </div>
-
-          <a
-            href={shareTelegramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-          >
-            <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-            <span>هاوبەشکردن لە تێلیگرام</span>
-          </a>
-        </div>
-
-        {/* Back to archive navigation */}
-        <div className="text-center pt-2">
-          <Link
-            href="/articles"
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 hover:text-[#d49757] dark:hover:text-[#d49757] tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
-          >
-            <ChevronRight className="w-4 h-4" strokeWidth={1.75} />
-            <span>گەڕانەوە بۆ لیستی سەرجەم وتارەکان</span>
-          </Link>
-        </div>
-      </footer>
-    </article>
-  );
+  return <ArticleReaderView article={article} />;
 }
-

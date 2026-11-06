@@ -11,9 +11,18 @@ import {
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import { readFilms } from '@/lib/storage';
-import { SAMPLE_FILMS, getFilmById, getFilmBySlug, getFilmPlatform, getFilmWatchUrl } from '@/data/films';
+import {
+  SAMPLE_FILMS,
+  getFilmById,
+  getFilmBySlug,
+  getFilmPlatform,
+  getFilmWatchUrl,
+  extractYouTubeId,
+  getFilmTelegramParts,
+} from '@/data/films';
 import { FilmCard } from '@/components/FilmCard';
-import { CopyLinkButton } from '@/components/CopyLinkButton';
+import { ShareButton } from '@/components/ShareButton';
+import { MediaViewer } from '@/components/MediaViewer';
 import { TelegramIcon } from '@/components/TelegramIcon';
 import { YouTubeIcon } from '@/components/YouTubeIcon';
 
@@ -70,7 +79,7 @@ export async function generateMetadata({
     };
   }
 
-  const posterSrc = film.posterUrl || (film as any).image || '/placeholder.jpg';
+  const posterSrc = film.posterUrl || '/placeholder.jpg';
   const description =
     film.description ||
     `${film.titleKurdish} (${film.year}) - لە پۆلینی ${film.category}. تەماشای بکە لە میدیای ئیسلامی.`;
@@ -151,19 +160,27 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
     notFound();
   }
 
-  const posterSrc = film.posterUrl || (film as any).image || '/placeholder.jpg';
+  const posterSrc = film.posterUrl || '/placeholder.jpg';
   const watchUrl = getFilmWatchUrl(film);
   const platform = getFilmPlatform(film);
   const isYouTube = platform === 'youtube';
+
+  const youtubeId =
+    film.youtubeId ||
+    extractYouTubeId(film.watchUrl) ||
+    extractYouTubeId(film.telegramPostUrl);
+
+  const telegramParts = getFilmTelegramParts(film);
+
   const shareFilmUrl = `https://mediay-islamy.vercel.app/films/${encodeURIComponent(film.slug || film.id)}`;
   const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
     shareFilmUrl
   )}&text=${encodeURIComponent(film.titleKurdish)}`;
 
-  // Related films from the same category or other featured films
+  // Related films from other entries
   const relatedFilms = films
-    .filter((f) => (f.id !== film.id && f.slug !== film.slug))
-    .slice(0, 3);
+    .filter((f) => f.id !== film.id && f.slug !== film.slug)
+    .slice(0, 4);
 
   return (
     <article
@@ -181,9 +198,11 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
         </Link>
 
         <div className="flex items-center gap-2">
-          {/* Top Copy Link Button */}
-          <CopyLinkButton
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-stone-100 hover:bg-stone-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 border border-stone-200 dark:border-zinc-700 transition-all duration-150 ease-out active:scale-95 cursor-pointer select-none"
+          {/* Native Web Share Button */}
+          <ShareButton
+            title={film.titleKurdish}
+            text={`${film.titleKurdish} (${film.year}) - لە میدیای ئیسلامی`}
+            url={shareFilmUrl}
           />
 
           {/* Share to Telegram Button */}
@@ -191,11 +210,11 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
             href={shareTelegramUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none"
+            className="group inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-semibold font-sirwan bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none"
             title="هاوبەشکردن لە تێلیگرام"
           >
             <TelegramIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-            <span className="hidden sm:inline">هاوبەشکردن</span>
+            <span className="hidden sm:inline">تێلیگرام</span>
           </a>
         </div>
       </div>
@@ -238,14 +257,15 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-amber-500 text-zinc-950 shadow-sm">
                 {film.category}
               </span>
-              {film.genres && film.genres.map((g) => (
-                <span
-                  key={g}
-                  className="px-2.5 py-1 rounded-full text-xs font-medium font-sirwan bg-zinc-100 text-zinc-700 dark:bg-white/10 dark:text-zinc-200 border border-zinc-200/80 dark:border-white/10 shadow-2xs"
-                >
-                  {g}
-                </span>
-              ))}
+              {film.genres &&
+                film.genres.map((g) => (
+                  <span
+                    key={g}
+                    className="px-2.5 py-1 rounded-full text-xs font-medium font-sirwan bg-zinc-100 text-zinc-700 dark:bg-white/10 dark:text-zinc-200 border border-zinc-200/80 dark:border-white/10 shadow-2xs"
+                  >
+                    {g}
+                  </span>
+                ))}
             </div>
 
             {/* Title & Original Title */}
@@ -277,12 +297,10 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               )}
             </div>
 
-            {/* Primary Action Button: Watch on Telegram / YouTube */}
+            {/* Primary Action Button: Smooth scroll to the Unified Media Viewer */}
             <div className="pt-4 flex items-center justify-center md:justify-start w-full">
               <a
-                href={watchUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#media-player"
                 className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base active:scale-95 transition-all duration-200 cursor-pointer ${
                   isYouTube
                     ? 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/25'
@@ -294,15 +312,32 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
                 ) : (
                   <TelegramIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
                 )}
-                <span>{isYouTube ? 'بینینی فیلم لە یووتووب' : 'بینینی فیلم لە تێلیگرام'}</span>
+                <span>
+                  {isYouTube
+                    ? 'تەماشاکردنی فیلم (یووتووب)'
+                    : telegramParts.length > 1
+                    ? `تەماشاکردنی فیلم (${telegramParts.length} بەش)`
+                    : 'تەماشاکردنی فیلم ڕاستەوخۆ'}
+                </span>
               </a>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Unified Intelligent Media Viewer (YouTube / Public Telegram Embed / Private Fallback) */}
+      <section id="media-player" className="w-full scroll-mt-24">
+        <MediaViewer
+          title={film.titleKurdish}
+          watchUrl={watchUrl}
+          telegramPostUrl={film.telegramPostUrl}
+          youtubeId={film.youtubeId || youtubeId || undefined}
+          parts={telegramParts}
+        />
+      </section>
+
       {/* Full Synopsis / Story Section (کورتەی چیرۆک) */}
-      <section className="w-full rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80 p-5 sm:p-8 space-y-4 shadow-sm text-right">
+      <section className="w-full rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80 p-5 sm:p-8 space-y-4 shadow-xs text-right">
         <div className="flex items-center gap-2.5 pb-3 border-b border-zinc-200/70 dark:border-zinc-800/70">
           <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
             <FilmIcon className="w-4 h-4" strokeWidth={2} />
@@ -362,4 +397,3 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
     </article>
   );
 }
-

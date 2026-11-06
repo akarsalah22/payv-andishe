@@ -3,25 +3,19 @@ import type { Metadata } from 'next';
 import { ChevronLeft } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { TelegramIcon } from '@/components/TelegramIcon';
-import { readAboutContent } from '@/lib/storage';
 
 export const dynamic = "force-dynamic";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const about = await readAboutContent();
-  return {
-    title: `${about.title} | میدیای ئیسلامی`,
-    description: about.subtitle || 'پلاتفۆرمێکی تایبەتمەند بۆ ناساندنی بەرهەمە سینەمایی و ئەدەبییە ئیسلامییەکان',
-  };
-}
+export const metadata: Metadata = {
+  title: 'دەربارەی پلاتفۆرم | میدیای ئیسلامی',
+  description: 'ئەم وێبسایتە دەستپێشخەرییەکی خۆبەخشانەیە بۆ ئەرشیفکردن و کۆکردنەوەی بەرهەم و وتار و فیلمە ناوازەکان بە زمانی کوردی',
+};
 
-export default async function AboutPage() {
-  const about = await readAboutContent();
-
+export default function AboutPage() {
   return (
     <div
       dir="rtl"
-      className="w-full py-8 sm:py-16 space-y-12 sm:space-y-16 text-right select-none flex-1 flex flex-col max-w-5xl xl:max-w-6xl mx-auto"
+      className="w-full py-8 sm:py-16 space-y-8 sm:space-y-12 text-right select-none flex-1 flex flex-col max-w-4xl mx-auto"
     >
       {/* Top Breadcrumb */}
       <div className="w-full flex items-center justify-between pb-6 border-b border-zinc-200/80 dark:border-zinc-800/80 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400 tracking-normal">
@@ -30,116 +24,88 @@ export default async function AboutPage() {
             سەرەکی
           </Link>
           <span>/</span>
-          <span className="text-zinc-900 dark:text-zinc-200">دەربارە</span>
+          <span className="text-zinc-900 dark:text-zinc-200">دەربارەی پلاتفۆرم</span>
         </div>
 
         <span className="text-zinc-400 dark:text-zinc-500">میدیای ئیسلامی</span>
       </div>
 
-      {/* 1. Dignified Page Header (Concise & Punchy) */}
-      <header className="w-full text-center space-y-4">
-        <h1 className="text-3xl sm:text-5xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal sm:leading-relaxed">
-          {about.title}
+      {/* About Platform Content Box */}
+      <div className="w-full max-w-2xl mx-auto space-y-6 text-zinc-700 dark:text-zinc-300 leading-relaxed text-right font-sirwan">
+        <h1 className="text-2xl sm:text-3xl font-bold font-peshang text-zinc-900 dark:text-white mb-4">
+          دەربارەی پلاتفۆرم
         </h1>
 
-        <p className="text-base sm:text-lg font-normal font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed tracking-normal max-w-xl mx-auto">
-          {about.subtitle}
+        <p className="text-sm sm:text-base leading-relaxed sm:leading-loose">
+          بەخێربێن؛ ئەم وێبسایتە دەستپێشخەرییەکی خۆبەخشانەیە بۆ ئەرشیفکردن و کۆکردنەوەی ئەو بەرهەم و وتار و فیلمە ناوازانەی بە زمانی کوردی لە سەرچاوە جیاوازەکاندا بڵاوکراونەتەوە، تا هەمووان بتوانن لە یەک شوێنی خاوێن و بێبەرامبەردا دەستیان پێیان بگات.
         </p>
-      </header>
 
-      {/* 2. Mission Section (پەیامی ئێمە) */}
-      <section className="w-full p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-amber-500/5 dark:bg-amber-500/5 border border-amber-500/20 dark:border-amber-500/20 space-y-3.5 text-right shadow-xs">
-        <div className="inline-flex items-center px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs font-semibold font-sirwan text-amber-900 dark:text-amber-400">
-          <span>{about.missionTitle}</span>
-        </div>
-        <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed sm:leading-loose">
-          {about.missionText}
+        <p className="text-sm sm:text-base leading-relaxed sm:leading-loose">
+          سەرجەم مافە مەعنەوییەکانی بەرهەمەکان، ڤیدیۆکان و وەرگێڕانەکان بۆ کەناڵ و وەرگێڕ و خاوەنە ڕەسەنەکانیان پارێزراون. ئێمە تەنها ئەرکی ڕێکخستن و ئاسانکاریی گەیشتن بە ناوەرۆکەکان لە ئەستۆ دەگرین.
         </p>
-      </section>
 
-      {/* 3. Features & Pillars Grid */}
-      <section className="w-full grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {about.features.map((feat, index) => (
-          <div
-            key={index}
-            className="p-5 rounded-2xl bg-white/95 dark:bg-zinc-900/85 border border-zinc-200/80 dark:border-zinc-800/80 hover:border-amber-500/30 dark:hover:border-amber-500/30 space-y-2.5 text-right shadow-xs transition-all duration-200"
-          >
-            <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 block">
-              {`٠${index + 1}`} / تایبەتمەندی
-            </span>
-            <h3 className="text-base font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-              {feat.title}
-            </h3>
-            <p className="text-xs sm:text-sm font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              {feat.desc}
-            </p>
-          </div>
-        ))}
-      </section>
-
-      {/* 4. Dedicated Feedback & Contact Callout */}
-      <section className="w-full rounded-2xl border border-amber-900/10 dark:border-zinc-800 bg-white/95 dark:bg-zinc-900/85 p-6 sm:p-8 text-center space-y-5 shadow-xs">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center mx-auto shadow-sm">
-          <InstagramIcon className="w-6 h-6" strokeWidth={1.75} />
-        </div>
-
-        <div className="space-y-2 max-w-lg mx-auto">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-500/10 dark:bg-pink-500/15 text-pink-700 dark:text-pink-400 text-xs font-semibold font-sirwan border border-pink-500/20">
-            <span>پەیجی فەرمی</span>
-            <span>•</span>
-            <span dir="ltr" className="font-mono">@hamahang_bwn</span>
-          </div>
-
-          <h2 className="text-xl sm:text-2xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-            پەیوەندی و پێشنیارەکان
-          </h2>
-
-          <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            بۆ هەر پرسیارێک، سەرنج، ڕەخنە یان پێشنیازێک دەربارەی کارەکان و باشترکردنی پڕۆژەکە، دەتوانیت لە ڕێگەی نامەی ڕاستەوخۆ (Direct) لە ئینستاگرام پەیوەندیمان پێوە بکەیت.
+        <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+            بۆ هەر پێشنیار، تێبینی، یان داواکارییەکی لابردنی بەرهەم، دەتوانن لە ڕێگەی بەستەرەکانی خوارەوە پەیوەندیمان پێوە بکەن.
           </p>
         </div>
 
-        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+        {/* Contact Links (بەستەرەکانی خوارەوە) */}
+        <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          {/* Instagram Button */}
           <a
             href="https://instagram.com/hamahang_bwn"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2.5 w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] hover:opacity-95 text-white font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+            className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 hover:border-pink-500/50 dark:hover:border-pink-500/50 transition-all duration-200 group shadow-2xs"
           >
-            <InstagramIcon className="w-4.5 h-4.5" strokeWidth={2} />
-            <span>ناردنی پەیام لە ئینستاگرام </span>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <InstagramIcon className="w-4.5 h-4.5" strokeWidth={2} />
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-bold font-peshang text-zinc-900 dark:text-zinc-100 group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors block">
+                  ئینستاگرام
+                </span>
+                <span dir="ltr" className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+                  @hamahang_bwn
+                </span>
+              </div>
+            </div>
+            <span className="text-xs font-sirwan text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 transition-colors">
+              پەیام بنێرە ←
+            </span>
           </a>
 
-
-        </div>
-      </section>
-
-      {/* 5. Grounded & Modest Telegram Invitation */}
-      <section className="w-full pt-10 border-t border-zinc-200/80 dark:border-zinc-800/80 text-center space-y-4">
-        <div className="space-y-2">
-          <h3 className="text-lg sm:text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-            بەشداربوون لە کەناڵی تێلیگرام
-          </h3>
-          <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
-            بۆ داگرتن و بینینی بەرهەمەکان و ئاگاداربوون لە شتە نوێیەکان، دەتوانیت هاوڕێمان بیت لە تێلیگرام.
-          </p>
-        </div>
-
-        <div className="pt-2">
+          {/* Telegram Button */}
           <a
             href="https://t.me/mediay_islamy"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation tap-highlight-transparent"
+            className="flex items-center justify-between p-3.5 rounded-xl bg-zinc-50 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 hover:border-amber-500/50 dark:hover:border-amber-500/50 transition-all duration-200 group shadow-2xs"
           >
-            <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-            <span>پەیوەستبوون بە کەناڵی تێلیگرام</span>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-amber-500 text-zinc-950 flex items-center justify-center shrink-0 shadow-xs">
+                <TelegramIcon className="w-4.5 h-4.5" />
+              </div>
+              <div className="text-right">
+                <span className="text-xs font-bold font-peshang text-zinc-900 dark:text-zinc-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors block">
+                  تێلیگرام
+                </span>
+                <span dir="ltr" className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+                  @mediay_islamy
+                </span>
+              </div>
+            </div>
+            <span className="text-xs font-sirwan text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-200 transition-colors">
+              کەناڵی فەرمی ←
+            </span>
           </a>
         </div>
-      </section>
+      </div>
 
-      {/* 6. Clean Navigation: Return to Home */}
-      <div className="pt-4 text-center">
+      {/* Return to Home */}
+      <div className="pt-6 text-center">
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 hover:text-amber-600 dark:text-zinc-400 dark:hover:text-amber-400 tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group"
