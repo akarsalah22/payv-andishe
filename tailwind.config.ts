@@ -9,6 +9,12 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     extend: {
+      colors: {
+        zinc: {
+          150: '#ececee',
+          850: '#202024',
+        },
+      },
       fontFamily: {
         sans: ['var(--font-vazir)', 'var(--font-vazirmatn)', 'sans-serif'],
         peshang: ['var(--font-peshang)', 'sans-serif'],
