@@ -83,7 +83,7 @@ export default async function ArticleReaderPage({ params }: ArticlePageProps) {
   return (
     <article
       dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-4xl mx-auto w-full py-8 sm:py-16 space-y-10 text-right"
+      className="w-full py-8 sm:py-16 space-y-10 text-right flex-1 flex flex-col max-w-5xl mx-auto"
     >
       {/* Top Back Navigation */}
       <div className="w-full flex items-center justify-between pb-6 border-b border-zinc-200/80 dark:border-zinc-800/80">

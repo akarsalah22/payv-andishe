@@ -823,9 +823,9 @@ export function AdminDashboardClient() {
   }), [editingArticle, articleTitle, articleSlug, articleExcerpt, articleContent, articleCategory, articleReadTime, articleCoverImage, articleAuthor, articlePdfUrl, articleExternalUrl]);
 
   return (
-    <main
+    <div
       dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full py-10 space-y-8 text-right select-none"
+      className="w-full py-10 space-y-8 text-right select-none flex-1 flex flex-col"
     >
       {/* Admin Header & Session Controls Bar */}
       <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-stone-200/80 dark:border-zinc-800/80">
@@ -2346,6 +2346,6 @@ export function AdminDashboardClient() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }

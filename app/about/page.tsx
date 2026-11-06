@@ -19,9 +19,9 @@ export default async function AboutPage() {
   const about = await readAboutContent();
 
   return (
-    <main
+    <div
       dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-3xl mx-auto w-full py-8 sm:py-16 space-y-12 sm:space-y-16 text-right select-none"
+      className="w-full py-8 sm:py-16 space-y-12 sm:space-y-16 text-right select-none flex-1 flex flex-col max-w-5xl xl:max-w-6xl mx-auto"
     >
       {/* Top Breadcrumb */}
       <div className="w-full flex items-center justify-between pb-6 border-b border-zinc-200/80 dark:border-zinc-800/80 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-400 tracking-normal">
@@ -148,6 +148,6 @@ export default async function AboutPage() {
           <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" strokeWidth={1.75} />
         </Link>
       </div>
-    </main>
+    </div>
   );
 }

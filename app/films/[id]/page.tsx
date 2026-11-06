@@ -168,7 +168,7 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
   return (
     <article
       dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 md:px-8 max-w-5xl mx-auto w-full py-6 sm:py-12 space-y-8 text-right"
+      className="w-full py-6 sm:py-12 space-y-10 text-right flex-1 flex flex-col"
     >
       {/* Top Breadcrumb & Action Navigation */}
       <div className="w-full flex items-center justify-between pb-4 sm:pb-6 border-b border-zinc-200/80 dark:border-zinc-800/80">
@@ -352,7 +352,7 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 sm:gap-5 lg:gap-6">
             {relatedFilms.map((f) => (
               <FilmCard key={f.id} film={f} />
             ))}

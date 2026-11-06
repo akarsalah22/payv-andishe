@@ -17,12 +17,12 @@ export default async function HomePage() {
   const featuredArticles = articles.slice(0, 3);
 
   return (
-    <main
+    <div
       dir="rtl"
-      className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full flex-1 flex flex-col space-y-16 text-right"
+      className="w-full py-8 sm:py-12 flex-1 flex flex-col space-y-16 sm:space-y-20 text-right"
     >
       {/* 1. Hero Section */}
-      <section className="w-full max-w-3xl mx-auto text-center space-y-6 pt-2 sm:pt-4 select-none">
+      <section className="w-full max-w-5xl mx-auto text-center space-y-6 pt-2 sm:pt-6 select-none">
         {/* Subtle Brand Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 text-xs font-semibold font-sirwan tracking-normal shadow-2xs">
           <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
@@ -35,14 +35,14 @@ export default async function HomePage() {
         </h1>
 
         {/* Concise Subtitle (1-2 sentences) */}
-        <p className="text-base sm:text-lg font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-normal">
+        <p className="text-base sm:text-lg font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed tracking-normal">
           {homeSettings.subtitle || 'ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و کارتۆن، لەگەڵ خوێندنەوەی دەقی ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.'}
         </p>
 
         {/* Balanced Primary CTAs */}
         <div className="pt-2">
           {/* Two Balanced Primary Section Buttons */}
-          <div className="grid grid-cols-2 gap-3 w-full max-w-sm mx-auto sm:flex sm:w-auto sm:items-center sm:justify-center">
+          <div className="grid grid-cols-2 gap-3 w-full max-w-md mx-auto sm:flex sm:w-auto sm:items-center sm:justify-center">
             {/* Button 1: فیلم  -> /films */}
             <Link
               href="/films"
@@ -86,7 +86,7 @@ export default async function HomePage() {
         </div>
 
         {/* Responsive Grid: 2 columns on mobile, scaling up to 6 on desktop */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-5 lg:gap-6">
           {featuredFilms.map((film, index) => (
             <FilmCard key={film.id || (film as any)._id || index} film={film} priority={index === 0} />
           ))}
@@ -114,7 +114,7 @@ export default async function HomePage() {
         </div>
 
         {/* Responsive Grid: 1 column of compact rows on mobile, 3 columns on desktop */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
           {featuredArticles.map((article, index) => (
             <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={false} />
           ))}
@@ -122,6 +122,6 @@ export default async function HomePage() {
       </section>
 
      
-    </main>
+    </div>
   );
 }

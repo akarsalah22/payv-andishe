@@ -80,7 +80,7 @@ export default function RootLayout({
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
-      <body className={`${vazirmatnFont.className} min-h-screen bg-[#faf8f5] text-zinc-900 antialiased transition-colors duration-200 dark:bg-[#121214] dark:text-zinc-100 flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-right`}>
+      <body className={`${vazirmatnFont.className} w-full min-h-screen bg-[#faf8f5] text-zinc-900 antialiased transition-colors duration-200 dark:bg-[#121214] dark:text-zinc-100 flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-right`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -89,9 +89,9 @@ export default function RootLayout({
         >
           <ToastProvider>
             <Header />
-            <div className="flex-1 flex flex-col">
+            <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col">
               {children}
-            </div>
+            </main>
             <Footer />
             <ScrollToTop />
           </ToastProvider>

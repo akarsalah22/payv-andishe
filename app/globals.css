@@ -67,6 +67,13 @@ button, a {
   -webkit-tap-highlight-color: transparent;
 }
 
+html, body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 html {
   font-family: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
   text-rendering: optimizeLegibility;

@@ -204,9 +204,9 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
         </div>
       )}
 
-      {/* Responsive Grid: 1 column of compact rows on mobile, 3 columns on desktop */}
+      {/* Responsive Grid: 1 column of compact rows on mobile, 3 columns on tablet/desktop */}
       {filteredArticles.length > 0 ? (
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 min-h-[350px]">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 min-h-[350px]">
           {filteredArticles.map((article, index) => (
             <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={index === 0} />
           ))}
