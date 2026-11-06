@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Vazirmatn } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ToastProvider } from "@/components/ToastContext";
@@ -7,12 +8,18 @@ import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
 import {
-  vazirmatnFont,
   peshangFont,
   sirwanFont,
   sirwan001Font,
   sirwan003Font,
 } from "@/lib/fonts";
+
+const vazir = Vazirmatn({
+  subsets: ['arabic'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-vazir',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://mediay-islamy.vercel.app'),
@@ -72,20 +79,20 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="ckb"
+      lang="ku"
       dir="rtl"
       suppressHydrationWarning
-      className={`${vazirmatnFont.variable} ${peshangFont.variable} ${sirwanFont.variable} ${sirwan001Font.variable} ${sirwan003Font.variable} scroll-smooth`}
+      className={`${vazir.variable} ${peshangFont.variable} ${sirwanFont.variable} ${sirwan001Font.variable} ${sirwan003Font.variable} scroll-smooth`}
     >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
-      <body className={`${vazirmatnFont.className} w-full min-h-screen bg-[#faf8f5] text-zinc-900 antialiased transition-colors duration-200 dark:bg-[#121214] dark:text-zinc-100 flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-right`}>
+      <body className={`${vazir.className} font-sans bg-zinc-950 text-zinc-100 antialiased w-full min-h-screen flex flex-col selection:bg-amber-500/20 selection:text-amber-400 text-right`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
@@ -95,8 +102,8 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
-            <ScrollToTop />
             <PwaInstallPrompt />
+            <ScrollToTop />
           </ToastProvider>
         </ThemeProvider>
       </body>

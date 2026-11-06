@@ -36,12 +36,13 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
-  --font-peshang: var(--font-vazirmatn), var(--font-peshang), 'Vazirmatn', 'Peshang', 'Noto Sans Arabic', sans-serif;
-  --font-sirwan: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
-  --font-sirwan1: var(--font-sirwan1), 'SiRWAN-001', 'Sirwan', var(--font-vazirmatn), 'Noto Sans Arabic', sans-serif;
-  --font-sirwan2: var(--font-sirwan2), 'SiRWAN-003', 'Sirwan', var(--font-vazirmatn), 'Noto Sans Arabic', sans-serif;
-  --font-vazirmatn: var(--font-vazirmatn), 'Vazirmatn', 'Noto Sans Arabic', Tahoma, sans-serif;
+  --font-sans: var(--font-vazir), var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+  --font-peshang: var(--font-vazir), var(--font-peshang), 'Vazirmatn', 'Peshang', 'Noto Sans Arabic', sans-serif;
+  --font-sirwan: var(--font-vazir), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+  --font-sirwan1: var(--font-sirwan1), 'SiRWAN-001', 'Sirwan', var(--font-vazir), 'Noto Sans Arabic', sans-serif;
+  --font-sirwan2: var(--font-sirwan2), 'SiRWAN-003', 'Sirwan', var(--font-vazir), 'Noto Sans Arabic', sans-serif;
+  --font-vazir: var(--font-vazir), 'Vazirmatn', 'Noto Sans Arabic', Tahoma, sans-serif;
+  --font-vazirmatn: var(--font-vazir), var(--font-vazirmatn), 'Vazirmatn', 'Noto Sans Arabic', Tahoma, sans-serif;
 }
 
 :root {

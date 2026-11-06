@@ -2,12 +2,14 @@ import localFont from 'next/font/local';
 import { Vazirmatn } from 'next/font/google';
 
 // 1. Google Font Vazirmatn (High quality Kurdish / Arabic font)
-export const vazirmatnFont = Vazirmatn({
-  subsets: ['arabic', 'latin'],
-  variable: '--font-vazirmatn',
-  display: 'swap',
+export const vazir = Vazirmatn({
+  subsets: ['arabic'],
   weight: ['400', '500', '600', '700'],
+  variable: '--font-vazir',
+  display: 'swap',
 });
+
+export const vazirmatnFont = vazir;
 
 // 2. Peshang Des 5 Bold (Titles, branding, and hero headlines)
 export const peshangFont = localFont({
