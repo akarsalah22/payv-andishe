@@ -25,7 +25,7 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
     <Link
       href={filmDetailsUrl}
       dir="rtl"
-      className="group relative block w-full aspect-[2/3] overflow-hidden rounded-xl sm:rounded-2xl bg-zinc-900 border border-white/10 shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5),0_0_15px_rgba(245,158,11,0.15)] focus:outline-none select-none tap-highlight-transparent"
+      className="group relative block w-full aspect-[2/3] overflow-hidden rounded-xl sm:rounded-2xl bg-zinc-200 dark:bg-zinc-900 border border-zinc-200/80 dark:border-white/10 shadow-sm dark:shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-lg dark:hover:shadow-[0_10px_25px_-5px_rgba(0,0,0,0.5),0_0_15px_rgba(245,158,11,0.15)] focus:outline-none select-none tap-highlight-transparent"
     >
       {/* Poster Image with Next.js Image optimization & priority */}
       <Image

@@ -15,7 +15,7 @@ export function Footer() {
 
   return (
     <footer
-      className="w-full mt-20 sm:mt-28 border-t border-amber-900/10 dark:border-zinc-800/70 bg-[#faf8f5]/90 dark:bg-[#121214]/90 backdrop-blur-sm transition-colors duration-300"
+      className="w-full mt-20 sm:mt-28 border-t border-zinc-200/80 dark:border-zinc-800/70 bg-[#faf8f5]/90 dark:bg-[#121214]/90 backdrop-blur-sm transition-colors duration-300"
       dir="rtl"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">

@@ -128,7 +128,7 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
       {/* Book Cover / Featured Image */}
       <div className="my-2">
         {!imageError && imageSource ? (
-          <div className="relative w-48 sm:w-64 aspect-[3/4] mx-auto rounded-xl overflow-hidden shadow-2xl border border-zinc-800 bg-zinc-900 group">
+          <div className="relative w-48 sm:w-64 aspect-[3/4] mx-auto rounded-xl overflow-hidden shadow-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 group">
             <Image
               src={imageSource || "/placeholder.png"}
               alt={article.title}
@@ -142,18 +142,18 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
         ) : (
           /* Neat, styled book-cover placeholder */
           <div
-            className="relative w-48 sm:w-64 aspect-[3/4] mx-auto rounded-xl overflow-hidden shadow-2xl border border-zinc-800 bg-gradient-to-br from-zinc-800 via-zinc-900 to-zinc-950 p-5 flex flex-col justify-between text-right select-none shadow-black/60"
+            className="relative w-48 sm:w-64 aspect-[3/4] mx-auto rounded-xl overflow-hidden shadow-xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-br from-zinc-100 via-zinc-200 to-zinc-300 dark:from-zinc-800 dark:via-zinc-900 dark:to-zinc-950 p-5 flex flex-col justify-between text-right select-none"
             dir="rtl"
           >
             {/* Subtle book spine effect */}
-            <div className="absolute right-0 top-0 bottom-0 w-2.5 bg-gradient-to-l from-black/40 to-transparent border-l border-white/5 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-2.5 bg-gradient-to-l from-black/10 dark:from-black/40 to-transparent border-l border-zinc-300/40 dark:border-white/5 pointer-events-none" />
 
             {/* Top Badge & Icon */}
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center justify-center">
                 <BookOpen className="w-4 h-4" />
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-sirwan bg-amber-500/15 text-amber-400 border border-amber-500/25">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-sirwan bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/25">
                 {article.category}
               </span>
             </div>
@@ -161,15 +161,15 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
             {/* Center Title & Accent */}
             <div className="space-y-2 py-3">
               <div className="w-6 h-0.5 bg-amber-500/60 rounded-full" />
-              <h3 className="text-sm sm:text-base font-bold font-peshang text-white line-clamp-3 leading-snug">
+              <h3 className="text-sm sm:text-base font-bold font-peshang text-zinc-900 dark:text-white line-clamp-3 leading-snug">
                 {article.title}
               </h3>
             </div>
 
             {/* Bottom Meta */}
-            <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[11px] font-sirwan text-zinc-400">
+            <div className="pt-2 border-t border-zinc-300/70 dark:border-zinc-800/80 flex items-center justify-between text-[11px] font-sirwan text-zinc-600 dark:text-zinc-400">
               <span className="truncate max-w-[130px]">{article.author || "میدیای ئیسلامی"}</span>
-              <span className="text-[10px] text-amber-400/80 font-mono">PDF</span>
+              <span className="text-[10px] text-amber-600 dark:text-amber-400/80 font-mono">PDF</span>
             </div>
           </div>
         )}

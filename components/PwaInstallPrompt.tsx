@@ -95,7 +95,7 @@ export function PwaInstallPrompt() {
       aria-label="داگرتنی وێبسایت وەک ئەپڵیکەیشن"
       className="fixed bottom-4 sm:bottom-6 inset-x-4 max-w-md mx-auto z-[90] animate-in slide-in-from-bottom-6 fade-in duration-300"
     >
-      <div className="relative flex items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-zinc-950/95 text-white border border-amber-500/35 shadow-2xl backdrop-blur-xl">
+      <div className="relative flex items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-white/95 text-zinc-900 dark:bg-zinc-950/95 dark:text-white border border-amber-500/35 shadow-2xl backdrop-blur-xl">
         {/* Right Info: Logo & Kurdish Subtitle */}
         <div className="flex items-center gap-3 min-w-0">
           <div className="relative w-10 h-10 shrink-0 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center p-1.5 shadow-xs">
@@ -109,10 +109,10 @@ export function PwaInstallPrompt() {
           </div>
 
           <div className="min-w-0 text-right">
-            <h4 className="text-xs sm:text-sm font-bold font-peshang tracking-normal text-white truncate">
+            <h4 className="text-xs sm:text-sm font-bold font-peshang tracking-normal text-zinc-900 dark:text-white truncate">
               میدیای ئیسلامی وەک ئەپ
             </h4>
-            <p className="text-[11px] sm:text-xs font-normal font-sirwan text-zinc-400 truncate">
+            <p className="text-[11px] sm:text-xs font-normal font-sirwan text-zinc-500 dark:text-zinc-400 truncate">
               ئەم وێبسایتە وەک ئەپ دابەزێنە لەسەر شاشەکەت
             </p>
           </div>
@@ -134,7 +134,7 @@ export function PwaInstallPrompt() {
             onClick={handleDismiss}
             aria-label="داخستنی ئاگاداری"
             title="دواتر"
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-850 active:scale-90 transition-all cursor-pointer touch-manipulation"
+            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 active:scale-90 transition-all cursor-pointer touch-manipulation"
           >
             <X className="w-4 h-4" strokeWidth={2} />
           </button>

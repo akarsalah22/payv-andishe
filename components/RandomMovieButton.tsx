@@ -79,7 +79,7 @@ export function RandomMovieButton({
         disabled={isPicking}
         title="چی سەیر بکەم؟ شتێکم بۆ هەڵبژێرە"
         aria-label="چی سەیر بکەم؟ شتێکم بۆ هەڵبژێرە"
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 transition-all group cursor-pointer select-none touch-manipulation disabled:opacity-60 active:scale-95 ${className}`}
+        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 transition-all group cursor-pointer select-none touch-manipulation disabled:opacity-60 active:scale-95 ${className}`}
       >
         <Shuffle
           className={`w-3.5 h-3.5 shrink-0 transition-transform duration-500 group-hover:rotate-180 active:rotate-90 ${
@@ -101,7 +101,7 @@ export function RandomMovieButton({
       disabled={isPicking}
       title="نازانیت چی سەیر بکەیت؟ لێرە دابگرە تا فیلمێکت بۆ هەڵبژێرین"
       aria-label="چی سەیر بکەم؟ شتێکم بۆ هەڵبژێرە"
-      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 active:scale-95 transition-all group cursor-pointer select-none touch-manipulation disabled:opacity-60 ${className}`}
+      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 active:scale-95 transition-all group cursor-pointer select-none touch-manipulation disabled:opacity-60 ${className}`}
     >
       <Shuffle
         className={`w-4 h-4 shrink-0 transition-transform duration-500 group-hover:rotate-180 active:rotate-90 ${

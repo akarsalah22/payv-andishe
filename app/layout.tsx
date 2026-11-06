@@ -89,10 +89,10 @@ export default function RootLayout({
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
-      <body className={`${vazir.className} font-sans bg-zinc-950 text-zinc-100 antialiased w-full min-h-screen flex flex-col selection:bg-amber-500/20 selection:text-amber-400 text-right`}>
+      <body className={`${vazir.className} font-sans bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors antialiased w-full min-h-screen flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-right`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >

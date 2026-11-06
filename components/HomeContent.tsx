@@ -94,7 +94,7 @@ export function HomeContent({ films, articles }: HomeContentProps) {
               >
                 <div className="space-y-3">
                   {/* Poster container with ambient overlay */}
-                  <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden bg-zinc-950 shadow-xs">
+                  <div className="relative aspect-[2/3] w-full rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-950 shadow-xs">
                     <Image
                       src={film.posterUrl || '/placeholder.jpg'}
                       alt={film.titleKurdish}

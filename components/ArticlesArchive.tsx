@@ -213,7 +213,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
         </div>
       ) : (
         /* Empty State UI */
-        <div className="w-full py-16 px-4 text-center space-y-4 rounded-2xl border border-amber-900/10 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+        <div className="w-full py-16 px-4 text-center space-y-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-900/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center mx-auto text-amber-500 shadow-xs">
             <SearchX className="w-6 h-6" strokeWidth={1.75} />
           </div>

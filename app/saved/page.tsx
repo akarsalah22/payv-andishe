@@ -209,7 +209,7 @@ export default function SavedPage() {
                     {/* Image Link Container */}
                     <Link
                       href={targetUrl}
-                      className="relative block w-full aspect-[2/3] overflow-hidden bg-zinc-950"
+                      className="relative block w-full aspect-[2/3] overflow-hidden bg-zinc-100 dark:bg-zinc-950"
                     >
                       <Image
                         src={item.imageUrl || '/placeholder.jpg'}
@@ -253,7 +253,7 @@ export default function SavedPage() {
                         </h4>
                       </Link>
 
-                      <div className="flex items-center justify-between text-[11px] font-sirwan text-zinc-400 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
+                      <div className="flex items-center justify-between text-[11px] font-sirwan text-zinc-500 dark:text-zinc-400 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
                         <span>{item.type === 'movie' ? 'بینینی فیلم' : 'خوێندنەوە'}</span>
                         <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1 text-amber-500" />
                       </div>

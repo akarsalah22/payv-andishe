@@ -68,19 +68,19 @@ export function ReadingToolbar({
 
   return (
     <div
-      className={`sticky top-20 z-30 w-full max-w-2xl mx-auto my-4 bg-zinc-900/80 backdrop-blur border border-zinc-800 rounded-2xl p-2.5 shadow-lg flex items-center justify-between gap-2.5 select-none ${className}`}
+      className={`sticky top-20 z-30 w-full max-w-2xl mx-auto my-4 bg-white/90 dark:bg-zinc-900/80 backdrop-blur-md border border-zinc-200/90 dark:border-zinc-800 rounded-2xl p-2.5 shadow-sm dark:shadow-lg flex items-center justify-between gap-2.5 select-none ${className}`}
       dir="rtl"
     >
       {/* 1. Estimated Reading Time Badge */}
-      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800/80 border border-zinc-700/60 text-xs font-medium font-sirwan text-zinc-300">
-        <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" strokeWidth={1.75} />
+      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/60 text-xs font-medium font-sirwan text-zinc-700 dark:text-zinc-300">
+        <Clock className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" strokeWidth={1.75} />
         <span className="whitespace-nowrap">{displayReadingTime}</span>
       </div>
 
       {/* 2. Controls: Font Resizing (A- / A+) & Share Button */}
       <div className="flex items-center gap-2">
         {/* Font Size Adjusters */}
-        <div className="inline-flex items-center rounded-xl bg-zinc-800/80 border border-zinc-700/60 p-0.5">
+        <div className="inline-flex items-center rounded-xl bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/60 p-0.5">
           {/* Zoom Out Button (A-) */}
           <button
             type="button"
@@ -90,14 +90,14 @@ export function ReadingToolbar({
             title="بچووککردنەوەی فۆنت (A-)"
             className={`px-2.5 py-1 rounded-lg text-xs font-bold font-mono transition-all duration-150 active:scale-95 cursor-pointer ${
               canZoomOut
-                ? "text-zinc-200 hover:text-white hover:bg-zinc-700"
-                : "text-zinc-500 cursor-not-allowed opacity-50"
+                ? "text-zinc-700 hover:text-zinc-950 hover:bg-zinc-200/80 dark:text-zinc-200 dark:hover:text-white dark:hover:bg-zinc-700"
+                : "text-zinc-400 dark:text-zinc-500 cursor-not-allowed opacity-50"
             }`}
           >
             A-
           </button>
 
-          <span className="w-px h-3.5 bg-zinc-700/80 my-auto" />
+          <span className="w-px h-3.5 bg-zinc-300 dark:bg-zinc-700/80 my-auto" />
 
           {/* Zoom In Button (A+) */}
           <button
@@ -108,8 +108,8 @@ export function ReadingToolbar({
             title="گەورەکردنی فۆنت (A+)"
             className={`px-2.5 py-1 rounded-lg text-xs font-bold font-mono transition-all duration-150 active:scale-95 cursor-pointer ${
               canZoomIn
-                ? "text-zinc-200 hover:text-white hover:bg-zinc-700"
-                : "text-zinc-500 cursor-not-allowed opacity-50"
+                ? "text-zinc-700 hover:text-zinc-950 hover:bg-zinc-200/80 dark:text-zinc-200 dark:hover:text-white dark:hover:bg-zinc-700"
+                : "text-zinc-400 dark:text-zinc-500 cursor-not-allowed opacity-50"
             }`}
           >
             A+
@@ -126,7 +126,7 @@ export function ReadingToolbar({
           title={title}
           text={title}
           url={url}
-          className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700/80 transition-all duration-150 active:scale-95 cursor-pointer touch-manipulation"
+          className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-zinc-100 hover:bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700/80 transition-all duration-150 active:scale-95 cursor-pointer touch-manipulation"
         />
       </div>
     </div>

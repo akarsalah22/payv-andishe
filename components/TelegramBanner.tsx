@@ -10,7 +10,7 @@ export function TelegramBanner() {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="space-y-3 max-w-2xl">
           {/* Channel Handle Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs font-semibold font-sirwan text-amber-900 dark:bg-amber-500/10 dark:text-amber-400 tracking-normal shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs font-semibold font-sirwan text-amber-700 dark:text-amber-400 tracking-normal shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
             <span>کەناڵی فەرمی</span>
             <span className="text-zinc-400 dark:text-zinc-500">•</span>
