@@ -16,6 +16,7 @@ import { SAMPLE_FILMS } from '@/data/films';
 import { SAMPLE_ARTICLES } from '@/data/articles';
 import { matchesSearchQuery } from '@/lib/search';
 import { RandomMovieButton } from './RandomMovieButton';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -30,6 +31,7 @@ const QUICK_SUGGESTIONS = [
 ];
 
 export function SearchModal({ isOpen, onClose }: SearchModalProps) {
+  const { t } = useLanguage();
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -156,7 +158,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       dir="rtl"
       role="dialog"
       aria-modal="true"
-      aria-label="گەڕانی گشتی لە ماڵپەڕ"
+      aria-label={t('nav.search', 'گەڕان')}
     >
       {/* Dark Ambient Backdrop */}
       <div
@@ -166,10 +168,10 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
       />
 
       {/* Modal Dialog Window */}
-      <div className="relative w-full max-w-2xl bg-[#faf8f5] dark:bg-[#121214] text-zinc-900 dark:text-zinc-100 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 shadow-2xl overflow-hidden flex flex-col z-10 transition-all duration-200 ease-out text-right select-none">
+      <div className="relative w-full max-w-2xl bg-[#faf8f5] dark:bg-[#121214] text-zinc-900 dark:text-zinc-100 rounded-2xl border border-zinc-200/90 dark:border-zinc-800 shadow-2xl overflow-hidden flex flex-col z-10 transition-all duration-200 ease-out text-start select-none">
         {/* 1. Unified Search Header Bar (Clean single row) */}
         <div className="flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-3.5 border-b border-zinc-200/80 dark:border-zinc-800/80 bg-white/80 dark:bg-zinc-900/60 backdrop-blur-sm shrink-0">
-          {/* Right: Search Icon */}
+          {/* Start: Search Icon */}
           <Search className="w-5 h-5 text-amber-500 shrink-0" strokeWidth={1.75} />
 
           {/* Middle: Input Field taking full available width */}
@@ -178,7 +180,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="گەڕان بەدوای فیلم، کارتۆن، ئایەت و کتێب..."
+            placeholder={t('nav.search_placeholder', 'گەڕان بەدوای فیلم، کارتۆن، ئایەت و کتێب...')}
             className="flex-1 min-w-0 bg-transparent text-sm sm:text-base font-sirwan text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none tracking-normal py-0.5"
           />
 

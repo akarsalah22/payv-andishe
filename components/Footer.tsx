@@ -4,8 +4,11 @@ import Link from 'next/link';
 import { ChevronUp, ShieldCheck } from 'lucide-react';
 import { InstagramIcon } from './InstagramIcon';
 import { TelegramIcon } from './TelegramIcon';
+import { useLanguage } from '@/context/LanguageContext';
 
 export function Footer() {
+  const { t } = useLanguage();
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -16,60 +19,59 @@ export function Footer() {
   return (
     <footer
       className="w-full mt-20 sm:mt-28 border-t border-zinc-200/80 dark:border-zinc-800/70 bg-[#faf8f5]/90 dark:bg-[#121214]/90 backdrop-blur-sm transition-colors duration-300"
-      dir="rtl"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-zinc-200/70 dark:border-zinc-800/50">
           {/* Identity & Motto */}
-          <div className="space-y-3 max-w-md text-right">
+          <div className="space-y-3 max-w-md text-start">
             <Link href="/" className="inline-flex items-center gap-2.5 sm:gap-3 group select-none">
               <div className="relative flex items-center justify-center">
                 <img
                   src="/img/logo.svg"
-                  alt="میدیای ئیسلامی"
+                  alt={t('brand.title', 'میدیای ئیسلامی')}
                   className="h-9 w-auto max-w-[160px] object-contain transition-transform duration-200 group-hover:scale-105"
                   loading="lazy"
                   decoding="async"
                 />
               </div>
               <span className="text-xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 group-hover:text-amber-500 transition-colors">
-                میدیای ئیسلامی
+                {t('brand.title', 'میدیای ئیسلامی')}
               </span>
             </Link>
-            <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed tracking-normal">
-              ئەرشیڤێکی سەربەخۆی کوردییە بۆ ناساندنی فیلم و کارتۆنە ئیسلامێکان، وەدەقی ئیسلامی بە زمانی کوردی.
+            <p className="text-xs sm:text-sm font-normal text-zinc-600 dark:text-zinc-400 leading-relaxed tracking-normal">
+              {t('footer.desc', 'ئەرشیڤێکی سەربەخۆی کوردییە بۆ ناساندنی فیلم و کارتۆنە ئیسلامێکان، وەدەقی ئیسلامی بە زمانی کوردی.')}
             </p>
           </div>
 
-          {/* Quick Nav Links: (سەرەکی, فیلم و کارتۆن, نووسین و وتار, دەربارە, تێلیگرام, ئینستاگرام) */}
-          <nav className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm font-medium font-sirwan text-zinc-600 dark:text-zinc-400 tracking-normal">
+          {/* Quick Nav Links */}
+          <nav className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm font-medium text-zinc-600 dark:text-zinc-400 tracking-normal">
             <Link
               href="/"
               prefetch={false}
               className="hover:text-amber-500 dark:hover:text-amber-400 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
-              سەرەکی
+              {t('nav.home', 'سەرەکی')}
             </Link>
             <Link
               href="/films"
               prefetch={false}
               className="hover:text-amber-500 dark:hover:text-amber-400 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
-              فیلم و کارتۆن
+              {t('nav.films', 'فیلم و کارتۆن')}
             </Link>
             <Link
               href="/articles"
               prefetch={false}
               className="hover:text-amber-500 dark:hover:text-amber-400 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
-              نووسین و وتار
+              {t('nav.articles', 'نووسین و وتار')}
             </Link>
             <Link
               href="/about"
               prefetch={false}
               className="hover:text-amber-500 dark:hover:text-amber-400 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
-              دەربارە
+              {t('nav.about', 'دەربارە')}
             </Link>
             <a
               href="https://t.me/mediay_islamy"
@@ -78,7 +80,7 @@ export function Footer() {
               className="group inline-flex items-center gap-1.5 text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
               <TelegramIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-              <span>تێلیگرام</span>
+              <span>{t('footer.telegram', 'تێلیگرام')}</span>
             </a>
             <a
               href="https://instagram.com/hamahang_bwn"
@@ -87,19 +89,19 @@ export function Footer() {
               className="inline-flex items-center gap-1.5 text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
               <InstagramIcon className="w-3.5 h-3.5" strokeWidth={1.75} />
-              <span>ئینستاگرام</span>
+              <span>{t('footer.instagram', 'ئینستاگرام')}</span>
             </a>
           </nav>
         </div>
 
         {/* Bottom copyright & Back to Top button */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium font-sirwan text-zinc-500 dark:text-zinc-500 tracking-normal text-right">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-zinc-500 dark:text-zinc-500 tracking-normal text-start">
           <div className="flex items-center gap-2">
-            <p>هەموو مافەکانی پارێزراوە © 2026 میدیای ئیسلامی</p>
+            <p>{t('footer.rights', 'هەموو مافەکانی پارێزراوە © 2026 میدیای ئیسلامی')}</p>
             <Link
               href="/admin"
-              aria-label="بەڕێوەبردن"
-              title="پەنێڵی بەڕێوەبردن"
+              aria-label={t('nav.admin', 'بەڕێوەبردن')}
+              title={t('nav.admin', 'بەڕێوەبردن')}
               className="text-zinc-400/40 hover:text-amber-500/70 transition-colors duration-150 p-1"
             >
               <ShieldCheck className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -109,11 +111,11 @@ export function Footer() {
           <button
             type="button"
             onClick={scrollToTop}
-            aria-label="گەڕانەوە بۆ سەرەوە"
+            aria-label={t('footer.top', 'گەڕانەوە بۆ سەرەوە')}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/60 hover:bg-stone-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-amber-500 dark:hover:text-amber-400 hover:border-amber-500/30 transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
           >
             <ChevronUp className="w-3.5 h-3.5 text-amber-500" strokeWidth={2} />
-            <span>گەڕانەوە بۆ سەرەوە</span>
+            <span>{t('footer.top', 'گەڕانەوە بۆ سەرەوە')}</span>
           </button>
         </div>
       </div>

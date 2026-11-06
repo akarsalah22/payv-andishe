@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Shuffle } from 'lucide-react';
 import type { Film } from '@/data/films';
 import { SAMPLE_FILMS } from '@/data/films';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface RandomMovieButtonProps {
   films?: Film[];
@@ -22,10 +23,13 @@ export function RandomMovieButton({
   onPick,
 }: RandomMovieButtonProps) {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isPicking, setIsPicking] = useState(false);
 
   const isHeader = variant === 'header' || variant === 'compact';
-  const defaultLabel = isHeader ? 'چی سەیر بکەم؟' : 'شتێکم بۆ هەڵبژێرە';
+  const defaultLabel = isHeader
+    ? t('nav.surprise', 'چی سەیر بکەم؟')
+    : t('nav.surprise_search', 'شتێکم بۆ هەڵبژێرە');
   const displayLabel = label || defaultLabel;
 
   const handlePickRandom = async () => {
@@ -87,8 +91,8 @@ export function RandomMovieButton({
           }`}
           strokeWidth={2}
         />
-        <span className="font-sirwan tracking-normal">
-          {isPicking ? 'هەڵدەبژێردرێت...' : displayLabel}
+        <span className="tracking-normal">
+          {isPicking ? t('nav.surprise_loading', 'هەڵدەبژێردرێت...') : displayLabel}
         </span>
       </button>
     );
@@ -109,8 +113,8 @@ export function RandomMovieButton({
         }`}
         strokeWidth={2}
       />
-      <span className="font-sirwan tracking-normal">
-        {isPicking ? 'هەڵدەبژێردرێت...' : displayLabel}
+      <span className="tracking-normal">
+        {isPicking ? t('nav.surprise_loading', 'هەڵدەبژێردرێت...') : displayLabel}
       </span>
     </button>
   );

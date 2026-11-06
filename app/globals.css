@@ -84,8 +84,6 @@ html {
 
 body {
   font-family: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
-  direction: rtl;
-  text-align: right;
   line-height: 1.7;
   letter-spacing: normal;
   -webkit-tap-highlight-color: transparent;
