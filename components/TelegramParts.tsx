@@ -35,8 +35,8 @@ export function TelegramParts({ parts, className = "" }: TelegramPartsProps) {
         </span>
       </div>
 
-      {/* Responsive Grid: 1 column on mobile, 2 columns on tablet/desktop */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {/* Responsive Grid: 1 column on mobile, 2 columns on tablet, 3 columns on desktop */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {parts.map((item) => (
           <a
             key={item.partNumber}

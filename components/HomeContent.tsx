@@ -190,10 +190,26 @@ export function HomeContent({ films, articles }: HomeContentProps) {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {articles.slice(0, 3).map((article, index) => (
-              <ArticleCard key={article.id} article={article} priority={index === 0} />
-            ))}
+          <div className="w-full max-w-6xl mx-auto">
+            {articles.length === 1 ? (
+              <div className="flex justify-center">
+                <div className="w-full max-w-md">
+                  <ArticleCard article={articles[0]} priority={false} />
+                </div>
+              </div>
+            ) : articles.length === 2 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto gap-6">
+                {articles.slice(0, 2).map((article, index) => (
+                  <ArticleCard key={article.id} article={article} priority={index === 0} />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {articles.slice(0, 3).map((article, index) => (
+                  <ArticleCard key={article.id} article={article} priority={index === 0} />
+                ))}
+              </div>
+            )}
           </div>
         </section>
       )}

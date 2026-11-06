@@ -368,22 +368,6 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
         </p>
       </section>
 
-      {/* Information Grid Cards */}
-      <div className="w-full grid grid-cols-3 gap-2.5 sm:gap-4">
-        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-sirwan block">پۆلێن</span>
-          <span className="text-xs sm:text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100">{film.category}</span>
-        </div>
-        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-sirwan block">ساڵی بەرهەم</span>
-          <span className="text-xs sm:text-sm font-bold font-sans text-zinc-900 dark:text-zinc-100">{film.year}</span>
-        </div>
-        <div className="p-3.5 sm:p-4 rounded-2xl bg-white dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80 text-right space-y-1">
-          <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-sirwan block">ماوە</span>
-          <span className="text-xs sm:text-sm font-bold font-sirwan text-zinc-900 dark:text-zinc-100">{film.duration || 'دیارینەکراو'}</span>
-        </div>
-      </div>
-
       {/* Related Films / Recommendations Section */}
       {relatedFilms.length > 0 && (
         <section className="w-full space-y-5 pt-4">

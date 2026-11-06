@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, Calendar, ExternalLink, BookOpen } from "lucide-react";
@@ -17,9 +17,9 @@ export interface ArticleReaderViewProps {
 
 const FONT_SIZE_CLASSES: Record<FontSize, string> = {
   small: "text-sm sm:text-base leading-relaxed sm:leading-[2.2]",
-  normal: "text-base sm:text-[17px] md:text-lg leading-loose sm:leading-[2.4]",
-  large: "text-lg sm:text-xl leading-loose sm:leading-[2.6]",
-  xlarge: "text-xl sm:text-2xl leading-loose sm:leading-[2.8]",
+  normal: "text-base sm:text-lg leading-relaxed sm:leading-[2.4]",
+  large: "text-lg sm:text-xl leading-relaxed sm:leading-[2.6]",
+  xlarge: "text-xl sm:text-2xl leading-relaxed sm:leading-[2.8]",
 };
 
 export function ArticleReaderView({ article }: ArticleReaderViewProps) {
@@ -32,10 +32,34 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
     shareArticleUrl
   )}&text=${encodeURIComponent(article.title)}`;
 
+  // Resolve body paragraphs with graceful fallback to excerpt / informative reader text
+  const contentParagraphs = useMemo(() => {
+    const rawList = Array.isArray(article.content)
+      ? article.content.filter((p) => typeof p === "string" && p.trim().length > 0)
+      : typeof article.content === "string" && (article.content as string).trim()
+      ? [(article.content as string).trim()]
+      : [];
+
+    if (rawList.length > 0) {
+      return rawList;
+    }
+
+    if (article.excerpt && article.excerpt.trim()) {
+      return [
+        article.excerpt.trim(),
+        "دەقی تەواوی ئەم بابەتە لە ڕێگەی فایلی پەڕتووک و نووسینەکەوە لە خوارەوە بەردەست کراوە بۆ خوێندنەوە و داگرتن."
+      ];
+    }
+
+    return [
+      "دەقی تەواوی ئەم بەرهەمە لە ڕێگەی فایلی PDF لە خوارەوە بەردەستە تاوەکو بتوانن بە کوالێتی بەرز بیخوێننەوە و پاشەکەوتی بکەن."
+    ];
+  }, [article.content, article.excerpt]);
+
   // Word count for reading estimation calculation
-  const totalWords = Array.isArray(article.content)
-    ? article.content.join(" ").trim().split(/\s+/).filter(Boolean).length
-    : 0;
+  const totalWords = useMemo(() => {
+    return contentParagraphs.join(" ").trim().split(/\s+/).filter(Boolean).length;
+  }, [contentParagraphs]);
 
   return (
     <article
@@ -194,11 +218,11 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
       />
 
       {/* Focused Reading Body Text with Dynamic Font Size */}
-      <div className="w-full max-w-2xl mx-auto space-y-6 pt-2">
-        {article.content.map((paragraph, index) => (
+      <div className="w-full max-w-2xl mx-auto space-y-6 pt-4 pb-2">
+        {contentParagraphs.map((paragraph, index) => (
           <p
             key={index}
-            className={`font-normal font-sirwan text-zinc-800 dark:text-zinc-200 tracking-normal text-justify transition-all duration-200 ${FONT_SIZE_CLASSES[fontSize]}`}
+            className={`font-normal font-sirwan text-zinc-700 dark:text-zinc-300 tracking-normal text-justify leading-relaxed transition-all duration-200 ${FONT_SIZE_CLASSES[fontSize]}`}
           >
             {paragraph}
           </p>
