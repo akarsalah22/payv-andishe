@@ -8,6 +8,7 @@ import type { Article } from "@/data/articles";
 import { ReadingToolbar, type FontSize } from "@/components/ReadingToolbar";
 import { PdfDownloadCard } from "@/components/PdfDownloadCard";
 import { ShareButton } from "@/components/ShareButton";
+import { FavoriteButton } from "@/components/FavoriteButton";
 import { TelegramIcon } from "@/components/TelegramIcon";
 
 export interface ArticleReaderViewProps {
@@ -52,6 +53,19 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
         </Link>
 
         <div className="flex items-center gap-2">
+          {/* Favorite / Bookmark Button */}
+          <FavoriteButton
+            item={{
+              id: article.id || article.slug,
+              title: article.title,
+              imageUrl: imageSource || '/placeholder-article.jpg',
+              type: 'writing',
+              slug: article.slug || article.id,
+              category: article.category,
+            }}
+            variant="pill"
+          />
+
           {/* Share Button */}
           <ShareButton
             title={article.title}
@@ -169,6 +183,14 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
         wordCount={totalWords}
         title={article.title}
         url={shareArticleUrl}
+        item={{
+          id: article.id || article.slug,
+          title: article.title,
+          imageUrl: imageSource || '/placeholder-article.jpg',
+          type: 'writing',
+          slug: article.slug || article.id,
+          category: article.category,
+        }}
       />
 
       {/* Focused Reading Body Text with Dynamic Font Size */}

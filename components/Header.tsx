@@ -13,10 +13,12 @@ import {
   Info,
   Search,
   ShieldCheck,
+  Bookmark,
 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { SearchModal } from './SearchModal';
 import { RandomMovieButton } from './RandomMovieButton';
+import { useFavorites } from '@/hooks/useFavorites';
 
 interface NavLinkItem {
   name: string;
@@ -37,6 +39,7 @@ export function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
   const pathname = usePathname();
+  const { favoritesCount } = useFavorites();
 
   // Check if admin is currently authenticated via synchronous client cookie (runs strictly once on mount)
   useEffect(() => {
@@ -166,6 +169,25 @@ export function Header() {
 
             {/* Random Discovery Action (Desktop) */}
             <RandomMovieButton variant="header" className="hidden lg:inline-flex" />
+
+            {/* Saved Items (Watchlist) Quick Button */}
+            <Link
+              href="/saved"
+              aria-label={`هەڵگیراوەکانم (${favoritesCount})`}
+              title="هەڵگیراوەکانم"
+              className={`relative p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${
+                pathname === '/saved'
+                  ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                  : ''
+              }`}
+            >
+              <Bookmark className="w-5 h-5 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
+              {favoritesCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-500 text-zinc-950 text-[10px] font-bold font-sans flex items-center justify-center shadow-xs animate-in zoom-in-75 duration-200">
+                  {favoritesCount}
+                </span>
+              )}
+            </Link>
 
             {/* Search Trigger Button */}
             <button
@@ -313,6 +335,28 @@ export function Header() {
                   </Link>
                 );
               })}
+
+              {/* Saved Items Link in Drawer */}
+              <Link
+                href="/saved"
+                prefetch={false}
+                onClick={() => setIsMenuOpen(false)}
+                className={`flex items-center justify-between py-3 px-3.5 rounded-xl text-base font-medium font-sirwan tracking-normal transition-all duration-150 ease-out active:scale-95 select-none tap-highlight-transparent ${
+                  pathname === '/saved'
+                    ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 font-bold border-r-2 border-amber-500'
+                    : 'text-zinc-700 dark:text-zinc-300 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/50'
+                }`}
+              >
+                <div className="flex items-center gap-3.5">
+                  <Bookmark className="h-4.5 w-4.5 text-amber-500 shrink-0" strokeWidth={1.75} />
+                  <span>هەڵگیراوەکانم</span>
+                </div>
+                {favoritesCount > 0 && (
+                  <span className="px-2 py-0.5 rounded-full text-xs font-bold font-sans bg-amber-500 text-zinc-950 shadow-2xs">
+                    {favoritesCount}
+                  </span>
+                )}
+              </Link>
             </nav>
           </div>
 

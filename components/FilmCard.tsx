@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Film } from '@/data/films';
+import { FavoriteButton } from './FavoriteButton';
 
 interface FilmCardProps {
   film: Film;
@@ -46,6 +47,22 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
           {film.category}
         </span>
       )}
+
+      {/* Top Left: Quick Save Button */}
+      <div className="absolute top-2 left-2 z-20">
+        <FavoriteButton
+          item={{
+            id: film.id || film.slug,
+            title: filmTitle,
+            imageUrl: posterSrc,
+            type: 'movie',
+            slug: film.slug || film.id,
+            category: film.category,
+            year: film.year,
+            duration: film.duration,
+          }}
+        />
+      </div>
 
       {/* Title Only at Bottom */}
       <div className="absolute bottom-0 inset-x-0 p-2.5 sm:p-3.5 z-10 text-right" dir="rtl">

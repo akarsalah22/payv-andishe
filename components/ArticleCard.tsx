@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronLeft } from 'lucide-react';
 import type { Article } from '@/data/articles';
+import { FavoriteButton } from './FavoriteButton';
 
 interface ArticleCardProps {
   article: Article;
@@ -70,6 +71,20 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
             </svg>
             <span>{readingTimeText}</span>
           </span>
+        </div>
+
+        {/* Quick Save Bookmark Button */}
+        <div className="absolute bottom-2.5 left-2.5 z-20">
+          <FavoriteButton
+            item={{
+              id: article.id || article.slug,
+              title: article.title,
+              imageUrl: coverSrc,
+              type: 'writing',
+              slug: article.slug || article.id,
+              category: article.category,
+            }}
+          />
         </div>
       </div>
 

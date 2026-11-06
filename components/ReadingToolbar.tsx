@@ -3,6 +3,8 @@
 import React from "react";
 import { Clock } from "lucide-react";
 import { ShareButton } from "@/components/ShareButton";
+import { FavoriteButton } from "@/components/FavoriteButton";
+import type { SavedItem } from "@/hooks/useFavorites";
 
 export type FontSize = "small" | "normal" | "large" | "xlarge";
 
@@ -13,6 +15,7 @@ export interface ReadingToolbarProps {
   wordCount?: number;
   title: string;
   url?: string;
+  item?: SavedItem;
   className?: string;
 }
 
@@ -30,6 +33,7 @@ export function ReadingToolbar({
   wordCount,
   title,
   url,
+  item,
   className = "",
 }: ReadingToolbarProps) {
   const currentIndex = ORDERED_SIZES.indexOf(fontSize);
@@ -112,7 +116,12 @@ export function ReadingToolbar({
           </button>
         </div>
 
-        {/* 3. Share Button */}
+        {/* 3. Favorite / Bookmark Button (Optional) */}
+        {item && (
+          <FavoriteButton item={item} variant="pill" />
+        )}
+
+        {/* 4. Share Button */}
         <ShareButton
           title={title}
           text={title}

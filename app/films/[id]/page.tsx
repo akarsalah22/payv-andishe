@@ -22,6 +22,7 @@ import {
 } from '@/data/films';
 import { FilmCard } from '@/components/FilmCard';
 import { ShareButton } from '@/components/ShareButton';
+import { FavoriteButton } from '@/components/FavoriteButton';
 import { MediaViewer } from '@/components/MediaViewer';
 import { TelegramIcon } from '@/components/TelegramIcon';
 import { YouTubeIcon } from '@/components/YouTubeIcon';
@@ -198,6 +199,21 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
         </Link>
 
         <div className="flex items-center gap-2">
+          {/* Quick Bookmark / Save Button */}
+          <FavoriteButton
+            item={{
+              id: film.id || film.slug,
+              title: film.titleKurdish,
+              imageUrl: posterSrc,
+              type: 'movie',
+              slug: film.slug || film.id,
+              category: film.category,
+              year: film.year,
+              duration: film.duration,
+            }}
+            variant="pill"
+          />
+
           {/* Native Web Share Button */}
           <ShareButton
             title={film.titleKurdish}
