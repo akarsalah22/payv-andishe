@@ -35,9 +35,9 @@ export function ScrollToTop() {
     <button
       type="button"
       onClick={scrollToTop}
-      aria-label="گەڕانەوە بۆ سەرەوە"
-      title="گەڕانەوە بۆ سەرەوە"
-      className={`group fixed bottom-6 right-6 z-40 p-3 rounded-full flex items-center justify-center min-w-[44px] min-h-[44px] cursor-pointer select-none tap-highlight-transparent transition-all duration-300 ease-in-out bg-zinc-950 border border-zinc-850 shadow-xl text-amber-400 hover:bg-zinc-900 hover:text-amber-300 active:scale-90 active:bg-amber-500 active:text-zinc-950 dark:bg-zinc-150 dark:border-zinc-300 dark:shadow-2xl dark:text-amber-700 dark:hover:bg-white dark:hover:text-amber-600 dark:active:scale-90 dark:active:bg-amber-500 dark:active:text-white ${
+      aria-label="سەرکەوتن بۆ سەرەوە"
+      title="سەرکەوتن بۆ سەرەوە"
+      className={`group fixed bottom-6 right-6 z-40 p-3 rounded-full flex items-center justify-center min-w-[44px] min-h-[44px] cursor-pointer select-none tap-highlight-transparent transition-all duration-300 ease-in-out border shadow-xl bg-zinc-950 text-amber-400 border-zinc-800 hover:bg-zinc-900 hover:text-amber-300 active:scale-90 active:bg-amber-500 active:text-zinc-950 dark:bg-white dark:text-zinc-900 dark:border-zinc-200 dark:shadow-2xl dark:hover:bg-zinc-100 dark:hover:text-amber-600 dark:active:scale-90 dark:active:bg-amber-500 dark:active:text-zinc-950 ${
         isVisible
           ? 'opacity-100 translate-y-0 pointer-events-auto'
           : 'opacity-0 translate-y-4 pointer-events-none'
