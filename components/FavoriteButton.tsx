@@ -50,7 +50,7 @@ export function FavoriteButton({
         className={`inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold font-sirwan transition-all duration-200 cursor-pointer select-none touch-manipulation active:scale-90 tap-highlight-transparent ${
           saved
             ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/35 shadow-xs'
-            : 'bg-zinc-100 hover:bg-zinc-200/90 text-zinc-700 dark:bg-zinc-800/80 dark:hover:bg-zinc-700/80 dark:text-zinc-200 border border-zinc-200/90 dark:border-zinc-700/80'
+            : 'bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700'
         } ${className}`}
       >
         <Bookmark
@@ -59,7 +59,7 @@ export function FavoriteButton({
           } ${
             saved
               ? 'fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400'
-              : 'text-zinc-600 dark:text-zinc-300'
+              : 'text-zinc-800 dark:text-zinc-200'
           }`}
           strokeWidth={2}
         />

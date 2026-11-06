@@ -1,8 +1,5 @@
-import { redirect } from 'next/navigation';
+import ArticlesPage, { metadata, revalidate } from '../articles/page';
 
-export const revalidate = 1800;
-
-export default function WritingsPage() {
-  redirect('/articles');
-}
+export { metadata, revalidate };
+export default ArticlesPage;
 

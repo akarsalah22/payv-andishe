@@ -113,27 +113,16 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        {/* Responsive Grid: Centers gracefully when there are few items */}
-        <div className="w-full max-w-6xl mx-auto">
-          {featuredArticles.length === 1 ? (
-            <div className="flex justify-center">
-              <div className="w-full max-w-md">
-                <ArticleCard article={featuredArticles[0]} priority={false} />
-              </div>
+        {/* Responsive Centered Grid: Centers gracefully when there are few items */}
+        <div className="w-full max-w-6xl mx-auto flex flex-wrap justify-center gap-6">
+          {featuredArticles.map((article, index) => (
+            <div
+              key={article.id || (article as any)._id || index}
+              className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm sm:max-w-md lg:max-w-none flex justify-center"
+            >
+              <ArticleCard article={article} priority={false} />
             </div>
-          ) : featuredArticles.length === 2 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto gap-5 sm:gap-6">
-              {featuredArticles.map((article, index) => (
-                <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={false} />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8">
-              {featuredArticles.map((article, index) => (
-                <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={false} />
-              ))}
-            </div>
-          )}
+          ))}
         </div>
       </section>
 

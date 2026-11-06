@@ -29,7 +29,7 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
     <Link
       href={`/articles/${article.slug}`}
       dir="rtl"
-      className="group flex flex-col w-full overflow-hidden rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-zinc-900/80 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10 active:scale-[0.99] select-none tap-highlight-transparent text-right"
+      className="group flex flex-col w-full h-full overflow-hidden rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-zinc-900/80 shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10 active:scale-[0.99] select-none tap-highlight-transparent text-right"
     >
       {/* 1. Dedicated Image Container with object-contain to prevent cropping book covers/sheets */}
       <div className="relative w-full h-52 sm:h-60 overflow-hidden bg-zinc-100/90 dark:bg-zinc-950/60 flex items-center justify-center border-b border-zinc-100 dark:border-zinc-800/60 p-2.5 sm:p-3">

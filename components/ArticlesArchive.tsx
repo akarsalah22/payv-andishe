@@ -206,26 +206,15 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
 
       {/* Responsive Grid: Centers gracefully when there are few items */}
       {filteredArticles.length > 0 ? (
-        <div className="w-full max-w-6xl mx-auto min-h-[350px]">
-          {filteredArticles.length === 1 ? (
-            <div className="flex justify-center">
-              <div className="w-full max-w-md">
-                <ArticleCard article={filteredArticles[0]} priority={true} />
-              </div>
+        <div className="w-full max-w-6xl mx-auto min-h-[350px] flex flex-wrap justify-center gap-6">
+          {filteredArticles.map((article, index) => (
+            <div
+              key={article.id || (article as any)._id || index}
+              className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-sm sm:max-w-md lg:max-w-none flex justify-center"
+            >
+              <ArticleCard article={article} priority={index === 0} />
             </div>
-          ) : filteredArticles.length === 2 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 max-w-3xl mx-auto gap-5 sm:gap-6">
-              {filteredArticles.map((article, index) => (
-                <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={index === 0} />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-8">
-              {filteredArticles.map((article, index) => (
-                <ArticleCard key={article.id || (article as any)._id || index} article={article} priority={index === 0} />
-              ))}
-            </div>
-          )}
+          ))}
         </div>
       ) : (
         /* Empty State UI */
