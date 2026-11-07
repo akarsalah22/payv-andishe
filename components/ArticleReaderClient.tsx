@@ -17,7 +17,7 @@ export function ArticleReaderClient({ slug }: ArticleReaderClientProps) {
     const loadArticle = async () => {
       // 1. Try local storage first
       try {
-        const stored = localStorage.getItem("payvandishe_articles");
+        const stored = localStorage.getItem("mediay_islamy_articles") || localStorage.getItem("payvandishe_articles");
         if (stored) {
           const parsed: Article[] = JSON.parse(stored);
           const found = parsed.find(

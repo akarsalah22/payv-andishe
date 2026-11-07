@@ -78,7 +78,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
           if (Array.isArray(data) && data.length > 0) {
             setArticles(data);
             try {
-              localStorage.setItem('payvandishe_articles', JSON.stringify(data));
+              localStorage.setItem('mediay_islamy_articles', JSON.stringify(data));
             } catch {
               // ignore
             }
@@ -90,7 +90,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
       }
 
       try {
-        const stored = localStorage.getItem('payvandishe_articles');
+        const stored = localStorage.getItem('mediay_islamy_articles') || localStorage.getItem('payvandishe_articles');
         if (stored) {
           const parsed: Article[] = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) {

@@ -33,7 +33,7 @@ export default async function ArticlesPage() {
       {/* Minimalist Header */}
       <div className="w-full max-w-3xl mx-auto flex flex-col items-center justify-center text-center space-y-4 py-2 select-none">
         <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 tracking-normal block text-center mx-auto">
-          ئەرشیڤی دەق و هزر
+          ئەرشیڤی دەق و فیکر
         </span>
 
         <h1 className="text-3xl sm:text-4xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal text-center mx-auto">

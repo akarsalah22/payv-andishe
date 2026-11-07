@@ -45,6 +45,8 @@ export function AdminDashboardClient() {
     }
     try {
       sessionStorage.removeItem("admin_auth");
+      sessionStorage.removeItem("mediay_islamy_admin_session");
+      sessionStorage.removeItem("mediay_islamy_admin_auth");
       sessionStorage.removeItem("payvandishe_admin_session");
       sessionStorage.removeItem("payvandishe_admin_auth");
       localStorage.removeItem("admin_auth");
@@ -121,7 +123,7 @@ export function AdminDashboardClient() {
         if (Array.isArray(data) && data.length > 0) {
           setFilms(data);
           try {
-            localStorage.setItem('payvandishe_films', JSON.stringify(data));
+            localStorage.setItem('mediay_islamy_films', JSON.stringify(data));
           } catch {
             // ignore
           }
@@ -133,12 +135,12 @@ export function AdminDashboardClient() {
     }
 
     try {
-      const storedFilms = localStorage.getItem('payvandishe_films');
+      const storedFilms = localStorage.getItem('mediay_islamy_films') || localStorage.getItem('payvandishe_films');
       if (storedFilms) {
         setFilms(JSON.parse(storedFilms));
       } else {
         setFilms(SAMPLE_FILMS);
-        localStorage.setItem('payvandishe_films', JSON.stringify(SAMPLE_FILMS));
+        localStorage.setItem('mediay_islamy_films', JSON.stringify(SAMPLE_FILMS));
       }
     } catch {
       setFilms(SAMPLE_FILMS);
@@ -154,7 +156,7 @@ export function AdminDashboardClient() {
         if (Array.isArray(data) && data.length > 0) {
           setArticles(data);
           try {
-            localStorage.setItem('payvandishe_articles', JSON.stringify(data));
+            localStorage.setItem('mediay_islamy_articles', JSON.stringify(data));
           } catch {
             // ignore
           }
@@ -166,12 +168,12 @@ export function AdminDashboardClient() {
     }
 
     try {
-      const storedArticles = localStorage.getItem('payvandishe_articles');
+      const storedArticles = localStorage.getItem('mediay_islamy_articles') || localStorage.getItem('payvandishe_articles');
       if (storedArticles) {
         setArticles(JSON.parse(storedArticles));
       } else {
         setArticles(SAMPLE_ARTICLES);
-        localStorage.setItem('payvandishe_articles', JSON.stringify(SAMPLE_ARTICLES));
+        localStorage.setItem('mediay_islamy_articles', JSON.stringify(SAMPLE_ARTICLES));
       }
     } catch {
       setArticles(SAMPLE_ARTICLES);
@@ -232,7 +234,7 @@ export function AdminDashboardClient() {
   const saveFilmsToStorage = (updatedFilms: Film[]) => {
     setFilms(updatedFilms);
     try {
-      localStorage.setItem('payvandishe_films', JSON.stringify(updatedFilms));
+      localStorage.setItem('mediay_islamy_films', JSON.stringify(updatedFilms));
     } catch (e) {
       console.error('Error saving films:', e);
     }
@@ -242,7 +244,7 @@ export function AdminDashboardClient() {
   const saveArticlesToStorage = (updatedArticles: Article[]) => {
     setArticles(updatedArticles);
     try {
-      localStorage.setItem('payvandishe_articles', JSON.stringify(updatedArticles));
+      localStorage.setItem('mediay_islamy_articles', JSON.stringify(updatedArticles));
     } catch (e) {
       console.error('Error saving articles:', e);
     }

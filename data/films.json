@@ -1,5 +1,24 @@
 [
   {
+    "id": "film-1794053294864",
+    "slug": "پێغەمبەر-موسا",
+    "titleKurdish": "پێغەمبەر موسا",
+    "originalTitle": "پێغەمبەر موسا",
+    "year": 2222,
+    "duration": "١ کاتژمێر و ٥٩ خولەک",
+    "category": "کارتۆن",
+    "genres": [
+      "-----",
+      "-----",
+      "-----"
+    ],
+    "posterUrl": "https://i.ibb.co/xS6bW5zG/1794052394761.jpg",
+    "description": "چیرۆکی پێغەمبەر موسایە، کە ڕوو بەڕووی فیرعەون و دار و دەسەکەی ئەوەستێت.",
+    "platform": "telegram",
+    "watchUrl": "https://t.me/mediay_islamy/8",
+    "telegramPostUrl": "https://t.me/mediay_islamy/8"
+  },
+  {
     "id": "film-1793821299934",
     "slug": "پێغەمبەر-سولەیمان",
     "titleKurdish": "پێغەمبەر سولەیمان",

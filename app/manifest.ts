@@ -2,9 +2,9 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'میدیای ئیسلامی | پانتاییەک بۆ سینەما و ئەدەبی ئیسلامی',
+    name: 'میدیای ئیسلامی | سەکۆی فیکر، پەروەردە و ئەدەب',
     short_name: 'میدیای ئیسلامی',
-    description: 'ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم، زنجیرە و کارتۆن، لەگەڵ خوێندنەوەی دەقی بەپێز و سەرچاوە پەروەردەییەکان.',
+    description: 'سەکۆیەکی کوردی بۆ ناساندنی فیلم و کارتۆنی پەروەردەیی، نووسین، دەق، فیکر، فەرموودە و مێژووی ئیسلام.',
     start_url: '/',
     display: 'standalone',
     background_color: '#09090b',
