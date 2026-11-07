@@ -205,8 +205,10 @@ export function Header() {
               <Search className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
             </button>
 
-            {/* Language Switcher */}
-            <LanguageSwitcher />
+            {/* Language Switcher (Hidden on mobile header, available in drawer and about page) */}
+            <div className="hidden md:flex items-center">
+              <LanguageSwitcher />
+            </div>
 
             {/* Theme Toggle Button */}
             <ThemeToggle />
@@ -376,12 +378,17 @@ export function Header() {
           </div>
 
           {/* Bottom Area: Language & Theme Switchers */}
-          <div className="pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80 flex items-center justify-between gap-3">
-            <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
-              {t('nav.theme_toggle', 'ڕووکاری تاریک / ڕووناک')}
-            </span>
-            <div className="flex items-center gap-2">
-              <LanguageSwitcher />
+          <div className="pt-5 border-t border-zinc-200/80 dark:border-zinc-800/80 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium font-sirwan text-zinc-600 dark:text-zinc-400">
+                {t('nav.language', 'زمان / Language')}
+              </span>
+              <LanguageSwitcher direction="up" showChevron />
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium font-sirwan text-zinc-600 dark:text-zinc-400">
+                {t('nav.theme_toggle', 'ڕووکاری تاریک / ڕووناک')}
+              </span>
               <ThemeToggle />
             </div>
           </div>

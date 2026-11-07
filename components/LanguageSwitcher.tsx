@@ -7,9 +7,14 @@ import { useLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from "@/cont
 export interface LanguageSwitcherProps {
   className?: string;
   showChevron?: boolean;
+  direction?: "down" | "up";
 }
 
-export function LanguageSwitcher({ className = "", showChevron = false }: LanguageSwitcherProps) {
+export function LanguageSwitcher({
+  className = "",
+  showChevron = false,
+  direction = "down",
+}: LanguageSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { language, setLanguage, isRtl } = useLanguage();
@@ -76,7 +81,13 @@ export function LanguageSwitcher({ className = "", showChevron = false }: Langua
         {showChevron && (
           <ChevronDown
             className={`w-3 h-3 text-zinc-400 transition-transform duration-200 ${
-              isOpen ? "rotate-180" : ""
+              isOpen
+                ? direction === "up"
+                  ? ""
+                  : "rotate-180"
+                : direction === "up"
+                ? "rotate-180"
+                : ""
             }`}
           />
         )}
@@ -87,7 +98,9 @@ export function LanguageSwitcher({ className = "", showChevron = false }: Langua
         <div
           role="listbox"
           aria-label="Languages"
-          className="absolute top-full mt-2 w-36 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl p-1 z-50 animate-in fade-in zoom-in-95 duration-150 ltr:right-0 rtl:left-0 origin-top"
+          className={`absolute ${
+            direction === "up" ? "bottom-full mb-2 origin-bottom" : "top-full mt-2 origin-top"
+          } w-36 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl p-1 z-50 animate-in fade-in zoom-in-95 duration-150 ltr:right-0 rtl:left-0`}
         >
           {SUPPORTED_LANGUAGES.map((item) => {
             const isSelected = item.code === language;

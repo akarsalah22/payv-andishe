@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { ChevronLeft } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { TelegramIcon } from '@/components/TelegramIcon';
+import { AboutLanguageBanner } from '@/components/AboutLanguageBanner';
 
 export const revalidate = 1800;
 
@@ -32,6 +33,9 @@ export default function AboutPage() {
 
       {/* About Platform Content Box */}
       <div className="w-full max-w-2xl mx-auto space-y-6 text-zinc-700 dark:text-zinc-300 leading-relaxed text-right font-sirwan">
+        {/* Language Switcher Section */}
+        <AboutLanguageBanner />
+
         <h1 className="text-2xl sm:text-3xl font-bold font-peshang text-zinc-900 dark:text-white mb-4">
           دەربارەی پلاتفۆرم
         </h1>
