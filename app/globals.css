@@ -57,6 +57,7 @@
 
 /* Ensure Kurdish/Arabic letter connectivity and touch defaults */
 *, ::before, ::after {
+  box-sizing: border-box;
   letter-spacing: normal;
   -webkit-tap-highlight-color: transparent;
   text-transform: none;
@@ -70,6 +71,9 @@ button, a {
 
 html, body {
   width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
   min-height: 100%;
   margin: 0;
   padding: 0;

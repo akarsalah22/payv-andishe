@@ -68,7 +68,7 @@ export function ReadingToolbar({
 
   return (
     <div
-      className={`sticky top-20 z-30 w-full max-w-2xl mx-auto my-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-md rounded-2xl p-2.5 flex items-center justify-between gap-2.5 select-none ${className}`}
+      className={`sticky top-20 z-30 w-full max-w-2xl mx-auto my-4 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-md rounded-2xl p-2 sm:p-2.5 flex items-center justify-between gap-2 select-none overflow-x-auto no-scrollbar ${className}`}
       dir="rtl"
     >
       {/* 1. Estimated Reading Time Badge */}

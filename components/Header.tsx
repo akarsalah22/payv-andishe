@@ -74,12 +74,12 @@ export function Header() {
       document.body.style.overflow = "hidden";
       document.body.style.touchAction = "none";
     } else {
-      document.body.style.overflow = "unset";
-      document.body.style.touchAction = "auto";
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     }
     return () => {
-      document.body.style.overflow = "unset";
-      document.body.style.touchAction = "auto";
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     };
   }, [isMenuOpen]);
 
@@ -227,7 +227,7 @@ export function Header() {
 
       {/* Mobile Drawer (Native Fluid Sliding Drawer) */}
       <div
-        className={`fixed inset-0 z-[99] md:hidden transition-all duration-300 ${isMenuOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
+        className={`fixed inset-0 z-[99] md:hidden overflow-hidden transition-all duration-300 ${isMenuOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
           }`}
         role="dialog"
         aria-modal="true"

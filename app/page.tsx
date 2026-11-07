@@ -46,7 +46,7 @@ export default async function HomePage() {
             {/* Button 1: فیلم  -> /films */}
             <Link
               href="/films"
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-2xl bg-white/95 dark:bg-zinc-900/85 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 border border-zinc-200/90 hover:border-amber-500/40 dark:border-zinc-800/90 dark:hover:border-amber-500/40 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium font-sirwan text-sm tracking-normal transition-all duration-200 ease-out hover:shadow-lg hover:shadow-amber-500/10 active:scale-[0.98] cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="inline-flex items-center justify-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white/95 dark:bg-zinc-900/85 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 border border-zinc-200/90 hover:border-amber-500/40 dark:border-zinc-800/90 dark:hover:border-amber-500/40 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium font-sirwan text-xs sm:text-sm tracking-normal transition-all duration-200 ease-out hover:shadow-lg hover:shadow-amber-500/10 active:scale-[0.98] cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
               <Clapperboard className="w-4 h-4 text-amber-500 shrink-0" strokeWidth={1.75} />
               <span>فیلم و کارتۆن</span>
@@ -55,7 +55,7 @@ export default async function HomePage() {
             {/* Button 2: نووسین  -> /articles */}
             <Link
               href="/articles"
-              className="inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-2xl bg-white/95 dark:bg-zinc-900/85 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 border border-zinc-200/90 hover:border-amber-500/40 dark:border-zinc-800/90 dark:hover:border-amber-500/40 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium font-sirwan text-sm tracking-normal transition-all duration-200 ease-out hover:shadow-lg hover:shadow-amber-500/10 active:scale-[0.98] cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="inline-flex items-center justify-center gap-2 sm:gap-2.5 px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-2xl bg-white/95 dark:bg-zinc-900/85 hover:bg-amber-500/10 dark:hover:bg-amber-500/10 border border-zinc-200/90 hover:border-amber-500/40 dark:border-zinc-800/90 dark:hover:border-amber-500/40 text-zinc-800 dark:text-zinc-200 hover:text-amber-600 dark:hover:text-amber-400 font-medium font-sirwan text-xs sm:text-sm tracking-normal transition-all duration-200 ease-out hover:shadow-lg hover:shadow-amber-500/10 active:scale-[0.98] cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
               <BookOpen className="w-4 h-4 text-amber-500 shrink-0" strokeWidth={1.75} />
               <span>نووسین </span>
