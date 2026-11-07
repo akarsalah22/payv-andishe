@@ -112,26 +112,26 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-[#121214]/80 backdrop-blur-md transition-colors duration-300">
-        <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-3 sm:px-6 lg:px-8">
+        <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-3.5 sm:px-6 lg:px-8">
           {/* Brand Logo / Clean Title */}
           <Link
             href="/"
-            className="flex items-center gap-1.5 sm:gap-2.5 group shrink-0 select-none cursor-pointer"
+            className="flex items-center gap-1 sm:gap-1.5 group shrink-0 select-none cursor-pointer"
           >
             {/* Logo Container */}
-            <div className="relative w-8 h-8 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+            <div className="relative w-5 h-5 sm:w-6 sm:h-6 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
               <Image
                 src="/img/logo_web.svg"
                 alt="میدیای ئیسلامی"
-                width={40}
-                height={40}
+                width={24}
+                height={24}
                 priority
                 className="w-full h-full object-contain"
               />
             </div>
 
             {/* Brand Text */}
-            <span className="font-bold text-xs sm:text-sm md:text-base text-zinc-900 dark:text-white tracking-normal leading-none select-none whitespace-nowrap">
+            <span className="text-[13px] sm:text-sm md:text-base font-bold text-zinc-900 dark:text-zinc-100 whitespace-nowrap tracking-tight leading-none select-none">
               {t('brand.title', 'میدیای ئیسلامی')}
             </span>
           </Link>
