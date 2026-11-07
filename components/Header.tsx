@@ -116,22 +116,22 @@ export function Header() {
           {/* Brand Logo / Clean Title */}
           <Link
             href="/"
-            className="flex items-center gap-1 sm:gap-1.5 group shrink-0 select-none cursor-pointer"
+            className="flex items-center gap-1.5 group shrink-0 select-none cursor-pointer"
           >
             {/* Logo Container */}
-            <div className="relative w-5 h-5 sm:w-6 sm:h-6 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+            <div className="relative w-8 h-8 sm:w-9 sm:h-9 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
               <Image
                 src="/img/logo_web.svg"
                 alt="میدیای ئیسلامی"
-                width={24}
-                height={24}
+                width={36}
+                height={36}
                 priority
                 className="w-full h-full object-contain"
               />
             </div>
 
             {/* Brand Text */}
-            <span className="text-[13px] sm:text-sm md:text-base font-bold text-zinc-900 dark:text-zinc-100 whitespace-nowrap tracking-tight leading-none select-none">
+            <span className="text-[10px] sm:text-xs font-medium text-zinc-400 dark:text-zinc-400 whitespace-nowrap tracking-tight leading-none select-none">
               {t('brand.title', 'میدیای ئیسلامی')}
             </span>
           </Link>
