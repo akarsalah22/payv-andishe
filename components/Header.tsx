@@ -121,7 +121,7 @@ export function Header() {
             {/* Logo Container */}
             <div className="relative w-8 h-8 sm:w-9 sm:h-9 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
               <Image
-                src="/img/logo_web.svg"
+                src="/logo_web_new1.svg"
                 alt="میدیای ئیسلامی"
                 width={36}
                 height={36}
@@ -263,12 +263,12 @@ export function Header() {
                 className="flex items-center gap-2 sm:gap-2.5 group shrink-0 select-none cursor-pointer"
               >
                 {/* Logo Container */}
-                <div className="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+                <div className="relative w-8 h-8 sm:w-9 sm:h-9 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
                   <Image
-                    src="/img/logo_web.svg"
+                    src="/logo_web_new1.svg"
                     alt={t('brand.title', 'میدیای ئیسلامی')}
-                    width={44}
-                    height={44}
+                    width={36}
+                    height={36}
                     priority
                     className="w-full h-full object-contain"
                   />

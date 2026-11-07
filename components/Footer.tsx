@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronUp, ShieldCheck } from 'lucide-react';
 import { InstagramIcon } from './InstagramIcon';
 import { TelegramIcon } from './TelegramIcon';
@@ -25,13 +26,13 @@ export function Footer() {
           {/* Identity & Motto */}
           <div className="space-y-3 max-w-md text-start">
             <Link href="/" className="inline-flex items-center gap-2.5 sm:gap-3 group select-none">
-              <div className="relative flex items-center justify-center">
-                <img
-                  src="/img/logo.svg"
+              <div className="relative w-8 h-8 sm:w-9 sm:h-9 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+                <Image
+                  src="/logo_web_new1.svg"
                   alt={t('brand.title', 'میدیای ئیسلامی')}
-                  className="h-9 w-auto max-w-[160px] object-contain transition-transform duration-200 group-hover:scale-105"
-                  loading="lazy"
-                  decoding="async"
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-contain"
                 />
               </div>
               <span className="text-xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 group-hover:text-amber-500 transition-colors">
@@ -57,14 +58,14 @@ export function Footer() {
               prefetch={false}
               className="hover:text-amber-500 dark:hover:text-amber-400 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
-              {t('nav.films', 'فیلم و کارتۆن')}
+              {t('nav.films', 'فیلم')}
             </Link>
             <Link
               href="/articles"
               prefetch={false}
               className="hover:text-amber-500 dark:hover:text-amber-400 transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
-              {t('nav.articles', 'نووسین و وتار')}
+              {t('nav.articles', 'نووسین')}
             </Link>
             <Link
               href="/about"

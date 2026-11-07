@@ -100,7 +100,7 @@ export function PwaInstallPrompt() {
         <div className="flex items-center gap-3 min-w-0">
           <div className="relative w-10 h-10 shrink-0 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center p-1.5 shadow-xs">
             <Image
-              src="/img/logo_web.svg"
+              src="/logo_web_new1.svg"
               alt="میدیای ئیسلامی"
               width={36}
               height={36}
