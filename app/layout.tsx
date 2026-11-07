@@ -75,6 +75,11 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-touch-icon.png',
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'میدیای ئیسلامی',
+  },
 };
 
 export default function RootLayout({
@@ -93,6 +98,8 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-title" content="میدیای ئیسلامی" />
+        <meta name="theme-color" content="#09090b" />
       </head>
       <body className={`${vazir.className} font-sans bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors antialiased w-full max-w-[100vw] min-h-screen flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-start overflow-x-hidden relative`}>
         <ThemeProvider

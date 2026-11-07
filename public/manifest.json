@@ -1,19 +1,21 @@
 {
   "name": "میدیای ئیسلامی",
   "short_name": "میدیای ئیسلامی",
-  "description": "ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و ئەنیمەیشن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.",
+  "description": "ئەرشیفێکی سەربەخۆی کوردییە بۆ ناساندنی فیلم و کارتۆنە ئیسلامییەکان",
   "start_url": "/",
   "display": "standalone",
-  "dir": "rtl",
-  "lang": "ku",
-  "background_color": "#121316",
-  "theme_color": "#121316",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
   "icons": [
     {
-      "src": "/logo_web_new1.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
-
