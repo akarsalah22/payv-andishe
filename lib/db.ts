@@ -2,6 +2,7 @@ import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 import { SAMPLE_FILMS, type Film } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article } from '@/data/articles';
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from '@/data/homeSettings';
+import { DEFAULT_ABOUT_SETTINGS, type AboutSettings } from '@/data/about';
 
 /**
  * Automatically converts an unpooled Neon connection URL to a pooled connection URL (with -pooler)
@@ -134,6 +135,39 @@ export async function ensureDbInitialized(): Promise<boolean> {
       INSERT INTO home_settings (id, badge_text, title, subtitle)
       VALUES ('hero', 'پانتاییەک بۆ سینەما و ئەدەبی ئیسلامی', 'شوێنێک بۆ فیلم و نووسینی ئیسلامی', 'ئەرشیفێکی کوردییە بۆ ناساندن و کۆکردنەوەی فیلم و ئەنیمەیشن، لەگەڵ خوێندنەوەی وتاری ئیسلامی و ناساندنی سەرچاوە پەروەردەییەکان.')
       ON CONFLICT (id) DO NOTHING;
+    `);
+
+    // 5. Create about_settings table for dynamic about page settings
+    await sql.query(`
+      CREATE TABLE IF NOT EXISTS about_settings (
+        id TEXT PRIMARY KEY DEFAULT 'default',
+        title TEXT DEFAULT 'دەربارەی پلاتفۆرم',
+        paragraph_1 TEXT DEFAULT 'بەخێربێن؛ ئەم وێبسایتە دەستپێشخەرییەکی خۆبەخشانەیە بۆ ئەرشیفکردن و کۆکردنەوەی ئەو بەرهەم و وتار و فیلمە ناوازانەی بە زمانی کوردی لە سەرچاوە جیاوازەکاندا بڵاوکراونەتەوە، تا هەمووان بتوانن لە یەک شوێنی خاوێن و بێبەرامبەردا دەستیان پێیان بگات.',
+        paragraph_2 TEXT DEFAULT 'سەرجەم مافە مەعنەوییەکانی بەرهەمەکان، ڤیدیۆکان و وەرگێڕانەکان بۆ کەناڵ و وەرگێڕ و خاوەنە ڕەسەنەکانیان پارێزراون. ئێمە تەنها ئەرکی ڕێکخستن و ئاسانکاریی گەیشتن بە ناوەرۆکەکان لە ئەستۆ دەگرین.',
+        paragraph_3 TEXT DEFAULT 'بۆ هەر پێشنیار، تێبینی، یان داواکارییەکی لابردنی بەرهەم، دەتوانن لە ڕێگەی بەستەرەکانی خوارەوە پەیوەندیمان پێوە بکەن.',
+        instagram_handle TEXT DEFAULT '@hamahang_bwn',
+        instagram_url TEXT DEFAULT 'https://instagram.com/hamahang_bwn',
+        telegram_handle TEXT DEFAULT '@mediay_islamy',
+        telegram_url TEXT DEFAULT 'https://t.me/mediay_islamy',
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+
+    await sql.query(`
+      INSERT INTO about_settings (
+        id, title, paragraph_1, paragraph_2, paragraph_3,
+        instagram_handle, instagram_url, telegram_handle, telegram_url
+      ) VALUES (
+        'default',
+        'دەربارەی پلاتفۆرم',
+        'بەخێربێن؛ ئەم وێبسایتە دەستپێشخەرییەکی خۆبەخشانەیە بۆ ئەرشیفکردن و کۆکردنەوەی ئەو بەرهەم و وتار و فیلمە ناوازانەی بە زمانی کوردی لە سەرچاوە جیاوازەکاندا بڵاوکراونەتەوە، تا هەمووان بتوانن لە یەک شوێنی خاوێن و بێبەرامبەردا دەستیان پێیان بگات.',
+        'سەرجەم مافە مەعنەوییەکانی بەرهەمەکان، ڤیدیۆکان و وەرگێڕانەکان بۆ کەناڵ و وەرگێڕ و خاوەنە ڕەسەنەکانیان پارێزراون. ئێمە تەنها ئەرکی ڕێکخستن و ئاسانکاریی گەیشتن بە ناوەرۆکەکان لە ئەستۆ دەگرین.',
+        'بۆ هەر پێشنیار، تێبینی، یان داواکارییەکی لابردنی بەرهەم، دەتوانن لە ڕێگەی بەستەرەکانی خوارەوە پەیوەندیمان پێوە بکەن.',
+        '@hamahang_bwn',
+        'https://instagram.com/hamahang_bwn',
+        '@mediay_islamy',
+        'https://t.me/mediay_islamy'
+      ) ON CONFLICT (id) DO NOTHING;
     `);
 
     // 4. Seed films if empty
@@ -598,6 +632,107 @@ export async function updateHomeSettingsInDb(settings: Partial<HomeSettings>): P
     return true;
   } catch (err) {
     console.error('Failed to update home settings in DB:', err);
+    return false;
+  }
+}
+
+/**
+ * Get dynamic About page settings from Neon Postgres.
+ */
+export async function getAboutSettingsFromDb(): Promise<AboutSettings | null> {
+  const sql = getSql();
+  if (!sql) return null;
+
+  try {
+    await ensureDbInitialized();
+    const rows = await sql.query(`
+      SELECT id, title, paragraph_1, paragraph_2, paragraph_3,
+             instagram_handle, instagram_url, telegram_handle, telegram_url, updated_at
+      FROM about_settings
+      WHERE id = 'default'
+      LIMIT 1;
+    `);
+
+    if (rows && rows.length > 0) {
+      const row = rows[0] as {
+        id?: string;
+        title?: string;
+        paragraph_1?: string;
+        paragraph_2?: string;
+        paragraph_3?: string;
+        instagram_handle?: string;
+        instagram_url?: string;
+        telegram_handle?: string;
+        telegram_url?: string;
+        updated_at?: string;
+      };
+      return {
+        title: row.title ?? DEFAULT_ABOUT_SETTINGS.title,
+        paragraph_1: row.paragraph_1 ?? DEFAULT_ABOUT_SETTINGS.paragraph_1,
+        paragraph_2: row.paragraph_2 ?? DEFAULT_ABOUT_SETTINGS.paragraph_2,
+        paragraph_3: row.paragraph_3 ?? DEFAULT_ABOUT_SETTINGS.paragraph_3,
+        instagram_handle: row.instagram_handle ?? DEFAULT_ABOUT_SETTINGS.instagram_handle,
+        instagram_url: row.instagram_url ?? DEFAULT_ABOUT_SETTINGS.instagram_url,
+        telegram_handle: row.telegram_handle ?? DEFAULT_ABOUT_SETTINGS.telegram_handle,
+        telegram_url: row.telegram_url ?? DEFAULT_ABOUT_SETTINGS.telegram_url,
+      };
+    }
+    return null;
+  } catch (err) {
+    console.error('Failed to get about settings from DB:', err);
+    return null;
+  }
+}
+
+/**
+ * Update dynamic About page settings in Neon Postgres.
+ */
+export async function updateAboutSettingsInDb(settings: Partial<AboutSettings>): Promise<boolean> {
+  const sql = getSql();
+  if (!sql) return false;
+
+  try {
+    await ensureDbInitialized();
+    const title = settings.title ?? DEFAULT_ABOUT_SETTINGS.title;
+    const paragraph_1 = settings.paragraph_1 ?? DEFAULT_ABOUT_SETTINGS.paragraph_1;
+    const paragraph_2 = settings.paragraph_2 ?? DEFAULT_ABOUT_SETTINGS.paragraph_2;
+    const paragraph_3 = settings.paragraph_3 ?? DEFAULT_ABOUT_SETTINGS.paragraph_3;
+    const instagram_handle = settings.instagram_handle ?? DEFAULT_ABOUT_SETTINGS.instagram_handle;
+    const instagram_url = settings.instagram_url ?? DEFAULT_ABOUT_SETTINGS.instagram_url;
+    const telegram_handle = settings.telegram_handle ?? DEFAULT_ABOUT_SETTINGS.telegram_handle;
+    const telegram_url = settings.telegram_url ?? DEFAULT_ABOUT_SETTINGS.telegram_url;
+
+    await sql.query(
+      `
+      INSERT INTO about_settings (
+        id, title, paragraph_1, paragraph_2, paragraph_3,
+        instagram_handle, instagram_url, telegram_handle, telegram_url, updated_at
+      ) VALUES ('default', $1, $2, $3, $4, $5, $6, $7, $8, NOW())
+      ON CONFLICT (id) DO UPDATE SET
+        title = EXCLUDED.title,
+        paragraph_1 = EXCLUDED.paragraph_1,
+        paragraph_2 = EXCLUDED.paragraph_2,
+        paragraph_3 = EXCLUDED.paragraph_3,
+        instagram_handle = EXCLUDED.instagram_handle,
+        instagram_url = EXCLUDED.instagram_url,
+        telegram_handle = EXCLUDED.telegram_handle,
+        telegram_url = EXCLUDED.telegram_url,
+        updated_at = NOW();
+      `,
+      [
+        title,
+        paragraph_1,
+        paragraph_2,
+        paragraph_3,
+        instagram_handle,
+        instagram_url,
+        telegram_handle,
+        telegram_url,
+      ]
+    );
+    return true;
+  } catch (err) {
+    console.error('Failed to update about settings in DB:', err);
     return false;
   }
 }

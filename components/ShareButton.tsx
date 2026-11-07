@@ -71,10 +71,10 @@ export function ShareButton({
     }
   };
 
-  const defaultClasses = `inline-flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold font-sirwan transition-all duration-200 cursor-pointer select-none active:scale-95 touch-manipulation tap-highlight-transparent border ${
+  const defaultClasses = `inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium font-sirwan transition-all duration-200 cursor-pointer select-none active:scale-95 touch-manipulation tap-highlight-transparent border ${
     copied
-      ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
-      : "bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800/80 dark:hover:bg-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-700 hover:border-amber-500/40 dark:hover:border-amber-500/40"
+      ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 shadow-2xs"
+      : "bg-zinc-100 hover:bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700"
   }`;
 
   return (
@@ -88,12 +88,12 @@ export function ShareButton({
       {copied ? (
         <>
           <Check className="w-4 h-4 text-emerald-500 shrink-0" strokeWidth={2.25} />
-          <span>بەستەرەکە کۆپی کرا!</span>
+          <span className="hidden sm:inline">بەستەرەکە کۆپی کرا!</span>
         </>
       ) : (
         <>
           <Share2 className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" strokeWidth={1.8} />
-          <span>هاوبەشکردن</span>
+          <span className="hidden sm:inline">هاوبەشکردن</span>
         </>
       )}
     </button>

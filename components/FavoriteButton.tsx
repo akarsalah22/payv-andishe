@@ -47,23 +47,23 @@ export function FavoriteButton({
         title={titleText}
         aria-label={titleText}
         aria-pressed={saved}
-        className={`inline-flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold font-sirwan transition-all duration-200 cursor-pointer select-none touch-manipulation active:scale-90 tap-highlight-transparent ${
+        className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium font-sirwan transition-all duration-200 cursor-pointer select-none touch-manipulation active:scale-95 tap-highlight-transparent border ${
           saved
-            ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/35 shadow-xs'
-            : 'bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700'
+            ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/35 shadow-2xs'
+            : 'bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700'
         } ${className}`}
       >
         <Bookmark
-          className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ${
+          className={`w-4 h-4 shrink-0 transition-transform duration-200 ${
             isAnimating ? 'scale-125' : 'scale-100'
           } ${
             saved
               ? 'fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400'
-              : 'text-zinc-800 dark:text-zinc-200'
+              : 'text-zinc-700 dark:text-zinc-300'
           }`}
-          strokeWidth={2}
+          strokeWidth={saved ? 2.25 : 1.75}
         />
-        <span className="tracking-normal whitespace-nowrap">
+        <span className="hidden sm:inline tracking-normal whitespace-nowrap">
           {saved ? 'هەڵگیراوە' : 'پاشەکەوتکردن'}
         </span>
       </button>

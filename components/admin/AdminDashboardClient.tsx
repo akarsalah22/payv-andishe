@@ -25,10 +25,11 @@ import {
 import { useToast } from '@/components/ToastContext';
 import { SAMPLE_FILMS, type Film, type FilmCategory, type FilmPlatform } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article, type ArticleCategory } from '@/data/articles';
-import { DEFAULT_ABOUT_CONTENT, type AboutContent, type AboutFeature } from '@/data/about';
+import { DEFAULT_ABOUT_SETTINGS, type AboutSettings } from '@/data/about';
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from '@/data/homeSettings';
 import { FilmCard } from '@/components/FilmCard';
 import { TelegramIcon } from '@/components/TelegramIcon';
+import { InstagramIcon } from '@/components/InstagramIcon';
 import { YouTubeIcon } from '@/components/YouTubeIcon';
 import { ArticleCard } from '@/components/ArticleCard';
 import { matchesSearchQuery } from '@/lib/search';
@@ -99,11 +100,14 @@ export function AdminDashboardClient() {
   const [articleExternalUrl, setArticleExternalUrl] = useState('');
 
   // About Page Form State
-  const [aboutTitle, setAboutTitle] = useState(DEFAULT_ABOUT_CONTENT.title);
-  const [aboutSubtitle, setAboutSubtitle] = useState(DEFAULT_ABOUT_CONTENT.subtitle);
-  const [aboutMissionTitle, setAboutMissionTitle] = useState(DEFAULT_ABOUT_CONTENT.missionTitle);
-  const [aboutMissionText, setAboutMissionText] = useState(DEFAULT_ABOUT_CONTENT.missionText);
-  const [aboutFeatures, setAboutFeatures] = useState<AboutFeature[]>(DEFAULT_ABOUT_CONTENT.features);
+  const [aboutTitle, setAboutTitle] = useState(DEFAULT_ABOUT_SETTINGS.title);
+  const [aboutParagraph1, setAboutParagraph1] = useState(DEFAULT_ABOUT_SETTINGS.paragraph_1);
+  const [aboutParagraph2, setAboutParagraph2] = useState(DEFAULT_ABOUT_SETTINGS.paragraph_2);
+  const [aboutParagraph3, setAboutParagraph3] = useState(DEFAULT_ABOUT_SETTINGS.paragraph_3);
+  const [aboutInstagramHandle, setAboutInstagramHandle] = useState(DEFAULT_ABOUT_SETTINGS.instagram_handle);
+  const [aboutInstagramUrl, setAboutInstagramUrl] = useState(DEFAULT_ABOUT_SETTINGS.instagram_url);
+  const [aboutTelegramHandle, setAboutTelegramHandle] = useState(DEFAULT_ABOUT_SETTINGS.telegram_handle);
+  const [aboutTelegramUrl, setAboutTelegramUrl] = useState(DEFAULT_ABOUT_SETTINGS.telegram_url);
   const [isAboutSubmitting, setIsAboutSubmitting] = useState(false);
   const [isAboutLoading, setIsAboutLoading] = useState(false);
 
@@ -186,17 +190,20 @@ export function AdminDashboardClient() {
     try {
       const res = await fetch('/api/about');
       if (res.ok) {
-        const data: AboutContent = await res.json();
+        const data: AboutSettings = await res.json();
         if (data && data.title) {
-          setAboutTitle(data.title);
-          setAboutSubtitle(data.subtitle || '');
-          setAboutMissionTitle(data.missionTitle || DEFAULT_ABOUT_CONTENT.missionTitle);
-          setAboutMissionText(data.missionText || '');
-          setAboutFeatures(Array.isArray(data.features) ? data.features : DEFAULT_ABOUT_CONTENT.features);
+          setAboutTitle(data.title || DEFAULT_ABOUT_SETTINGS.title);
+          setAboutParagraph1(data.paragraph_1 || DEFAULT_ABOUT_SETTINGS.paragraph_1);
+          setAboutParagraph2(data.paragraph_2 || DEFAULT_ABOUT_SETTINGS.paragraph_2);
+          setAboutParagraph3(data.paragraph_3 || DEFAULT_ABOUT_SETTINGS.paragraph_3);
+          setAboutInstagramHandle(data.instagram_handle || DEFAULT_ABOUT_SETTINGS.instagram_handle);
+          setAboutInstagramUrl(data.instagram_url || DEFAULT_ABOUT_SETTINGS.instagram_url);
+          setAboutTelegramHandle(data.telegram_handle || DEFAULT_ABOUT_SETTINGS.telegram_handle);
+          setAboutTelegramUrl(data.telegram_url || DEFAULT_ABOUT_SETTINGS.telegram_url);
         }
       }
     } catch (e) {
-      console.error('Error fetching about content:', e);
+      console.error('Error fetching about settings:', e);
     } finally {
       setIsAboutLoading(false);
     }
@@ -645,8 +652,8 @@ export function AdminDashboardClient() {
   // Handle About Save
   const handleSaveAbout = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!aboutTitle.trim() || !aboutMissionTitle.trim()) {
-      triggerToast('تکایە ناونیشان و پەیام بە تەواوی بنووسە', undefined, 'error');
+    if (!aboutTitle.trim() || !aboutParagraph1.trim()) {
+      triggerToast('تکایە ناونیشان و دەقی سەرەکی بنووسە', undefined, 'error');
       return;
     }
 
@@ -657,15 +664,18 @@ export function AdminDashboardClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: aboutTitle,
-          subtitle: aboutSubtitle,
-          missionTitle: aboutMissionTitle,
-          missionText: aboutMissionText,
-          features: aboutFeatures,
+          paragraph_1: aboutParagraph1,
+          paragraph_2: aboutParagraph2,
+          paragraph_3: aboutParagraph3,
+          instagram_handle: aboutInstagramHandle,
+          instagram_url: aboutInstagramUrl,
+          telegram_handle: aboutTelegramHandle,
+          telegram_url: aboutTelegramUrl,
         }),
       });
 
       if (res.ok) {
-        triggerToast('زانیارییەکانی دەربارە بە سەرکەوتوویی نوێکرانەوە', { href: '/about', label: 'بینینی پەڕە' }, 'success');
+        triggerToast('زانیارییەکانی دەربارە بە سەرکەوتوویی پاشەکەوت کران', { href: '/about', label: 'بینینی پەڕە' }, 'success');
       } else {
         const errData = await res.json().catch(() => ({}));
         triggerToast(errData.error || 'هەڵەیەک ڕوویدا لە پاشەکەوتکردن', undefined, 'error');
@@ -710,36 +720,15 @@ export function AdminDashboardClient() {
     }
   };
 
-  const handleFeatureChange = (index: number, field: 'title' | 'desc', value: string) => {
-    setAboutFeatures((prev) => {
-      const copy = [...prev];
-      copy[index] = { ...copy[index], [field]: value };
-      return copy;
-    });
-  };
-
-  const handleAddFeature = () => {
-    if (aboutFeatures.length >= 6) {
-      triggerToast('ناتوانیت زیاتر لە ٦ تایبەتمەندی دابنێیت', undefined, 'error');
-      return;
-    }
-    setAboutFeatures((prev) => [...prev, { title: 'تایبەتمەندی نوێ', desc: 'وەسفی کورت...' }]);
-  };
-
-  const handleRemoveFeature = (index: number) => {
-    if (aboutFeatures.length <= 1) {
-      triggerToast('پێویستە لانی کەم یەک تایبەتمەندی هەبێت', undefined, 'error');
-      return;
-    }
-    setAboutFeatures((prev) => prev.filter((_, i) => i !== index));
-  };
-
   const handleResetAbout = () => {
-    setAboutTitle(DEFAULT_ABOUT_CONTENT.title);
-    setAboutSubtitle(DEFAULT_ABOUT_CONTENT.subtitle);
-    setAboutMissionTitle(DEFAULT_ABOUT_CONTENT.missionTitle);
-    setAboutMissionText(DEFAULT_ABOUT_CONTENT.missionText);
-    setAboutFeatures(DEFAULT_ABOUT_CONTENT.features);
+    setAboutTitle(DEFAULT_ABOUT_SETTINGS.title);
+    setAboutParagraph1(DEFAULT_ABOUT_SETTINGS.paragraph_1);
+    setAboutParagraph2(DEFAULT_ABOUT_SETTINGS.paragraph_2);
+    setAboutParagraph3(DEFAULT_ABOUT_SETTINGS.paragraph_3);
+    setAboutInstagramHandle(DEFAULT_ABOUT_SETTINGS.instagram_handle);
+    setAboutInstagramUrl(DEFAULT_ABOUT_SETTINGS.instagram_url);
+    setAboutTelegramHandle(DEFAULT_ABOUT_SETTINGS.telegram_handle);
+    setAboutTelegramUrl(DEFAULT_ABOUT_SETTINGS.telegram_url);
     triggerToast('زانیارییەکان گەڕێندرانەوە بۆ سەر دۆخی بنەڕەتی', undefined, 'info');
   };
 
@@ -1973,11 +1962,11 @@ export function AdminDashboardClient() {
                 onSubmit={handleSaveAbout}
                 className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800 space-y-6 text-right shadow-2xs"
               >
-                {/* 1. Page Title & Subtitle */}
+                {/* 1. Page Title */}
                 <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
                   <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-amber-500" />
-                    <span>سەرپەڕ و ناونیشان</span>
+                    <span>ناونیشانی پەڕە</span>
                   </h3>
 
                   <div>
@@ -1989,132 +1978,141 @@ export function AdminDashboardClient() {
                       value={aboutTitle}
                       onChange={(e) => setAboutTitle(e.target.value)}
                       required
-                      placeholder="دەربارەی میدیای ئیسلامی"
+                      placeholder="دەربارەی پلاتفۆرم"
                       className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
-                      ژێرنووس و پوختە (Subtitle)
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={aboutSubtitle}
-                      onChange={(e) => setAboutSubtitle(e.target.value)}
-                      placeholder="پلاتفۆرمێکی تایبەتمەند بۆ ناساندن و کۆکردنەوەی بەرهەمە شاکارە سینەمایی و ئەدەبییە ئیسلامییەکان بە کوردی."
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757] resize-none leading-relaxed"
                     />
                   </div>
                 </div>
 
-                {/* 2. Mission Section */}
+                {/* 2. Main Content Paragraphs */}
                 <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
                   <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-amber-500" />
-                    <span>پەیامی ئێمە (Mission)</span>
+                    <span>دەقە سەرەکییەکان (Content Paragraphs)</span>
                   </h3>
 
                   <div>
                     <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
-                      ناونیشانی پەیام *
+                      دەقی سەرەکی و ناساندن (Paragraph 1) *
                     </label>
-                    <input
-                      type="text"
-                      value={aboutMissionTitle}
-                      onChange={(e) => setAboutMissionTitle(e.target.value)}
+                    <textarea
+                      rows={4}
+                      value={aboutParagraph1}
+                      onChange={(e) => setAboutParagraph1(e.target.value)}
                       required
-                      placeholder="پەیامی ئێمە"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757]"
+                      placeholder="بەخێربێن؛ ئەم وێبسایتە دەستپێشخەرییەکی خۆبەخشانەیە..."
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757] resize-none leading-relaxed"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
-                      دەقی پەیام *
+                      مافی بەرهەمەکان و ڕوونکردنەوە (Paragraph 2)
+                    </label>
+                    <textarea
+                      rows={4}
+                      value={aboutParagraph2}
+                      onChange={(e) => setAboutParagraph2(e.target.value)}
+                      placeholder="سەرجەم مافە مەعنەوییەکانی بەرهەمەکان..."
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757] resize-none leading-relaxed"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
+                      تێبینی پەیوەندیکردن (Paragraph 3)
                     </label>
                     <textarea
                       rows={3}
-                      value={aboutMissionText}
-                      onChange={(e) => setAboutMissionText(e.target.value)}
-                      required
-                      placeholder="فەراهەمکردنی سینەمایەکی پاک، بەهاکێش و هۆشیارکەرەوە..."
+                      value={aboutParagraph3}
+                      onChange={(e) => setAboutParagraph3(e.target.value)}
+                      placeholder="بۆ هەر پێشنیار، تێبینی، یان داواکارییەکی لابردنی بەرهەم..."
                       className="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757] resize-none leading-relaxed"
                     />
                   </div>
                 </div>
 
-                {/* 3. Features & Pillars */}
+                {/* 3. Social Media & Contact Info */}
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-amber-500" />
-                      <span>تایبەتمەندی و بەشە سەرەکییەکان ({aboutFeatures.length})</span>
-                    </h3>
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>تۆڕە کۆمەڵایەتییەکان و پەیوەندی (Social & Contact)</span>
+                  </h3>
 
-                    {aboutFeatures.length < 6 && (
-                      <button
-                        type="button"
-                        onClick={handleAddFeature}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-400 hover:bg-amber-500 hover:text-zinc-950 text-xs font-semibold font-sirwan transition-all cursor-pointer"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>زیادکردنی خاڵ</span>
-                      </button>
-                    )}
+                  {/* Instagram Inputs */}
+                  <div className="p-4 rounded-xl border border-stone-200 dark:border-zinc-800 bg-stone-50/40 dark:bg-zinc-900/40 space-y-3">
+                    <div className="text-xs font-bold font-sirwan text-pink-600 dark:text-pink-400 flex items-center gap-2">
+                      <InstagramIcon className="w-4 h-4" />
+                      <span>ئینستاگرام (Instagram)</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1">
+                          هەژماری ئینستاگرام (Handle)
+                        </label>
+                        <input
+                          type="text"
+                          dir="ltr"
+                          value={aboutInstagramHandle}
+                          onChange={(e) => setAboutInstagramHandle(e.target.value)}
+                          placeholder="@hamahang_bwn"
+                          className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-mono focus:outline-none focus:border-[#d49757]"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1">
+                          لینکی نامە و پەیج (URL)
+                        </label>
+                        <input
+                          type="url"
+                          dir="ltr"
+                          value={aboutInstagramUrl}
+                          onChange={(e) => setAboutInstagramUrl(e.target.value)}
+                          placeholder="https://instagram.com/hamahang_bwn"
+                          className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-mono focus:outline-none focus:border-[#d49757]"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="space-y-3">
-                    {aboutFeatures.map((feat, index) => (
-                      <div
-                        key={index}
-                        className="p-4 rounded-xl border border-stone-200 dark:border-zinc-800 bg-stone-50/40 dark:bg-zinc-900/40 space-y-3"
-                      >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold font-sirwan text-amber-600 dark:text-amber-400">
-                            خاڵی ٠{index + 1}
-                          </span>
-                          {aboutFeatures.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveFeature(index)}
-                              className="text-xs text-rose-500 hover:text-rose-700 dark:hover:text-rose-400 p-1 rounded-lg transition-colors cursor-pointer"
-                              title="سڕینەوەی ئەم خاڵە"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          )}
-                        </div>
+                  {/* Telegram Inputs */}
+                  <div className="p-4 rounded-xl border border-stone-200 dark:border-zinc-800 bg-stone-50/40 dark:bg-zinc-900/40 space-y-3">
+                    <div className="text-xs font-bold font-sirwan text-sky-600 dark:text-sky-400 flex items-center gap-2">
+                      <TelegramIcon className="w-4 h-4 text-sky-500" />
+                      <span>تێلیگرام (Telegram)</span>
+                    </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                          <div className="sm:col-span-1">
-                            <label className="block text-[11px] font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1">
-                              ناونیشان
-                            </label>
-                            <input
-                              type="text"
-                              value={feat.title}
-                              onChange={(e) => handleFeatureChange(index, 'title', e.target.value)}
-                              placeholder="ناونیشانی خاڵ"
-                              className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-sirwan focus:outline-none focus:border-[#d49757]"
-                            />
-                          </div>
-
-                          <div className="sm:col-span-2">
-                            <label className="block text-[11px] font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1">
-                              وەسف و ڕوونکردنەوە
-                            </label>
-                            <input
-                              type="text"
-                              value={feat.desc}
-                              onChange={(e) => handleFeatureChange(index, 'desc', e.target.value)}
-                              placeholder="وەسفی کورت..."
-                              className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-sirwan focus:outline-none focus:border-[#d49757]"
-                            />
-                          </div>
-                        </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-[11px] font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1">
+                          کەناڵی تێلیگرام (Handle)
+                        </label>
+                        <input
+                          type="text"
+                          dir="ltr"
+                          value={aboutTelegramHandle}
+                          onChange={(e) => setAboutTelegramHandle(e.target.value)}
+                          placeholder="@mediay_islamy"
+                          className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-mono focus:outline-none focus:border-[#d49757]"
+                        />
                       </div>
-                    ))}
+
+                      <div>
+                        <label className="block text-[11px] font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1">
+                          لینکی کەناڵ (URL)
+                        </label>
+                        <input
+                          type="url"
+                          dir="ltr"
+                          value={aboutTelegramUrl}
+                          onChange={(e) => setAboutTelegramUrl(e.target.value)}
+                          placeholder="https://t.me/mediay_islamy"
+                          className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-mono focus:outline-none focus:border-[#d49757]"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -2135,49 +2133,81 @@ export function AdminDashboardClient() {
             <div className="lg:col-span-5 space-y-4 sticky top-24">
               <div className="flex items-center gap-1.5 text-xs font-semibold font-sirwan text-zinc-500 dark:text-zinc-400">
                 <Eye className="w-4 h-4 text-[#d49757]" />
-                <span>پێشبینینی ڕاستەوخۆ (Live Preview):</span>
+                <span>پێشبینینی ڕاستەوخۆ لەسەر شێوازی پەڕەی دەربارە (Live Preview):</span>
               </div>
 
-              {/* Preview Container */}
-              <div className="p-5 rounded-2xl sm:rounded-3xl bg-white/95 dark:bg-zinc-900/90 border border-stone-200/80 dark:border-zinc-800 space-y-6 text-right shadow-sm">
-                <div className="text-center space-y-2 border-b border-stone-100 dark:border-zinc-800 pb-4">
-                  <h3 className="text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100 leading-normal">
-                    {aboutTitle || 'دەربارەی میدیای ئیسلامی'}
-                  </h3>
-                  <p className="text-xs font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                    {aboutSubtitle || 'پلاتفۆرمێکی تایبەتمەند...'}
-                  </p>
-                </div>
-
-                {/* Mission Preview */}
-                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-2 text-right">
-                  <div className="inline-flex items-center text-xs font-bold font-sirwan text-amber-700 dark:text-amber-400">
-                    <span>{aboutMissionTitle || 'پەیامی ئێمە'}</span>
+              {/* Exact Preview Replica matching app/about/page.tsx */}
+              <div className="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-white dark:bg-zinc-950 border border-stone-200/80 dark:border-zinc-800 space-y-5 text-right shadow-md">
+                {/* Simulated Language Switcher Banner */}
+                <div className="w-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-2.5 flex items-center justify-between text-[11px] font-sirwan">
+                  <div className="flex items-center gap-1.5 font-semibold text-zinc-800 dark:text-zinc-200">
+                    <span className="text-amber-500">🌐</span>
+                    <span>زمان / Language</span>
                   </div>
-                  <p className="text-xs font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed">
-                    {aboutMissionText || 'دەقی پەیامی ئێمە...'}
+                  <div className="flex items-center gap-1">
+                    <span className="px-2 py-0.5 rounded-lg bg-amber-500 text-zinc-950 font-bold">کوردی</span>
+                    <span className="px-2 py-0.5 rounded-lg bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">العربية</span>
+                  </div>
+                </div>
+
+                {/* Page Title */}
+                <h1 className="text-xl sm:text-2xl font-bold font-peshang text-zinc-900 dark:text-white leading-normal">
+                  {aboutTitle || 'دەربارەی پلاتفۆرم'}
+                </h1>
+
+                {/* Paragraph 1 */}
+                <p className="text-xs sm:text-sm font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-line">
+                  {aboutParagraph1 || DEFAULT_ABOUT_SETTINGS.paragraph_1}
+                </p>
+
+                {/* Paragraph 2 */}
+                <p className="text-xs sm:text-sm font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-line">
+                  {aboutParagraph2 || DEFAULT_ABOUT_SETTINGS.paragraph_2}
+                </p>
+
+                {/* Paragraph 3 / Note */}
+                <div className="pt-3 border-t border-zinc-200 dark:border-zinc-800">
+                  <p className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400 whitespace-pre-line">
+                    {aboutParagraph3 || DEFAULT_ABOUT_SETTINGS.paragraph_3}
                   </p>
                 </div>
 
-                {/* Features Preview */}
-                <div className="space-y-2.5">
-                  <span className="text-[11px] font-bold font-sirwan text-zinc-500 block">
-                    تایبەتمەندییەکان:
-                  </span>
-                  <div className="space-y-2">
-                    {aboutFeatures.map((f, i) => (
-                      <div
-                        key={i}
-                        className="p-3 rounded-xl border border-stone-100 dark:border-zinc-800 bg-stone-50/50 dark:bg-zinc-800/40 text-right space-y-1"
-                      >
-                        <div className="text-xs font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-                          {f.title || `تایبەتمەندی ٠${i + 1}`}
-                        </div>
-                        <div className="text-[11px] font-sirwan text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                          {f.desc || 'وەسفی کورت...'}
-                        </div>
+                {/* Contact Action Buttons */}
+                <div className="pt-2 space-y-2.5">
+                  {/* Instagram Button */}
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 shadow-2xs">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center shrink-0">
+                        <InstagramIcon className="w-4 h-4" />
                       </div>
-                    ))}
+                      <div className="text-right">
+                        <span className="text-xs font-bold font-peshang text-zinc-900 dark:text-zinc-100 block">
+                          ئینستاگرام
+                        </span>
+                        <span dir="ltr" className="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
+                          {aboutInstagramHandle || DEFAULT_ABOUT_SETTINGS.instagram_handle}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-sirwan text-zinc-400">پەیام بنێرە ←</span>
+                  </div>
+
+                  {/* Telegram Button */}
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 shadow-2xs">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-amber-500 text-zinc-950 flex items-center justify-center shrink-0">
+                        <TelegramIcon className="w-4 h-4" />
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold font-peshang text-zinc-900 dark:text-zinc-100 block">
+                          تێلیگرام
+                        </span>
+                        <span dir="ltr" className="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
+                          {aboutTelegramHandle || DEFAULT_ABOUT_SETTINGS.telegram_handle}
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-sirwan text-zinc-400">کەناڵی فەرمی ←</span>
                   </div>
                 </div>
               </div>

@@ -77,7 +77,7 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
           <span className="hidden sm:inline">بۆ بابەت و وتارەکان</span>
         </Link>
 
-        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           {/* Favorite / Bookmark Button */}
           <FavoriteButton
             item={{
@@ -97,18 +97,6 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
             text={`${article.title} - لە میدیای ئیسلامی`}
             url={shareArticleUrl}
           />
-
-          {/* Telegram Share */}
-          <a
-            href={shareTelegramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full text-xs font-semibold font-sirwan bg-sky-500/10 hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 border border-sky-500/20 transition-all duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none shrink-0"
-            title="هاوبەشکردن لە تێلیگرام"
-          >
-            <TelegramIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-            <span className="hidden sm:inline">تێلیگرام</span>
-          </a>
         </div>
       </div>
 

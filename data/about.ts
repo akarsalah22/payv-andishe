@@ -1,25 +1,28 @@
-export interface AboutFeature {
+export interface AboutSettings {
   title: string;
-  desc: string;
+  paragraph_1: string;
+  paragraph_2: string;
+  paragraph_3: string;
+  instagram_handle: string;
+  instagram_url: string;
+  telegram_handle: string;
+  telegram_url: string;
 }
 
-export interface AboutContent {
-  title: string;
-  subtitle: string;
-  missionTitle: string;
-  missionText: string;
-  features: AboutFeature[];
-}
-
-export const DEFAULT_ABOUT_CONTENT: AboutContent = {
+export const DEFAULT_ABOUT_SETTINGS: AboutSettings = {
   title: "دەربارەی پلاتفۆرم",
-  subtitle: "دەستپێشخەرییەکی خۆبەخشانەیە بۆ ئەرشیفکردن و کۆکردنەوەی ئەو بەرهەم و وتار و فیلمە ناوازانەی بە زمانی کوردی لە سەرچاوە جیاوازەکاندا بڵاوکراونەتەوە، تا هەمووان بتوانن لە یەک شوێنی خاوێن و بێبەرامبەردا دەستیان پێیان بگات.",
-  missionTitle: "مافی بەرهەمەکان",
-  missionText: "سەرجەم مافە مەعنەوییەکانی بەرهەمەکان، ڤیدیۆکان و وەرگێڕانەکان بۆ کەناڵ و وەرگێڕ و خاوەنە ڕەسەنەکانیان پارێزراون. ئێمە تەنها ئەرکی ڕێکخستن و ئاسانکاریی گەیشتن بە ناوەرۆکەکان لە ئەستۆ دەگرین.",
-  features: [
-    {
-      title: "پەیوەندی و تێبینی",
-      desc: "بۆ هەر پێشنیار، تێبینی، یان داواکارییەکی لابردنی بەرهەم، دەتوانن لە ڕێگەی بەستەرەکانی خوارەوە پەیوەندیمان پێوە بکەن."
-    }
-  ]
+  paragraph_1:
+    "بەخێربێن؛ ئەم وێبسایتە دەستپێشخەرییەکی خۆبەخشانەیە بۆ ئەرشیفکردن و کۆکردنەوەی ئەو بەرهەم و وتار و فیلمە ناوازانەی بە زمانی کوردی لە سەرچاوە جیاوازەکاندا بڵاوکراونەتەوە، تا هەمووان بتوانن لە یەک شوێنی خاوێن و بێبەرامبەردا دەستیان پێیان بگات.",
+  paragraph_2:
+    "سەرجەم مافە مەعنەوییەکانی بەرهەمەکان، ڤیدیۆکان و وەرگێڕانەکان بۆ کەناڵ و وەرگێڕ و خاوەنە ڕەسەنەکانیان پارێزراون. ئێمە تەنها ئەرکی ڕێکخستن و ئاسانکاریی گەیشتن بە ناوەرۆکەکان لە ئەستۆ دەگرین.",
+  paragraph_3:
+    "بۆ هەر پێشنیار، تێبینی، یان داواکارییەکی لابردنی بەرهەم، دەتوانن لە ڕێگەی بەستەرەکانی خوارەوە پەیوەندیمان پێوە بکەن.",
+  instagram_handle: "@hamahang_bwn",
+  instagram_url: "https://instagram.com/hamahang_bwn",
+  telegram_handle: "@mediay_islamy",
+  telegram_url: "https://t.me/mediay_islamy",
 };
+
+// Aliases for compatibility
+export type AboutContent = AboutSettings;
+export const DEFAULT_ABOUT_CONTENT = DEFAULT_ABOUT_SETTINGS;

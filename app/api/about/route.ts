@@ -1,22 +1,22 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
-import { readAboutContent, saveAboutContent } from '@/lib/storage';
+import { readAboutSettings, saveAboutSettings } from '@/lib/storage';
 import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/auth';
-import { DEFAULT_ABOUT_CONTENT, type AboutContent } from '@/data/about';
+import { DEFAULT_ABOUT_SETTINGS, type AboutSettings } from '@/data/about';
 
-// GET: Return current About content
+// GET: Return current About settings
 export async function GET() {
   try {
-    const about = await readAboutContent();
+    const about = await readAboutSettings();
     return NextResponse.json(about);
   } catch (error) {
-    console.error('Failed to read about content:', error);
-    return NextResponse.json(DEFAULT_ABOUT_CONTENT);
+    console.error('Failed to read about settings:', error);
+    return NextResponse.json(DEFAULT_ABOUT_SETTINGS);
   }
 }
 
-// POST: Update About content (requires admin authentication)
+// POST: Update About settings (requires admin authentication)
 export async function POST(req: Request) {
   try {
     const cookieStore = await cookies();
@@ -37,27 +37,25 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!body.missionTitle || !body.missionTitle.trim()) {
+    if (!body.paragraph_1 || !body.paragraph_1.trim()) {
       return NextResponse.json(
-        { error: 'تکایە ناونیشانی پەیام بنووسە' },
+        { error: 'تکایە دەقی سەرەکی و ناساندن بنووسە' },
         { status: 400 }
       );
     }
 
-    const contentToSave: AboutContent = {
+    const contentToSave: AboutSettings = {
       title: body.title.trim(),
-      subtitle: body.subtitle?.trim() || '',
-      missionTitle: body.missionTitle.trim(),
-      missionText: body.missionText?.trim() || '',
-      features: Array.isArray(body.features)
-        ? body.features.map((f: any) => ({
-            title: String(f.title || '').trim(),
-            desc: String(f.desc || '').trim(),
-          }))
-        : DEFAULT_ABOUT_CONTENT.features,
+      paragraph_1: body.paragraph_1.trim(),
+      paragraph_2: body.paragraph_2?.trim() || DEFAULT_ABOUT_SETTINGS.paragraph_2,
+      paragraph_3: body.paragraph_3?.trim() || DEFAULT_ABOUT_SETTINGS.paragraph_3,
+      instagram_handle: body.instagram_handle?.trim() || DEFAULT_ABOUT_SETTINGS.instagram_handle,
+      instagram_url: body.instagram_url?.trim() || DEFAULT_ABOUT_SETTINGS.instagram_url,
+      telegram_handle: body.telegram_handle?.trim() || DEFAULT_ABOUT_SETTINGS.telegram_handle,
+      telegram_url: body.telegram_url?.trim() || DEFAULT_ABOUT_SETTINGS.telegram_url,
     };
 
-    const success = await saveAboutContent(contentToSave);
+    const success = await saveAboutSettings(contentToSave);
 
     revalidatePath('/about');
     revalidatePath('/');
@@ -68,11 +66,10 @@ export async function POST(req: Request) {
       dbSynced: success,
     });
   } catch (error) {
-    console.error('Failed to save about content:', error);
+    console.error('Failed to save about settings:', error);
     return NextResponse.json(
       { error: 'هەڵەیەک ڕوویدا لە پاشەکەوتکردنی دەربارە' },
       { status: 500 }
     );
   }
 }
-

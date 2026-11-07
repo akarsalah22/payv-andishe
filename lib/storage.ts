@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { SAMPLE_FILMS, type Film } from "@/data/films";
 import { SAMPLE_ARTICLES, type Article } from "@/data/articles";
-import { DEFAULT_ABOUT_CONTENT, type AboutContent } from "@/data/about";
+import { DEFAULT_ABOUT_SETTINGS, type AboutSettings, DEFAULT_ABOUT_CONTENT, type AboutContent } from "@/data/about";
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from "@/data/homeSettings";
 import {
   getFilmsFromDb,
@@ -15,6 +15,8 @@ import {
   setSettingInDb,
   getHomeSettingsFromDb,
   updateHomeSettingsInDb,
+  getAboutSettingsFromDb,
+  updateAboutSettingsInDb,
 } from "./db";
 
 const dataDir = path.join(process.cwd(), "data");
@@ -238,32 +240,49 @@ export async function removeSingleArticle(id: string): Promise<boolean> {
 }
 
 /**
- * Reads local backup for About content.
+ * Normalizes any raw parsed JSON into valid AboutSettings with fallbacks.
  */
-export async function readLocalAbout(): Promise<AboutContent> {
+function normalizeAboutSettings(parsed: any): AboutSettings {
+  if (!parsed || typeof parsed !== "object") return DEFAULT_ABOUT_SETTINGS;
+  return {
+    title: parsed.title || DEFAULT_ABOUT_SETTINGS.title,
+    paragraph_1: parsed.paragraph_1 || parsed.subtitle || DEFAULT_ABOUT_SETTINGS.paragraph_1,
+    paragraph_2: parsed.paragraph_2 || parsed.missionText || DEFAULT_ABOUT_SETTINGS.paragraph_2,
+    paragraph_3: parsed.paragraph_3 || (Array.isArray(parsed.features) && parsed.features[0]?.desc) || DEFAULT_ABOUT_SETTINGS.paragraph_3,
+    instagram_handle: parsed.instagram_handle || DEFAULT_ABOUT_SETTINGS.instagram_handle,
+    instagram_url: parsed.instagram_url || DEFAULT_ABOUT_SETTINGS.instagram_url,
+    telegram_handle: parsed.telegram_handle || DEFAULT_ABOUT_SETTINGS.telegram_handle,
+    telegram_url: parsed.telegram_url || DEFAULT_ABOUT_SETTINGS.telegram_url,
+  };
+}
+
+/**
+ * Reads local backup for About settings.
+ */
+export async function readLocalAbout(): Promise<AboutSettings> {
   try {
     await ensureDirectory();
     try {
       await fs.access(aboutFilePath);
     } catch {
-      await fs.writeFile(aboutFilePath, JSON.stringify(DEFAULT_ABOUT_CONTENT, null, 2), "utf-8");
-      return DEFAULT_ABOUT_CONTENT;
+      await fs.writeFile(aboutFilePath, JSON.stringify(DEFAULT_ABOUT_SETTINGS, null, 2), "utf-8");
+      return DEFAULT_ABOUT_SETTINGS;
     }
 
     const data = await fs.readFile(aboutFilePath, "utf-8");
-    if (!data.trim()) return DEFAULT_ABOUT_CONTENT;
+    if (!data.trim()) return DEFAULT_ABOUT_SETTINGS;
     const parsed = JSON.parse(data);
-    return parsed && typeof parsed === "object" ? { ...DEFAULT_ABOUT_CONTENT, ...parsed } : DEFAULT_ABOUT_CONTENT;
+    return normalizeAboutSettings(parsed);
   } catch (error) {
     console.error("Error reading local about backup:", error);
-    return DEFAULT_ABOUT_CONTENT;
+    return DEFAULT_ABOUT_SETTINGS;
   }
 }
 
 /**
- * Writes local backup for About content.
+ * Writes local backup for About settings.
  */
-export async function writeLocalAbout(content: AboutContent): Promise<void> {
+export async function writeLocalAbout(content: AboutSettings): Promise<void> {
   try {
     await ensureDirectory();
     await fs.writeFile(aboutFilePath, JSON.stringify(content, null, 2), "utf-8");
@@ -273,34 +292,41 @@ export async function writeLocalAbout(content: AboutContent): Promise<void> {
 }
 
 /**
- * Reads About content actively from Neon Postgres, falling back to local file.
+ * Reads About settings actively from Neon Postgres (about_settings table), falling back to local file.
  */
-export async function readAboutContent(): Promise<AboutContent> {
+export async function readAboutSettings(): Promise<AboutSettings> {
   try {
-    const dbAbout = await getSettingFromDb<AboutContent>("about_content");
+    const dbAbout = await getAboutSettingsFromDb();
     if (dbAbout && typeof dbAbout === "object" && dbAbout.title) {
       writeLocalAbout(dbAbout).catch(() => {});
-      return { ...DEFAULT_ABOUT_CONTENT, ...dbAbout };
+      return { ...DEFAULT_ABOUT_SETTINGS, ...dbAbout };
     }
   } catch (err) {
-    console.error("Neon DB readAboutContent error, falling back to local file:", err);
+    console.error("Neon DB readAboutSettings error, falling back to local file:", err);
   }
 
   return await readLocalAbout();
 }
 
 /**
- * Saves About content to Neon Postgres and updates local backup.
+ * Saves About settings to Neon Postgres and updates local backup.
  */
-export async function saveAboutContent(content: AboutContent): Promise<boolean> {
+export async function saveAboutSettings(content: AboutSettings): Promise<boolean> {
   await writeLocalAbout(content);
   try {
-    return await setSettingInDb("about_content", content);
+    const dbUpdated = await updateAboutSettingsInDb(content);
+    // Also mirror to site_settings for maximum redundancy
+    await setSettingInDb("about_settings", content).catch(() => {});
+    return dbUpdated;
   } catch (err) {
-    console.error("Failed to sync about content to Neon DB:", err);
+    console.error("Failed to sync about settings to Neon DB:", err);
     return false;
   }
 }
+
+// Aliases for compatibility
+export const readAboutContent = readAboutSettings;
+export const saveAboutContent = saveAboutSettings;
 
 /**
  * Reads local backup for Homepage Hero settings.
