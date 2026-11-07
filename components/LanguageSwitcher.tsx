@@ -67,7 +67,7 @@ export function LanguageSwitcher({ className = "", showChevron = false }: Langua
         aria-haspopup="listbox"
         aria-label="گۆڕینی زمان / Change language / تغيير اللغة"
         title="گۆڕینی زمان / Language / اللغة"
-        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 transition-all cursor-pointer select-none active:scale-95 touch-manipulation tap-highlight-transparent"
+        className="flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 transition-all cursor-pointer select-none active:scale-95 touch-manipulation tap-highlight-transparent"
       >
         <Globe className="w-3.5 h-3.5 text-amber-500 shrink-0" strokeWidth={1.8} />
         <span className="font-mono font-bold uppercase tracking-wider text-[11px]">

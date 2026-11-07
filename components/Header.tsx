@@ -112,26 +112,26 @@ export function Header() {
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-[#121214]/80 backdrop-blur-md transition-colors duration-300">
-        <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-3 sm:px-6 lg:px-8">
           {/* Brand Logo / Clean Title */}
           <Link
             href="/"
-            className="flex items-center gap-2 sm:gap-2.5 group shrink-0 select-none cursor-pointer"
+            className="flex items-center gap-1.5 sm:gap-2.5 group shrink-0 select-none cursor-pointer"
           >
             {/* Logo Container */}
-            <div className="relative w-10 h-10 sm:w-11 sm:h-11 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+            <div className="relative w-8 h-8 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
               <Image
                 src="/img/logo_web.svg"
                 alt="میدیای ئیسلامی"
-                width={44}
-                height={44}
+                width={40}
+                height={40}
                 priority
                 className="w-full h-full object-contain"
               />
             </div>
 
             {/* Brand Text */}
-            <span className="font-semibold text-sm sm:text-base text-zinc-900 dark:text-white tracking-normal leading-none select-none">
+            <span className="font-bold text-xs sm:text-sm md:text-base text-zinc-900 dark:text-white tracking-normal leading-none select-none whitespace-nowrap">
               {t('brand.title', 'میدیای ئیسلامی')}
             </span>
           </Link>
@@ -158,7 +158,7 @@ export function Header() {
           </nav>
 
           {/* Actions (Admin Quick-Link, Random Discovery, Search, Language Switcher, Theme Toggle, Mobile Hamburger Button) */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             {/* Authenticated Admin Quick-Link */}
             {isAdminAuthenticated && (
               <Link
@@ -180,15 +180,15 @@ export function Header() {
               href="/saved"
               aria-label={`${t('nav.saved', 'هەڵگیراوەکانم')} (${favoritesCount})`}
               title={t('nav.saved', 'هەڵگیراوەکانم')}
-              className={`relative p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${
+              className={`relative p-1.5 sm:p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${
                 pathname === '/saved'
                   ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
                   : ''
               }`}
             >
-              <Bookmark className="w-5 h-5 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
+              <Bookmark className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
               {favoritesCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-500 text-zinc-950 text-[10px] font-bold font-sans flex items-center justify-center shadow-xs animate-in zoom-in-75 duration-200">
+                <span className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] px-1 rounded-full bg-amber-500 text-zinc-950 text-[10px] font-bold font-sans flex items-center justify-center shadow-xs animate-in zoom-in-75 duration-200">
                   {favoritesCount}
                 </span>
               )}
@@ -200,9 +200,9 @@ export function Header() {
               onClick={() => setIsSearchOpen(true)}
               aria-label={t('nav.search', 'گەڕان')}
               title={t('nav.search', 'گەڕان')}
-              className="p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="p-1.5 sm:p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
             >
-              <Search className="w-5 h-5 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600 dark:text-amber-400" strokeWidth={1.75} />
             </button>
 
             {/* Language Switcher */}
@@ -211,13 +211,13 @@ export function Header() {
             {/* Theme Toggle Button */}
             <ThemeToggle />
 
-            {/* Mobile Hamburger Button */}
+            {/* Mobile Hamburger Button (Safe tap zone without edge clipping) */}
             <button
               type="button"
               onClick={() => setIsMenuOpen(true)}
               aria-label={t('nav.open_menu', 'کردنەوەی مێنیو')}
               aria-expanded={isMenuOpen}
-              className="md:hidden p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+              className="md:hidden p-1.5 sm:p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 cursor-pointer touch-manipulation select-none tap-highlight-transparent shrink-0"
             >
               <Menu className="w-5 h-5" strokeWidth={1.75} />
             </button>
