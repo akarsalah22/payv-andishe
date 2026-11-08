@@ -102,10 +102,10 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
         {/* Footer Meta Row */}
         <div className="pt-2.5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs">
           <span className="text-[11px] text-zinc-500 dark:text-zinc-400">
-            {article.date || 'ئەرشیڤی وتار'}
+            {article.date || 'ئەرشیڤی نووسین'}
           </span>
           <div className="inline-flex items-center gap-1 font-semibold text-amber-600 dark:text-amber-400 group-hover:text-amber-500 transition-colors">
-            <span>خوێندنەوەی وتار</span>
+            <span>خوێندنەوەی نووسین</span>
             <ChevronLeft className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" strokeWidth={2} />
           </div>
         </div>

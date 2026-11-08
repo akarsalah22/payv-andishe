@@ -41,12 +41,19 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
       {/* Elegant Cinematic Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
 
-      {/* Subtle Optional Quality / Category Tag (Minimal) */}
-      {film.category && (
-        <span className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[10px] sm:text-xs font-medium font-sirwan text-zinc-300 border border-white/10 pointer-events-none tracking-normal">
-          {film.category}
-        </span>
-      )}
+      {/* Subtle Optional Quality / Category Tag & Parts Badge */}
+      <div className="absolute top-2 right-2 flex items-center gap-1.5 flex-wrap pointer-events-none z-10">
+        {film.category && (
+          <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[10px] sm:text-xs font-medium font-sirwan text-zinc-300 border border-white/10 tracking-normal">
+            {film.category}
+          </span>
+        )}
+        {film.parts && film.parts.length > 1 && (
+          <span className="px-1.5 py-0.5 rounded-md bg-amber-500 text-zinc-950 font-bold text-[10px] font-sirwan shadow-xs">
+            {film.parts.length} بەش
+          </span>
+        )}
+      </div>
 
       {/* Top Left: Quick Save Button */}
       <div className="absolute top-2 left-2 z-20">

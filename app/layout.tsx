@@ -7,7 +7,7 @@ import { ToastProvider } from "@/components/ToastContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
-import { PwaInstallPrompt } from "@/components/PwaInstallPrompt";
+import { InstallPwaModal } from "@/components/InstallPwaModal";
 import {
   peshangFont,
   sirwanFont,
@@ -25,7 +25,7 @@ const vazir = Vazirmatn({
 export const metadata: Metadata = {
   metadataBase: new URL('https://mediay-islamy.vercel.app'),
   title: {
-    default: 'میدیای ئیسلامی | سەکۆی فیکر، پەروەردە و ئەدەب',
+    default: 'میدیای ئیسلامی | سەکۆیەک بۆ فیلم و نووسین ',
     template: '%s | میدیای ئیسلامی',
   },
   description: 'سەکۆیەکی کوردی بۆ ناساندنی فیلم و کارتۆنی پەروەردەیی، نووسین، دەق، فیکر، فەرموودە و مێژووی ئیسلام.',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   creator: 'میدیای ئیسلامی',
   publisher: 'میدیای ئیسلامی',
   openGraph: {
-    title: 'میدیای ئیسلامی | سەکۆی فیکر، پەروەردە و ئەدەب',
+    title: 'میدیای ئیسلامی | سەکۆیەک بۆ فیلم و نووسین ',
     description: 'سەکۆیەکی کوردی بۆ ناساندنی فیلم و کارتۆنی پەروەردەیی، نووسین، دەق، فیکر، فەرموودە و مێژووی ئیسلام.',
     url: 'https://mediay-islamy.vercel.app',
     siteName: 'میدیای ئیسلامی',
@@ -58,13 +58,13 @@ export const metadata: Metadata = {
         url: '/logo.jpg',
         width: 1200,
         height: 630,
-        alt: 'میدیای ئیسلامی | سەکۆی فیکر، پەروەردە و ئەدەب',
+        alt: 'میدیای ئیسلامی | سەکۆیەک بۆ فیلم و نووسین',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'میدیای ئیسلامی | سەکۆی فیکر، پەروەردە و ئەدەب',
+    title: 'میدیای ئیسلامی | سەکۆیەک بۆ فیلم و نووسین',
     description: 'سەکۆیەکی کوردی بۆ ناساندنی فیلم و کارتۆنی پەروەردەیی، نووسین، دەق، فیکر، فەرموودە و مێژووی ئیسلام.',
     images: ['/logo.jpg'],
   },
@@ -115,7 +115,7 @@ export default function RootLayout({
                 {children}
               </main>
               <Footer />
-              <PwaInstallPrompt />
+              <InstallPwaModal />
               <ScrollToTop />
             </ToastProvider>
           </LanguageProvider>

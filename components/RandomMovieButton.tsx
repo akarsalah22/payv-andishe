@@ -12,6 +12,7 @@ interface RandomMovieButtonProps {
   className?: string;
   variant?: 'header' | 'compact' | 'search' | 'primary' | 'subtle';
   label?: string;
+  iconOnly?: boolean;
   onPick?: () => void;
 }
 
@@ -20,6 +21,7 @@ export function RandomMovieButton({
   className = '',
   variant = 'search',
   label,
+  iconOnly = false,
   onPick,
 }: RandomMovieButtonProps) {
   const router = useRouter();
@@ -81,9 +83,9 @@ export function RandomMovieButton({
         type="button"
         onClick={handlePickRandom}
         disabled={isPicking}
-        title="چی سەیر بکەم؟ شتێکم بۆ هەڵبژێرە"
-        aria-label="چی سەیر بکەم؟ شتێکم بۆ هەڵبژێرە"
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 transition-all group cursor-pointer select-none touch-manipulation disabled:opacity-60 active:scale-95 ${className}`}
+        title={displayLabel}
+        aria-label={displayLabel}
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 transition-all group cursor-pointer select-none touch-manipulation disabled:opacity-60 active:scale-95 ${className}`}
       >
         <Shuffle
           className={`w-3.5 h-3.5 shrink-0 transition-transform duration-500 group-hover:rotate-180 active:rotate-90 ${
@@ -91,9 +93,11 @@ export function RandomMovieButton({
           }`}
           strokeWidth={2}
         />
-        <span className="tracking-normal">
-          {isPicking ? t('nav.surprise_loading', 'هەڵدەبژێردرێت...') : displayLabel}
-        </span>
+        {!iconOnly && (
+          <span className="tracking-normal whitespace-nowrap">
+            {isPicking ? t('nav.surprise_loading', 'هەڵدەبژێردرێت...') : displayLabel}
+          </span>
+        )}
       </button>
     );
   }

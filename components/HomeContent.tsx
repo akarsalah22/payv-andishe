@@ -177,7 +177,7 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                 ئەدەب و فیکر
               </span>
               <h2 className="text-xl sm:text-2xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
-                نوێترین وتار و خوێندنەوەکان
+                نوێترین نووسین و خوێندنەوەکان
               </h2>
             </div>
 

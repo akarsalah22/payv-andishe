@@ -37,8 +37,8 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
     const rawList = Array.isArray(article.content)
       ? article.content.filter((p) => typeof p === "string" && p.trim().length > 0)
       : typeof article.content === "string" && (article.content as string).trim()
-      ? [(article.content as string).trim()]
-      : [];
+        ? [(article.content as string).trim()]
+        : [];
 
     if (rawList.length > 0) {
       return rawList;
@@ -74,7 +74,7 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
         >
           <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1 shrink-0" strokeWidth={1.75} />
           <span>گەڕانەوە</span>
-          <span className="hidden sm:inline">بۆ بابەت و وتارەکان</span>
+          <span className="hidden sm:inline">بۆ بابەت و نووسینەکان</span>
         </Link>
 
         <div className="flex items-center gap-2 shrink-0">

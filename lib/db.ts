@@ -1,5 +1,5 @@
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
-import { SAMPLE_FILMS, type Film } from '@/data/films';
+import { SAMPLE_FILMS, type Film, type FilmPart, normalizeFilmParts } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article } from '@/data/articles';
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from '@/data/homeSettings';
 import { DEFAULT_ABOUT_SETTINGS, type AboutSettings } from '@/data/about';
@@ -80,6 +80,10 @@ export async function ensureDbInitialized(): Promise<boolean> {
 
     await sql.query(`
       ALTER TABLE films ADD COLUMN IF NOT EXISTS watch_url TEXT;
+    `);
+
+    await sql.query(`
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS parts JSONB DEFAULT '[]'::jsonb;
     `);
 
     // 2. Create articles table
@@ -254,6 +258,7 @@ interface FilmDbRow {
   telegramPostUrl: string;
   platform?: Film['platform'];
   watchUrl?: string;
+  parts?: FilmPart[] | string | null;
 }
 
 interface ArticleDbRow {
@@ -295,7 +300,8 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
         description,
         telegram_post_url AS "telegramPostUrl",
         platform,
-        watch_url AS "watchUrl"
+        watch_url AS "watchUrl",
+        parts
       FROM films
       ORDER BY created_at DESC;
     `);
@@ -303,6 +309,19 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
     return (rows as unknown as FilmDbRow[]).map((r) => {
       const activeUrl = r.watchUrl || r.telegramPostUrl || '';
       const activePlatform = r.platform || (activeUrl.includes('youtu') ? 'youtube' : 'telegram');
+      let parsedParts: FilmPart[] = [];
+      if (r.parts) {
+        if (Array.isArray(r.parts)) {
+          parsedParts = normalizeFilmParts(r.parts);
+        } else if (typeof r.parts === 'string') {
+          try {
+            parsedParts = normalizeFilmParts(JSON.parse(r.parts));
+          } catch {
+            parsedParts = [];
+          }
+        }
+      }
+
       return {
         id: r.id,
         slug: r.slug,
@@ -317,6 +336,7 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
         platform: activePlatform,
         watchUrl: activeUrl,
         telegramPostUrl: r.telegramPostUrl || activeUrl,
+        parts: parsedParts,
       };
     });
   } catch (err) {
@@ -342,8 +362,8 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
       INSERT INTO films (
         id, slug, title_kurdish, original_title, year, duration,
         category, genres, poster_url, description, telegram_post_url,
-        platform, watch_url, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, NOW())
+        platform, watch_url, parts, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW())
       ON CONFLICT (id) DO UPDATE SET
         slug = EXCLUDED.slug,
         title_kurdish = EXCLUDED.title_kurdish,
@@ -357,6 +377,7 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         telegram_post_url = EXCLUDED.telegram_post_url,
         platform = EXCLUDED.platform,
         watch_url = EXCLUDED.watch_url,
+        parts = EXCLUDED.parts,
         updated_at = NOW();
       `,
       [
@@ -373,6 +394,7 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         film.telegramPostUrl || watchLink,
         platform,
         watchLink,
+        JSON.stringify(film.parts ? normalizeFilmParts(film.parts) : []),
       ]
     );
     return true;

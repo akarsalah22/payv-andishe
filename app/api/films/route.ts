@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { readFilms, saveSingleFilm, removeSingleFilm } from '@/lib/storage';
 import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/auth';
-import type { Film } from '@/data/films';
+import { type Film, normalizeFilmParts } from '@/data/films';
 
 // Helper to generate a clean URL slug from title
 function generateSlug(text: string) {
@@ -66,6 +66,7 @@ export async function POST(req: Request) {
       platform,
       watchUrl: watchLink,
       telegramPostUrl: watchLink,
+      parts: newFilm.parts && Array.isArray(newFilm.parts) ? normalizeFilmParts(newFilm.parts) : [],
     };
 
     await saveSingleFilm(filmToSave);
@@ -131,6 +132,12 @@ export async function PUT(req: Request) {
       platform,
       watchUrl: watchLink,
       telegramPostUrl: watchLink,
+      parts:
+        updatedFilm.parts !== undefined
+          ? normalizeFilmParts(updatedFilm.parts)
+          : existing?.parts
+          ? normalizeFilmParts(existing.parts)
+          : [],
     };
 
     await saveSingleFilm(mergedFilm);

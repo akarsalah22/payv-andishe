@@ -115,7 +115,7 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
         activeCategory={activeCategory}
         onCategoryChange={handleCategoryChange}
         categories={DEFAULT_SEARCH_CATEGORIES}
-        placeholder="گەڕان لە نێو فیلم، زنجیرە و کارتۆنەکان (بە کوردی یان عەرەبی)..."
+        placeholder="گەڕان لە نێو فیلم، کارتۆنەکان )..."
         films={films}
         showRandomButton={true}
       />

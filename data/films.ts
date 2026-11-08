@@ -10,9 +10,56 @@ export type FilmCategory =
 export type FilmPlatform = 'telegram' | 'youtube';
 
 export interface FilmPart {
-  partNumber: number;
-  url: string;
+  partNumber: number;      // e.g. 1, 2, 3
+  title: string;           // e.g. "بەشی یەکەم", "بەشی دووەم"
+  youtubeUrl?: string;     // YouTube link or Unlisted ID for this part
+  telegramUrl?: string;    // Direct Telegram post/video link for this part
+  duration?: string;       // Optional duration e.g. "45 خولەک"
+  // Backward compatibility with previous schema
+  url?: string;
   quality?: string;
+}
+
+export function toKurdishNumber(num: number | string): string {
+  const kurdishDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  return String(num).replace(/[0-9]/g, (w) => kurdishDigits[+w]);
+}
+
+export function normalizeFilmParts(parts?: unknown): FilmPart[] {
+  if (!Array.isArray(parts)) return [];
+  return parts.map((p, idx) => {
+    const raw = typeof p === 'object' && p !== null ? (p as Record<string, unknown>) : {};
+    const partNum = typeof raw.partNumber === 'number' ? raw.partNumber : idx + 1;
+    const title =
+      typeof raw.title === 'string' && raw.title.trim()
+        ? raw.title.trim()
+        : `بەشی ${toKurdishNumber(partNum)}`;
+    const rawUrl = typeof raw.url === 'string' ? raw.url.trim() : '';
+    const telegramUrl =
+      typeof raw.telegramUrl === 'string' && raw.telegramUrl.trim()
+        ? raw.telegramUrl.trim()
+        : rawUrl && rawUrl.includes('t.me')
+        ? rawUrl
+        : '';
+    const youtubeUrl =
+      typeof raw.youtubeUrl === 'string' && raw.youtubeUrl.trim()
+        ? raw.youtubeUrl.trim()
+        : rawUrl && (rawUrl.includes('youtu') || /^[a-zA-Z0-9_-]{11}$/.test(rawUrl))
+        ? rawUrl
+        : '';
+    const duration = typeof raw.duration === 'string' ? raw.duration.trim() : '';
+    const quality = typeof raw.quality === 'string' ? raw.quality.trim() : undefined;
+
+    return {
+      partNumber: partNum,
+      title,
+      youtubeUrl: youtubeUrl || undefined,
+      telegramUrl: telegramUrl || undefined,
+      duration: duration || undefined,
+      url: telegramUrl || youtubeUrl || rawUrl,
+      quality,
+    };
+  });
 }
 
 export interface Film {
@@ -45,7 +92,7 @@ export function extractYouTubeId(urlOrId?: string): string | null {
 
 export function getFilmTelegramParts(film: Partial<Film>): FilmPart[] {
   if (film.parts && Array.isArray(film.parts) && film.parts.length > 0) {
-    return film.parts;
+    return normalizeFilmParts(film.parts);
   }
   const text = `${film.watchUrl || ''} ${film.telegramPostUrl || ''}`;
   const matches = Array.from(text.matchAll(/https?:\/\/t\.me\/[^\s"']+/g));
@@ -53,10 +100,16 @@ export function getFilmTelegramParts(film: Partial<Film>): FilmPart[] {
   if (uniqueUrls.length > 1) {
     return uniqueUrls.map((url, index) => ({
       partNumber: index + 1,
+      title: `بەشی ${toKurdishNumber(index + 1)}`,
+      telegramUrl: url,
       url,
     }));
   }
   return [];
+}
+
+export function getFilmParts(film: Partial<Film>): FilmPart[] {
+  return getFilmTelegramParts(film);
 }
 
 export function getFilmPlatform(film: Partial<Film>): FilmPlatform {

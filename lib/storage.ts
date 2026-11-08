@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { SAMPLE_FILMS, type Film } from "@/data/films";
+import { SAMPLE_FILMS, type Film, normalizeFilmParts } from "@/data/films";
 import { SAMPLE_ARTICLES, type Article } from "@/data/articles";
 import { DEFAULT_ABOUT_SETTINGS, type AboutSettings, DEFAULT_ABOUT_CONTENT, type AboutContent } from "@/data/about";
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from "@/data/homeSettings";
@@ -46,7 +46,13 @@ async function readLocalFilms(): Promise<Film[]> {
     const data = await fs.readFile(filmsFilePath, "utf-8");
     if (!data.trim()) return SAMPLE_FILMS;
     const parsed = JSON.parse(data);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : SAMPLE_FILMS;
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed.map((f: Record<string, unknown>) => ({
+        ...f,
+        parts: f.parts ? normalizeFilmParts(f.parts) : undefined,
+      })) as unknown as Film[];
+    }
+    return SAMPLE_FILMS;
   } catch (error) {
     console.error("Error reading local films backup:", error);
     return SAMPLE_FILMS;

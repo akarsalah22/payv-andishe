@@ -27,7 +27,10 @@ export function MediaViewer({
   parts = [],
   className = "",
 }: MediaViewerProps) {
-  // 1. YouTube Identification
+  // 1. Multi-Part Check
+  const hasMultipleParts = Array.isArray(parts) && parts.length > 1;
+
+  // 2. YouTube Identification
   const resolvedYouTubeId =
     youtubeId ||
     extractYouTubeId(watchUrl) ||
@@ -35,36 +38,38 @@ export function MediaViewer({
 
   if (resolvedYouTubeId) {
     return (
-      <section className={`w-full space-y-3.5 text-right ${className}`} dir="rtl">
-        <div className="flex items-center justify-between pb-1 border-b border-zinc-200/80 dark:border-zinc-800/80">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-red-600/10 text-red-600 flex items-center justify-center">
-              <YouTubeIcon className="w-4 h-4" />
+      <section className={`w-full space-y-6 text-right ${className}`} dir="rtl">
+        <div className="space-y-3.5">
+          <div className="flex items-center justify-between pb-1 border-b border-zinc-200/80 dark:border-zinc-800/80">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-red-600/10 text-red-600 flex items-center justify-center">
+                <YouTubeIcon className="w-4 h-4" />
+              </div>
+              <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+                پەخشی ڕاستەوخۆ
+              </h2>
             </div>
-            <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-              پەخشی ڕاستەوخۆ
-            </h2>
+
+            <a
+              href={`https://www.youtube.com/watch?v=${resolvedYouTubeId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-sirwan text-zinc-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 transition-colors"
+            >
+              <span>کردنەوە لە یووتووب</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
           </div>
 
-          <a
-            href={`https://www.youtube.com/watch?v=${resolvedYouTubeId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-sirwan text-zinc-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 transition-colors"
-          >
-            <span>کردنەوە لە یووتووب</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+          <LiteYouTube videoId={resolvedYouTubeId} title={title} />
         </div>
 
-        <LiteYouTube videoId={resolvedYouTubeId} title={title} />
+        {hasMultipleParts && <TelegramParts parts={parts} />}
       </section>
     );
   }
 
-  // 2. Multi-Part Telegram Content
-  const hasMultipleParts = Array.isArray(parts) && parts.length > 1;
-
+  // 3. Multi-Part Content (when not YouTube-only)
   if (hasMultipleParts) {
     return (
       <section className={`w-full space-y-4 text-right ${className}`} dir="rtl">

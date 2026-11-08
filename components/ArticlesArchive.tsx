@@ -143,7 +143,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder="گەڕان لە نێو نووسین و وتارەکان (بە کوردی یان عەرەبی)..."
+            placeholder="گەڕان لە نێو نووسین و دەقەکان)..."
             className="w-full py-3 px-12 text-sm rounded-2xl outline-none transition-all duration-300 font-sirwan bg-white text-zinc-900 placeholder-zinc-400 border border-zinc-200/80 shadow-sm hover:border-amber-500/60 hover:shadow-[0_0_16px_rgba(245,158,11,0.15)] focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 dark:bg-zinc-900/80 dark:text-white dark:placeholder-zinc-500 dark:border-zinc-700 dark:hover:border-amber-500/60 dark:hover:shadow-[0_0_18px_rgba(245,158,11,0.25)] dark:focus:border-amber-500 dark:focus:ring-amber-500/30"
             dir="rtl"
           />
@@ -175,11 +175,10 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
                 key={category}
                 type="button"
                 onClick={() => handleCategoryChange(category)}
-                className={`shrink-0 px-4 py-2 sm:py-1.5 rounded-full text-xs sm:text-sm font-sirwan tracking-normal active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent transition-colors duration-200 ${
-                  isActive
+                className={`shrink-0 px-4 py-2 sm:py-1.5 rounded-full text-xs sm:text-sm font-sirwan tracking-normal active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent transition-colors duration-200 ${isActive
                     ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs border border-amber-500'
                     : 'bg-zinc-100/90 hover:bg-zinc-200/80 text-zinc-600 hover:text-zinc-900 border border-zinc-200/80 dark:bg-zinc-800/80 dark:hover:bg-zinc-700/80 dark:text-zinc-300 dark:hover:text-white dark:border-transparent'
-                }`}
+                  }`}
               >
                 {category}
               </button>
@@ -192,7 +191,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
       {hasActiveFilters && (
         <div className="flex items-center justify-between text-xs font-sirwan text-zinc-500 dark:text-zinc-400 px-1 border-b border-zinc-200/70 dark:border-zinc-800/70 pb-3">
           <span>
-            {filteredArticles.length} وتار دۆزرایەوە لە کۆی {articles.length}
+            {filteredArticles.length} نووسین دۆزرایەوە لە کۆی {articles.length}
           </span>
           <button
             type="button"
@@ -228,7 +227,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
             </h3>
             <p className="text-xs sm:text-sm font-sirwan text-zinc-500 dark:text-zinc-400 leading-relaxed">
               {searchQuery
-                ? `هیچ وتارێک بە وشەی «${searchQuery}» لەم بەشەدا نەدۆزرایەوە.`
+                ? `هیچ نووسینێک بە وشەی «${searchQuery}» لەم بەشەدا نەدۆزرایەوە.`
                 : 'هیچ بابەتێک لەم پۆلێنەدا بەردەست نییە.'}
             </p>
           </div>

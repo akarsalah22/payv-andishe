@@ -98,7 +98,7 @@ export function Footer() {
         {/* Bottom copyright & Back to Top button */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-zinc-500 dark:text-zinc-500 tracking-normal text-start">
           <div className="flex items-center gap-2">
-            <p>{t('footer.rights', 'هەموو مافەکانی پارێزراوە © 2026 میدیای ئیسلامی')}</p>
+            <p>{t('footer.rights', 'مافی سەرجەم بەرهەمەکان بۆ خاوەنەکانیان پارێزراوە © 2026 میدیای ئیسلامی')}</p>
             <Link
               href="/admin"
               aria-label={t('nav.admin', 'بەڕێوەبردن')}

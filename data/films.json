@@ -1,5 +1,25 @@
 [
   {
+    "id": "film-1794068708340",
+    "slug": "پێغەمبەر-ساڵح",
+    "titleKurdish": "پێغەمبەر ساڵح",
+    "originalTitle": "پێغەمبەر ساڵح",
+    "year": 2222,
+    "duration": "٣٢ خولەک",
+    "category": "کارتۆن",
+    "genres": [
+      "------",
+      "------",
+      "-----"
+    ],
+    "posterUrl": "https://i.ibb.co/Mkwj5M6N/1794053541934.jpg",
+    "description": "چیرۆکی پێغەمبەر صاڵح.",
+    "platform": "telegram",
+    "watchUrl": "https://t.me/mediay_islamy/13",
+    "telegramPostUrl": "https://t.me/mediay_islamy/13",
+    "parts": []
+  },
+  {
     "id": "film-1794053294864",
     "slug": "پێغەمبەر-موسا",
     "titleKurdish": "پێغەمبەر موسا",
@@ -16,7 +36,8 @@
     "description": "چیرۆکی پێغەمبەر موسایە، کە ڕوو بەڕووی فیرعەون و دار و دەسەکەی ئەوەستێت.",
     "platform": "telegram",
     "watchUrl": "https://t.me/mediay_islamy/8",
-    "telegramPostUrl": "https://t.me/mediay_islamy/8"
+    "telegramPostUrl": "https://t.me/mediay_islamy/8",
+    "parts": []
   },
   {
     "id": "film-1793821299934",
@@ -35,7 +56,8 @@
     "description": "سلێمان، پێغەمبەر، داوا لە خودا دەکات شانشینێکی بێوێنە و نموونەیی پێ ببەخشێت کە پێشتر بە هیچ کەسێک نەبەخشرابێت.",
     "platform": "youtube",
     "watchUrl": "https://youtu.be/sh1O0NSpgP0?si=pib_eM49JXfgvjTO",
-    "telegramPostUrl": "https://youtu.be/sh1O0NSpgP0?si=pib_eM49JXfgvjTO"
+    "telegramPostUrl": "https://youtu.be/sh1O0NSpgP0?si=pib_eM49JXfgvjTO",
+    "parts": []
   },
   {
     "id": "film-1793817179341",
@@ -53,7 +75,8 @@
     "description": "بیلالی حەبەشی، یەکێکە لە سەحابەکان، کەم کەسمان ناو چیرۆکی ئەومان نەبیستووە.\n\nتێبینی: ، کارتۆنەکە بە سێ بەش دانراوە، بەس کێشەی نییە، بە دوای یەکا لە تێلیگرام دامانناوە.",
     "platform": "telegram",
     "watchUrl": "https://t.me/mediay_islamy/17  بەشی دووەم: https://t.me/mediay_islamy/19  بەشی سێیەم: https://t.me/mediay_islamy/21",
-    "telegramPostUrl": "https://t.me/mediay_islamy/17  بەشی دووەم: https://t.me/mediay_islamy/19  بەشی سێیەم: https://t.me/mediay_islamy/21"
+    "telegramPostUrl": "https://t.me/mediay_islamy/17  بەشی دووەم: https://t.me/mediay_islamy/19  بەشی سێیەم: https://t.me/mediay_islamy/21",
+    "parts": []
   },
   {
     "id": "film-1793706744906",
@@ -72,7 +95,8 @@
     "description": "سەرەتای بانگەوازی ئیسلام",
     "platform": "youtube",
     "watchUrl": "https://youtu.be/Ba9suwEabOI?si=JPxG_3UB8btgh3AL",
-    "telegramPostUrl": "https://youtu.be/Ba9suwEabOI?si=JPxG_3UB8btgh3AL"
+    "telegramPostUrl": "https://youtu.be/Ba9suwEabOI?si=JPxG_3UB8btgh3AL",
+    "parts": []
   },
   {
     "id": "film-1793703079914",
@@ -91,7 +115,8 @@
     "description": "چیرۆکێکی ڕاستەقینەیە کە باس لە ژیانی سەعید نوورسی دەکات، کە  لە نێوان ساڵانی ١٨٧٧ تا ١٩٦٠ ژیاوە، زانایەکی کوردە.",
     "platform": "youtube",
     "watchUrl": "https://youtu.be/0UG4IxUlt5k?si=piSL5K1tFX9He64O",
-    "telegramPostUrl": "https://youtu.be/0UG4IxUlt5k?si=piSL5K1tFX9He64O"
+    "telegramPostUrl": "https://youtu.be/0UG4IxUlt5k?si=piSL5K1tFX9He64O",
+    "parts": []
   },
   {
     "id": "film-1793702058764",
@@ -108,7 +133,8 @@
     "description": "سەرەتای بانگەوازی ئیسلام",
     "platform": "telegram",
     "watchUrl": "https://t.me/mediay_islamy/11",
-    "telegramPostUrl": "https://t.me/mediay_islamy/11"
+    "telegramPostUrl": "https://t.me/mediay_islamy/11",
+    "parts": []
   },
   {
     "id": "film-1793443579955",
@@ -125,6 +151,7 @@
     "description": "لە ماوەی فەرمانڕەوایی مۆسۆلینی، ئەم چیرۆکە ئەفسانەییە بە دەوری سەرکردەی لیبیا عومەر موختار دەخولێتەوە. عومەر: سەرهەڵداوانێکی موسڵمانی عەرەبی هێرش دەکاتە سەر ئیتاڵیا کە بە ئاراستەی داگیرکردنی لیبیایە.",
     "platform": "youtube",
     "watchUrl": "https://youtu.be/3lvdV0yOiYE?si=mhd6qHFY91-7rynJ",
-    "telegramPostUrl": "https://youtu.be/3lvdV0yOiYE?si=mhd6qHFY91-7rynJ"
+    "telegramPostUrl": "https://youtu.be/3lvdV0yOiYE?si=mhd6qHFY91-7rynJ",
+    "parts": []
   }
 ]
