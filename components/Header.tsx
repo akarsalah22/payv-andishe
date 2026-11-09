@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { SearchModal } from './SearchModal';
-import { RandomMovieButton } from './RandomMovieButton';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { MobileMenu } from './MobileMenu';
 import { useLanguage } from '@/context/LanguageContext';
@@ -171,9 +170,6 @@ export function Header() {
                 <span className="hidden sm:inline">{t('nav.admin', 'بەڕێوەبردن')}</span>
               </Link>
             )}
-
-            {/* Random Discovery Action (Desktop) */}
-            <RandomMovieButton variant="header" className="hidden lg:inline-flex" />
 
             {/* Saved Items (Watchlist) Quick Button */}
             <Link

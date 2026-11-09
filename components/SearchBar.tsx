@@ -8,10 +8,10 @@ import type { Film } from '@/data/films';
 export const DEFAULT_SEARCH_CATEGORIES = [
   'هەمووی',
   'فیلم',
+  'زنجیرە فیلم',
   'کارتۆن',
-  'زنجیرە',
-  'دۆبلاژ',
-  'ژێرنووس',
+  'زنجیرە کارتۆن',
+  'کورتە فیلم',
 ] as const;
 
 export type SearchCategory = (typeof DEFAULT_SEARCH_CATEGORIES)[number] | string;
@@ -35,7 +35,7 @@ export function SearchBar({
   activeCategory = 'هەمووی',
   onCategoryChange,
   categories = DEFAULT_SEARCH_CATEGORIES,
-  placeholder = 'گەڕان لە نێو فیلم، زنجیرە و ئەنیمەیشنەکان (بە کوردی یان عەرەبی)...',
+  placeholder = 'گەڕان لە نێو فیلم و کارتۆنەکان',
   debounceMs = 300,
   showRandomButton = true,
   films = [],
@@ -137,11 +137,10 @@ export function SearchBar({
                 key={category}
                 type="button"
                 onClick={() => onCategoryChange(category)}
-                className={`shrink-0 px-4 py-2 sm:py-1.5 rounded-full text-xs sm:text-sm font-sirwan tracking-normal active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent transition-all duration-200 ${
-                  isActive
-                    ? 'bg-amber-500 text-black font-bold shadow-xs border border-amber-500 scale-[1.02]'
-                    : 'bg-zinc-100/90 hover:bg-zinc-200/90 text-zinc-600 hover:text-zinc-900 border border-zinc-200/80 dark:bg-zinc-800 dark:hover:bg-zinc-700/80 dark:text-zinc-400 dark:hover:text-zinc-200 dark:border-zinc-750/70'
-                }`}
+                className={`shrink-0 px-4 py-2 sm:py-1.5 rounded-full text-xs sm:text-sm font-sirwan tracking-normal active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent transition-all duration-200 ${isActive
+                  ? 'bg-amber-500 text-black font-bold shadow-xs border border-amber-500 scale-[1.02]'
+                  : 'bg-zinc-100/90 hover:bg-zinc-200/90 text-zinc-600 hover:text-zinc-900 border border-zinc-200/80 dark:bg-zinc-800 dark:hover:bg-zinc-700/80 dark:text-zinc-400 dark:hover:text-zinc-200 dark:border-zinc-750/70'
+                  }`}
               >
                 {category}
               </button>

@@ -38,7 +38,7 @@ export const DICTIONARY: Record<SupportedLanguage, Record<string, string>> = {
     "nav.close_menu": "داخستنی مێنۆ",
     "nav.language": "زمان",
     "brand.title": "میدیای ئیسلامی",
-    "footer.rights": "هەموو مافەکانی پارێزراوە © 2026 میدیای ئیسلامی",
+    "footer.rights": "مافی سەرجەم بەرهەمەکان بۆ خاوەنەکانیان پارێزراوە 2026 میدیای ئیسلامی",
     "footer.top": "گەڕانەوە بۆ سەرەوە",
     "footer.desc": "ئەرشیڤێکی سەربەخۆی کوردییە بۆ ناساندنی فیلم و کارتۆنە ئیسلامێکان، وەدەقی ئیسلامی بە زمانی کوردی.",
     "footer.telegram": "تێلیگرام",
@@ -104,7 +104,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType>({
   language: "ku",
-  setLanguage: () => {},
+  setLanguage: () => { },
   dir: "rtl",
   isRtl: true,
   t: (key: string, fallback?: string) => fallback || key,
