@@ -2,16 +2,23 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Download, X, Share2, PlusSquare, Smartphone, Laptop } from "lucide-react";
+import { Download, X, Smartphone, Laptop } from "lucide-react";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
-const DISMISS_KEY = "pwa_prompt_dismissed";
-const DISMISS_KEY_LEGACY = "pwa_prompt_dismissed_until";
-const DISMISS_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+const SHOWN_ONCE_KEY = "pwa_prompt_shown_once";
+
+/**
+ * Dispatch custom event to programmatically trigger the PWA install modal from anywhere (e.g. mobile drawer menu).
+ */
+export function openPwaInstallModal() {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("open-pwa-install-modal"));
+  }
+}
 
 export function InstallPwaModal() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
@@ -21,50 +28,44 @@ export function InstallPwaModal() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // 1. Check if running in standalone mode (already installed as PWA)
+    // 1. Detect iOS device
+    const isIosDevice =
+      /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+      !(window as unknown as { MSStream?: unknown }).MSStream;
+    setIsIos(isIosDevice);
+
+    // 2. Check standalone mode (already running as standalone PWA)
     const isStandalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as unknown as { standalone?: boolean }).standalone === true;
 
-    if (isStandalone) return;
+    // 3. Listen for programmatic trigger (from mobile menu or any button)
+    const handleProgrammaticOpen = () => {
+      setIsVisible(true);
+    };
+    window.addEventListener("open-pwa-install-modal", handleProgrammaticOpen);
 
-    // 2. Check dismissal state (within last 7 days)
-    try {
-      const dismissed = localStorage.getItem(DISMISS_KEY) || localStorage.getItem(DISMISS_KEY_LEGACY);
-      if (dismissed) {
-        const timestamp = Number(dismissed);
-        // If stored as future expire date or past timestamp
-        if (timestamp > Date.now() || Date.now() - timestamp < DISMISS_DURATION_MS) {
-          return;
-        }
-      }
-    } catch {
-      // ignore
-    }
-
-    // 3. Platform detection
-    const isIosDevice =
-      /iPad|iPhone|iPod/.test(navigator.userAgent) &&
-      !(window as unknown as { MSStream?: unknown }).MSStream;
-
-    setIsIos(isIosDevice);
-
-    let displayTimer: NodeJS.Timeout | null = null;
-
-    if (isIosDevice) {
-      // iOS Safari does not fire beforeinstallprompt; display instructions smoothly after 2 seconds
-      displayTimer = setTimeout(() => {
-        setIsVisible(true);
-      }, 2000);
-    }
-
-    // 4. Android / Chrome / Desktop PWA prompt capture
+    // 4. Capture native browser install prompt event (Android / Chrome / Desktop)
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
-      displayTimer = setTimeout(() => {
-        setIsVisible(true);
-      }, 2000);
+
+      // Auto-popup strictly ONCE per user/browser
+      if (!isStandalone) {
+        try {
+          const alreadyShown = localStorage.getItem(SHOWN_ONCE_KEY);
+          if (!alreadyShown) {
+            setTimeout(() => {
+              if (!localStorage.getItem(SHOWN_ONCE_KEY)) {
+                localStorage.setItem(SHOWN_ONCE_KEY, "true");
+                setIsVisible(true);
+              }
+            }, 2000);
+          }
+        } catch {
+          // ignore
+        }
+      }
     };
 
     const handleAppInstalled = () => {
@@ -75,34 +76,58 @@ export function InstallPwaModal() {
     window.addEventListener("beforeinstallprompt", handleBeforeInstall);
     window.addEventListener("appinstalled", handleAppInstalled);
 
+    // 5. For iOS Safari (which doesn't fire beforeinstallprompt), check auto-popup once
+    if (isIosDevice && !isStandalone) {
+      try {
+        const alreadyShown = localStorage.getItem(SHOWN_ONCE_KEY);
+        if (!alreadyShown) {
+          setTimeout(() => {
+            if (!localStorage.getItem(SHOWN_ONCE_KEY)) {
+              localStorage.setItem(SHOWN_ONCE_KEY, "true");
+              setIsVisible(true);
+            }
+          }, 2000);
+        }
+      } catch {
+        // ignore
+      }
+    }
+
     return () => {
-      if (displayTimer) clearTimeout(displayTimer);
+      window.removeEventListener("open-pwa-install-modal", handleProgrammaticOpen);
       window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
       window.removeEventListener("appinstalled", handleAppInstalled);
     };
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
-
     try {
-      await deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      if (choice.outcome === "accepted") {
-        setIsVisible(false);
+      localStorage.setItem(SHOWN_ONCE_KEY, "true");
+    } catch {
+      // ignore
+    }
+
+    if (deferredPrompt) {
+      try {
+        await deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+        if (choice.outcome === "accepted") {
+          setIsVisible(false);
+        }
+      } catch (err) {
+        console.error("Error during PWA installation:", err);
+      } finally {
+        setDeferredPrompt(null);
       }
-    } catch (err) {
-      console.error("Error during PWA installation:", err);
-    } finally {
-      setDeferredPrompt(null);
+    } else {
+      setIsVisible(false);
     }
   };
 
   const handleDismiss = () => {
     setIsVisible(false);
     try {
-      localStorage.setItem(DISMISS_KEY, String(Date.now()));
-      localStorage.setItem(DISMISS_KEY_LEGACY, String(Date.now() + DISMISS_DURATION_MS));
+      localStorage.setItem(SHOWN_ONCE_KEY, "true");
     } catch {
       // ignore
     }
@@ -254,4 +279,3 @@ export function InstallPwaModal() {
 }
 
 export default InstallPwaModal;
-

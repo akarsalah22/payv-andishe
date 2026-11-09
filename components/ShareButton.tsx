@@ -71,7 +71,7 @@ export function ShareButton({
     }
   };
 
-  const defaultClasses = `inline-flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium font-sirwan transition-all duration-200 cursor-pointer select-none active:scale-95 touch-manipulation tap-highlight-transparent border ${
+  const defaultClasses = `inline-flex items-center justify-center gap-1.5 h-9 min-w-[38px] px-3 rounded-xl text-xs font-medium font-sirwan transition-all duration-200 cursor-pointer select-none active:scale-95 touch-manipulation tap-highlight-transparent border shrink-0 ${
     copied
       ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 shadow-2xs"
       : "bg-zinc-100 hover:bg-zinc-200 text-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700"
@@ -87,12 +87,12 @@ export function ShareButton({
     >
       {copied ? (
         <>
-          <Check className="w-4 h-4 text-emerald-500 shrink-0" strokeWidth={2.25} />
+          <Check className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-emerald-500 shrink-0" strokeWidth={2.25} />
           <span className="hidden sm:inline">بەستەرەکە کۆپی کرا!</span>
         </>
       ) : (
         <>
-          <Share2 className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" strokeWidth={1.8} />
+          <Share2 className="w-4.5 h-4.5 sm:w-5 sm:h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" strokeWidth={1.8} />
           <span className="hidden sm:inline">هاوبەشکردن</span>
         </>
       )}

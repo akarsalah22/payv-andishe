@@ -73,7 +73,7 @@ export function ReadingToolbar({
     >
       {/* 1. Estimated Reading Time Badge */}
       <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700/60 text-xs font-medium font-sirwan text-zinc-800 dark:text-zinc-200">
-        <Clock className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" strokeWidth={1.75} />
+        <Clock className="w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0" strokeWidth={1.8} />
         <span className="whitespace-nowrap">{displayReadingTime}</span>
       </div>
 
@@ -126,7 +126,7 @@ export function ReadingToolbar({
           title={title}
           text={title}
           url={url}
-          className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700 transition-all duration-150 active:scale-95 cursor-pointer touch-manipulation"
+          className="inline-flex items-center justify-center gap-1.5 h-9 min-w-[38px] px-3 rounded-xl text-xs font-semibold font-sirwan bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-800 dark:text-zinc-100 border border-zinc-200 dark:border-zinc-700 transition-all duration-150 active:scale-95 cursor-pointer touch-manipulation shrink-0"
         />
       </div>
     </div>

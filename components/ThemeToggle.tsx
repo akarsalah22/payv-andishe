@@ -23,9 +23,9 @@ export function ThemeToggle({ className = '', showLabel = false }: ThemeTogglePr
         type="button"
         disabled
         aria-label="گۆڕینی دۆخی ڕووناکی و تاریکی"
-        className={`p-1.5 sm:p-2 rounded-xl flex items-center justify-center text-zinc-400 dark:text-zinc-600 ${className}`}
+        className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 text-zinc-400 dark:text-zinc-600 ${className}`}
       >
-        <span className="w-4 h-4 sm:w-5 sm:h-5 block opacity-0" />
+        <span className="w-5 h-5 block opacity-0 shrink-0" />
         {showLabel && <span className="ms-2 text-sm opacity-0 font-sirwan">دۆخ</span>}
       </button>
     );
@@ -44,12 +44,12 @@ export function ThemeToggle({ className = '', showLabel = false }: ThemeTogglePr
       onClick={toggleTheme}
       aria-label="گۆڕینی دۆخی ڕووناکی و تاریکی"
       title={isDark ? 'گۆڕین بۆ دۆخی ڕووناک' : 'گۆڕین بۆ دۆخی تاریک'}
-      className={`p-1.5 sm:p-2 rounded-xl transition-all duration-200 flex items-center justify-center text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${className}`}
+      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl transition-all duration-200 flex items-center justify-center shrink-0 text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${className}`}
     >
       {isDark ? (
-        <SunMedium className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:rotate-45 text-amber-400" strokeWidth={1.75} />
+        <SunMedium className="w-5 h-5 shrink-0 transition-transform duration-300 group-hover:rotate-45 text-amber-400" strokeWidth={1.8} />
       ) : (
-        <Moon className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:-rotate-12 text-zinc-700 dark:text-zinc-300" strokeWidth={1.75} />
+        <Moon className="w-5 h-5 shrink-0 transition-transform duration-300 group-hover:-rotate-12 text-zinc-700 dark:text-zinc-300" strokeWidth={1.8} />
       )}
       {showLabel && (
         <span className="ms-2 text-xs sm:text-sm font-medium font-sirwan tracking-normal text-zinc-700 dark:text-zinc-300">

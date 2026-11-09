@@ -189,9 +189,9 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
       <div className="w-full flex items-center justify-between gap-3 pb-4 sm:pb-6 border-b border-zinc-200/80 dark:border-zinc-800/80">
         <Link
           href="/films"
-          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 hover:text-amber-500 dark:hover:text-amber-400 whitespace-nowrap transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group shrink-0"
+          className="inline-flex items-center gap-1.5 text-sm font-medium font-sirwan text-zinc-600 dark:text-zinc-400 hover:text-amber-500 dark:hover:text-amber-400 whitespace-nowrap transition-colors duration-150 ease-out active:scale-95 select-none tap-highlight-transparent group shrink-0"
         >
-          <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1 shrink-0" strokeWidth={1.75} />
+          <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1 shrink-0" strokeWidth={1.8} />
           <span>گەڕانەوە</span>
           <span className="hidden sm:inline">بۆ فیلم و کارتۆنەکان</span>
         </Link>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Clock } from 'lucide-react';
 import type { Article } from '@/data/articles';
 import { FavoriteButton } from './FavoriteButton';
 
@@ -65,10 +65,8 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
           </div>
 
           {/* Reading Time Badge */}
-          <span className="shrink-0 inline-flex items-center gap-1 px-2.5 py-0.5 text-[9px] sm:text-[11px] font-medium font-sirwan rounded-full bg-black/60 dark:bg-black/70 backdrop-blur-md text-zinc-200 border border-white/10 shadow-sm">
-            <svg className="w-2.5 sm:w-3.5 h-2.5 sm:h-3.5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+          <span className="shrink-0 inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[10px] sm:text-[11px] font-medium font-sirwan rounded-full bg-black/60 dark:bg-black/70 backdrop-blur-md text-zinc-200 border border-white/10 shadow-sm">
+            <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" strokeWidth={1.8} />
             <span>{readingTimeText}</span>
           </span>
         </div>
@@ -106,7 +104,7 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
           </span>
           <div className="inline-flex items-center gap-1 font-semibold text-amber-600 dark:text-amber-400 group-hover:text-amber-500 transition-colors">
             <span>خوێندنەوەی نووسین</span>
-            <ChevronLeft className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" strokeWidth={2} />
+            <ChevronLeft className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:-translate-x-1" strokeWidth={2} />
           </div>
         </div>
       </div>
