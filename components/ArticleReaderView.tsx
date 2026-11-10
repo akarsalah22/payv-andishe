@@ -34,11 +34,16 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
 
   // Resolve body paragraphs with graceful fallback to excerpt / informative reader text
   const contentParagraphs = useMemo(() => {
-    const rawList = Array.isArray(article.content)
-      ? article.content.filter((p) => typeof p === "string" && p.trim().length > 0)
-      : typeof article.content === "string" && (article.content as string).trim()
-        ? [(article.content as string).trim()]
-        : [];
+    let rawList: string[] = [];
+    const rawContent: unknown = article.content || (article as any).description;
+
+    if (Array.isArray(rawContent)) {
+      rawList = rawContent.filter((p): p is string => typeof p === "string" && p.trim().length > 0);
+    } else if (typeof rawContent === "string" && rawContent.trim()) {
+      // Split by double newlines into separate paragraphs if available, preserving single newlines for poetry couplets
+      const split = rawContent.split(/\n\s*\n/).map((p: string) => p.trim()).filter(Boolean);
+      rawList = split.length > 0 ? split : [rawContent.trim()];
+    }
 
     if (rawList.length > 0) {
       return rawList;
@@ -54,7 +59,7 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
     return [
       "دەقی تەواوی ئەم بەرهەمە لە ڕێگەی فایلی PDF لە خوارەوە بەردەستە تاوەکو بتوانن بە کوالێتی بەرز بیخوێننەوە و پاشەکەوتی بکەن."
     ];
-  }, [article.content, article.excerpt]);
+  }, [article.content, (article as any).description, article.excerpt]);
 
   // Word count for reading estimation calculation
   const totalWords = useMemo(() => {
@@ -131,7 +136,7 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
         {/* Excerpt / Lead Teaser */}
         {article.excerpt && (
           <div className="p-4 sm:p-5 rounded-2xl bg-zinc-100/80 dark:bg-zinc-900/60 border-s-4 border-amber-500 border-y border-e border-zinc-200/80 dark:border-zinc-800/80 shadow-2xs">
-            <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed tracking-normal">
+            <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-700 dark:text-zinc-300 leading-relaxed tracking-normal whitespace-pre-line break-words">
               {article.excerpt}
             </p>
           </div>
@@ -209,12 +214,12 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
       {/* Focused Reading Body Text with Dynamic Font Size */}
       <div className="w-full max-w-2xl mx-auto space-y-6 pt-4 pb-2">
         {contentParagraphs.map((paragraph, index) => (
-          <p
+          <div
             key={index}
-            className={`font-normal font-sirwan text-zinc-700 dark:text-zinc-300 tracking-normal text-justify leading-relaxed transition-all duration-200 ${FONT_SIZE_CLASSES[fontSize]}`}
+            className={`text-zinc-800 dark:text-zinc-200 leading-relaxed font-normal font-sirwan whitespace-pre-line break-words tracking-normal transition-all duration-200 ${FONT_SIZE_CLASSES[fontSize]}`}
           >
             {paragraph}
-          </p>
+          </div>
         ))}
       </div>
 

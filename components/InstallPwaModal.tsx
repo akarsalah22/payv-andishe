@@ -9,10 +9,16 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
+declare global {
+  interface Window {
+    __deferredPwaPrompt__?: BeforeInstallPromptEvent | null;
+  }
+}
+
 const SHOWN_ONCE_KEY = "pwa_prompt_shown_once";
 
 /**
- * Dispatch custom event to programmatically trigger the PWA install modal from anywhere (e.g. mobile drawer menu).
+ * Dispatch custom event to programmatically trigger the PWA install modal from anywhere (e.g. mobile drawer menu or about page).
  */
 export function openPwaInstallModal() {
   if (typeof window !== "undefined") {
@@ -45,22 +51,23 @@ export function InstallPwaModal() {
     };
     window.addEventListener("open-pwa-install-modal", handleProgrammaticOpen);
 
-    // 4. Capture native browser install prompt event (Android / Chrome / Desktop)
+    // 4. Capture native browser install prompt event (Android / Chrome / Edge / Desktop)
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
+      const promptEvent = e as BeforeInstallPromptEvent;
+      setDeferredPrompt(promptEvent);
+      window.__deferredPwaPrompt__ = promptEvent;
 
-      // Auto-popup strictly ONCE per user/browser
+      // Auto-popup strictly ONCE per user/browser across all sessions and reloads
       if (!isStandalone) {
         try {
           const alreadyShown = localStorage.getItem(SHOWN_ONCE_KEY);
           if (!alreadyShown) {
+            // Mark shown immediately to prevent duplicate triggers on quick reloads
+            localStorage.setItem(SHOWN_ONCE_KEY, "true");
             setTimeout(() => {
-              if (!localStorage.getItem(SHOWN_ONCE_KEY)) {
-                localStorage.setItem(SHOWN_ONCE_KEY, "true");
-                setIsVisible(true);
-              }
-            }, 2000);
+              setIsVisible(true);
+            }, 2500);
           }
         } catch {
           // ignore
@@ -71,6 +78,12 @@ export function InstallPwaModal() {
     const handleAppInstalled = () => {
       setIsVisible(false);
       setDeferredPrompt(null);
+      window.__deferredPwaPrompt__ = null;
+      try {
+        localStorage.setItem(SHOWN_ONCE_KEY, "true");
+      } catch {
+        // ignore
+      }
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstall);
@@ -81,12 +94,10 @@ export function InstallPwaModal() {
       try {
         const alreadyShown = localStorage.getItem(SHOWN_ONCE_KEY);
         if (!alreadyShown) {
+          localStorage.setItem(SHOWN_ONCE_KEY, "true");
           setTimeout(() => {
-            if (!localStorage.getItem(SHOWN_ONCE_KEY)) {
-              localStorage.setItem(SHOWN_ONCE_KEY, "true");
-              setIsVisible(true);
-            }
-          }, 2000);
+            setIsVisible(true);
+          }, 2500);
         }
       } catch {
         // ignore
@@ -107,10 +118,11 @@ export function InstallPwaModal() {
       // ignore
     }
 
-    if (deferredPrompt) {
+    const promptEvent = deferredPrompt || (typeof window !== "undefined" ? window.__deferredPwaPrompt__ : null);
+    if (promptEvent) {
       try {
-        await deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
+        await promptEvent.prompt();
+        const choice = await promptEvent.userChoice;
         if (choice.outcome === "accepted") {
           setIsVisible(false);
         }
@@ -118,6 +130,9 @@ export function InstallPwaModal() {
         console.error("Error during PWA installation:", err);
       } finally {
         setDeferredPrompt(null);
+        if (typeof window !== "undefined") {
+          window.__deferredPwaPrompt__ = null;
+        }
       }
     } else {
       setIsVisible(false);
@@ -205,7 +220,7 @@ export function InstallPwaModal() {
 
         {/* Description */}
         <p className="text-xs sm:text-sm font-sirwan text-zinc-600 dark:text-zinc-300 leading-relaxed">
-          بۆ دەستگەیشتنی خێراتر، بێ کێشە، و ئەزموونێکی وەک ئەپ، ماڵپەڕەکە بخەرە سەر شاشەی مۆبایلەکەت.
+          بۆ دەستگەیشتنی خێراتر، بێ کێشە، و ئەزموونێکی وەک ئەپ، ماڵپەڕەکە بخەرە سەر شاشەی ئامێرەکەت (کۆمپیوتەر یان مۆبایل).
         </p>
 
         {/* Dynamic Platform Content */}

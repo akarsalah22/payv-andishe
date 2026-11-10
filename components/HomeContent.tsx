@@ -15,7 +15,7 @@ interface HomeContentProps {
   articles: Article[];
 }
 
-const CATEGORIES = ['هەمووی', 'سینەما', 'ئەنیمەیشن', 'کتێب و وتار'] as const;
+const CATEGORIES = ['هەمووی', 'فیلم', 'کارتۆن', 'کتێب و شیعر'] as const;
 type CategoryType = (typeof CATEGORIES)[number];
 
 export function HomeContent({ films, articles }: HomeContentProps) {
@@ -23,17 +23,17 @@ export function HomeContent({ films, articles }: HomeContentProps) {
 
   const displayedFilms = useMemo(() => {
     if (activeCategory === 'هەمووی') return films.slice(0, 4);
-    if (activeCategory === 'سینەما') {
+    if (activeCategory === 'فیلم') {
       return films.filter((f) => f.category === 'سینەمایی' || f.category === 'کورتە فیلم');
     }
-    if (activeCategory === 'ئەنیمەیشن') {
-      return films.filter((f) => f.category === 'ئەنیمەیشن');
+    if (activeCategory === 'کارتۆن') {
+      return films.filter((f) => f.category === 'کارتۆن');
     }
     return [];
   }, [activeCategory, films]);
 
-  const showCinemaSection = activeCategory === 'هەمووی' || activeCategory === 'سینەما' || activeCategory === 'ئەنیمەیشن';
-  const showArticlesSection = activeCategory === 'هەمووی' || activeCategory === 'کتێب و وتار';
+  const showCinemaSection = activeCategory === 'هەمووی' || activeCategory === 'فیلم' || activeCategory === 'کارتۆن';
+  const showArticlesSection = activeCategory === 'هەمووی' || activeCategory === 'کتێب و شیعر';
 
   return (
     <div className="w-full space-y-16 sm:space-y-24" dir="rtl">
@@ -66,12 +66,12 @@ export function HomeContent({ films, articles }: HomeContentProps) {
           <div className="flex items-end justify-between border-b border-[#ede8e1] dark:border-zinc-800/70 pb-4">
             <div>
               <span className="text-xs font-semibold font-sirwan text-[#d49757] tracking-normal block mb-1">
-                سینەما و ئەنیمەیشن
+                سینەما و مێژوو
               </span>
               <h2 className="text-xl sm:text-2xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
-                {activeCategory === 'ئەنیمەیشن'
-                  ? 'ئەنیمەیشنە هەڵبژێردراوەکان'
-                  : activeCategory === 'سینەما'
+                {activeCategory === 'کارتۆن'
+                  ? 'کارتۆنە هەڵبژێردراوەکان'
+                  : activeCategory === 'فیلم'
                   ? 'شاکارە سینەمایییەکان'
                   : 'شاکارە هەڵبژێردراوەکان'}
               </h2>
@@ -177,7 +177,7 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                 ئەدەب و فیکر
               </span>
               <h2 className="text-xl sm:text-2xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
-                نوێترین نووسین و خوێندنەوەکان
+                نوێترین نووسین و دەقەکان
               </h2>
             </div>
 

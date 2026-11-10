@@ -4,6 +4,7 @@ import { ChevronLeft } from 'lucide-react';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { TelegramIcon } from '@/components/TelegramIcon';
 import { AboutLanguageBanner } from '@/components/AboutLanguageBanner';
+import { AboutInstallPwaCard } from '@/components/AboutInstallPwaCard';
 import { readAboutSettings } from '@/lib/storage';
 import { DEFAULT_ABOUT_SETTINGS } from '@/data/about';
 
@@ -48,6 +49,9 @@ export default async function AboutPage() {
       <div className="w-full max-w-2xl mx-auto space-y-6 text-zinc-700 dark:text-zinc-300 leading-relaxed text-right font-sirwan">
         {/* Language Switcher Section */}
         <AboutLanguageBanner />
+
+        {/* PWA Install Card on About Page */}
+        <AboutInstallPwaCard />
 
         <h1 className="text-2xl sm:text-3xl font-bold font-peshang text-zinc-900 dark:text-white mb-4">
           {title}
