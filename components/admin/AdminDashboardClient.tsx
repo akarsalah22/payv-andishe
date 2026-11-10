@@ -574,7 +574,7 @@ export function AdminDashboardClient() {
   const handleArticleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!articleTitle.trim() || !articleContent.trim()) {
-      triggerToast('تکایە ناونیشانی وتار و دەقی بابەتەکە بنووسە', undefined, 'error');
+      triggerToast('تکایە ناونیشانی نووسین و دەقی بابەتەکە بنووسە', undefined, 'error');
       return;
     }
 
@@ -596,35 +596,35 @@ export function AdminDashboardClient() {
 
     const payload = isEditMode && editingArticle
       ? {
-          id: editingArticle.id,
-          slug: articleSlug.trim() || editingArticle.slug,
-          title: articleTitle.trim(),
-          excerpt: articleExcerpt.trim() || (paragraphs[0] ? paragraphs[0].slice(0, 120) + '...' : editingArticle.excerpt),
-          content: paragraphs.length > 0 ? paragraphs : editingArticle.content,
-          category: articleCategory,
-          readTime: articleReadTime.trim() || editingArticle.readTime,
-          date: editingArticle.date || dateFormatted,
-          coverImage: articleCoverImage.trim() || editingArticle.coverImage,
-          imageUrl: articleCoverImage.trim() || editingArticle.imageUrl,
-          author: articleAuthor.trim() || editingArticle.author,
-          pdfUrl: articlePdfUrl.trim() || undefined,
-          externalUrl: articleExternalUrl.trim() || undefined,
-        }
+        id: editingArticle.id,
+        slug: articleSlug.trim() || editingArticle.slug,
+        title: articleTitle.trim(),
+        excerpt: articleExcerpt.trim() || (paragraphs[0] ? paragraphs[0].slice(0, 120) + '...' : editingArticle.excerpt),
+        content: paragraphs.length > 0 ? paragraphs : editingArticle.content,
+        category: articleCategory,
+        readTime: articleReadTime.trim() || editingArticle.readTime,
+        date: editingArticle.date || dateFormatted,
+        coverImage: articleCoverImage.trim() || editingArticle.coverImage,
+        imageUrl: articleCoverImage.trim() || editingArticle.imageUrl,
+        author: articleAuthor.trim() || editingArticle.author,
+        pdfUrl: articlePdfUrl.trim() || undefined,
+        externalUrl: articleExternalUrl.trim() || undefined,
+      }
       : {
-          id: `article-${Date.now()}`,
-          slug: articleSlug.trim() || generateSlug(articleTitle),
-          title: articleTitle.trim(),
-          excerpt: articleExcerpt.trim() || (paragraphs[0] ? paragraphs[0].slice(0, 120) + '...' : ''),
-          content: paragraphs.length > 0 ? paragraphs : [articleContent],
-          category: articleCategory,
-          readTime: articleReadTime.trim() || '٥ خولەک خوێندنەوە',
-          date: dateFormatted,
-          coverImage: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
-          imageUrl: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
-          author: articleAuthor.trim() || 'میدیای ئیسلامی',
-          pdfUrl: articlePdfUrl.trim() || undefined,
-          externalUrl: articleExternalUrl.trim() || undefined,
-        };
+        id: `article-${Date.now()}`,
+        slug: articleSlug.trim() || generateSlug(articleTitle),
+        title: articleTitle.trim(),
+        excerpt: articleExcerpt.trim() || (paragraphs[0] ? paragraphs[0].slice(0, 120) + '...' : ''),
+        content: paragraphs.length > 0 ? paragraphs : [articleContent],
+        category: articleCategory,
+        readTime: articleReadTime.trim() || '٥ خولەک خوێندنەوە',
+        date: dateFormatted,
+        coverImage: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
+        imageUrl: articleCoverImage.trim() || 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&w=1200&q=80',
+        author: articleAuthor.trim() || 'میدیای ئیسلامی',
+        pdfUrl: articlePdfUrl.trim() || undefined,
+        externalUrl: articleExternalUrl.trim() || undefined,
+      };
 
     try {
       const res = await fetch('/api/articles', {
@@ -811,8 +811,8 @@ export function AdminDashboardClient() {
       const content = Array.isArray(a.content)
         ? a.content.join(' ')
         : typeof a.content === 'string'
-        ? a.content
-        : '';
+          ? a.content
+          : '';
       return matchesSearchQuery(
         [
           a.title,
@@ -923,11 +923,10 @@ export function AdminDashboardClient() {
           <button
             type="button"
             onClick={() => setActiveTab('films')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${
-              activeTab === 'films'
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${activeTab === 'films'
                 ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-            }`}
+              }`}
           >
             <Clapperboard className="w-4 h-4" />
             <span>بەڕێوەبردنی فیلمەکان</span>
@@ -939,11 +938,10 @@ export function AdminDashboardClient() {
           <button
             type="button"
             onClick={() => setActiveTab('articles')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${
-              activeTab === 'articles'
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${activeTab === 'articles'
                 ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-            }`}
+              }`}
           >
             <BookOpen className="w-4 h-4" />
             <span>بەڕێوەبردنی وتارەکان</span>
@@ -955,11 +953,10 @@ export function AdminDashboardClient() {
           <button
             type="button"
             onClick={() => setActiveTab('about')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${
-              activeTab === 'about'
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${activeTab === 'about'
                 ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-            }`}
+              }`}
           >
             <Info className="w-4 h-4" />
             <span>بەڕێوەبردنی دەربارە</span>
@@ -968,11 +965,10 @@ export function AdminDashboardClient() {
           <button
             type="button"
             onClick={() => setActiveTab('home')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${
-              activeTab === 'home'
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${activeTab === 'home'
                 ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-            }`}
+              }`}
           >
             <Sparkles className="w-4 h-4" />
             <span>پەڕەی سەرەکی</span>
@@ -983,11 +979,10 @@ export function AdminDashboardClient() {
             onClick={() => {
               setActiveTab('create');
             }}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${
-              activeTab === 'create'
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${activeTab === 'create'
                 ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-            }`}
+              }`}
           >
             {editingFilmId || editingArticle ? (
               <>
@@ -1440,11 +1435,10 @@ export function AdminDashboardClient() {
                 <button
                   type="button"
                   onClick={() => setCreateType('film')}
-                  className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 cursor-pointer ${
-                    createType === 'film'
+                  className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 cursor-pointer ${createType === 'film'
                       ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-bold shadow-xs'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-                  }`}
+                    }`}
                 >
                   <Clapperboard className="w-4 h-4" />
                   <span>زیادکردنی فیلم یان ئەنیمەیشن</span>
@@ -1453,11 +1447,10 @@ export function AdminDashboardClient() {
                 <button
                   type="button"
                   onClick={() => setCreateType('article')}
-                  className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 cursor-pointer ${
-                    createType === 'article'
+                  className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 cursor-pointer ${createType === 'article'
                       ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-bold shadow-xs'
                       : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-                  }`}
+                    }`}
                 >
                   <BookOpen className="w-4 h-4" />
                   <span>زیادکردنی وتار و نووسین</span>
@@ -1623,11 +1616,10 @@ export function AdminDashboardClient() {
                             setFilmTelegramUrl('https://t.me/mediay_islamy');
                           }
                         }}
-                        className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${
-                          filmPlatform === 'telegram'
+                        className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${filmPlatform === 'telegram'
                             ? 'bg-amber-500/15 border-amber-500 text-amber-900 dark:text-amber-400 font-bold shadow-xs'
                             : 'border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-amber-500/40'
-                        }`}
+                          }`}
                       >
                         <TelegramIcon className="w-4 h-4 text-sky-500 shrink-0" />
                         <span>تێلیگرام (Telegram)</span>
@@ -1641,11 +1633,10 @@ export function AdminDashboardClient() {
                             setFilmTelegramUrl('https://www.youtube.com/watch?v=');
                           }
                         }}
-                        className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${
-                          filmPlatform === 'youtube'
+                        className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${filmPlatform === 'youtube'
                             ? 'bg-red-500/15 border-red-500 text-red-700 dark:text-red-400 font-bold shadow-xs'
                             : 'border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-red-500/40'
-                        }`}
+                          }`}
                       >
                         <YouTubeIcon className="w-4 h-4 text-red-600 shrink-0" />
                         <span>یووتووب (YouTube)</span>
@@ -1821,8 +1812,8 @@ export function AdminDashboardClient() {
                       {isFilmSubmitting
                         ? 'تکایە چاوەڕوان بە...'
                         : editingFilmId
-                        ? 'پاشەکەوتکردنی گۆڕانکارییەکان'
-                        : 'پاشەکەوتکردن و بڵاوکردنەوەی فیلم'}
+                          ? 'پاشەکەوتکردنی گۆڕانکارییەکان'
+                          : 'پاشەکەوتکردن و بڵاوکردنەوەی فیلم'}
                     </button>
                     {editingFilmId && (
                       <button
@@ -2076,8 +2067,8 @@ export function AdminDashboardClient() {
                       {isArticleSubmitting
                         ? 'پاشەکەوتکردن...'
                         : editingArticle
-                        ? 'پاشەکەوتکردنی گۆڕانکارییەکان'
-                        : 'پاشەکەوتکردن و بڵاوکردنەوەی وتار'}
+                          ? 'پاشەکەوتکردنی گۆڕانکارییەکان'
+                          : 'پاشەکەوتکردن و بڵاوکردنەوەی وتار'}
                     </button>
                     {editingArticle && (
                       <button

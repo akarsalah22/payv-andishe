@@ -303,11 +303,10 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
             <div className="pt-4 flex items-center justify-center md:justify-start w-full">
               <a
                 href="#media-player"
-                className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base active:scale-95 transition-all duration-200 cursor-pointer ${
-                  isYouTube
+                className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base active:scale-95 transition-all duration-200 cursor-pointer ${isYouTube
                     ? 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/25'
                     : 'bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-lg shadow-amber-500/25'
-                }`}
+                  }`}
               >
                 {isYouTube ? (
                   <YouTubeIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
@@ -318,8 +317,8 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
                   {isYouTube
                     ? 'تەماشاکردنی فیلم (یووتووب)'
                     : telegramParts.length > 1
-                    ? `تەماشاکردنی فیلم (${telegramParts.length} بەش)`
-                    : 'تەماشاکردنی فیلم ڕاستەوخۆ'}
+                      ? `تەماشاکردنی فیلم (${telegramParts.length} بەش)`
+                      : 'تەماشاکردنی فیلم ڕاستەوخۆ'}
                 </span>
               </a>
             </div>
@@ -345,12 +344,12 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
             <FilmIcon className="w-4 h-4" strokeWidth={2} />
           </div>
           <h2 className="text-lg sm:text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-            کورتەی چیرۆک و دەربارە
+            کورتەی چیرۆک:
           </h2>
         </div>
 
         <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 font-sirwan leading-loose whitespace-pre-line">
-          {film.description || "شاکارێکی هەڵبژێردراو بە پەخشی کوالێتی بەرز لە کەناڵی تێلیگرامی میدیای ئیسلامی."}
+          {film.description || "شاکارێکی هەڵبژێردراو لە کەناڵی تێلیگرامی میدیای ئیسلامی."}
         </p>
       </section>
 

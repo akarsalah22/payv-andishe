@@ -134,11 +134,10 @@ export default function SavedPage() {
               <button
                 type="button"
                 onClick={() => setActiveFilter('all')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${
-                  activeFilter === 'all'
-                    ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-                }`}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${activeFilter === 'all'
+                  ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                  }`}
               >
                 <span>هەمووی</span>
                 <span className="mr-1.5 text-[11px] opacity-80 font-sans">({favorites.length})</span>
@@ -148,11 +147,10 @@ export default function SavedPage() {
               <button
                 type="button"
                 onClick={() => setActiveFilter('movies')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${
-                  activeFilter === 'movies'
-                    ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-                }`}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${activeFilter === 'movies'
+                  ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                  }`}
               >
                 <span>فیلم و کارتۆن</span>
                 <span className="mr-1.5 text-[11px] opacity-80 font-sans">({moviesCount})</span>
@@ -162,13 +160,12 @@ export default function SavedPage() {
               <button
                 type="button"
                 onClick={() => setActiveFilter('writings')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${
-                  activeFilter === 'writings'
-                    ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
-                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-                }`}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${activeFilter === 'writings'
+                  ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                  }`}
               >
-                <span>نووسین و وتار</span>
+                <span>نووسین و دەقەکان</span>
                 <span className="mr-1.5 text-[11px] opacity-80 font-sans">({writingsCount})</span>
               </button>
             </div>
@@ -177,11 +174,10 @@ export default function SavedPage() {
             <button
               type="button"
               onClick={handleClearAll}
-              className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-sirwan transition-all duration-200 cursor-pointer select-none active:scale-95 ${
-                confirmClear
-                  ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30'
-                  : 'text-zinc-500 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400 hover:bg-rose-500/10'
-              }`}
+              className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-sirwan transition-all duration-200 cursor-pointer select-none active:scale-95 ${confirmClear
+                ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30'
+                : 'text-zinc-500 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400 hover:bg-rose-500/10'
+                }`}
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>{confirmClear ? 'دڵنیایت لە پاککردنەوە؟' : 'سڕینەوەی هەمووی'}</span>
@@ -225,7 +221,7 @@ export default function SavedPage() {
                       {/* Top Badges */}
                       <div className="absolute top-2 inset-x-2 flex items-center justify-between z-10 pointer-events-none">
                         <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
-                          {item.type === 'movie' ? (item.category || 'فیلم') : 'وتار'}
+                          {item.type === 'movie' ? (item.category || 'فیلم') : 'نووسین'}
                         </span>
                       </div>
                     </Link>

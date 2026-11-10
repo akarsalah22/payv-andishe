@@ -125,7 +125,7 @@ export function MediaViewer({
           </h3>
 
           <p className="text-xs sm:text-sm font-sirwan text-zinc-600 dark:text-zinc-400 max-w-md mx-auto leading-relaxed">
-            دەتوانیت تەواوی ئەم بەرهەمە بە کوالێتی بەرز و بێ کێشە لە ڕێگەی کەناڵی فەرمی تێلیگرام ببینیت و دایبگریت.
+            دەتوانیت تەواوی ئەم بەرهەمە لە ڕێگەی کەناڵی فەرمی تێلیگرام ببینیت و دایبگریت.
           </p>
         </div>
 

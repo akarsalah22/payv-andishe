@@ -180,7 +180,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder={t('nav.search_placeholder', 'گەڕان بەدوای فیلم، کارتۆن، ئایەت و کتێب...')}
+            placeholder={t('nav.search_placeholder', 'گەڕان بۆ فیلم و نووسینەکان')}
             className="flex-1 min-w-0 bg-transparent text-sm sm:text-base font-sirwan text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none tracking-normal py-0.5"
           />
 
@@ -309,12 +309,12 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 </div>
               )}
 
-              {/* Group 2: نووسین و وتار */}
+              {/* Group 2: نووسین */}
               {matchingArticles.length > 0 && (
                 <div className="space-y-2.5">
                   <div className="flex items-center gap-2 text-xs font-bold font-peshang text-amber-600 dark:text-amber-400 tracking-normal pb-1 border-b border-zinc-200/70 dark:border-zinc-800/60">
                     <FileText className="w-3.5 h-3.5" strokeWidth={1.75} />
-                    <span>نووسین و وتار ({matchingArticles.length})</span>
+                    <span>نووسین  ({matchingArticles.length})</span>
                   </div>
 
                   <div className="space-y-1.5">

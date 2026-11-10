@@ -47,11 +47,10 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                 key={category}
                 type="button"
                 onClick={() => setActiveCategory(category)}
-                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium font-sirwan tracking-normal whitespace-nowrap transition-all duration-200 ease-in-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${
-                  isActive
+                className={`px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium font-sirwan tracking-normal whitespace-nowrap transition-all duration-200 ease-in-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${isActive
                     ? 'bg-[#d49757] text-zinc-950 font-bold border border-[#d49757] shadow-xs'
                     : 'bg-transparent text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-[#ede8e1]/50 dark:hover:bg-zinc-800/40'
-                }`}
+                  }`}
               >
                 {category}
               </button>
@@ -72,8 +71,8 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                 {activeCategory === 'کارتۆن'
                   ? 'کارتۆنە هەڵبژێردراوەکان'
                   : activeCategory === 'فیلم'
-                  ? 'شاکارە سینەمایییەکان'
-                  : 'شاکارە هەڵبژێردراوەکان'}
+                    ? 'شاکارە سینەمایییەکان'
+                    : 'شاکارە هەڵبژێردراوەکان'}
               </h2>
             </div>
 

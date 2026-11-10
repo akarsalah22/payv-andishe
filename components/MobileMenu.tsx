@@ -56,38 +56,34 @@ export function MobileMenu({
   const mainLinks = [
     { href: '/', key: 'nav.home', defaultLabel: 'سەرەتا' },
     { href: '/films', key: 'nav.movies', defaultLabel: 'فیلم و کارتۆن' },
-    { href: '/articles', key: 'nav.writings', defaultLabel: 'نووسین و وتار' },
+    { href: '/articles', key: 'nav.writings', defaultLabel: 'نووسین' },
     { href: '/about', key: 'nav.about', defaultLabel: 'دەربارە' },
   ];
 
   return (
     <div
-      className={`fixed inset-0 z-[99] md:hidden overflow-hidden transition-all duration-300 ${
-        isOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
-      }`}
+      className={`fixed inset-0 z-[99] md:hidden overflow-hidden transition-all duration-300 ${isOpen ? 'pointer-events-auto visible' : 'pointer-events-none invisible delay-300'
+        }`}
       role="dialog"
       aria-modal="true"
     >
       {/* High-Contrast Dimming Overlay */}
       <div
         onClick={onClose}
-        className={`fixed inset-0 bg-black/70 backdrop-blur-[2px] transition-opacity duration-300 ease-out cursor-pointer ${
-          isOpen ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`fixed inset-0 bg-black/70 backdrop-blur-[2px] transition-opacity duration-300 ease-out cursor-pointer ${isOpen ? 'opacity-100' : 'opacity-0'
+          }`}
         aria-hidden="true"
       />
 
       {/* Sliding Drawer Container */}
       <div
-        className={`fixed inset-y-0 ${
-          isRtl ? 'right-0 border-l' : 'left-0 border-r'
-        } w-[75vw] max-w-[320px] min-w-[270px] bg-white text-zinc-900 border-zinc-200 dark:bg-[#0c0c0e] dark:text-zinc-200 dark:border-zinc-800/80 shadow-2xl flex flex-col justify-between z-[100] transform transition-transform duration-300 ease-out text-start ${
-          isOpen
+        className={`fixed inset-y-0 ${isRtl ? 'right-0 border-l' : 'left-0 border-r'
+          } w-[75vw] max-w-[320px] min-w-[270px] bg-white text-zinc-900 border-zinc-200 dark:bg-[#0c0c0e] dark:text-zinc-200 dark:border-zinc-800/80 shadow-2xl flex flex-col justify-between z-[100] transform transition-transform duration-300 ease-out text-start ${isOpen
             ? 'translate-x-0'
             : isRtl
-            ? 'translate-x-full'
-            : '-translate-x-full'
-        }`}
+              ? 'translate-x-full'
+              : '-translate-x-full'
+          }`}
       >
         {/* Header Bar */}
         <div className="h-14 px-4 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800/80 shrink-0">
@@ -136,11 +132,10 @@ export function MobileMenu({
                   href={link.href}
                   prefetch={false}
                   onClick={onClose}
-                  className={`py-3.5 px-4 flex items-center justify-between text-[14px] transition-colors select-none tap-highlight-transparent ${
-                    active
-                      ? 'text-amber-500 dark:text-amber-400 font-semibold bg-amber-500/5'
-                      : 'font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100/50 dark:hover:bg-zinc-900/50 hover:text-amber-500 dark:hover:text-amber-400'
-                  }`}
+                  className={`py-3.5 px-4 flex items-center justify-between text-[14px] transition-colors select-none tap-highlight-transparent ${active
+                    ? 'text-amber-500 dark:text-amber-400 font-semibold bg-amber-500/5'
+                    : 'font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100/50 dark:hover:bg-zinc-900/50 hover:text-amber-500 dark:hover:text-amber-400'
+                    }`}
                 >
                   <span>{label}</span>
                 </Link>
@@ -152,11 +147,10 @@ export function MobileMenu({
               href="/saved"
               prefetch={false}
               onClick={onClose}
-              className={`py-3.5 px-4 flex items-center justify-between text-[14px] transition-colors select-none tap-highlight-transparent ${
-                pathname === '/saved'
-                  ? 'text-amber-500 dark:text-amber-400 font-semibold bg-amber-500/5'
-                  : 'font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100/50 dark:hover:bg-zinc-900/50 hover:text-amber-500 dark:hover:text-amber-400'
-              }`}
+              className={`py-3.5 px-4 flex items-center justify-between text-[14px] transition-colors select-none tap-highlight-transparent ${pathname === '/saved'
+                ? 'text-amber-500 dark:text-amber-400 font-semibold bg-amber-500/5'
+                : 'font-medium text-zinc-800 dark:text-zinc-200 hover:bg-zinc-100/50 dark:hover:bg-zinc-900/50 hover:text-amber-500 dark:hover:text-amber-400'
+                }`}
             >
               <span>{t('nav.saved', 'هەڵگیراوەکانم')}</span>
               {favoritesCount > 0 && (
