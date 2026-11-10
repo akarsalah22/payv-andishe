@@ -185,7 +185,7 @@ export function HomeContent({ films, articles }: HomeContentProps) {
               href="/articles"
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium font-sirwan text-zinc-600 dark:text-zinc-400 hover:text-[#d49757] dark:hover:text-[#d49757] tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
             >
-              <span>گشت وتارەکان</span>
+              <span>گشت نووسینەکان</span>
               <ChevronLeft className="w-4 h-4" strokeWidth={1.75} />
             </Link>
           </div>
