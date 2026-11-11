@@ -9,6 +9,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { InstallPwaModal } from "@/components/InstallPwaModal";
+import { SplashScreen } from "@/components/SplashScreen";
 import {
   peshangFont,
   sirwanFont,
@@ -124,6 +125,7 @@ export default function RootLayout({
         >
           <LanguageProvider>
             <ToastProvider>
+              <SplashScreen />
               <Header />
               <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col overflow-x-hidden">
                 {children}

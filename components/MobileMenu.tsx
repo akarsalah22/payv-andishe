@@ -8,7 +8,6 @@ import { X, Shuffle, Download, ShieldCheck } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { LogoReveal } from '@/components/LogoReveal';
 import { openPwaInstallModal } from '@/components/InstallPwaModal';
 
 export { openPwaInstallModal } from '@/components/InstallPwaModal';
@@ -94,8 +93,17 @@ export function MobileMenu({
             onClick={onClose}
             className="flex items-center gap-2 group shrink-0 select-none cursor-pointer"
           >
-            <div className="transition-transform duration-200 group-hover:scale-105">
-              <LogoReveal className="w-7 h-7" size={28} priority={true} />
+            <div className="relative w-7 h-7 shrink-0 transition-transform duration-200 group-hover:scale-105">
+              <Image
+                src="/logo_web_new1.svg"
+                alt={t('brand.title', 'میدیای ئیسلامی')}
+                width={28}
+                height={28}
+                priority={true}
+                loading="eager"
+                unoptimized
+                className="w-full h-full object-contain"
+              />
             </div>
             <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100 whitespace-nowrap tracking-tight select-none">
               {t('brand.title', 'میدیای ئیسلامی')}
