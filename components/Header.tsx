@@ -18,6 +18,7 @@ import { ThemeToggle } from './ThemeToggle';
 import { SearchModal } from './SearchModal';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { MobileMenu } from './MobileMenu';
+import { LogoReveal } from './LogoReveal';
 import { useLanguage } from '@/context/LanguageContext';
 import { useFavorites } from '@/hooks/useFavorites';
 
@@ -117,18 +118,9 @@ export function Header() {
             href="/"
             className="flex items-center gap-2 group shrink-0 select-none cursor-pointer py-1 px-3 sm:px-4"
           >
-            {/* Logo Container */}
-            <div className="relative w-8 h-8 sm:w-9 sm:h-9 shrink-0 flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
-              <Image
-                src="/logo_web_new1.svg"
-                alt="میدیای ئیسلامی"
-                width={36}
-                height={36}
-                priority={true}
-                loading="eager"
-                unoptimized
-                className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0 animate-logo-enter"
-              />
+            {/* Cinematic SVG Stroke Logo Reveal */}
+            <div className="transition-transform duration-200 group-hover:scale-105">
+              <LogoReveal className="w-8 h-8 sm:w-9 sm:h-9" size={36} priority={true} />
             </div>
 
             {/* Brand Text (Hidden on mobile phones, visible on tablet & desktop) */}

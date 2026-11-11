@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -14,6 +15,18 @@ import {
   sirwan001Font,
   sirwan003Font,
 } from "@/lib/fonts";
+
+export const siteFont = localFont({
+  src: [
+    { path: '../public/font_taza/UniSIRWAN Expo Light.ttf', weight: '300', style: 'normal' },
+    { path: '../public/font_taza/UniSIRWAN Expo Regular.ttf', weight: '400', style: 'normal' },
+    { path: '../public/font_taza/UniSIRWAN Expo Medium.ttf', weight: '500', style: 'normal' },
+    { path: '../public/font_taza/UniSIRWAN Expo Bold.ttf', weight: '600', style: 'normal' },
+    { path: '../public/font_taza/UniSIRWAN Expo Bold.ttf', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-kurdish',
+  display: 'swap',
+});
 
 const vazir = Vazirmatn({
   subsets: ['arabic'],
@@ -92,7 +105,7 @@ export default function RootLayout({
       lang="ku"
       dir="rtl"
       suppressHydrationWarning
-      className={`${vazir.variable} ${peshangFont.variable} ${sirwanFont.variable} ${sirwan001Font.variable} ${sirwan003Font.variable} scroll-smooth`}
+      className={`${siteFont.variable} ${vazir.variable} ${peshangFont.variable} ${sirwanFont.variable} ${sirwan001Font.variable} ${sirwan003Font.variable} scroll-smooth`}
     >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -102,7 +115,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="میدیای ئیسلامی" />
         <meta name="theme-color" content="#09090b" />
       </head>
-      <body className={`${vazir.className} font-sans bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors antialiased w-full max-w-[100vw] min-h-screen flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-start overflow-x-hidden relative`}>
+      <body className={`${siteFont.className} font-sans bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors antialiased w-full max-w-[100vw] min-h-screen flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-start overflow-x-hidden relative`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

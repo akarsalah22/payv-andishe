@@ -2,7 +2,48 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Direct @font-face declarations for the 4 Kurdish fonts in /public/font */
+/* Direct @font-face declarations for the new Kurdish fonts in /public/font_taza */
+@font-face {
+  font-family: 'UniSIRWAN Expo';
+  src: url('/font_taza/UniSIRWAN Expo Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UniSIRWAN Expo';
+  src: url('/font_taza/UniSIRWAN Expo Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UniSIRWAN Expo';
+  src: url('/font_taza/UniSIRWAN Expo Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UniSIRWAN Expo';
+  src: url('/font_taza/UniSIRWAN Expo Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'UniSIRWAN Expo';
+  src: url('/font_taza/UniSIRWAN Expo Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback declarations for legacy font references */
 @font-face {
   font-family: 'Peshang';
   src: url('/font/Peshang_Des_5_Bold.ttf') format('truetype');
@@ -36,13 +77,14 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-vazir), var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
-  --font-peshang: var(--font-vazir), var(--font-peshang), 'Vazirmatn', 'Peshang', 'Noto Sans Arabic', sans-serif;
-  --font-sirwan: var(--font-vazir), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
-  --font-sirwan1: var(--font-sirwan1), 'SiRWAN-001', 'Sirwan', var(--font-vazir), 'Noto Sans Arabic', sans-serif;
-  --font-sirwan2: var(--font-sirwan2), 'SiRWAN-003', 'Sirwan', var(--font-vazir), 'Noto Sans Arabic', sans-serif;
-  --font-vazir: var(--font-vazir), 'Vazirmatn', 'Noto Sans Arabic', Tahoma, sans-serif;
-  --font-vazirmatn: var(--font-vazir), var(--font-vazirmatn), 'Vazirmatn', 'Noto Sans Arabic', Tahoma, sans-serif;
+  --font-kurdish: var(--font-kurdish), 'UniSIRWAN Expo', var(--font-vazir), system-ui, sans-serif;
+  --font-sans: var(--font-kurdish), var(--font-vazir), var(--font-sirwan), 'UniSIRWAN Expo', 'Vazirmatn', Tahoma, system-ui, sans-serif;
+  --font-peshang: var(--font-kurdish), var(--font-peshang), var(--font-vazir), 'UniSIRWAN Expo', sans-serif;
+  --font-sirwan: var(--font-kurdish), var(--font-sirwan), var(--font-vazir), 'UniSIRWAN Expo', Tahoma, system-ui, sans-serif;
+  --font-sirwan1: var(--font-kurdish), var(--font-sirwan1), 'UniSIRWAN Expo', sans-serif;
+  --font-sirwan2: var(--font-kurdish), var(--font-sirwan2), 'UniSIRWAN Expo', sans-serif;
+  --font-vazir: var(--font-kurdish), var(--font-vazir), 'UniSIRWAN Expo', Tahoma, sans-serif;
+  --font-vazirmatn: var(--font-kurdish), var(--font-vazirmatn), 'UniSIRWAN Expo', Tahoma, sans-serif;
 }
 
 :root {
@@ -80,14 +122,14 @@ html, body {
 }
 
 html {
-  font-family: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+  font-family: var(--font-kurdish), var(--font-vazirmatn), var(--font-sirwan), 'UniSIRWAN Expo', 'Vazirmatn', 'Sirwan', Tahoma, system-ui, sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   letter-spacing: normal;
 }
 
 body {
-  font-family: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', Tahoma, system-ui, sans-serif;
+  font-family: var(--font-kurdish), var(--font-vazirmatn), var(--font-sirwan), 'UniSIRWAN Expo', 'Vazirmatn', 'Sirwan', Tahoma, system-ui, sans-serif;
   line-height: 1.7;
   letter-spacing: normal;
   -webkit-tap-highlight-color: transparent;
@@ -109,15 +151,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Explicit utility classes for Kurdish fonts with OpenType support */
+.font-kurdish {
+  font-family: var(--font-kurdish), 'UniSIRWAN Expo', sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1;
+  -webkit-font-feature-settings: "liga" 1, "calt" 1;
+  letter-spacing: normal !important;
+}
+
 .font-peshang {
-  font-family: var(--font-vazirmatn), var(--font-peshang), 'Vazirmatn', 'Peshang', 'Noto Sans Arabic', sans-serif;
+  font-family: var(--font-kurdish), var(--font-peshang), 'UniSIRWAN Expo', sans-serif;
   font-feature-settings: "liga" 1, "calt" 1;
   -webkit-font-feature-settings: "liga" 1, "calt" 1;
   letter-spacing: normal !important;
 }
 
 .font-sirwan {
-  font-family: var(--font-vazirmatn), var(--font-sirwan), 'Vazirmatn', 'Sirwan', 'Noto Sans Arabic', sans-serif;
+  font-family: var(--font-kurdish), var(--font-sirwan), 'UniSIRWAN Expo', sans-serif;
   font-feature-settings: "liga" 1, "calt" 1;
   -webkit-font-feature-settings: "liga" 1, "calt" 1;
   letter-spacing: normal !important;
@@ -178,25 +227,54 @@ body,
   -ms-overflow-style: none !important; /* IE and older Edge */
 }
 
-/* App-like Logo Entrance Animation */
-@keyframes logoEnter {
+/* Cinematic SVG Stroke Logo Reveal Animation */
+@keyframes drawStroke {
   0% {
-    opacity: 0.4;
-    transform: scale(0.92);
+    stroke-dashoffset: 1000;
+    fill-opacity: 0;
   }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.03);
+  65% {
+    stroke-dashoffset: 0;
+    fill-opacity: 0;
   }
   100% {
-    opacity: 1;
-    transform: scale(1);
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
   }
 }
 
-.animate-logo-enter {
-  animation: logoEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: transform, opacity;
+/* Subtle glow upon completion */
+@keyframes softLogoGlow {
+  0% {
+    filter: drop-shadow(0 0 0px rgba(245, 158, 11, 0));
+  }
+  100% {
+    filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.25));
+  }
+}
+
+.animate-stroke-reveal {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: 
+    drawStroke 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+    softLogoGlow 0.8s ease-out 1.4s forwards;
+  will-change: stroke-dashoffset, fill-opacity, filter;
+}
+
+/* Soft Fill Fade-in synchronized with stroke completion */
+@keyframes fillFadeIn {
+  0%, 60% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fill-fade {
+  animation: fillFadeIn 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: opacity;
 }
 
 /* Hydration-safe Bookmark Badge Entrance Animation */
@@ -215,5 +293,6 @@ body,
   animation: badgeEnter 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity;
 }
+
 
 
