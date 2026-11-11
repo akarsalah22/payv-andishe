@@ -45,10 +45,10 @@ export function SplashScreen() {
     document.body.style.overflow = 'hidden';
     document.body.style.touchAction = 'none';
 
-    // Cinematic pacing: 1.8s drawing + glow settles -> smooth exit at 2.4s
+    // Cinematic pacing: 2.2s stroke trace + 2.4s ambient fade -> smooth exit at 2.6s
     const exitTimer = setTimeout(() => {
       dismissSplash();
-    }, 2400);
+    }, 2600);
 
     return () => {
       clearTimeout(exitTimer);
@@ -110,37 +110,33 @@ export function SplashScreen() {
           <path
             d={LOGO_EMBLEM_PATH}
             fill="url(#splashFillGold)"
-            stroke="url(#splashStrokeGold)"
-            strokeWidth="10"
-            strokeLinecap="round"
-            strokeLinejoin="round"
             fillRule="evenodd"
-            pathLength={1000}
-            className="animate-stroke-reveal"
+            pathLength={1400}
+            className="animate-smooth-stroke"
           />
         </svg>
       </div>
 
       {/* Brand Title (Fades in smoothly) */}
       <h1
-        className="text-2xl sm:text-3xl font-bold font-peshang tracking-normal text-white text-center animate-splash-text"
-        style={{ animationDelay: '0.8s', opacity: 0 }}
+        className="text-xl sm:text-2xl font-bold text-zinc-100 tracking-wide mt-4 text-center animate-splash-text"
+        style={{ animationDelay: '0.9s', opacity: 0 }}
       >
         میدیای ئیسلامی
       </h1>
 
       {/* Brand Subtitle / Tagline */}
       <p
-        className="text-xs sm:text-sm font-sirwan text-zinc-400 mt-2 tracking-normal text-center max-w-xs animate-splash-text"
-        style={{ animationDelay: '1.1s', opacity: 0 }}
+        className="text-xs sm:text-sm text-zinc-400 font-medium mt-1 text-center max-w-xs animate-splash-text"
+        style={{ animationDelay: '1.2s', opacity: 0 }}
       >
-        سەکۆی فیلم، کارتۆن و نووسینی کوردی
+        سەکۆی فیلم و نووسینی پەروەردەیی
       </p>
 
       {/* Subtle Luxury Golden Accent Line */}
       <div
         className="w-16 h-0.5 rounded-full bg-gradient-to-r from-transparent via-amber-500/80 to-transparent mt-6 animate-pulse"
-        style={{ animationDelay: '1.4s' }}
+        style={{ animationDelay: '1.5s' }}
       />
     </div>
   );
