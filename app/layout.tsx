@@ -98,6 +98,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="preload" href="/logo_web_new1.svg" as="image" type="image/svg+xml" fetchPriority="high" />
         <meta name="apple-mobile-web-app-title" content="میدیای ئیسلامی" />
         <meta name="theme-color" content="#09090b" />
       </head>

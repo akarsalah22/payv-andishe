@@ -31,8 +31,8 @@ interface NavLinkConfig {
 
 const NAV_LINKS_CONFIG: NavLinkConfig[] = [
   { key: 'nav.home', defaultName: 'سەرەکی', href: '/', icon: Home },
-  { key: 'nav.films', defaultName: 'فیلم و کارتۆن', href: '/films', icon: Film },
-  { key: 'nav.articles', defaultName: 'نووسین و وتار', href: '/articles', icon: FileText },
+  { key: 'nav.films', defaultName: 'فیلم', href: '/films', icon: Film },
+  { key: 'nav.articles', defaultName: 'نووسین', href: '/articles', icon: FileText },
   { key: 'nav.about', defaultName: 'دەربارە', href: '/about', icon: Info },
 ];
 
@@ -124,8 +124,10 @@ export function Header() {
                 alt="میدیای ئیسلامی"
                 width={36}
                 height={36}
-                priority
-                className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0"
+                priority={true}
+                loading="eager"
+                unoptimized
+                className="w-8 h-8 sm:w-9 sm:h-9 object-contain shrink-0 animate-logo-enter"
               />
             </div>
 
@@ -183,7 +185,7 @@ export function Header() {
             >
               <Bookmark className="w-5 h-5 shrink-0 text-amber-600 dark:text-amber-400" strokeWidth={1.8} />
               {favoritesCount > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-500 text-zinc-950 text-[10px] font-bold font-sans flex items-center justify-center shadow-xs animate-in zoom-in-75 duration-200">
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-amber-500 text-zinc-950 text-[10px] font-bold font-sans flex items-center justify-center shadow-xs pointer-events-none animate-badge-enter">
                   {favoritesCount}
                 </span>
               )}

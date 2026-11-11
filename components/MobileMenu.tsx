@@ -99,8 +99,10 @@ export function MobileMenu({
                 alt={t('brand.title', 'میدیای ئیسلامی')}
                 width={28}
                 height={28}
-                priority
-                className="w-7 h-7 object-contain"
+                priority={true}
+                loading="eager"
+                unoptimized
+                className="w-7 h-7 object-contain animate-logo-enter"
               />
             </div>
             <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100 whitespace-nowrap tracking-tight select-none">

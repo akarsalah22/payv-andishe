@@ -178,3 +178,42 @@ body,
   -ms-overflow-style: none !important; /* IE and older Edge */
 }
 
+/* App-like Logo Entrance Animation */
+@keyframes logoEnter {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-logo-enter {
+  animation: logoEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Hydration-safe Bookmark Badge Entrance Animation */
+@keyframes badgeEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-badge-enter {
+  animation: badgeEnter 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+
