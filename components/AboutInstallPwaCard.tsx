@@ -1,33 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Download, Check } from 'lucide-react';
+import { usePwa } from '@/context/PwaContext';
 import { openPwaInstallModal } from '@/components/InstallPwaModal';
 
 export function AboutInstallPwaCard() {
-  const [isInstalled, setIsInstalled] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const checkStandalone = () => {
-      const standalone =
-        window.matchMedia('(display-mode: standalone)').matches ||
-        (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-      setIsInstalled(standalone);
-    };
-
-    checkStandalone();
-
-    const handleAppInstalled = () => {
-      setIsInstalled(true);
-    };
-    window.addEventListener('appinstalled', handleAppInstalled);
-
-    return () => {
-      window.removeEventListener('appinstalled', handleAppInstalled);
-    };
-  }, []);
+  const { isStandalone, triggerInstall } = usePwa();
 
   const handleInstallClick = async () => {
     try {
@@ -36,23 +15,13 @@ export function AboutInstallPwaCard() {
       // ignore
     }
 
-    // 1. If native beforeinstallprompt is captured on window, trigger it directly (Chrome / Edge / Desktop)
-    if (typeof window !== 'undefined' && window.__deferredPwaPrompt__) {
-      try {
-        const promptEvent = window.__deferredPwaPrompt__;
-        await promptEvent.prompt();
-        const choice = await promptEvent.userChoice;
-        if (choice.outcome === 'accepted') {
-          setIsInstalled(true);
-        }
-        window.__deferredPwaPrompt__ = null;
-        return;
-      } catch (err) {
-        console.error('PWA install error:', err);
-      }
+    // 1. Try native install prompt first (triggers native WebAPK installer on Android / App prompt on Desktop)
+    const installed = await triggerInstall();
+    if (installed) {
+      return;
     }
 
-    // 2. Otherwise open the full PWA modal with cross-platform instructions
+    // 2. If no deferredPrompt available (or on iOS Safari), open step-by-step modal
     openPwaInstallModal();
   };
 
@@ -78,7 +47,7 @@ export function AboutInstallPwaCard() {
       </div>
 
       {/* Install Action Button or Installed Badge */}
-      {isInstalled ? (
+      {isStandalone ? (
         <div className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shrink-0 select-none">
           <Check className="w-4 h-4" strokeWidth={2.5} />
           <span>دامەزراوە لەسەر ئامێرەکەت</span>
@@ -98,4 +67,3 @@ export function AboutInstallPwaCard() {
 }
 
 export default AboutInstallPwaCard;
-

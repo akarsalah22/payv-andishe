@@ -4,6 +4,7 @@ import { Vazirmatn } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { PwaProvider } from "@/context/PwaContext";
 import { ToastProvider } from "@/components/ToastContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -124,16 +125,18 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LanguageProvider>
-            <ToastProvider>
-              <SplashScreen />
-              <Header />
-              <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col overflow-x-hidden">
-                {children}
-              </main>
-              <Footer />
-              <InstallPwaModal />
-              <ScrollToTop />
-            </ToastProvider>
+            <PwaProvider>
+              <ToastProvider>
+                <SplashScreen />
+                <Header />
+                <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col overflow-x-hidden">
+                  {children}
+                </main>
+                <Footer />
+                <InstallPwaModal />
+                <ScrollToTop />
+              </ToastProvider>
+            </PwaProvider>
           </LanguageProvider>
         </ThemeProvider>
       </body>

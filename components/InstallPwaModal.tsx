@@ -3,17 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Download, X, Smartphone, Laptop } from "lucide-react";
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
-}
-
-declare global {
-  interface Window {
-    __deferredPwaPrompt__?: BeforeInstallPromptEvent | null;
-  }
-}
+import type { BeforeInstallPromptEvent } from "@/context/PwaContext";
 
 const SHOWN_ONCE_KEY = "pwa_prompt_shown_once";
 
