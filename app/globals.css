@@ -227,19 +227,19 @@ body,
   -ms-overflow-style: none !important; /* IE and older Edge */
 }
 
-/* Luxury Cinematic SVG Stroke Logo Trace Animation */
-@keyframes luxuryStrokeTrace {
+/* Seamless Android PWA to Web Splash Screen Transition */
+html.splash-seen #mediay-splash-screen {
+  display: none !important;
+}
+
+@keyframes seamlessStrokeTrace {
   0% {
     stroke-dashoffset: 1400;
-    fill-opacity: 0;
+    fill-opacity: 0.18;
   }
-  60% {
+  65% {
     stroke-dashoffset: 0;
-    fill-opacity: 0;
-  }
-  85% {
-    stroke-dashoffset: 0;
-    fill-opacity: 0.7;
+    fill-opacity: 0.35;
   }
   100% {
     stroke-dashoffset: 0;
@@ -247,39 +247,21 @@ body,
   }
 }
 
-@keyframes calmAmbientFade {
-  0% {
-    opacity: 0;
-    transform: scale(0.97);
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
 .animate-smooth-stroke {
   stroke-dasharray: 1400;
   stroke-dashoffset: 1400;
-  stroke: #f59e0b; /* Warm amber/gold */
-  stroke-width: 1.25;
+  stroke: #f59e0b;
+  stroke-width: 1.4;
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation:
-    luxuryStrokeTrace 2.2s cubic-bezier(0.25, 1, 0.4, 1) forwards,
-    calmAmbientFade 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  will-change: stroke-dashoffset, fill-opacity, transform, opacity;
+  animation: seamlessStrokeTrace 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: stroke-dashoffset, fill-opacity;
 }
 
-/* Soft Fill Fade-in synchronized with stroke completion */
+/* Synchronized Fill Fade for Underlying Emblem */
 @keyframes fillFadeIn {
-  0%, 60% {
+  0%, 65% {
     opacity: 0;
   }
   100% {
@@ -288,7 +270,7 @@ body,
 }
 
 .animate-fill-fade {
-  animation: fillFadeIn 2.2s cubic-bezier(0.25, 1, 0.4, 1) forwards;
+  animation: fillFadeIn 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   will-change: opacity;
 }
 
@@ -296,7 +278,7 @@ body,
 @keyframes splashTextEnter {
   0% {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   100% {
     opacity: 1;
@@ -305,7 +287,7 @@ body,
 }
 
 .animate-splash-text {
-  animation: splashTextEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: splashTextEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   will-change: transform, opacity;
 }
 

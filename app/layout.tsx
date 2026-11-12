@@ -116,6 +116,11 @@ export default function RootLayout({
         <link rel="preload" href="/logo_web_new1.svg" as="image" type="image/svg+xml" fetchPriority="high" />
         <meta name="apple-mobile-web-app-title" content="میدیای ئیسلامی" />
         <meta name="theme-color" content="#09090b" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem('mediay_splash_screen_seen')){document.documentElement.classList.add('splash-seen');}}catch(e){}`,
+          }}
+        />
       </head>
       <body className={`${siteFont.className} font-sans bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors antialiased w-full max-w-[100vw] min-h-screen flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-start overflow-x-hidden relative`}>
         <ThemeProvider

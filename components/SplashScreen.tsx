@@ -13,7 +13,14 @@ const SPLASH_SESSION_KEY = 'mediay_splash_screen_seen';
  * Shows once per session on desktop and mobile.
  */
 export function SplashScreen() {
-  const [isRendered, setIsRendered] = useState(false);
+  const [isRendered, setIsRendered] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    try {
+      return !sessionStorage.getItem(SPLASH_SESSION_KEY);
+    } catch {
+      return true;
+    }
+  });
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   const dismissSplash = useCallback(() => {
@@ -24,7 +31,7 @@ export function SplashScreen() {
     }
     const timer = setTimeout(() => {
       setIsRendered(false);
-    }, 700);
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -34,6 +41,7 @@ export function SplashScreen() {
     try {
       const alreadySeen = sessionStorage.getItem(SPLASH_SESSION_KEY);
       if (alreadySeen) {
+        setIsRendered(false);
         return; // Skip splash on subsequent navigations in the same session
       }
       sessionStorage.setItem(SPLASH_SESSION_KEY, 'true');
@@ -41,14 +49,13 @@ export function SplashScreen() {
       // ignore storage errors
     }
 
-    setIsRendered(true);
     document.body.style.overflow = 'hidden';
     document.body.style.touchAction = 'none';
 
-    // Cinematic pacing: 2.2s stroke trace + 2.4s ambient fade -> smooth exit at 2.6s
+    // Calm and responsive: 1.6s total splash -> smooth 500ms exit
     const exitTimer = setTimeout(() => {
       dismissSplash();
-    }, 2600);
+    }, 1600);
 
     return () => {
       clearTimeout(exitTimer);
@@ -61,9 +68,10 @@ export function SplashScreen() {
 
   return (
     <div
+      id="mediay-splash-screen"
       onClick={dismissSplash}
       aria-hidden="true"
-      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#09090b] text-white select-none cursor-pointer transition-opacity duration-700 ease-out ${
+      className={`fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#09090b] text-white select-none cursor-pointer transition-opacity duration-500 ease-out ${
         isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'
       }`}
     >
@@ -120,7 +128,7 @@ export function SplashScreen() {
       {/* Brand Title (Fades in smoothly) */}
       <h1
         className="text-xl sm:text-2xl font-bold text-zinc-100 tracking-wide mt-4 text-center animate-splash-text"
-        style={{ animationDelay: '0.9s', opacity: 0 }}
+        style={{ animationDelay: '0.35s', opacity: 0 }}
       >
         میدیای ئیسلامی
       </h1>
@@ -128,7 +136,7 @@ export function SplashScreen() {
       {/* Brand Subtitle / Tagline */}
       <p
         className="text-xs sm:text-sm text-zinc-400 font-medium mt-1 text-center max-w-xs animate-splash-text"
-        style={{ animationDelay: '1.2s', opacity: 0 }}
+        style={{ animationDelay: '0.55s', opacity: 0 }}
       >
         سەکۆی فیلم و نووسینی پەروەردەیی
       </p>
@@ -136,7 +144,7 @@ export function SplashScreen() {
       {/* Subtle Luxury Golden Accent Line */}
       <div
         className="w-16 h-0.5 rounded-full bg-gradient-to-r from-transparent via-amber-500/80 to-transparent mt-6 animate-pulse"
-        style={{ animationDelay: '1.5s' }}
+        style={{ animationDelay: '0.75s' }}
       />
     </div>
   );
