@@ -86,6 +86,22 @@ export async function ensureDbInitialized(): Promise<boolean> {
       ALTER TABLE films ADD COLUMN IF NOT EXISTS parts JSONB DEFAULT '[]'::jsonb;
     `);
 
+    await sql.query(`
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS image_fit TEXT DEFAULT 'contain';
+    `);
+
+    await sql.query(`
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS image_zoom INTEGER DEFAULT 100;
+    `);
+
+    await sql.query(`
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS image_pos_x INTEGER DEFAULT 50;
+    `);
+
+    await sql.query(`
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS image_pos_y INTEGER DEFAULT 50;
+    `);
+
     // 2. Create articles table
     await sql.query(`
       CREATE TABLE IF NOT EXISTS articles (
@@ -259,6 +275,10 @@ interface FilmDbRow {
   platform?: Film['platform'];
   watchUrl?: string;
   parts?: FilmPart[] | string | null;
+  imageFit?: 'contain' | 'cover';
+  imageZoom?: number | string | null;
+  imagePosX?: number | string | null;
+  imagePosY?: number | string | null;
 }
 
 interface ArticleDbRow {
@@ -301,7 +321,11 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
         telegram_post_url AS "telegramPostUrl",
         platform,
         watch_url AS "watchUrl",
-        parts
+        parts,
+        image_fit AS "imageFit",
+        image_zoom AS "imageZoom",
+        image_pos_x AS "imagePosX",
+        image_pos_y AS "imagePosY"
       FROM films
       ORDER BY created_at DESC;
     `);
@@ -337,6 +361,10 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
         watchUrl: activeUrl,
         telegramPostUrl: r.telegramPostUrl || activeUrl,
         parts: parsedParts,
+        imageFit: (r.imageFit === 'cover' ? 'cover' : 'contain') as 'contain' | 'cover',
+        imageZoom: typeof r.imageZoom === 'number' ? r.imageZoom : r.imageZoom ? Number(r.imageZoom) : 100,
+        imagePosX: typeof r.imagePosX === 'number' ? r.imagePosX : r.imagePosX ? Number(r.imagePosX) : 50,
+        imagePosY: typeof r.imagePosY === 'number' ? r.imagePosY : r.imagePosY ? Number(r.imagePosY) : 50,
       };
     });
   } catch (err) {
@@ -362,8 +390,8 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
       INSERT INTO films (
         id, slug, title_kurdish, original_title, year, duration,
         category, genres, poster_url, description, telegram_post_url,
-        platform, watch_url, parts, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW())
+        platform, watch_url, parts, image_fit, image_zoom, image_pos_x, image_pos_y, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, NOW())
       ON CONFLICT (id) DO UPDATE SET
         slug = EXCLUDED.slug,
         title_kurdish = EXCLUDED.title_kurdish,
@@ -378,6 +406,10 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         platform = EXCLUDED.platform,
         watch_url = EXCLUDED.watch_url,
         parts = EXCLUDED.parts,
+        image_fit = EXCLUDED.image_fit,
+        image_zoom = EXCLUDED.image_zoom,
+        image_pos_x = EXCLUDED.image_pos_x,
+        image_pos_y = EXCLUDED.image_pos_y,
         updated_at = NOW();
       `,
       [
@@ -395,6 +427,10 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         platform,
         watchLink,
         JSON.stringify(film.parts ? normalizeFilmParts(film.parts) : []),
+        film.imageFit || 'contain',
+        film.imageZoom ?? 100,
+        film.imagePosX ?? 50,
+        film.imagePosY ?? 50,
       ]
     );
     return true;

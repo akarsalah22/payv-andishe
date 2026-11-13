@@ -21,6 +21,11 @@ import {
   Info,
   Sparkles,
   Check,
+  RotateCcw,
+  Sliders,
+  Maximize2,
+  Crop,
+  Move,
 } from 'lucide-react';
 import { useToast } from '@/components/ToastContext';
 import { SAMPLE_FILMS, type Film, type FilmCategory, type FilmPlatform, type FilmPart, normalizeFilmParts, toKurdishNumber } from '@/data/films';
@@ -83,6 +88,10 @@ export function AdminDashboardClient() {
   const [filmYear, setFilmYear] = useState<number>(new Date().getFullYear());
   const [filmDuration, setFilmDuration] = useState('١ کاتژمێر و ٥٠ خولەک');
   const [filmPosterUrl, setFilmPosterUrl] = useState('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80');
+  const [filmImageFit, setFilmImageFit] = useState<'contain' | 'cover'>('contain');
+  const [filmImageZoom, setFilmImageZoom] = useState<number>(100);
+  const [filmImagePosX, setFilmImagePosX] = useState<number>(50);
+  const [filmImagePosY, setFilmImagePosY] = useState<number>(50);
   const [filmPlatform, setFilmPlatform] = useState<FilmPlatform>('telegram');
   const [filmTelegramUrl, setFilmTelegramUrl] = useState('https://t.me/mediay_islamy');
   const [filmDescription, setFilmDescription] = useState('');
@@ -365,6 +374,13 @@ export function AdminDashboardClient() {
     }
   };
 
+  const handleResetFilmFraming = () => {
+    setFilmImageFit('contain');
+    setFilmImageZoom(100);
+    setFilmImagePosX(50);
+    setFilmImagePosY(50);
+  };
+
   // Reset Form States
   const resetFilmForm = () => {
     setFilmTitleKurdish('');
@@ -374,6 +390,10 @@ export function AdminDashboardClient() {
     setFilmYear(new Date().getFullYear());
     setFilmDuration('١ کاتژمێر و ٥٠ خولەک');
     setFilmPosterUrl('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80');
+    setFilmImageFit('contain');
+    setFilmImageZoom(100);
+    setFilmImagePosX(50);
+    setFilmImagePosY(50);
     setFilmPlatform('telegram');
     setFilmTelegramUrl('https://t.me/mediay_islamy');
     setFilmDescription('');
@@ -438,6 +458,10 @@ export function AdminDashboardClient() {
     setFilmYear(film.year);
     setFilmDuration(film.duration);
     setFilmPosterUrl(film.posterUrl);
+    setFilmImageFit(film.imageFit || 'contain');
+    setFilmImageZoom(film.imageZoom ?? 100);
+    setFilmImagePosX(film.imagePosX ?? 50);
+    setFilmImagePosY(film.imagePosY ?? 50);
     const link = film.watchUrl || film.telegramPostUrl || '';
     const platform = film.platform || (link.includes('youtu') ? 'youtube' : 'telegram');
     setFilmPlatform(platform);
@@ -504,6 +528,10 @@ export function AdminDashboardClient() {
       watchUrl: filmTelegramUrl.trim(),
       telegramPostUrl: filmTelegramUrl.trim(),
       parts: sanitizedParts,
+      imageFit: filmImageFit,
+      imageZoom: filmImageZoom,
+      imagePosX: filmImagePosX,
+      imagePosY: filmImagePosY,
     };
 
     setIsFilmSubmitting(true);
@@ -848,7 +876,11 @@ export function AdminDashboardClient() {
     watchUrl: filmTelegramUrl.trim() || 'https://t.me/mediay_islamy',
     telegramPostUrl: filmTelegramUrl.trim() || 'https://t.me/mediay_islamy',
     parts: filmParts,
-  }), [editingFilmId, filmTitleKurdish, filmOriginalTitle, filmYear, filmDuration, filmCategory, filmGenres, filmPosterUrl, filmDescription, filmTelegramUrl, filmPlatform, filmParts]);
+    imageFit: filmImageFit,
+    imageZoom: filmImageZoom,
+    imagePosX: filmImagePosX,
+    imagePosY: filmImagePosY,
+  }), [editingFilmId, filmTitleKurdish, filmOriginalTitle, filmYear, filmDuration, filmCategory, filmGenres, filmPosterUrl, filmDescription, filmTelegramUrl, filmPlatform, filmParts, filmImageFit, filmImageZoom, filmImagePosX, filmImagePosY]);
 
   // Live Article Preview Object
   const liveArticleSample: Article = useMemo(() => ({
@@ -1599,6 +1631,220 @@ export function AdminDashboardClient() {
                         dir="ltr"
                         className="w-full px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#d49757]"
                       />
+                    </div>
+                  </div>
+
+                  {/* Card Image Framing Controls Section */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-stone-50/80 dark:bg-zinc-900/60 border border-stone-200/90 dark:border-zinc-800 space-y-4">
+                    {/* Header with Title & Reset Button */}
+                    <div className="flex items-center justify-between gap-3 pb-3 border-b border-stone-200/70 dark:border-zinc-800">
+                      <div className="flex items-center gap-2">
+                        <div className="p-1.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                          <Crop className="w-4 h-4" strokeWidth={1.75} />
+                        </div>
+                        <div>
+                          <h4 className="text-xs sm:text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+                            ڕێکخستنی دەرکەوتنی وێنە لە کارتدا
+                          </h4>
+                          <p className="text-[11px] font-sirwan text-zinc-500 dark:text-zinc-400">
+                            دیاریکردنی شێوازی پڕکردنەوە، نزیککردنەوە و شوێنی سەنتەری وێنە
+                          </p>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={handleResetFilmFraming}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-sirwan text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 bg-white dark:bg-zinc-800 hover:bg-amber-500/10 border border-stone-200 dark:border-zinc-700 transition-colors cursor-pointer select-none"
+                        title="ڕێکخستنەوەی سەرجەم ڕێکخستنەکان بۆ دۆخی بنەڕەتی"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                        <span>ڕێکخستنەوە</span>
+                      </button>
+                    </div>
+
+                    {/* Content: Live Mini Card Preview + Sliders */}
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
+                      {/* 1. Live Mini Card Preview (w-36 aspect-[2/3]) */}
+                      <div className="flex flex-col items-center gap-1.5 shrink-0">
+                        <div className="relative w-36 aspect-[2/3] rounded-xl overflow-hidden bg-zinc-900 border border-zinc-300 dark:border-zinc-700 shadow-md">
+                          {/* Background Layer (when contain) */}
+                          {filmImageFit === 'contain' ? (
+                            <>
+                              <Image
+                                src={filmPosterUrl.trim() || '/placeholder.jpg'}
+                                alt=""
+                                fill
+                                aria-hidden="true"
+                                unoptimized={filmPosterUrl.startsWith('data:')}
+                                sizes="144px"
+                                className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none select-none"
+                                onError={(e) => { (e.target as any).src = '/placeholder.jpg'; }}
+                              />
+                              <div className="relative z-10 w-full h-full overflow-hidden">
+                                <Image
+                                  src={filmPosterUrl.trim() || '/placeholder.jpg'}
+                                  alt=""
+                                  fill
+                                  unoptimized={filmPosterUrl.startsWith('data:')}
+                                  sizes="144px"
+                                  className="w-full h-full object-contain select-none transition-transform duration-150"
+                                  style={{
+                                    objectPosition: `${filmImagePosX}% ${filmImagePosY}%`,
+                                    transform: `scale(${filmImageZoom / 100})`,
+                                  }}
+                                  onError={(e) => { (e.target as any).src = '/placeholder.jpg'; }}
+                                />
+                              </div>
+                            </>
+                          ) : (
+                            <div className="relative z-10 w-full h-full overflow-hidden">
+                              <Image
+                                src={filmPosterUrl.trim() || '/placeholder.jpg'}
+                                alt=""
+                                fill
+                                unoptimized={filmPosterUrl.startsWith('data:')}
+                                sizes="144px"
+                                className="w-full h-full object-cover select-none transition-transform duration-150"
+                                style={{
+                                  objectPosition: `${filmImagePosX}% ${filmImagePosY}%`,
+                                  transform: `scale(${filmImageZoom / 100})`,
+                                }}
+                                onError={(e) => { (e.target as any).src = '/placeholder.jpg'; }}
+                              />
+                            </div>
+                          )}
+
+                          {/* Gradient Overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none z-20" />
+
+                          {/* Mini Title Overlay */}
+                          <div className="absolute bottom-0 inset-x-0 p-2 z-30 text-right">
+                            <span className="text-[10px] font-bold font-peshang text-white line-clamp-1">
+                              {filmTitleKurdish.trim() || 'ناوی فیلم'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <span className="text-[10px] font-sirwan text-zinc-500 dark:text-zinc-400">
+                          پێشبینینی کارت (Mini Preview)
+                        </span>
+                      </div>
+
+                      {/* 2. Controls Grid */}
+                      <div className="flex-1 w-full space-y-3.5">
+                        {/* Display Mode Toggle */}
+                        <div>
+                          <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1.5">
+                            شێوازی پیشاندان (Display Mode):
+                          </label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setFilmImageFit('contain')}
+                              className={`flex flex-col items-center justify-center p-2 rounded-xl text-xs font-sirwan border transition-all cursor-pointer ${
+                                filmImageFit === 'contain'
+                                  ? 'bg-amber-500/15 border-amber-500 text-amber-900 dark:text-amber-400 font-bold shadow-2xs'
+                                  : 'border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 text-zinc-600 dark:text-zinc-400 hover:border-amber-500/40'
+                              }`}
+                            >
+                              <span className="font-bold">پیشاندانی هەمووی (contain)</span>
+                              <span className="text-[10px] text-zinc-500 dark:text-zinc-400">بێ بڕینەوە + پاشبنەمای لێڵ</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => setFilmImageFit('cover')}
+                              className={`flex flex-col items-center justify-center p-2 rounded-xl text-xs font-sirwan border transition-all cursor-pointer ${
+                                filmImageFit === 'cover'
+                                  ? 'bg-amber-500/15 border-amber-500 text-amber-900 dark:text-amber-400 font-bold shadow-2xs'
+                                  : 'border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-850 text-zinc-600 dark:text-zinc-400 hover:border-amber-500/40'
+                              }`}
+                            >
+                              <span className="font-bold">پڕکردنەوەی کارت (cover)</span>
+                              <span className="text-[10px] text-zinc-500 dark:text-zinc-400">پڕکردنەوەی چوارچێوەکە</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Zoom Slider */}
+                        <div>
+                          <div className="flex items-center justify-between text-xs font-sirwan mb-1">
+                            <span className="font-semibold text-zinc-700 dark:text-zinc-300">
+                              گەورەکردن و نزیککردنەوە (Zoom):
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 font-mono font-bold text-[11px]">
+                              {filmImageZoom}%
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="100"
+                            max="180"
+                            step="1"
+                            value={filmImageZoom}
+                            onChange={(e) => setFilmImageZoom(Number(e.target.value))}
+                            className="w-full accent-amber-500 cursor-pointer h-2 bg-stone-200 dark:bg-zinc-700 rounded-lg"
+                          />
+                          <div className="flex justify-between text-[10px] font-sirwan text-zinc-400 mt-0.5">
+                            <span>١٠٠٪ (ئاسایی)</span>
+                            <span>١٤٠٪</span>
+                            <span>١٨٠٪ (نزیککراو)</span>
+                          </div>
+                        </div>
+
+                        {/* Horizontal Position Slider (X) */}
+                        <div>
+                          <div className="flex items-center justify-between text-xs font-sirwan mb-1">
+                            <span className="font-semibold text-zinc-700 dark:text-zinc-300">
+                              شوێنی ئاسۆیی (چەپ / ڕاست - X):
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md bg-stone-200/80 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-mono font-bold text-[11px]">
+                              {filmImagePosX}%
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="1"
+                            value={filmImagePosX}
+                            onChange={(e) => setFilmImagePosX(Number(e.target.value))}
+                            className="w-full accent-amber-500 cursor-pointer h-2 bg-stone-200 dark:bg-zinc-700 rounded-lg"
+                          />
+                          <div className="flex justify-between text-[10px] font-sirwan text-zinc-400 mt-0.5">
+                            <span>٠٪ (لای چەپ)</span>
+                            <span>٥٠٪ (ناوەڕاست)</span>
+                            <span>١٠٠٪ (لای ڕاست)</span>
+                          </div>
+                        </div>
+
+                        {/* Vertical Position Slider (Y) */}
+                        <div>
+                          <div className="flex items-center justify-between text-xs font-sirwan mb-1">
+                            <span className="font-semibold text-zinc-700 dark:text-zinc-300">
+                              شوێنی ستوونی (سەروو / خواروو - Y):
+                            </span>
+                            <span className="px-2 py-0.5 rounded-md bg-stone-200/80 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 font-mono font-bold text-[11px]">
+                              {filmImagePosY}%
+                            </span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="1"
+                            value={filmImagePosY}
+                            onChange={(e) => setFilmImagePosY(Number(e.target.value))}
+                            className="w-full accent-amber-500 cursor-pointer h-2 bg-stone-200 dark:bg-zinc-700 rounded-lg"
+                          />
+                          <div className="flex justify-between text-[10px] font-sirwan text-zinc-400 mt-0.5">
+                            <span>٠٪ (سەرەوە)</span>
+                            <span>٥٠٪ (ناوەڕاست)</span>
+                            <span>١٠٠٪ (خوارەوە)</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
 

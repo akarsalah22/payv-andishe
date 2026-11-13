@@ -207,19 +207,55 @@ export default function SavedPage() {
                       href={targetUrl}
                       className="relative block w-full aspect-[2/3] overflow-hidden bg-zinc-100 dark:bg-zinc-950"
                     >
-                      <Image
-                        src={item.imageUrl || '/placeholder.jpg'}
-                        alt={item.title}
-                        fill
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
+                      <div className="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-500 group-hover:scale-105 pointer-events-none">
+                        {item.type === 'movie' && item.imageFit === 'contain' ? (
+                          <>
+                            {/* Ambient Blurred Background */}
+                            <Image
+                              src={item.imageUrl || '/placeholder.jpg'}
+                              alt=""
+                              fill
+                              aria-hidden="true"
+                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                              className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
+                            />
+                            {/* Foreground Contained Poster */}
+                            <div className="relative z-10 w-full h-full overflow-hidden">
+                              <Image
+                                src={item.imageUrl || '/placeholder.jpg'}
+                                alt={item.title}
+                                fill
+                                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                                className="w-full h-full object-contain transition-transform duration-300"
+                                style={{
+                                  objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
+                                  transform: `scale(${(item.imageZoom ?? 100) / 100})`,
+                                }}
+                              />
+                            </div>
+                          </>
+                        ) : (
+                          <div className="relative z-10 w-full h-full overflow-hidden">
+                            <Image
+                              src={item.imageUrl || '/placeholder.jpg'}
+                              alt={item.title}
+                              fill
+                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                              className="w-full h-full object-cover transition-transform duration-300"
+                              style={{
+                                objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
+                                transform: `scale(${(item.imageZoom ?? 100) / 100})`,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
 
                       {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-20 pointer-events-none" />
 
                       {/* Top Badges */}
-                      <div className="absolute top-2 inset-x-2 flex items-center justify-between z-10 pointer-events-none">
+                      <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
                         <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
                           {item.type === 'movie' ? (item.category || 'فیلم') : 'نووسین'}
                         </span>

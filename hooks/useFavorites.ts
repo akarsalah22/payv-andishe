@@ -13,6 +13,10 @@ export interface SavedItem {
   duration?: string;
   author?: string;
   savedAt?: number;
+  imageFit?: 'contain' | 'cover';
+  imageZoom?: number;
+  imagePosX?: number;
+  imagePosY?: number;
 }
 
 const STORAGE_KEY = 'mediay_islamy_favorites_v1';

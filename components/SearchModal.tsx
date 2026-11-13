@@ -279,7 +279,10 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                               alt={film.titleKurdish}
                               fill
                               sizes="44px"
-                              className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              style={{
+                                objectPosition: `${film.imagePosX ?? 50}% ${film.imagePosY ?? 50}%`,
+                              }}
                             />
                           </div>
 

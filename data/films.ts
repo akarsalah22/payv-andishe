@@ -78,6 +78,10 @@ export interface Film {
   telegramPostUrl: string;
   youtubeId?: string;
   parts?: FilmPart[];
+  imageFit?: 'contain' | 'cover';
+  imageZoom?: number;
+  imagePosX?: number;
+  imagePosY?: number;
 }
 
 export function extractYouTubeId(urlOrId?: string): string | null {

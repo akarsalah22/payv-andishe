@@ -67,6 +67,10 @@ export async function POST(req: Request) {
       watchUrl: watchLink,
       telegramPostUrl: watchLink,
       parts: newFilm.parts && Array.isArray(newFilm.parts) ? normalizeFilmParts(newFilm.parts) : [],
+      imageFit: newFilm.imageFit === 'cover' ? 'cover' : 'contain',
+      imageZoom: typeof newFilm.imageZoom === 'number' ? Math.min(180, Math.max(100, Number(newFilm.imageZoom))) : 100,
+      imagePosX: typeof newFilm.imagePosX === 'number' ? Math.min(100, Math.max(0, Number(newFilm.imagePosX))) : 50,
+      imagePosY: typeof newFilm.imagePosY === 'number' ? Math.min(100, Math.max(0, Number(newFilm.imagePosY))) : 50,
     };
 
     await saveSingleFilm(filmToSave);
@@ -111,6 +115,25 @@ export async function PUT(req: Request) {
       updatedFilm.platform ||
       (watchLink.includes('youtu') ? 'youtube' : 'telegram');
 
+    const imageFit =
+      updatedFilm.imageFit !== undefined
+        ? updatedFilm.imageFit === 'cover'
+          ? 'cover'
+          : 'contain'
+        : existing?.imageFit || 'contain';
+    const imageZoom =
+      updatedFilm.imageZoom !== undefined
+        ? Math.min(180, Math.max(100, Number(updatedFilm.imageZoom) || 100))
+        : existing?.imageZoom ?? 100;
+    const imagePosX =
+      updatedFilm.imagePosX !== undefined
+        ? Math.min(100, Math.max(0, Number(updatedFilm.imagePosX) ?? 50))
+        : existing?.imagePosX ?? 50;
+    const imagePosY =
+      updatedFilm.imagePosY !== undefined
+        ? Math.min(100, Math.max(0, Number(updatedFilm.imagePosY) ?? 50))
+        : existing?.imagePosY ?? 50;
+
     const mergedFilm: Film = {
       ...(existing || {
         id: updatedFilm.id,
@@ -138,6 +161,10 @@ export async function PUT(req: Request) {
           : existing?.parts
           ? normalizeFilmParts(existing.parts)
           : [],
+      imageFit,
+      imageZoom,
+      imagePosX,
+      imagePosY,
     };
 
     await saveSingleFilm(mergedFilm);

@@ -50,6 +50,10 @@ async function readLocalFilms(): Promise<Film[]> {
       return parsed.map((f: Record<string, unknown>) => ({
         ...f,
         parts: f.parts ? normalizeFilmParts(f.parts) : undefined,
+        imageFit: f.imageFit === 'cover' ? 'cover' : 'contain',
+        imageZoom: typeof f.imageZoom === 'number' ? f.imageZoom : 100,
+        imagePosX: typeof f.imagePosX === 'number' ? f.imagePosX : 50,
+        imagePosY: typeof f.imagePosY === 'number' ? f.imagePosY : 50,
       })) as unknown as Film[];
     }
     return SAMPLE_FILMS;
