@@ -110,8 +110,8 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/80 dark:bg-[#121214]/80 backdrop-blur-md transition-colors duration-300">
-        <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-3.5 sm:px-6 lg:px-8">
+      <header className="sticky top-0 z-50 w-full transition-colors duration-200 bg-white/90 dark:bg-[#09090b]/90 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 overflow-visible">
+        <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-3.5 sm:px-6 lg:px-8 overflow-visible">
           {/* Brand Logo / Clean Title */}
           <Link
             href="/"
@@ -138,7 +138,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5">
+          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5 overflow-visible">
             {NAV_LINKS_CONFIG.map((link) => {
               const active = isLinkActive(link.href, link.isExternal);
               const label = t(link.key, link.defaultName);

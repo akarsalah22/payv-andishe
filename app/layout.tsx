@@ -107,7 +107,7 @@ export default function RootLayout({
       lang="ku"
       dir="rtl"
       suppressHydrationWarning
-      className={`${siteFont.variable} ${vazir.variable} ${peshangFont.variable} ${sirwanFont.variable} ${sirwan001Font.variable} ${sirwan003Font.variable} scroll-smooth`}
+      className={`${siteFont.variable} ${vazir.variable} ${peshangFont.variable} ${sirwanFont.variable} ${sirwan001Font.variable} ${sirwan003Font.variable} scroll-smooth scroll-pt-20`}
     >
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -122,7 +122,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${siteFont.className} font-sans bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors antialiased w-full max-w-[100vw] min-h-screen flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-start overflow-x-hidden relative`}>
+      <body className={`${siteFont.className} font-sans bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 transition-colors antialiased w-full max-w-[100vw] min-h-screen flex flex-col selection:bg-amber-500/20 selection:text-amber-600 dark:selection:text-amber-400 text-start overflow-x-clip relative`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -134,7 +134,7 @@ export default function RootLayout({
               <ToastProvider>
                 <SplashScreen />
                 <Header />
-                <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col overflow-x-hidden">
+                <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col overflow-x-clip">
                   {children}
                 </main>
                 <Footer />
