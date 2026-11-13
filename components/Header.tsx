@@ -110,7 +110,7 @@ export function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full transition-colors duration-200 bg-white/90 dark:bg-[#09090b]/90 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 overflow-visible">
+      <header className="fixed top-0 inset-x-0 z-50 w-full bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 overflow-visible transition-colors duration-200">
         <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-3.5 sm:px-6 lg:px-8 overflow-visible">
           {/* Brand Logo / Clean Title */}
           <Link
@@ -223,6 +223,9 @@ export function Header() {
           </div>
         </div>
       </header>
+
+      {/* Spacer to prevent page content from being obscured underneath the fixed header */}
+      <div className="h-16 w-full shrink-0 pointer-events-none" aria-hidden="true" />
 
       {/* Classic Minimalist Mobile Drawer Menu */}
       <MobileMenu
