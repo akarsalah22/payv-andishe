@@ -162,6 +162,11 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
   }
 
   const posterSrc = film.posterUrl || '/placeholder.jpg';
+  const fit = film.imageFit ?? 'contain';
+  const zoom = (film.imageZoom ?? 100) / 100;
+  const posX = film.imagePosX ?? 50;
+  const posY = film.imagePosY ?? 50;
+  const isDataUrl = posterSrc.startsWith('data:');
   const watchUrl = getFilmWatchUrl(film);
   const platform = getFilmPlatform(film);
   const isYouTube = platform === 'youtube';
@@ -208,6 +213,10 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               category: film.category,
               year: film.year,
               duration: film.duration,
+              imageFit: film.imageFit,
+              imageZoom: film.imageZoom,
+              imagePosX: film.imagePosX,
+              imagePosY: film.imagePosY,
             }}
             variant="pill"
           />
@@ -238,18 +247,61 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
 
         {/* Hero Content Grid */}
         <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
-          {/* Poster Card */}
+          {/* Poster Card with Custom Framing & Zoom Clipping */}
           <div className="relative w-44 sm:w-56 md:w-60 aspect-[2/3] shrink-0 rounded-2xl overflow-hidden shadow-xl border border-zinc-200/80 dark:border-white/15 bg-zinc-100 dark:bg-zinc-800 group">
-            <Image
-              src={posterSrc}
-              alt={film.titleKurdish}
-              fill
-              priority
-              sizes="(max-width: 640px) 176px, (max-width: 768px) 224px, 240px"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
+            <div className="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none">
+              {fit === 'contain' ? (
+                <>
+                  {/* Ambient Blurred Background Layer (eliminates ugly empty/black bars) */}
+                  <Image
+                    src={posterSrc}
+                    alt=""
+                    fill
+                    aria-hidden="true"
+                    unoptimized={isDataUrl}
+                    sizes="(max-width: 640px) 176px, (max-width: 768px) 224px, 240px"
+                    className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none select-none"
+                  />
+
+                  {/* Foreground Contained Poster with Dynamic Focal Point & Zoom */}
+                  <div className="relative z-10 w-full h-full overflow-hidden">
+                    <Image
+                      src={posterSrc}
+                      alt={film.titleKurdish}
+                      fill
+                      priority
+                      unoptimized={isDataUrl}
+                      sizes="(max-width: 640px) 176px, (max-width: 768px) 224px, 240px"
+                      className="w-full h-full object-contain transition-transform duration-300 select-none"
+                      style={{
+                        objectPosition: `${posX}% ${posY}%`,
+                        transform: `scale(${zoom})`,
+                      }}
+                    />
+                  </div>
+                </>
+              ) : (
+                /* Cover Fill Mode with Dynamic Focal Point & Zoom */
+                <div className="relative z-10 w-full h-full overflow-hidden">
+                  <Image
+                    src={posterSrc}
+                    alt={film.titleKurdish}
+                    fill
+                    priority
+                    unoptimized={isDataUrl}
+                    sizes="(max-width: 640px) 176px, (max-width: 768px) 224px, 240px"
+                    className="w-full h-full object-cover transition-transform duration-300 select-none"
+                    style={{
+                      objectPosition: `${posX}% ${posY}%`,
+                      transform: `scale(${zoom})`,
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+
             {/* Subtle Gradient On Poster */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none z-20" />
           </div>
 
           {/* Details & Metadata Column */}
