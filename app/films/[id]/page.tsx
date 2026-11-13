@@ -312,9 +312,9 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
                 {film.category}
               </span>
               {film.genres &&
-                film.genres.map((g) => (
+                Array.from(new Set(film.genres.map((g) => g.trim()).filter(Boolean))).map((g, idx) => (
                   <span
-                    key={g}
+                    key={`genre-${g}-${idx}`}
                     className="px-2.5 py-1 rounded-full text-xs font-medium font-sirwan bg-zinc-100 text-zinc-700 dark:bg-white/10 dark:text-zinc-200 border border-zinc-200/80 dark:border-white/10 shadow-2xs"
                   >
                     {g}
@@ -425,8 +425,8 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 sm:gap-5 lg:gap-6">
-            {relatedFilms.map((f) => (
-              <FilmCard key={f.id} film={f} />
+            {relatedFilms.map((f, idx) => (
+              <FilmCard key={f.id || f.slug || idx} film={f} />
             ))}
           </div>
         </section>

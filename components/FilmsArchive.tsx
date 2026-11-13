@@ -1,12 +1,46 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback, useTransition } from 'react';
+import { useState, useMemo, useEffect, useCallback, useTransition, useRef } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { X, SearchX } from 'lucide-react';
+import { X, SearchX, ChevronRight, ChevronLeft } from 'lucide-react';
 import { FilmCard } from './FilmCard';
 import { SearchBar, DEFAULT_SEARCH_CATEGORIES } from './SearchBar';
 import type { Film } from '@/data/films';
 import { filterFilms } from '@/lib/search';
+
+const ITEMS_PER_PAGE = 8;
+
+function getPaginationItems(current: number, total: number): (number | 'ellipsis')[] {
+  if (total <= 5) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  const items: (number | 'ellipsis')[] = [];
+
+  // Always show first page
+  items.push(1);
+
+  // Determine middle window around current
+  const left = Math.max(2, current - 1);
+  const right = Math.min(total - 1, current + 1);
+
+  if (left > 2) {
+    items.push('ellipsis');
+  }
+
+  for (let i = left; i <= right; i++) {
+    items.push(i);
+  }
+
+  if (right < total - 1) {
+    items.push('ellipsis');
+  }
+
+  // Always show last page
+  items.push(total);
+
+  return items;
+}
 
 interface FilmsArchiveProps {
   initialFilms: Film[];
@@ -18,6 +52,8 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
   const searchParams = useSearchParams();
   const [, startTransition] = useTransition();
 
+  const gridContainerRef = useRef<HTMLDivElement>(null);
+
   const [films, setFilms] = useState<Film[]>(initialFilms);
 
   // Read initial query parameters from URL
@@ -26,6 +62,7 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
 
   const [searchQuery, setSearchQuery] = useState(queryParam);
   const [activeCategory, setActiveCategory] = useState<string>(categoryParam);
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   // Synchronize state when URL query parameters change externally
   const qFromParams = searchParams.get('q') || searchParams.get('search') || '';
@@ -34,6 +71,7 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
   useEffect(() => {
     setSearchQuery(qFromParams);
     setActiveCategory(categoryFromParams);
+    setCurrentPage(1);
   }, [qFromParams, categoryFromParams]);
 
   // Push updated query parameters to the URL
@@ -88,19 +126,40 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
     return filterFilms(films, searchQuery, activeCategory);
   }, [films, searchQuery, activeCategory]);
 
+  const totalPages = Math.ceil(filteredFilms.length / ITEMS_PER_PAGE);
+  const safeCurrentPage = totalPages <= 1 ? 1 : Math.min(Math.max(1, currentPage), totalPages);
+
+  const paginatedFilms = useMemo(() => {
+    const start = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
+    return filteredFilms.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredFilms, safeCurrentPage]);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages || page === safeCurrentPage) return;
+    setCurrentPage(page);
+    if (gridContainerRef.current) {
+      const yOffset = -90; // offset for sticky navbar
+      const y = gridContainerRef.current.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+    }
+  };
+
   const handleSearchChange = (val: string) => {
     setSearchQuery(val);
+    setCurrentPage(1);
     updateUrlParams(val, activeCategory);
   };
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
+    setCurrentPage(1);
     updateUrlParams(searchQuery, category);
   };
 
   const handleResetAll = () => {
     setSearchQuery('');
     setActiveCategory('هەمووی');
+    setCurrentPage(1);
     updateUrlParams('', 'هەمووی');
   };
 
@@ -138,10 +197,87 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
 
       {/* Responsive Grid: 2 columns on mobile, scaling up smoothly to 6 columns on wide desktop */}
       {filteredFilms.length > 0 ? (
-        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-5 lg:gap-6 min-h-[300px]">
-          {filteredFilms.map((film, index) => (
-            <FilmCard key={film.id || (film as any)._id || index} film={film} priority={index === 0} />
-          ))}
+        <div className="space-y-8">
+          <div
+            ref={gridContainerRef}
+            className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-5 lg:gap-6 min-h-[300px]"
+          >
+            {paginatedFilms.map((film, index) => (
+              <FilmCard
+                key={film.id || (film as any)._id || index}
+                film={film}
+                priority={index === 0 && safeCurrentPage === 1}
+              />
+            ))}
+          </div>
+
+          {/* Classic Minimalist Editorial Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-1.5 mt-10 mb-4 select-none">
+              {/* Previous Page Button (Right side in RTL) */}
+              <button
+                type="button"
+                onClick={() => handlePageChange(safeCurrentPage - 1)}
+                disabled={safeCurrentPage <= 1}
+                aria-label="لاپەڕەی پێشوو"
+                className={`w-9 h-9 rounded-lg border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-600 dark:text-zinc-400 transition-colors duration-150 ${
+                  safeCurrentPage <= 1
+                    ? 'opacity-35 pointer-events-none'
+                    : 'hover:border-zinc-400 dark:hover:border-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer bg-transparent'
+                }`}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+
+              {/* Page Number Buttons & Ellipsis */}
+              {getPaginationItems(safeCurrentPage, totalPages).map((item, idx) => {
+                if (item === 'ellipsis') {
+                  return (
+                    <span
+                      key={`ellipsis-${idx}`}
+                      className="w-9 h-9 flex items-center justify-center text-xs text-zinc-400 dark:text-zinc-600 select-none font-medium"
+                      aria-hidden="true"
+                    >
+                      ...
+                    </span>
+                  );
+                }
+
+                const isActive = item === safeCurrentPage;
+                return (
+                  <button
+                    key={`page-${item}`}
+                    type="button"
+                    onClick={() => handlePageChange(item)}
+                    aria-current={isActive ? 'page' : undefined}
+                    aria-label={`لاپەڕە ${item}`}
+                    className={`w-9 h-9 rounded-lg tabular-nums text-sm font-medium transition-colors duration-150 flex items-center justify-center cursor-pointer ${
+                      isActive
+                        ? 'bg-zinc-900 text-white border border-zinc-900 dark:bg-zinc-100 dark:text-zinc-950 dark:border-zinc-100 font-semibold'
+                        : 'border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-400 dark:hover:border-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-100 bg-transparent'
+                    }`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+
+              {/* Next Page Button (Left side in RTL) */}
+              <button
+                type="button"
+                onClick={() => handlePageChange(safeCurrentPage + 1)}
+                disabled={safeCurrentPage >= totalPages}
+                aria-label="لاپەڕەی دواتر"
+                className={`w-9 h-9 rounded-lg border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-600 dark:text-zinc-400 transition-colors duration-150 ${
+                  safeCurrentPage >= totalPages
+                    ? 'opacity-35 pointer-events-none'
+                    : 'hover:border-zinc-400 dark:hover:border-zinc-600 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer bg-transparent'
+                }`}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         /* Empty State UI */
