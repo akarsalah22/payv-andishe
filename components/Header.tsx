@@ -112,10 +112,10 @@ export function Header() {
     <>
       <header className="fixed top-0 inset-x-0 z-50 w-full bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 overflow-visible transition-colors duration-200">
         <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-3.5 sm:px-6 lg:px-8 overflow-visible">
-          {/* Brand Logo / Clean Title */}
+          {/* Brand Logo / Clean Title (Order 2 on mobile: left side; Order 1 on desktop: right side in RTL) */}
           <Link
             href="/"
-            className="flex items-center gap-2 group shrink-0 select-none cursor-pointer py-1 px-3 sm:px-4"
+            className="order-2 md:order-1 flex items-center gap-2 group shrink-0 select-none cursor-pointer py-1 px-2 sm:px-4"
           >
             {/* Logo Container (Clean Static) */}
             <div className="relative w-8 h-8 sm:w-9 sm:h-9 shrink-0 transition-transform duration-200 group-hover:scale-105">
@@ -137,8 +137,8 @@ export function Header() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5 overflow-visible">
+          {/* Desktop Navigation (Order 2 on desktop) */}
+          <nav className="hidden md:flex md:order-2 items-center gap-1 lg:gap-1.5 overflow-visible">
             {NAV_LINKS_CONFIG.map((link) => {
               const active = isLinkActive(link.href, link.isExternal);
               const label = t(link.key, link.defaultName);
@@ -158,27 +158,39 @@ export function Header() {
             })}
           </nav>
 
-          {/* Actions (Admin Quick-Link, Random Discovery, Search, Language Switcher, Theme Toggle, Mobile Hamburger Button) */}
-          <div className="flex items-center gap-2 shrink-0">
-            {/* Authenticated Admin Quick-Link */}
-            {isAdminAuthenticated && (
-              <Link
-                href="/admin/dashboard"
-                aria-label={t('nav.admin', 'بەڕێوەبردن')}
-                title={t('nav.admin', 'بەڕێوەبردن')}
-                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold font-sirwan transition-all duration-200 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-500" strokeWidth={1.75} />
-                <span className="hidden sm:inline">{t('nav.admin', 'بەڕێوەبردن')}</span>
-              </Link>
-            )}
+          {/* Actions (Order 1 on mobile: right side; Order 3 on desktop: left side in RTL) */}
+          <div className="order-1 md:order-3 flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Mobile Hamburger Button (Order 1 on mobile: outer right edge; hidden on desktop) */}
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(true)}
+              aria-label={t('nav.open_menu', 'کردنەوەی مێنیو')}
+              aria-expanded={isMenuOpen}
+              className="order-1 md:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-xl transition-all duration-200 flex items-center justify-center shrink-0 text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+            >
+              <Menu className="w-5 h-5 shrink-0" strokeWidth={1.8} />
+            </button>
 
-            {/* Saved Items (Watchlist) Quick Button */}
+            {/* Theme Toggle Button (Order 2 on mobile: beside hamburger; Order 5 on desktop: outer left edge) */}
+            <ThemeToggle className="order-2 md:order-5" />
+
+            {/* Search Trigger Button (Order 3 on mobile: beside theme toggle; Order 3 on desktop) */}
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen(true)}
+              aria-label={t('nav.search', 'گەڕان')}
+              title={t('nav.search', 'گەڕان')}
+              className="order-3 md:order-3 w-9 h-9 sm:w-10 sm:h-10 rounded-xl transition-all duration-200 flex items-center justify-center shrink-0 text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
+            >
+              <Search className="w-5 h-5 shrink-0 text-amber-600 dark:text-amber-400" strokeWidth={1.8} />
+            </button>
+
+            {/* Saved Items (Watchlist) Quick Button (Order 4 on mobile: innermost of mobile controls; Order 2 on desktop) */}
             <Link
               href="/saved"
               aria-label={`${t('nav.saved', 'هەڵگیراوەکانم')} (${favoritesCount})`}
               title={t('nav.saved', 'هەڵگیراوەکانم')}
-              className={`relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl transition-all duration-200 flex items-center justify-center shrink-0 text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${pathname === '/saved'
+              className={`order-4 md:order-2 relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl transition-all duration-200 flex items-center justify-center shrink-0 text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent ${pathname === '/saved'
                 ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
                 : ''
                 }`}
@@ -191,35 +203,23 @@ export function Header() {
               )}
             </Link>
 
-            {/* Search Trigger Button */}
-            <button
-              type="button"
-              onClick={() => setIsSearchOpen(true)}
-              aria-label={t('nav.search', 'گەڕان')}
-              title={t('nav.search', 'گەڕان')}
-              className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl transition-all duration-200 flex items-center justify-center shrink-0 text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-            >
-              <Search className="w-5 h-5 shrink-0 text-amber-600 dark:text-amber-400" strokeWidth={1.8} />
-            </button>
-
-            {/* Language Switcher (Hidden on mobile header, available in drawer and about page) */}
-            <div className="hidden md:flex items-center">
+            {/* Language Switcher (Hidden on mobile header, available in drawer and about page; Order 4 on desktop) */}
+            <div className="hidden md:flex md:order-4 items-center">
               <LanguageSwitcher />
             </div>
 
-            {/* Theme Toggle Button */}
-            <ThemeToggle />
-
-            {/* Mobile Hamburger Button (Safe tap zone without edge clipping) */}
-            <button
-              type="button"
-              onClick={() => setIsMenuOpen(true)}
-              aria-label={t('nav.open_menu', 'کردنەوەی مێنیو')}
-              aria-expanded={isMenuOpen}
-              className="md:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-xl transition-all duration-200 flex items-center justify-center shrink-0 text-zinc-700 hover:text-zinc-950 hover:bg-zinc-100 active:bg-zinc-200 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-zinc-800/80 dark:active:bg-zinc-700 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-            >
-              <Menu className="w-5 h-5 shrink-0" strokeWidth={1.8} />
-            </button>
+            {/* Authenticated Admin Quick-Link (Order 5 on mobile; Order 1 on desktop: closest to nav) */}
+            {isAdminAuthenticated && (
+              <Link
+                href="/admin/dashboard"
+                aria-label={t('nav.admin', 'بەڕێوەبردن')}
+                title={t('nav.admin', 'بەڕێوەبردن')}
+                className="order-5 md:order-1 inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold font-sirwan transition-all duration-200 ease-out active:scale-95 shadow-2xs select-none tap-highlight-transparent"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-amber-500" strokeWidth={1.75} />
+                <span className="hidden sm:inline">{t('nav.admin', 'بەڕێوەبردن')}</span>
+              </Link>
+            )}
           </div>
         </div>
       </header>
