@@ -8,7 +8,6 @@ import { ReadingToolbar, type FontSize } from "@/components/ReadingToolbar";
 import { PdfDownloadCard } from "@/components/PdfDownloadCard";
 import { ShareButton } from "@/components/ShareButton";
 import { FavoriteButton } from "@/components/FavoriteButton";
-import { TelegramIcon } from "@/components/TelegramIcon";
 
 export interface ArticleReaderViewProps {
   article: Article;
@@ -32,9 +31,6 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
   const imagePosY = article.imagePosY ?? 50;
 
   const shareArticleUrl = `https://mediay-islamy.vercel.app/articles/${encodeURIComponent(article.slug || article.id)}`;
-  const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
-    shareArticleUrl
-  )}&text=${encodeURIComponent(article.title)}`;
 
   // Resolve body paragraphs with graceful fallback to excerpt / informative reader text
   const contentParagraphs = useMemo(() => {
@@ -280,31 +276,9 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
       )}
 
       {/* Article Footer & Return to Archive */}
-      <footer className="w-full max-w-2xl mx-auto pt-8 border-t border-zinc-200/80 dark:border-zinc-800/80 space-y-6">
-        {/* Telegram Share Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-white/70 dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
-          <div className="space-y-1 text-center sm:text-right">
-            <span className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 block">
-              ئەم وتارەت بەدڵ بوو؟
-            </span>
-            <p className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400">
-              دەتوانیت لەگەڵ هاوڕێکانت لە تێلیگرام هاوبەشی پێبکەیت.
-            </p>
-          </div>
-
-          <a
-            href={shareTelegramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold font-sirwan text-xs sm:text-sm tracking-normal shadow-sm transition-transform duration-150 ease-out active:scale-95 cursor-pointer touch-manipulation select-none tap-highlight-transparent"
-          >
-            <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-            <span>هاوبەشکردن لە تێلیگرام</span>
-          </a>
-        </div>
-
+      <footer className="w-full max-w-2xl mx-auto pt-6 border-t border-zinc-200/80 dark:border-zinc-800/80">
         {/* Back to archive navigation */}
-        <div className="text-center pt-2">
+        <div className="text-center">
           <Link
             href="/articles"
             className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 tracking-normal transition-transform duration-150 ease-out active:scale-95 select-none tap-highlight-transparent"
