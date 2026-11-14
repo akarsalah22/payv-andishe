@@ -22,6 +22,10 @@ export interface Article {
   author: string;
   pdfUrl?: string;
   externalUrl?: string;
+  imageFit?: 'contain' | 'cover';
+  imageZoom?: number;
+  imagePosX?: number;
+  imagePosY?: number;
 }
 
 export const ARTICLE_CATEGORIES: ('هەمووی' | ArticleCategory)[] = [

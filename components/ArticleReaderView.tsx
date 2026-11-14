@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronRight, Calendar, ExternalLink, BookOpen } from "lucide-react";
 import type { Article } from "@/data/articles";
 import { ReadingToolbar, type FontSize } from "@/components/ReadingToolbar";
@@ -26,7 +25,12 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
   const [fontSize, setFontSize] = useState<FontSize>("normal");
   const [imageError, setImageError] = useState(false);
 
-  const imageSource = article.coverImage || article.imageUrl;
+  const imageSource = article.coverImage || (article as any).image || article.imageUrl;
+  const imageFit = article.imageFit ?? 'contain';
+  const imageZoom = article.imageZoom ?? 100;
+  const imagePosX = article.imagePosX ?? 50;
+  const imagePosY = article.imagePosY ?? 50;
+
   const shareArticleUrl = `https://mediay-islamy.vercel.app/articles/${encodeURIComponent(article.slug || article.id)}`;
   const shareTelegramUrl = `https://t.me/share/url?url=${encodeURIComponent(
     shareArticleUrl
@@ -143,51 +147,62 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
         )}
       </header>
 
-      {/* Book Cover / Featured Image */}
+      {/* Book Cover / Featured Image - Wide Landscape Aspect Ratio (16:9) matching card */}
       <div className="my-2">
         {!imageError && imageSource ? (
-          <div className="relative w-48 sm:w-64 aspect-[3/4] mx-auto rounded-xl overflow-hidden shadow-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 group">
-            <Image
-              src={imageSource || "/placeholder.png"}
+          <div className="relative w-full max-w-2xl mx-auto aspect-video rounded-2xl overflow-hidden border border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-900 my-5 shadow-lg group">
+            {/* Main Foreground Image */}
+            <img
+              src={imageSource}
               alt={article.title}
-              fill
-              priority
-              sizes="(max-width: 640px) 192px, 256px"
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
               onError={() => setImageError(true)}
+              className={`w-full h-full ${imageFit === 'contain' ? 'object-contain relative z-10' : 'object-cover'}`}
+              style={{
+                objectPosition: `${imagePosX}% ${imagePosY}%`,
+                transform: `scale(${imageZoom / 100})`,
+              }}
             />
+            {/* Ambient Blurred Background Layer for Contain Mode */}
+            {imageFit === 'contain' && (
+              <img
+                src={imageSource}
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
+              />
+            )}
           </div>
         ) : (
-          /* Neat, styled book-cover placeholder */
+          /* Neat, styled wide-aspect placeholder when image is absent or errors */
           <div
-            className="relative w-48 sm:w-64 aspect-[3/4] mx-auto rounded-xl overflow-hidden shadow-xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-br from-zinc-100 via-zinc-200 to-zinc-300 dark:from-zinc-800 dark:via-zinc-900 dark:to-zinc-950 p-5 flex flex-col justify-between text-right select-none"
+            className="relative w-full max-w-2xl mx-auto aspect-video rounded-2xl overflow-hidden shadow-lg border border-zinc-200 dark:border-zinc-800 bg-gradient-to-br from-zinc-100 via-zinc-200 to-zinc-300 dark:from-zinc-800 dark:via-zinc-900 dark:to-zinc-950 p-6 sm:p-8 flex flex-col justify-between text-right select-none my-5"
             dir="rtl"
           >
             {/* Subtle book spine effect */}
-            <div className="absolute right-0 top-0 bottom-0 w-2.5 bg-gradient-to-l from-black/10 dark:from-black/40 to-transparent border-l border-zinc-300/40 dark:border-white/5 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-3 bg-gradient-to-l from-black/10 dark:from-black/40 to-transparent border-l border-zinc-300/40 dark:border-white/5 pointer-events-none" />
 
             {/* Top Badge & Icon */}
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center justify-center">
-                <BookOpen className="w-4 h-4" />
+              <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center justify-center">
+                <BookOpen className="w-5 h-5" />
               </div>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-sirwan bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/25">
+              <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/25">
                 {article.category}
               </span>
             </div>
 
             {/* Center Title & Accent */}
-            <div className="space-y-2 py-3">
-              <div className="w-6 h-0.5 bg-amber-500/60 rounded-full" />
-              <h3 className="text-sm sm:text-base font-bold font-peshang text-zinc-900 dark:text-white line-clamp-3 leading-snug">
+            <div className="space-y-2.5 py-4">
+              <div className="w-8 h-0.5 bg-amber-500/60 rounded-full" />
+              <h3 className="text-base sm:text-xl font-bold font-peshang text-zinc-900 dark:text-white line-clamp-2 leading-snug">
                 {article.title}
               </h3>
             </div>
 
             {/* Bottom Meta */}
-            <div className="pt-2 border-t border-zinc-300/70 dark:border-zinc-800/80 flex items-center justify-between text-[11px] font-sirwan text-zinc-600 dark:text-zinc-400">
-              <span className="truncate max-w-[130px]">{article.author || "میدیای ئیسلامی"}</span>
-              <span className="text-[10px] text-amber-600 dark:text-amber-400/80 font-mono">PDF</span>
+            <div className="pt-3 border-t border-zinc-300/70 dark:border-zinc-800/80 flex items-center justify-between text-xs font-sirwan text-zinc-600 dark:text-zinc-400">
+              <span className="truncate max-w-[200px]">{article.author || "میدیای ئیسلامی"}</span>
+              <span className="text-xs text-amber-600 dark:text-amber-400/80 font-mono">PDF</span>
             </div>
           </div>
         )}
