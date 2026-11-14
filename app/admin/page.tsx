@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: 'چوونەژوورەوەی بەڕێوەبەر | میدیای ئیسلامی',
-  description: 'چوونەژوورەوە بۆ پەنێڵی بەڕێوەبردنی فیلم، ئەنیمەیشن و وتارەکان',
+  description: 'چوونەژوورەوە بۆ پەنێڵی بەڕێوەبردنی فیلم، کارتۆنەکان و نووسینەکان',
   robots: {
     index: false,
     follow: false,

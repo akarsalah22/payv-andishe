@@ -26,12 +26,20 @@ import {
   Maximize2,
   Crop,
   Move,
+  Film as FilmIcon,
+  FileText,
 } from 'lucide-react';
 import { useToast } from '@/components/ToastContext';
 import { SAMPLE_FILMS, type Film, type FilmCategory, type FilmPlatform, type FilmPart, normalizeFilmParts, toKurdishNumber } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article, type ArticleCategory } from '@/data/articles';
 import { DEFAULT_ABOUT_SETTINGS, type AboutSettings } from '@/data/about';
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from '@/data/homeSettings';
+import {
+  DEFAULT_MOVIES_PAGE_SETTINGS,
+  type MoviesPageSettings,
+  DEFAULT_WRITINGS_PAGE_SETTINGS,
+  type WritingsPageSettings,
+} from '@/data/pageSettings';
 import { FilmCard } from '@/components/FilmCard';
 import { TelegramIcon } from '@/components/TelegramIcon';
 import { InstagramIcon } from '@/components/InstagramIcon';
@@ -39,7 +47,7 @@ import { YouTubeIcon } from '@/components/YouTubeIcon';
 import { ArticleCard } from '@/components/ArticleCard';
 import { matchesSearchQuery } from '@/lib/search';
 
-type AdminTab = 'films' | 'articles' | 'about' | 'home' | 'create';
+type AdminTab = 'films' | 'articles' | 'about' | 'home' | 'moviesPage' | 'writingsPage' | 'create';
 type CreateItemType = 'film' | 'article';
 
 export function AdminDashboardClient() {
@@ -127,6 +135,24 @@ export function AdminDashboardClient() {
   const [homeSubtitle, setHomeSubtitle] = useState(DEFAULT_HOME_SETTINGS.subtitle);
   const [isHomeSubmitting, setIsHomeSubmitting] = useState(false);
   const [isHomeLoading, setIsHomeLoading] = useState(false);
+
+  // Movies Page Settings Form State
+  const [moviesBadge, setMoviesBadge] = useState(DEFAULT_MOVIES_PAGE_SETTINGS.badge);
+  const [moviesTitle, setMoviesTitle] = useState(DEFAULT_MOVIES_PAGE_SETTINGS.title);
+  const [moviesSubtitle, setMoviesSubtitle] = useState(DEFAULT_MOVIES_PAGE_SETTINGS.subtitle);
+  const [moviesSearchPlaceholder, setMoviesSearchPlaceholder] = useState(DEFAULT_MOVIES_PAGE_SETTINGS.searchPlaceholder);
+  const [moviesEmptyMessage, setMoviesEmptyMessage] = useState(DEFAULT_MOVIES_PAGE_SETTINGS.emptyMessage);
+  const [isMoviesSubmitting, setIsMoviesSubmitting] = useState(false);
+  const [isMoviesLoading, setIsMoviesLoading] = useState(false);
+
+  // Writings Page Settings Form State
+  const [writingsBadge, setWritingsBadge] = useState(DEFAULT_WRITINGS_PAGE_SETTINGS.badge);
+  const [writingsTitle, setWritingsTitle] = useState(DEFAULT_WRITINGS_PAGE_SETTINGS.title);
+  const [writingsSubtitle, setWritingsSubtitle] = useState(DEFAULT_WRITINGS_PAGE_SETTINGS.subtitle);
+  const [writingsSearchPlaceholder, setWritingsSearchPlaceholder] = useState(DEFAULT_WRITINGS_PAGE_SETTINGS.searchPlaceholder);
+  const [writingsEmptyMessage, setWritingsEmptyMessage] = useState(DEFAULT_WRITINGS_PAGE_SETTINGS.emptyMessage);
+  const [isWritingsSubmitting, setIsWritingsSubmitting] = useState(false);
+  const [isWritingsLoading, setIsWritingsLoading] = useState(false);
 
   // Fetch films from API and synchronize with localStorage
   const fetchFilms = async () => {
@@ -239,12 +265,58 @@ export function AdminDashboardClient() {
     }
   };
 
+  // Fetch Movies page settings from API
+  const fetchMoviesSettings = async () => {
+    setIsMoviesLoading(true);
+    try {
+      const res = await fetch('/api/settings/movies');
+      if (res.ok) {
+        const data: MoviesPageSettings = await res.json();
+        if (data) {
+          if (data.badge) setMoviesBadge(data.badge);
+          if (data.title) setMoviesTitle(data.title);
+          if (data.subtitle) setMoviesSubtitle(data.subtitle);
+          if (data.searchPlaceholder) setMoviesSearchPlaceholder(data.searchPlaceholder);
+          if (data.emptyMessage) setMoviesEmptyMessage(data.emptyMessage);
+        }
+      }
+    } catch (e) {
+      console.error('Error fetching movies settings:', e);
+    } finally {
+      setIsMoviesLoading(false);
+    }
+  };
+
+  // Fetch Writings page settings from API
+  const fetchWritingsSettings = async () => {
+    setIsWritingsLoading(true);
+    try {
+      const res = await fetch('/api/settings/writings');
+      if (res.ok) {
+        const data: WritingsPageSettings = await res.json();
+        if (data) {
+          if (data.badge) setWritingsBadge(data.badge);
+          if (data.title) setWritingsTitle(data.title);
+          if (data.subtitle) setWritingsSubtitle(data.subtitle);
+          if (data.searchPlaceholder) setWritingsSearchPlaceholder(data.searchPlaceholder);
+          if (data.emptyMessage) setWritingsEmptyMessage(data.emptyMessage);
+        }
+      }
+    } catch (e) {
+      console.error('Error fetching writings settings:', e);
+    } finally {
+      setIsWritingsLoading(false);
+    }
+  };
+
   // Initial load of data from disk API
   useEffect(() => {
     fetchFilms();
     fetchArticles();
     fetchAbout();
     fetchHome();
+    fetchMoviesSettings();
+    fetchWritingsSettings();
   }, []);
 
   // Sync films to localStorage
@@ -801,6 +873,76 @@ export function AdminDashboardClient() {
     }
   };
 
+  // Handle Movies Page Settings Save
+  const handleSaveMoviesSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!moviesTitle.trim()) {
+      triggerToast('تکایە ناونیشانی سەرەکی پەڕەی فیلمەکان بنووسە', undefined, 'error');
+      return;
+    }
+
+    setIsMoviesSubmitting(true);
+    try {
+      const res = await fetch('/api/settings/movies', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          badge: moviesBadge,
+          title: moviesTitle,
+          subtitle: moviesSubtitle,
+          searchPlaceholder: moviesSearchPlaceholder,
+          emptyMessage: moviesEmptyMessage,
+        }),
+      });
+
+      if (res.ok) {
+        triggerToast('ڕێکخستنەکانی پەڕەی فیلمەکان بە سەرکەوتوویی نوێکرانەوە', { href: '/films', label: 'بینینی پەڕە' }, 'success');
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        triggerToast(errData.error || 'هەڵەیەک ڕوویدا لە پاشەکەوتکردن', undefined, 'error');
+      }
+    } catch {
+      triggerToast('هەڵەیەک ڕوویدا لە پەیوەندیکردن بە سێرڤەر', undefined, 'error');
+    } finally {
+      setIsMoviesSubmitting(false);
+    }
+  };
+
+  // Handle Writings Page Settings Save
+  const handleSaveWritingsSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!writingsTitle.trim()) {
+      triggerToast('تکایە ناونیشانی سەرەکی پەڕەی نووسینەکان بنووسە', undefined, 'error');
+      return;
+    }
+
+    setIsWritingsSubmitting(true);
+    try {
+      const res = await fetch('/api/settings/writings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          badge: writingsBadge,
+          title: writingsTitle,
+          subtitle: writingsSubtitle,
+          searchPlaceholder: writingsSearchPlaceholder,
+          emptyMessage: writingsEmptyMessage,
+        }),
+      });
+
+      if (res.ok) {
+        triggerToast('ڕێکخستنەکانی پەڕەی نووسینەکان بە سەرکەوتوویی نوێکرانەوە', { href: '/articles', label: 'بینینی پەڕە' }, 'success');
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        triggerToast(errData.error || 'هەڵەیەک ڕوویدا لە پاشەکەوتکردن', undefined, 'error');
+      }
+    } catch {
+      triggerToast('هەڵەیەک ڕوویدا لە پەیوەندیکردن بە سێرڤەر', undefined, 'error');
+    } finally {
+      setIsWritingsSubmitting(false);
+    }
+  };
+
   const handleResetAbout = () => {
     setAboutTitle(DEFAULT_ABOUT_SETTINGS.title);
     setAboutParagraph1(DEFAULT_ABOUT_SETTINGS.paragraph_1);
@@ -1004,6 +1146,30 @@ export function AdminDashboardClient() {
           >
             <Sparkles className="w-4 h-4" />
             <span>پەڕەی سەرەکی</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('moviesPage')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${activeTab === 'moviesPage'
+                ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+              }`}
+          >
+            <FilmIcon className="w-4 h-4" />
+            <span>پەڕەی فیلمەکان</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab('writingsPage')}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold font-sirwan transition-all duration-150 active:scale-95 cursor-pointer ${activeTab === 'writingsPage'
+                ? 'bg-[#d49757] text-zinc-950 font-bold shadow-xs'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+              }`}
+          >
+            <FileText className="w-4 h-4" />
+            <span>پەڕەی نووسینەکان</span>
           </button>
 
           <button
@@ -2802,6 +2968,426 @@ export function AdminDashboardClient() {
                     <BookOpen className="w-3.5 h-3.5 text-amber-500" />
                     <span>نووسین</span>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 6: MOVIES PAGE SETTINGS (پەڕەی فیلمەکان)                */}
+      {/* ========================================================= */}
+      {activeTab === 'moviesPage' && (
+        <div className="w-full space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800 text-right shadow-2xs">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 text-xs font-semibold font-sirwan">
+                <FilmIcon className="w-3.5 h-3.5" />
+                <span>دەستکاریکردنی پەڕەی فیلم و کارتۆنەکان</span>
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+                بەڕێوەبردنی دەقەکانی پەڕەی فیلمەکان
+              </h2>
+              <p className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400">
+                نیشانە، ناونیشانی سەرەکی، وەسف، دەقی گەڕان و پەیامی بەتاڵی پەڕەی فیلمەکان بگۆڕە و ڕاستەوخۆ نوێ دەبێتەوە.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={fetchMoviesSettings}
+                disabled={isMoviesLoading}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 hover:bg-stone-100 dark:hover:bg-zinc-800 text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer disabled:opacity-50"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isMoviesLoading ? 'animate-spin' : ''}`} />
+                <span>نوێکردنەوە</span>
+              </button>
+              <Link
+                href="/films"
+                target="_blank"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/15 text-amber-800 dark:text-amber-300 hover:bg-amber-500/25 text-xs font-semibold font-sirwan transition-colors cursor-pointer"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>بینینی پەڕە</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Form Side (7 cols) */}
+            <div className="lg:col-span-7">
+              <form
+                onSubmit={handleSaveMoviesSettings}
+                className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800 space-y-6 text-right shadow-2xs"
+              >
+                {/* 1. Badge Text */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>نیشانەی سەرەوە (Badge)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقی نیشانە کورتەکە
+                    </label>
+                    <input
+                      type="text"
+                      value={moviesBadge}
+                      onChange={(e) => setMoviesBadge(e.target.value)}
+                      placeholder={DEFAULT_MOVIES_PAGE_SETTINGS.badge}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* 2. Main Title */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>ناونیشانی سەرەکی (Title)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      ناونیشانی گەورەی سەرەوە
+                    </label>
+                    <input
+                      type="text"
+                      value={moviesTitle}
+                      onChange={(e) => setMoviesTitle(e.target.value)}
+                      placeholder={DEFAULT_MOVIES_PAGE_SETTINGS.title}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* 3. Subtitle / Description */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>وەسف و کورتە (Subtitle)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقی کورتەی ژێر ناونیشان
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={moviesSubtitle}
+                      onChange={(e) => setMoviesSubtitle(e.target.value)}
+                      placeholder={DEFAULT_MOVIES_PAGE_SETTINGS.subtitle}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors resize-y"
+                    />
+                  </div>
+                </div>
+
+                {/* 4. Search Input Placeholder */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>دەقی ناو بۆکسی گەڕان (Search Placeholder)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقی ڕێنمایی ناو خانەی گەڕان
+                    </label>
+                    <input
+                      type="text"
+                      value={moviesSearchPlaceholder}
+                      onChange={(e) => setMoviesSearchPlaceholder(e.target.value)}
+                      placeholder={DEFAULT_MOVIES_PAGE_SETTINGS.searchPlaceholder}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* 5. Empty State Message */}
+                <div className="space-y-4 pb-2">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>پەیامی نەدۆزینەوەی ئەنجام (Empty State Message)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقێک کاتێک هیچ فیلمێک بۆ فلتەر یان گەڕان نەدۆزرایەوە
+                    </label>
+                    <input
+                      type="text"
+                      value={moviesEmptyMessage}
+                      onChange={(e) => setMoviesEmptyMessage(e.target.value)}
+                      placeholder={DEFAULT_MOVIES_PAGE_SETTINGS.emptyMessage}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Submit Action Button */}
+                <div className="pt-2 flex items-center gap-3">
+                  <button
+                    type="submit"
+                    disabled={isMoviesSubmitting}
+                    className="flex-1 py-3 px-6 rounded-xl bg-[#d49757] hover:bg-[#c28445] text-zinc-950 font-bold font-sirwan text-sm transition-all duration-150 active:scale-[0.98] cursor-pointer shadow-md disabled:opacity-50"
+                  >
+                    {isMoviesSubmitting ? 'پاشەکەوتکردن...' : 'پاشەکەوتکردنی ڕێکخستنەکانی پەڕەی فیلمەکان'}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* Live Preview Side (5 cols) */}
+            <div className="lg:col-span-5 space-y-4 sticky top-24">
+              <div className="flex items-center gap-1.5 text-xs font-semibold font-sirwan text-zinc-500 dark:text-zinc-400">
+                <Eye className="w-4 h-4 text-[#d49757]" />
+                <span>پێشبینینی ڕاستەوخۆ (Live Preview):</span>
+              </div>
+
+              {/* Preview Container */}
+              <div className="p-6 rounded-2xl sm:rounded-3xl bg-white/95 dark:bg-zinc-900/90 border border-stone-200/80 dark:border-zinc-800 space-y-5 text-center shadow-sm">
+                {/* Badge Preview */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 text-xs font-semibold font-sirwan tracking-normal shadow-2xs mx-auto">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                  <span>{moviesBadge || DEFAULT_MOVIES_PAGE_SETTINGS.badge}</span>
+                </div>
+
+                {/* Title Preview */}
+                <h1 className="text-2xl sm:text-3xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
+                  {moviesTitle || DEFAULT_MOVIES_PAGE_SETTINGS.title}
+                </h1>
+
+                {/* Subtitle Preview */}
+                <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-md mx-auto leading-relaxed tracking-normal">
+                  {moviesSubtitle || DEFAULT_MOVIES_PAGE_SETTINGS.subtitle}
+                </p>
+
+                {/* Search Bar Preview */}
+                <div className="pt-2 pointer-events-none opacity-85">
+                  <div className="relative w-full max-w-xs mx-auto">
+                    <input
+                      type="text"
+                      readOnly
+                      placeholder={moviesSearchPlaceholder || DEFAULT_MOVIES_PAGE_SETTINGS.searchPlaceholder}
+                      className="w-full py-2 pr-9 pl-4 text-xs font-sirwan rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-right text-zinc-400"
+                    />
+                    <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  </div>
+                </div>
+
+                {/* Empty State Note Preview */}
+                <div className="pt-2 border-t border-stone-100 dark:border-zinc-800/80 text-xs text-zinc-400 font-sirwan">
+                  <span>دەقی نەدۆزینەوە: </span>
+                  <span className="text-zinc-600 dark:text-zinc-300 font-medium">«{moviesEmptyMessage || DEFAULT_MOVIES_PAGE_SETTINGS.emptyMessage}»</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* TAB 7: WRITINGS PAGE SETTINGS (پەڕەی نووسینەکان)             */}
+      {/* ========================================================= */}
+      {activeTab === 'writingsPage' && (
+        <div className="w-full space-y-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800 text-right shadow-2xs">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-400 text-xs font-semibold font-sirwan">
+                <FileText className="w-3.5 h-3.5" />
+                <span>دەستکاریکردنی پەڕەی نووسین و وتارەکان</span>
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+                بەڕێوەبردنی دەقەکانی پەڕەی نووسینەکان
+              </h2>
+              <p className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400">
+                نیشانە، ناونیشانی سەرەکی، وەسف، دەقی گەڕان و پەیامی بەتاڵی پەڕەی نووسین و ئەدەب بگۆڕە و ڕاستەوخۆ نوێ دەبێتەوە.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={fetchWritingsSettings}
+                disabled={isWritingsLoading}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 hover:bg-stone-100 dark:hover:bg-zinc-800 text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer disabled:opacity-50"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isWritingsLoading ? 'animate-spin' : ''}`} />
+                <span>نوێکردنەوە</span>
+              </button>
+              <Link
+                href="/articles"
+                target="_blank"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/15 text-amber-800 dark:text-amber-300 hover:bg-amber-500/25 text-xs font-semibold font-sirwan transition-colors cursor-pointer"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>بینینی پەڕە</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Form Side (7 cols) */}
+            <div className="lg:col-span-7">
+              <form
+                onSubmit={handleSaveWritingsSettings}
+                className="p-5 sm:p-7 rounded-2xl sm:rounded-3xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800 space-y-6 text-right shadow-2xs"
+              >
+                {/* 1. Badge Text */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>نیشانەی سەرەوە (Badge)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقی نیشانە کورتەکە
+                    </label>
+                    <input
+                      type="text"
+                      value={writingsBadge}
+                      onChange={(e) => setWritingsBadge(e.target.value)}
+                      placeholder={DEFAULT_WRITINGS_PAGE_SETTINGS.badge}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* 2. Main Title */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>ناونیشانی سەرەکی (Title)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      ناونیشانی گەورەی سەرەوە
+                    </label>
+                    <input
+                      type="text"
+                      value={writingsTitle}
+                      onChange={(e) => setWritingsTitle(e.target.value)}
+                      placeholder={DEFAULT_WRITINGS_PAGE_SETTINGS.title}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* 3. Subtitle / Description */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>وەسف و کورتە (Subtitle)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقی کورتەی ژێر ناونیشان
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={writingsSubtitle}
+                      onChange={(e) => setWritingsSubtitle(e.target.value)}
+                      placeholder={DEFAULT_WRITINGS_PAGE_SETTINGS.subtitle}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors resize-y"
+                    />
+                  </div>
+                </div>
+
+                {/* 4. Search Input Placeholder */}
+                <div className="space-y-4 pb-5 border-b border-stone-100 dark:border-zinc-800">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>دەقی ناو بۆکسی گەڕان (Search Placeholder)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقی ڕێنمایی ناو خانەی گەڕان
+                    </label>
+                    <input
+                      type="text"
+                      value={writingsSearchPlaceholder}
+                      onChange={(e) => setWritingsSearchPlaceholder(e.target.value)}
+                      placeholder={DEFAULT_WRITINGS_PAGE_SETTINGS.searchPlaceholder}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* 5. Empty State Message */}
+                <div className="space-y-4 pb-2">
+                  <h3 className="text-sm font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>پەیامی نەدۆزینەوەی ئەنجام (Empty State Message)</span>
+                  </h3>
+                  <div>
+                    <label className="block text-xs font-semibold font-sirwan text-zinc-600 dark:text-zinc-400 mb-1.5">
+                      دەقێک کاتێک هیچ وتارێک بۆ فلتەر یان گەڕان نەدۆزرایەوە
+                    </label>
+                    <input
+                      type="text"
+                      value={writingsEmptyMessage}
+                      onChange={(e) => setWritingsEmptyMessage(e.target.value)}
+                      placeholder={DEFAULT_WRITINGS_PAGE_SETTINGS.emptyMessage}
+                      className="w-full px-4 py-2.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 text-sm font-sirwan focus:outline-none focus:border-amber-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Submit Action Button */}
+                <div className="pt-2 flex items-center gap-3">
+                  <button
+                    type="submit"
+                    disabled={isWritingsSubmitting}
+                    className="flex-1 py-3 px-6 rounded-xl bg-[#d49757] hover:bg-[#c28445] text-zinc-950 font-bold font-sirwan text-sm transition-all duration-150 active:scale-[0.98] cursor-pointer shadow-md disabled:opacity-50"
+                  >
+                    {isWritingsSubmitting ? 'پاشەکەوتکردن...' : 'پاشەکەوتکردنی ڕێکخستنەکانی پەڕەی نووسینەکان'}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            {/* Live Preview Side (5 cols) */}
+            <div className="lg:col-span-5 space-y-4 sticky top-24">
+              <div className="flex items-center gap-1.5 text-xs font-semibold font-sirwan text-zinc-500 dark:text-zinc-400">
+                <Eye className="w-4 h-4 text-[#d49757]" />
+                <span>پێشبینینی ڕاستەوخۆ (Live Preview):</span>
+              </div>
+
+              {/* Preview Container */}
+              <div className="p-6 rounded-2xl sm:rounded-3xl bg-white/95 dark:bg-zinc-900/90 border border-stone-200/80 dark:border-zinc-800 space-y-5 text-center shadow-sm">
+                {/* Badge Preview */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-700 dark:text-amber-400 text-xs font-semibold font-sirwan tracking-normal shadow-2xs mx-auto">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                  <span>{writingsBadge || DEFAULT_WRITINGS_PAGE_SETTINGS.badge}</span>
+                </div>
+
+                {/* Title Preview */}
+                <h1 className="text-2xl sm:text-3xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
+                  {writingsTitle || DEFAULT_WRITINGS_PAGE_SETTINGS.title}
+                </h1>
+
+                {/* Subtitle Preview */}
+                <p className="text-xs sm:text-sm font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-md mx-auto leading-relaxed tracking-normal">
+                  {writingsSubtitle || DEFAULT_WRITINGS_PAGE_SETTINGS.subtitle}
+                </p>
+
+                {/* Search Bar Preview */}
+                <div className="pt-2 pointer-events-none opacity-85">
+                  <div className="relative w-full max-w-xs mx-auto">
+                    <input
+                      type="text"
+                      readOnly
+                      placeholder={writingsSearchPlaceholder || DEFAULT_WRITINGS_PAGE_SETTINGS.searchPlaceholder}
+                      className="w-full py-2 pr-9 pl-4 text-xs font-sirwan rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-right text-zinc-400"
+                    />
+                    <Search className="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400" />
+                  </div>
+                </div>
+
+                {/* Empty State Note Preview */}
+                <div className="pt-2 border-t border-stone-100 dark:border-zinc-800/80 text-xs text-zinc-400 font-sirwan">
+                  <span>دەقی نەدۆزینەوە: </span>
+                  <span className="text-zinc-600 dark:text-zinc-300 font-medium">«{writingsEmptyMessage || DEFAULT_WRITINGS_PAGE_SETTINGS.emptyMessage}»</span>
                 </div>
               </div>
             </div>

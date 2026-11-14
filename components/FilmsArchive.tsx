@@ -7,6 +7,7 @@ import { FilmCard } from './FilmCard';
 import { SearchBar, DEFAULT_SEARCH_CATEGORIES } from './SearchBar';
 import type { Film } from '@/data/films';
 import { filterFilms } from '@/lib/search';
+import { DEFAULT_MOVIES_PAGE_SETTINGS, type MoviesPageSettings } from '@/data/pageSettings';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -44,9 +45,10 @@ function getPaginationItems(current: number, total: number): (number | 'ellipsis
 
 interface FilmsArchiveProps {
   initialFilms: Film[];
+  pageSettings?: MoviesPageSettings;
 }
 
-export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
+export function FilmsArchive({ initialFilms, pageSettings }: FilmsArchiveProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -174,7 +176,7 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
         activeCategory={activeCategory}
         onCategoryChange={handleCategoryChange}
         categories={DEFAULT_SEARCH_CATEGORIES}
-        placeholder="گەڕان لە نێو فیلم، کارتۆنەکان )..."
+        placeholder={pageSettings?.searchPlaceholder || DEFAULT_MOVIES_PAGE_SETTINGS.searchPlaceholder}
         films={films}
         showRandomButton={true}
       />
@@ -287,7 +289,7 @@ export function FilmsArchive({ initialFilms }: FilmsArchiveProps) {
           </div>
           <div className="space-y-1.5 max-w-md mx-auto">
             <h3 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100 tracking-normal">
-              هیچ ئەنجامێک بۆ ئەم گەڕانە نەدۆزرایەوە
+              {pageSettings?.emptyMessage || DEFAULT_MOVIES_PAGE_SETTINGS.emptyMessage}
             </h3>
             <p className="text-xs sm:text-sm font-sirwan text-zinc-500 dark:text-zinc-400 leading-relaxed">
               {searchQuery

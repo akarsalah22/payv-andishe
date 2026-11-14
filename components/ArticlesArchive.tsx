@@ -6,12 +6,14 @@ import { Search, X, SearchX } from 'lucide-react';
 import { ArticleCard } from './ArticleCard';
 import { ARTICLE_CATEGORIES, type Article, type ArticleCategory } from '@/data/articles';
 import { filterArticles } from '@/lib/search';
+import { DEFAULT_WRITINGS_PAGE_SETTINGS, type WritingsPageSettings } from '@/data/pageSettings';
 
 interface ArticlesArchiveProps {
   initialArticles: Article[];
+  pageSettings?: WritingsPageSettings;
 }
 
-export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
+export function ArticlesArchive({ initialArticles, pageSettings }: ArticlesArchiveProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -143,7 +145,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
             type="text"
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
-            placeholder="گەڕان لە نێو نووسین و دەقەکان)..."
+            placeholder={pageSettings?.searchPlaceholder || DEFAULT_WRITINGS_PAGE_SETTINGS.searchPlaceholder}
             className="w-full py-3 px-12 text-sm rounded-2xl outline-none transition-all duration-300 font-sirwan bg-white text-zinc-900 placeholder-zinc-400 border border-zinc-200/80 shadow-sm hover:border-amber-500/60 hover:shadow-[0_0_16px_rgba(245,158,11,0.15)] focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 dark:bg-zinc-900/80 dark:text-white dark:placeholder-zinc-500 dark:border-zinc-700 dark:hover:border-amber-500/60 dark:hover:shadow-[0_0_18px_rgba(245,158,11,0.25)] dark:focus:border-amber-500 dark:focus:ring-amber-500/30"
             dir="rtl"
           />
@@ -223,7 +225,7 @@ export function ArticlesArchive({ initialArticles }: ArticlesArchiveProps) {
           </div>
           <div className="space-y-1.5 max-w-md mx-auto">
             <h3 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100 tracking-normal">
-              هیچ ئەنجامێک بۆ ئەم گەڕانە نەدۆزرایەوە
+              {pageSettings?.emptyMessage || DEFAULT_WRITINGS_PAGE_SETTINGS.emptyMessage}
             </h3>
             <p className="text-xs sm:text-sm font-sirwan text-zinc-500 dark:text-zinc-400 leading-relaxed">
               {searchQuery

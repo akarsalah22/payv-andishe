@@ -5,6 +5,12 @@ import { SAMPLE_ARTICLES, type Article } from "@/data/articles";
 import { DEFAULT_ABOUT_SETTINGS, type AboutSettings, DEFAULT_ABOUT_CONTENT, type AboutContent } from "@/data/about";
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from "@/data/homeSettings";
 import {
+  DEFAULT_MOVIES_PAGE_SETTINGS,
+  type MoviesPageSettings,
+  DEFAULT_WRITINGS_PAGE_SETTINGS,
+  type WritingsPageSettings,
+} from "@/data/pageSettings";
+import {
   getFilmsFromDb,
   upsertFilmToDb,
   deleteFilmFromDb,
@@ -24,6 +30,8 @@ const filmsFilePath = path.join(dataDir, "films.json");
 const articlesFilePath = path.join(dataDir, "articles.json");
 const aboutFilePath = path.join(dataDir, "about.json");
 const homeSettingsFilePath = path.join(dataDir, "home_settings.json");
+const moviesSettingsFilePath = path.join(dataDir, "movies_page_settings.json");
+const writingsSettingsFilePath = path.join(dataDir, "writings_page_settings.json");
 
 async function ensureDirectory() {
   try {
@@ -399,6 +407,164 @@ export async function saveHomeSettings(settings: HomeSettings): Promise<boolean>
     return await updateHomeSettingsInDb(settings);
   } catch (err) {
     console.error("Failed to sync home settings to Neon DB:", err);
+    return false;
+  }
+}
+
+/**
+ * Normalizes raw MoviesPageSettings with safe fallbacks.
+ */
+function normalizeMoviesPageSettings(parsed: any): MoviesPageSettings {
+  if (!parsed || typeof parsed !== "object") return DEFAULT_MOVIES_PAGE_SETTINGS;
+  return {
+    badge: parsed.badge || DEFAULT_MOVIES_PAGE_SETTINGS.badge,
+    title: parsed.title || DEFAULT_MOVIES_PAGE_SETTINGS.title,
+    subtitle: parsed.subtitle || DEFAULT_MOVIES_PAGE_SETTINGS.subtitle,
+    searchPlaceholder: parsed.searchPlaceholder || DEFAULT_MOVIES_PAGE_SETTINGS.searchPlaceholder,
+    emptyMessage: parsed.emptyMessage || DEFAULT_MOVIES_PAGE_SETTINGS.emptyMessage,
+  };
+}
+
+/**
+ * Normalizes raw WritingsPageSettings with safe fallbacks.
+ */
+function normalizeWritingsPageSettings(parsed: any): WritingsPageSettings {
+  if (!parsed || typeof parsed !== "object") return DEFAULT_WRITINGS_PAGE_SETTINGS;
+  return {
+    badge: parsed.badge || DEFAULT_WRITINGS_PAGE_SETTINGS.badge,
+    title: parsed.title || DEFAULT_WRITINGS_PAGE_SETTINGS.title,
+    subtitle: parsed.subtitle || DEFAULT_WRITINGS_PAGE_SETTINGS.subtitle,
+    searchPlaceholder: parsed.searchPlaceholder || DEFAULT_WRITINGS_PAGE_SETTINGS.searchPlaceholder,
+    emptyMessage: parsed.emptyMessage || DEFAULT_WRITINGS_PAGE_SETTINGS.emptyMessage,
+  };
+}
+
+/**
+ * Reads local backup for Movies Page settings.
+ */
+export async function readLocalMoviesPageSettings(): Promise<MoviesPageSettings> {
+  try {
+    await ensureDirectory();
+    try {
+      await fs.access(moviesSettingsFilePath);
+    } catch {
+      await fs.writeFile(moviesSettingsFilePath, JSON.stringify(DEFAULT_MOVIES_PAGE_SETTINGS, null, 2), "utf-8");
+      return DEFAULT_MOVIES_PAGE_SETTINGS;
+    }
+
+    const data = await fs.readFile(moviesSettingsFilePath, "utf-8");
+    if (!data.trim()) return DEFAULT_MOVIES_PAGE_SETTINGS;
+    const parsed = JSON.parse(data);
+    return normalizeMoviesPageSettings(parsed);
+  } catch (error) {
+    console.error("Error reading local movies page settings backup:", error);
+    return DEFAULT_MOVIES_PAGE_SETTINGS;
+  }
+}
+
+/**
+ * Writes local backup for Movies Page settings.
+ */
+export async function writeLocalMoviesPageSettings(settings: MoviesPageSettings): Promise<void> {
+  try {
+    await ensureDirectory();
+    await fs.writeFile(moviesSettingsFilePath, JSON.stringify(settings, null, 2), "utf-8");
+  } catch (error) {
+    console.error("Error writing local movies page settings backup:", error);
+  }
+}
+
+/**
+ * Reads Movies Page settings actively from Neon Postgres, falling back to local file.
+ */
+export async function readMoviesPageSettings(): Promise<MoviesPageSettings> {
+  try {
+    const dbSettings = await getSettingFromDb<MoviesPageSettings>("movies_page_settings");
+    if (dbSettings && typeof dbSettings === "object" && dbSettings.title) {
+      writeLocalMoviesPageSettings(dbSettings).catch(() => {});
+      return normalizeMoviesPageSettings(dbSettings);
+    }
+  } catch (err) {
+    console.error("Neon DB readMoviesPageSettings error, falling back to local file:", err);
+  }
+
+  return await readLocalMoviesPageSettings();
+}
+
+/**
+ * Saves Movies Page settings to Neon Postgres and updates local backup.
+ */
+export async function saveMoviesPageSettings(settings: MoviesPageSettings): Promise<boolean> {
+  await writeLocalMoviesPageSettings(settings);
+  try {
+    return await setSettingInDb("movies_page_settings", settings);
+  } catch (err) {
+    console.error("Failed to sync movies page settings to Neon DB:", err);
+    return false;
+  }
+}
+
+/**
+ * Reads local backup for Writings Page settings.
+ */
+export async function readLocalWritingsPageSettings(): Promise<WritingsPageSettings> {
+  try {
+    await ensureDirectory();
+    try {
+      await fs.access(writingsSettingsFilePath);
+    } catch {
+      await fs.writeFile(writingsSettingsFilePath, JSON.stringify(DEFAULT_WRITINGS_PAGE_SETTINGS, null, 2), "utf-8");
+      return DEFAULT_WRITINGS_PAGE_SETTINGS;
+    }
+
+    const data = await fs.readFile(writingsSettingsFilePath, "utf-8");
+    if (!data.trim()) return DEFAULT_WRITINGS_PAGE_SETTINGS;
+    const parsed = JSON.parse(data);
+    return normalizeWritingsPageSettings(parsed);
+  } catch (error) {
+    console.error("Error reading local writings page settings backup:", error);
+    return DEFAULT_WRITINGS_PAGE_SETTINGS;
+  }
+}
+
+/**
+ * Writes local backup for Writings Page settings.
+ */
+export async function writeLocalWritingsPageSettings(settings: WritingsPageSettings): Promise<void> {
+  try {
+    await ensureDirectory();
+    await fs.writeFile(writingsSettingsFilePath, JSON.stringify(settings, null, 2), "utf-8");
+  } catch (error) {
+    console.error("Error writing local writings page settings backup:", error);
+  }
+}
+
+/**
+ * Reads Writings Page settings actively from Neon Postgres, falling back to local file.
+ */
+export async function readWritingsPageSettings(): Promise<WritingsPageSettings> {
+  try {
+    const dbSettings = await getSettingFromDb<WritingsPageSettings>("writings_page_settings");
+    if (dbSettings && typeof dbSettings === "object" && dbSettings.title) {
+      writeLocalWritingsPageSettings(dbSettings).catch(() => {});
+      return normalizeWritingsPageSettings(dbSettings);
+    }
+  } catch (err) {
+    console.error("Neon DB readWritingsPageSettings error, falling back to local file:", err);
+  }
+
+  return await readLocalWritingsPageSettings();
+}
+
+/**
+ * Saves Writings Page settings to Neon Postgres and updates local backup.
+ */
+export async function saveWritingsPageSettings(settings: WritingsPageSettings): Promise<boolean> {
+  await writeLocalWritingsPageSettings(settings);
+  try {
+    return await setSettingInDb("writings_page_settings", settings);
+  } catch (err) {
+    console.error("Failed to sync writings page settings to Neon DB:", err);
     return false;
   }
 }

@@ -119,7 +119,7 @@ export default function SavedPage() {
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 font-medium font-sirwan text-xs sm:text-sm transition-all duration-200 active:scale-95 border border-zinc-200 dark:border-zinc-700"
             >
               <BookOpen className="w-4 h-4" />
-              <span>خوێندنەوەی وتار و دەقەکان</span>
+              <span>خوێندنەوەی نووسینەکان  </span>
             </Link>
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function SavedPage() {
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
                   }`}
               >
-                <span>فیلم و کارتۆن</span>
+                <span>فیلمەکان </span>
                 <span className="mr-1.5 text-[11px] opacity-80 font-sans">({moviesCount})</span>
               </button>
 
@@ -165,7 +165,7 @@ export default function SavedPage() {
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
                   }`}
               >
-                <span>نووسین و دەقەکان</span>
+                <span>نووسینەکان </span>
                 <span className="mr-1.5 text-[11px] opacity-80 font-sans">({writingsCount})</span>
               </button>
             </div>

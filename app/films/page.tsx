@@ -2,10 +2,10 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 import type { Metadata } from 'next';
-import { readFilms } from '@/lib/storage';
+import { readFilms, readMoviesPageSettings } from '@/lib/storage';
 import { FilmsArchive } from '@/components/FilmsArchive';
 
-export const revalidate = 1800;
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'فیلم، زنجیرە و کارتۆن | میدیای ئیسلامی',
@@ -13,7 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default async function FilmsPage() {
-  const films = await readFilms();
+  const [films, pageSettings] = await Promise.all([
+    readFilms(),
+    readMoviesPageSettings(),
+  ]);
 
   return (
     <div dir="rtl" className="w-full py-8 sm:py-12 flex-1 flex flex-col space-y-10 text-right">
@@ -24,7 +27,7 @@ export default async function FilmsPage() {
             سەرەکی
           </Link>
           <span>/</span>
-          <span className="text-zinc-900 dark:text-zinc-200">فیلم و زنجیرەکان</span>
+          <span className="text-zinc-900 dark:text-zinc-200">{pageSettings.title}</span>
         </div>
 
         <span className="text-zinc-400 dark:text-zinc-500">میدیای ئیسلامی</span>
@@ -33,21 +36,21 @@ export default async function FilmsPage() {
       {/* Minimalist Header */}
       <div className="w-full max-w-3xl mx-auto flex flex-col items-center justify-center text-center space-y-4 py-2 select-none">
         <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 tracking-normal block text-center mx-auto">
-          ئەرشیڤی بینراو
+          {pageSettings.badge}
         </span>
 
         <h1 className="text-3xl sm:text-4xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal text-center mx-auto">
-          فیلم، زنجیرە و کارتۆن
+          {pageSettings.title}
         </h1>
 
-        <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-normal text-center">
-          کۆکراوەی شاکارە سینەمایییەکان، زنجیرەفیلم، کارتۆن و بەرهەمە هەڵبژێردراوەکان بە پەخشی ڕاستەوخۆ لە کەناڵی تێلیگرام.
+        <p className="text-sm sm:text-base font-normal font-sirwan text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed tracking-normal text-center whitespace-pre-line">
+          {pageSettings.subtitle}
         </p>
       </div>
 
       {/* Interactive Filters & 3-Column Responsive Grid */}
       <Suspense fallback={<div className="w-full py-16 text-center text-xs font-sirwan text-zinc-400">چاوەڕوانبە...</div>}>
-        <FilmsArchive initialFilms={films} />
+        <FilmsArchive initialFilms={films} pageSettings={pageSettings} />
       </Suspense>
 
       {/* Return to Home Helper */}
