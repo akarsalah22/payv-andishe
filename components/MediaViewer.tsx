@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Play, X, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+import { Play, X, ChevronLeft, ChevronRight, ExternalLink, Tv } from "lucide-react";
 import { LiteYouTube } from "@/components/LiteYouTube";
 import { TelegramParts, type TelegramPartItem } from "@/components/TelegramParts";
 import { TelegramIcon } from "@/components/TelegramIcon";
@@ -41,6 +41,7 @@ export function MediaViewer({
   className = "",
 }: MediaViewerProps) {
   const [activeEpisodeIndex, setActiveEpisodeIndex] = useState<number | null>(null);
+  const [isPlayingSingle, setIsPlayingSingle] = useState(false);
 
   const hasMultipleParts = Array.isArray(parts) && parts.length > 0;
 
@@ -56,6 +57,7 @@ export function MediaViewer({
 
   const handleClosePlayer = () => {
     setActiveEpisodeIndex(null);
+    setIsPlayingSingle(false);
   };
 
   // 1. Multi-Part / Multi-Episode Interactive Theater Player
@@ -208,7 +210,52 @@ export function MediaViewer({
               </div>
             )}
           </div>
-        ) : null}
+        ) : (
+          /* Authentic 16:9 Cinema Screen Stage (Idle State) */
+          <div className="w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800/90 shadow-2xl">
+            <button
+              type="button"
+              onClick={() => handleSelectEpisode(0)}
+              className="group relative w-full aspect-video flex flex-col items-center justify-center text-center px-4 cursor-pointer focus:outline-none select-none overflow-hidden"
+              aria-label="تەماشاکردنی زنجیرەکە"
+            >
+              {/* 1. Subtle Dimmed Backdrop */}
+              {posterUrl && (
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <Image
+                    src={posterUrl}
+                    alt=""
+                    aria-hidden="true"
+                    fill
+                    className="w-full h-full object-cover opacity-30 scale-105 blur-[2px]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60" />
+                </div>
+              )}
+
+              {/* 2. Top-Right Minimal Screen Indicator Badge */}
+              <div className="absolute top-3.5 right-3.5 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/10 text-[11px] font-medium font-sirwan text-zinc-300">
+                <Tv className="w-3.5 h-3.5 text-amber-400" />
+                <span>شاشەی پەخش</span>
+              </div>
+
+              {/* 3. Center Interactive Cinema Play Trigger */}
+              <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/12 group-hover:bg-amber-500 border border-white/25 group-hover:border-amber-400 backdrop-blur-md flex items-center justify-center transition-all duration-200 group-hover:scale-105 shadow-xl">
+                <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:text-zinc-950 fill-current translate-x-[1px] transition-colors duration-200" />
+              </div>
+
+              {/* Clear Screen Label Below the Play Button */}
+              <div className="mt-3.5 z-20 text-center">
+                <p className="text-sm sm:text-base font-bold font-peshang text-white">
+                  لێرە تەماشای زنجیرەکە بکە — ئەڵقەی ١
+                </p>
+                <p className="text-xs font-sirwan text-zinc-400 mt-1">
+                  کرتە لە شاشەکە بکە یان ئەڵقەیەک لە خوارەوە هەڵبژێرە
+                </p>
+              </div>
+            </button>
+          </div>
+        )}
 
         {/* Episode List */}
         <TelegramParts
@@ -228,45 +275,113 @@ export function MediaViewer({
     const rawOkRuSource = okruUrl || watchUrl || "";
     return (
       <section id="in-site-player" className={`w-full space-y-6 text-right ${className}`} dir="rtl">
-        <div className="space-y-3.5">
-          <div className="flex items-center justify-between pb-2 border-b border-zinc-200/80 dark:border-zinc-800/80">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-500 flex items-center justify-center">
-                <OkRuIcon className="w-4 h-4" />
+        {!isPlayingSingle ? (
+          <div className="w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800/90 shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setIsPlayingSingle(true)}
+              className="group relative w-full aspect-video flex flex-col items-center justify-center text-center px-4 cursor-pointer focus:outline-none select-none overflow-hidden"
+              aria-label="تەماشاکردنی فیلمەکە"
+            >
+              {/* 1. Subtle Dimmed Backdrop */}
+              {posterUrl && (
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <Image
+                    src={posterUrl}
+                    alt=""
+                    aria-hidden="true"
+                    fill
+                    className="w-full h-full object-cover opacity-30 scale-105 blur-[2px]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60" />
+                </div>
+              )}
+
+              {/* 2. Top-Right Minimal Screen Indicator Badge */}
+              <div className="absolute top-3.5 right-3.5 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/10 text-[11px] font-medium font-sirwan text-zinc-300">
+                <Tv className="w-3.5 h-3.5 text-amber-400" />
+                <span>شاشەی پەخش</span>
               </div>
-              <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-                پەخشی ڕاستەوخۆ (OK.ru)
-              </h2>
+
+              {/* 3. Center Interactive Cinema Play Trigger */}
+              <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/12 group-hover:bg-amber-500 border border-white/25 group-hover:border-amber-400 backdrop-blur-md flex items-center justify-center transition-all duration-200 group-hover:scale-105 shadow-xl">
+                <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:text-zinc-950 fill-current translate-x-[1px] transition-colors duration-200" />
+              </div>
+
+              {/* Clear Screen Label Below the Play Button */}
+              <div className="mt-3.5 z-20 text-center">
+                <p className="text-sm sm:text-base font-bold font-peshang text-white">
+                  لێرە تەماشای فیلمەکە بکە
+                </p>
+                <p className="text-xs font-sirwan text-zinc-400 mt-1">
+                  کرتە لە شاشەکە بکە بۆ دەستپێکردنی پەخش
+                </p>
+              </div>
+            </button>
+          </div>
+        ) : (
+          <div className="w-full space-y-2.5 sm:space-y-3.5 rounded-2xl sm:rounded-3xl bg-zinc-900 border border-zinc-800 p-3 sm:p-6 shadow-2xl">
+            <div className="flex items-center justify-between gap-2 pb-2.5 sm:pb-3 border-b border-zinc-800">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-500 flex items-center justify-center shrink-0">
+                  <OkRuIcon className="w-4 h-4" />
+                </div>
+                <h2 className="text-sm sm:text-base font-bold font-peshang text-white truncate">
+                  {title} — <span className="text-orange-400">OK.ru</span>
+                </h2>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {rawOkRuSource && (
+                  <a
+                    href={
+                      rawOkRuSource.startsWith("http")
+                        ? rawOkRuSource
+                        : `https://ok.ru/video/${extractOkRuVideoId(rawOkRuSource)}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-orange-400 text-xs font-semibold font-sirwan transition-colors"
+                  >
+                    <span>کردنەوە لە OK.ru</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleClosePlayer}
+                  aria-label="داخستن"
+                  title="داخستنی پەخشکەر"
+                  className="sm:hidden w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleClosePlayer}
+                  title="داخستنی پەخشکەر"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-xs font-semibold font-sirwan transition-colors cursor-pointer shrink-0"
+                >
+                  <span>داخستن</span>
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
-            {rawOkRuSource && (
-              <a
-                href={
-                  rawOkRuSource.startsWith("http")
-                    ? rawOkRuSource
-                    : `https://ok.ru/video/${extractOkRuVideoId(rawOkRuSource)}`
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-sirwan text-zinc-500 hover:text-orange-500 dark:text-zinc-400 dark:hover:text-orange-400 transition-colors"
-              >
-                <span>کردنەوە لە OK.ru</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            )}
+            <div className="w-full aspect-video rounded-2xl overflow-hidden bg-black border border-zinc-800 shadow-xl">
+              <iframe
+                src={resolvedOkRuEmbedUrl}
+                className="w-full h-full border-0"
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                allowFullScreen
+                loading="lazy"
+                title={title}
+              />
+            </div>
           </div>
-
-          <div className="w-full aspect-video rounded-2xl overflow-hidden bg-black border border-zinc-200 dark:border-zinc-800 shadow-xl">
-            <iframe
-              src={resolvedOkRuEmbedUrl}
-              className="w-full h-full border-0"
-              allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-              allowFullScreen
-              loading="lazy"
-              title={title}
-            />
-          </div>
-        </div>
+        )}
       </section>
     );
   }
@@ -280,30 +395,98 @@ export function MediaViewer({
   if (resolvedYouTubeId) {
     return (
       <section id="in-site-player" className={`w-full space-y-6 text-right ${className}`} dir="rtl">
-        <div className="space-y-3.5">
-          <div className="flex items-center justify-between pb-1 border-b border-zinc-200/80 dark:border-zinc-800/80">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-red-600/10 text-red-600 flex items-center justify-center">
-                <YouTubeIcon className="w-4 h-4" />
+        {!isPlayingSingle ? (
+          <div className="w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800/90 shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setIsPlayingSingle(true)}
+              className="group relative w-full aspect-video flex flex-col items-center justify-center text-center px-4 cursor-pointer focus:outline-none select-none overflow-hidden"
+              aria-label="تەماشاکردنی فیلمەکە"
+            >
+              {/* 1. Subtle Dimmed Backdrop */}
+              {posterUrl && (
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  <Image
+                    src={posterUrl}
+                    alt=""
+                    aria-hidden="true"
+                    fill
+                    className="w-full h-full object-cover opacity-30 scale-105 blur-[2px]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60" />
+                </div>
+              )}
+
+              {/* 2. Top-Right Minimal Screen Indicator Badge */}
+              <div className="absolute top-3.5 right-3.5 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/10 text-[11px] font-medium font-sirwan text-zinc-300">
+                <Tv className="w-3.5 h-3.5 text-amber-400" />
+                <span>شاشەی پەخش</span>
               </div>
-              <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-                پەخشی ڕاستەوخۆ (یووتووب)
-              </h2>
+
+              {/* 3. Center Interactive Cinema Play Trigger */}
+              <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/12 group-hover:bg-amber-500 border border-white/25 group-hover:border-amber-400 backdrop-blur-md flex items-center justify-center transition-all duration-200 group-hover:scale-105 shadow-xl">
+                <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:text-zinc-950 fill-current translate-x-[1px] transition-colors duration-200" />
+              </div>
+
+              {/* Clear Screen Label Below the Play Button */}
+              <div className="mt-3.5 z-20 text-center">
+                <p className="text-sm sm:text-base font-bold font-peshang text-white">
+                  لێرە تەماشای فیلمەکە بکە
+                </p>
+                <p className="text-xs font-sirwan text-zinc-400 mt-1">
+                  کرتە لە شاشەکە بکە بۆ دەستپێکردنی پەخش
+                </p>
+              </div>
+            </button>
+          </div>
+        ) : (
+          <div className="w-full space-y-2.5 sm:space-y-3.5 rounded-2xl sm:rounded-3xl bg-zinc-900 border border-zinc-800 p-3 sm:p-6 shadow-2xl">
+            <div className="flex items-center justify-between gap-2 pb-2.5 sm:pb-3 border-b border-zinc-800">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-lg bg-red-600/15 text-red-500 flex items-center justify-center shrink-0">
+                  <YouTubeIcon className="w-4 h-4" />
+                </div>
+                <h2 className="text-sm sm:text-base font-bold font-peshang text-white truncate">
+                  {title} — <span className="text-red-400">یووتووب</span>
+                </h2>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href={`https://www.youtube.com/watch?v=${resolvedYouTubeId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-red-400 text-xs font-semibold font-sirwan transition-colors"
+                >
+                  <span>کردنەوە لە یووتووب</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleClosePlayer}
+                  aria-label="داخستن"
+                  title="داخستنی پەخشکەر"
+                  className="sm:hidden w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleClosePlayer}
+                  title="داخستنی پەخشکەر"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-xs font-semibold font-sirwan transition-colors cursor-pointer shrink-0"
+                >
+                  <span>داخستن</span>
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
 
-            <a
-              href={`https://www.youtube.com/watch?v=${resolvedYouTubeId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-sirwan text-zinc-500 hover:text-red-500 dark:text-zinc-400 dark:hover:text-red-400 transition-colors"
-            >
-              <span>کردنەوە لە یووتووب</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+            <LiteYouTube videoId={resolvedYouTubeId} title={title} />
           </div>
-
-          <LiteYouTube videoId={resolvedYouTubeId} title={title} />
-        </div>
+        )}
       </section>
     );
   }
