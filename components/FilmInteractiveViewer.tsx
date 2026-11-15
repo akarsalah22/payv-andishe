@@ -10,7 +10,6 @@ import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
-  Film as FilmIcon,
 } from "lucide-react";
 import { TelegramIcon } from "@/components/TelegramIcon";
 import { YouTubeIcon } from "@/components/YouTubeIcon";
@@ -213,80 +212,29 @@ export function FilmInteractiveViewer({
               )}
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons: Single Primary Watch Button */}
             <div className="pt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 w-full">
               {hasEpisodes ? (
-                <>
-                  {/* Multi-Episode Series: Main Watch Button */}
-                  <button
-                    type="button"
-                    onClick={() => handleSelectEpisode(0)}
-                    className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-lg shadow-amber-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
-                  >
-                    <Play className="w-5 h-5 fill-current shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                    <span>تەماشاکردنی زنجیرە (ئەڵقەی ١)</span>
-                  </button>
-
-                  {/* Secondary Telegram channel button if available */}
-                  {film.telegramPostUrl && !film.telegramPostUrl.includes("ok.ru") && (
-                    <a
-                      href={film.telegramPostUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-semibold font-sirwan text-xs sm:text-sm bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/30 hover:bg-sky-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
-                    >
-                      <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                      <span>کەناڵی تێلیگرام</span>
-                    </a>
-                  )}
-
-                  {/* Secondary OK.ru button if available */}
-                  {okruEmbedUrl && (
-                    <button
-                      type="button"
-                      onClick={() => handleSelectEpisode(0)}
-                      className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-semibold font-sirwan text-xs sm:text-sm bg-orange-500/15 text-orange-700 dark:text-orange-300 border border-orange-500/30 hover:bg-orange-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
-                    >
-                      <OkRuIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                      <span>سەیرکردن لە OK.ru</span>
-                    </button>
-                  )}
-                </>
+                /* Multi-Episode Series: Main Watch Button */
+                <button
+                  type="button"
+                  onClick={() => handleSelectEpisode(0)}
+                  className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-lg shadow-amber-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
+                >
+                  <Play className="w-5 h-5 fill-current shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                  <span>تەماشاکردنی زنجیرە (ئەڵقەی ١)</span>
+                </button>
               ) : okruEmbedUrl ? (
-                <>
-                  <a
-                    href="#in-site-player"
-                    className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base bg-orange-500 hover:bg-orange-400 text-white shadow-lg shadow-orange-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
-                  >
-                    <OkRuIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                    <span>سەیرکردنی فیلم لێرە (OK.ru)</span>
-                  </a>
-
-                  {film.telegramPostUrl && !film.telegramPostUrl.includes("ok.ru") && (
-                    <a
-                      href={film.telegramPostUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-semibold font-sirwan text-xs sm:text-sm bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/30 hover:bg-sky-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
-                    >
-                      <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                      <span>کەناڵی تێلیگرام</span>
-                    </a>
-                  )}
-
-                  {youtubeId && (
-                    <a
-                      href={`https://www.youtube.com/watch?v=${youtubeId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-semibold font-sirwan text-xs sm:text-sm bg-red-500/15 text-red-700 dark:text-red-300 border border-red-500/30 hover:bg-red-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
-                    >
-                      <YouTubeIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                      <span>یووتووب (YouTube)</span>
-                    </a>
-                  )}
-                </>
+                /* Single Film: OK.ru Direct Video Watch Button */
+                <a
+                  href="#in-site-player"
+                  className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base bg-orange-500 hover:bg-orange-400 text-white shadow-lg shadow-orange-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
+                >
+                  <OkRuIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                  <span>سەیرکردنی فیلم لێرە (OK.ru)</span>
+                </a>
               ) : (
+                /* Single Film: YouTube or Direct Platform Watch Button */
                 <a
                   href="#in-site-player"
                   className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base active:scale-95 transition-all duration-200 cursor-pointer ${
