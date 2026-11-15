@@ -98,7 +98,7 @@ export default async function HomePage() {
         <div className="flex items-end justify-between border-b border-zinc-200/80 dark:border-zinc-800/70 pb-4">
           <div>
             <span className="text-xs font-semibold font-sirwan text-amber-600 dark:text-amber-400 tracking-normal block mb-1">
-              ئەدەب و فیکر
+               مێژوو و ئەدەب
             </span>            <h2 className="text-xl sm:text-2xl font-bold font-peshang tracking-normal text-zinc-900 dark:text-zinc-100 leading-normal">
               نوێترین نووسین
             </h2>

@@ -89,9 +89,14 @@ export function ArticleReaderView({ article }: ArticleReaderViewProps) {
               id: article.id || article.slug,
               title: article.title,
               imageUrl: imageSource || '/placeholder-article.jpg',
+              coverImage: imageSource || '/placeholder-article.jpg',
               type: 'writing',
               slug: article.slug || article.id,
               category: article.category,
+              imageFit,
+              imageZoom,
+              imagePosX,
+              imagePosY,
             }}
             variant="pill"
           />

@@ -6,7 +6,9 @@ export interface SavedItem {
   id: string;
   title: string;
   imageUrl: string;
-  type: 'movie' | 'writing';
+  coverImage?: string;
+  image?: string;
+  type: 'movie' | 'writing' | 'cartoon' | 'article';
   slug?: string;
   category?: string;
   year?: number | string;

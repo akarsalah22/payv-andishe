@@ -78,9 +78,14 @@ export function ArticleCard({ article, priority = false }: ArticleCardProps) {
               id: article.id || article.slug,
               title: article.title,
               imageUrl: coverSrc,
+              coverImage: coverSrc,
               type: 'writing',
               slug: article.slug || article.id,
               category: article.category,
+              imageFit: article.imageFit,
+              imageZoom: article.imageZoom,
+              imagePosX: article.imagePosX,
+              imagePosY: article.imagePosY,
             }}
           />
         </div>

@@ -23,21 +23,24 @@ export default function SavedPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [confirmClear, setConfirmClear] = useState(false);
 
+  const isMovieType = (type?: string) => type === 'movie' || type === 'cartoon';
+  const isWritingType = (type?: string) => type === 'writing' || type === 'article';
+
   const moviesCount = useMemo(
-    () => favorites.filter((item) => item.type === 'movie').length,
+    () => favorites.filter((item) => isMovieType(item.type)).length,
     [favorites]
   );
   const writingsCount = useMemo(
-    () => favorites.filter((item) => item.type === 'writing').length,
+    () => favorites.filter((item) => isWritingType(item.type)).length,
     [favorites]
   );
 
   const filteredItems = useMemo(() => {
     if (activeFilter === 'movies') {
-      return favorites.filter((item) => item.type === 'movie');
+      return favorites.filter((item) => isMovieType(item.type));
     }
     if (activeFilter === 'writings') {
-      return favorites.filter((item) => item.type === 'writing');
+      return favorites.filter((item) => isWritingType(item.type));
     }
     return favorites;
   }, [favorites, activeFilter]);
@@ -190,77 +193,134 @@ export default function SavedPage() {
               هیچ بەرهەمێک لەم بەشەدا پاشەکەوت نەکراوە.
             </div>
           ) : (
-            <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-5">
+            <div
+              className={
+                activeFilter === 'writings'
+                  ? 'w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'
+                  : activeFilter === 'all'
+                  ? 'w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5'
+                  : 'w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-5'
+              }
+            >
               {filteredItems.map((item) => {
-                const targetUrl =
-                  item.type === 'movie'
-                    ? `/films/${encodeURIComponent(item.slug || item.id)}`
-                    : `/articles/${encodeURIComponent(item.slug || item.id)}`;
+                const isWriting = isWritingType(item.type);
+                const targetUrl = isWriting
+                  ? `/articles/${encodeURIComponent(item.slug || item.id)}`
+                  : `/films/${encodeURIComponent(item.slug || item.id)}`;
+
+                const imageSource =
+                  item.coverImage ||
+                  item.image ||
+                  item.imageUrl ||
+                  (isWriting ? '/placeholder-article.jpg' : '/placeholder.jpg');
 
                 return (
                   <div
                     key={item.id}
-                    className="group relative flex flex-col rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10"
+                    className={`group relative flex flex-col rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10 ${
+                      activeFilter === 'all' && isWriting ? 'col-span-2 sm:col-span-1' : ''
+                    }`}
                   >
                     {/* Image Link Container */}
-                    <Link
-                      href={targetUrl}
-                      className="relative block w-full aspect-[2/3] overflow-hidden bg-zinc-100 dark:bg-zinc-950"
-                    >
-                      <div className="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-500 group-hover:scale-105 pointer-events-none">
-                        {item.type === 'movie' && item.imageFit === 'contain' ? (
-                          <>
-                            {/* Ambient Blurred Background */}
-                            <Image
-                              src={item.imageUrl || '/placeholder.jpg'}
+                    {isWriting ? (
+                      /* Writings Cover: 16:9 Landscape Video Aspect Ratio without cropping */
+                      <Link
+                        href={targetUrl}
+                        className="relative block w-full overflow-hidden"
+                      >
+                        <div className="relative w-full aspect-video overflow-hidden bg-zinc-900">
+                          <img
+                            src={imageSource}
+                            alt={item.title}
+                            className={`w-full h-full ${
+                              item.imageFit === 'contain' ? 'object-contain relative z-10' : 'object-cover'
+                            }`}
+                            style={{
+                              objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
+                              transform: `scale(${(item.imageZoom ?? 100) / 100})`,
+                            }}
+                          />
+                          {item.imageFit === 'contain' && (
+                            <img
+                              src={imageSource}
                               alt=""
-                              fill
                               aria-hidden="true"
-                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
                               className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
                             />
-                            {/* Foreground Contained Poster */}
+                          )}
+
+                          {/* Gradient Overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-20 pointer-events-none" />
+
+                          {/* Top Badges */}
+                          <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
+                            <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
+                              {item.category || 'نووسین'}
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    ) : (
+                      /* Movies Poster: 2:3 Portrait Aspect Ratio */
+                      <Link
+                        href={targetUrl}
+                        className="relative block w-full aspect-[2/3] overflow-hidden bg-zinc-100 dark:bg-zinc-950"
+                      >
+                        <div className="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-500 group-hover:scale-105 pointer-events-none">
+                          {item.imageFit === 'contain' ? (
+                            <>
+                              {/* Ambient Blurred Background */}
+                              <Image
+                                src={imageSource}
+                                alt=""
+                                fill
+                                aria-hidden="true"
+                                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                                className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
+                              />
+                              {/* Foreground Contained Poster */}
+                              <div className="relative z-10 w-full h-full overflow-hidden">
+                                <Image
+                                  src={imageSource}
+                                  alt={item.title}
+                                  fill
+                                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                                  className="w-full h-full object-contain transition-transform duration-300"
+                                  style={{
+                                    objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
+                                    transform: `scale(${(item.imageZoom ?? 100) / 100})`,
+                                  }}
+                                />
+                              </div>
+                            </>
+                          ) : (
                             <div className="relative z-10 w-full h-full overflow-hidden">
                               <Image
-                                src={item.imageUrl || '/placeholder.jpg'}
+                                src={imageSource}
                                 alt={item.title}
                                 fill
                                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                                className="w-full h-full object-contain transition-transform duration-300"
+                                className="w-full h-full object-cover transition-transform duration-300"
                                 style={{
                                   objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
                                   transform: `scale(${(item.imageZoom ?? 100) / 100})`,
                                 }}
                               />
                             </div>
-                          </>
-                        ) : (
-                          <div className="relative z-10 w-full h-full overflow-hidden">
-                            <Image
-                              src={item.imageUrl || '/placeholder.jpg'}
-                              alt={item.title}
-                              fill
-                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                              className="w-full h-full object-cover transition-transform duration-300"
-                              style={{
-                                objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
-                                transform: `scale(${(item.imageZoom ?? 100) / 100})`,
-                              }}
-                            />
-                          </div>
-                        )}
-                      </div>
+                          )}
+                        </div>
 
-                      {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-20 pointer-events-none" />
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-20 pointer-events-none" />
 
-                      {/* Top Badges */}
-                      <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
-                        <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
-                          {item.type === 'movie' ? (item.category || 'فیلم') : 'نووسین'}
-                        </span>
-                      </div>
-                    </Link>
+                        {/* Top Badges */}
+                        <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
+                          <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
+                            {item.category || 'فیلم'}
+                          </span>
+                        </div>
+                      </Link>
+                    )}
 
                     {/* Quick Removal Button (Top Left Overlay) */}
                     <button
@@ -272,7 +332,7 @@ export default function SavedPage() {
                       }}
                       title="سڕینەوە لە هەڵگیراوەکان"
                       aria-label="سڕینەوە لە هەڵگیراوەکان"
-                      className="absolute top-2 left-2 z-20 p-1.5 rounded-full bg-black/70 hover:bg-rose-600 text-white/80 hover:text-white backdrop-blur-md border border-white/20 transition-all duration-200 cursor-pointer active:scale-75 shadow-xs"
+                      className="absolute top-2 left-2 z-30 p-1.5 rounded-full bg-black/70 hover:bg-rose-600 text-white/80 hover:text-white backdrop-blur-md border border-white/20 transition-all duration-200 cursor-pointer active:scale-75 shadow-xs"
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -286,7 +346,7 @@ export default function SavedPage() {
                       </Link>
 
                       <div className="flex items-center justify-between text-[11px] font-sirwan text-zinc-500 dark:text-zinc-400 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
-                        <span>{item.type === 'movie' ? 'بینینی فیلم' : 'خوێندنەوە'}</span>
+                        <span>{isWriting ? 'خوێندنەوە' : 'بینینی فیلم'}</span>
                         <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1 text-amber-500" />
                       </div>
                     </div>

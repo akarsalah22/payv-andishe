@@ -1,5 +1,83 @@
 [
   {
+    "id": "film-1794673502151",
+    "slug": "یارانی-ئەشکەوت",
+    "titleKurdish": "یارانی ئەشکەوت",
+    "originalTitle": "The Men of Angelos",
+    "year": 1997,
+    "duration": "29 ئەڵقەیە، هەر ئەڵقەیەک 32 خولەکە.",
+    "category": "زنجیرەفیلم",
+    "genres": [
+      "دراما",
+      "مێژووی",
+      "ژیاننامە"
+    ],
+    "posterUrl": "https://i.ibb.co/Z1t89mHy/1794671826906.jpg",
+    "description": "ئەمیش زنجیرەیەکی زۆر بەناوبانگە، باس لە یارانی ئەشکەوت ئەکا. تەبعەن لە قورئانا هەیە ئەم چیرۆکە.",
+    "platform": "youtube",
+    "watchUrl": "https://youtube.com/playlist?list=PLCliBIDpUyfZi0eN4s9jNWGMDp1ZwwoF0&si=Uank0lU_0HZ5DLtO",
+    "telegramPostUrl": "https://youtube.com/playlist?list=PLCliBIDpUyfZi0eN4s9jNWGMDp1ZwwoF0&si=Uank0lU_0HZ5DLtO",
+    "parts": [
+      {
+        "partNumber": 1,
+        "title": "ئەڵقەی ١",
+        "youtubeUrl": "https://youtu.be/zj_PtdxfNnE?si=KuysLLdXhULSr16s",
+        "duration": "۳۲ خولەک",
+        "url": "https://youtu.be/zj_PtdxfNnE?si=KuysLLdXhULSr16s"
+      },
+      {
+        "partNumber": 2,
+        "title": "ئەڵقەی ٢",
+        "youtubeUrl": "https://youtu.be/GazKvqHx9kQ?si=eyGlUzZAerlITeze",
+        "duration": "۳۲ خولەک",
+        "url": "https://youtu.be/GazKvqHx9kQ?si=eyGlUzZAerlITeze"
+      }
+    ],
+    "imageFit": "contain",
+    "imageZoom": 102,
+    "imagePosX": 50,
+    "imagePosY": 50
+  },
+  {
+    "id": "film-1794672533256",
+    "slug": "پێغەمبەر-یوسف",
+    "titleKurdish": "پێغەمبەر یوسف",
+    "originalTitle": "Prophet Joseph",
+    "year": 2008,
+    "duration": "هەر ئەڵقەیەک نزیکی 45 خولەکە، وە 45 ئەڵقەشە.",
+    "category": "زنجیرەفیلم",
+    "genres": [
+      "دراما",
+      "مێژووی",
+      "ژیاننامە"
+    ],
+    "posterUrl": "https://i.ibb.co/JFrZ8Sqr/1794671620166.jpg",
+    "description": "زنجیرەیەکی ناوبانگیشە، باس لە ژیانی پێغەمەر یوسف ئەکات.",
+    "platform": "youtube",
+    "watchUrl": "https://youtube.com/playlist?list=PLIJI8j4JxwrLa1OIbd0MiEjkYdNA4qmAM&si=WT9U8ltH1oVI2IAg",
+    "telegramPostUrl": "https://youtube.com/playlist?list=PLIJI8j4JxwrLa1OIbd0MiEjkYdNA4qmAM&si=WT9U8ltH1oVI2IAg",
+    "parts": [
+      {
+        "partNumber": 1,
+        "title": "ئەڵقەی ١",
+        "youtubeUrl": "https://youtu.be/1M-AfhjW_7o?feature=shared",
+        "duration": "44 خولەک",
+        "url": "https://youtu.be/1M-AfhjW_7o?feature=shared"
+      },
+      {
+        "partNumber": 2,
+        "title": "ئەڵقەی ٢",
+        "youtubeUrl": "https://youtu.be/8cfttuTanss?feature=shared",
+        "duration": "48 خولەک",
+        "url": "https://youtu.be/8cfttuTanss?feature=shared"
+      }
+    ],
+    "imageFit": "contain",
+    "imageZoom": 102,
+    "imagePosX": 50,
+    "imagePosY": 50
+  },
+  {
     "id": "film-1794068708340",
     "slug": "پێغەمبەر-ساڵح",
     "titleKurdish": "پێغەمبەر ساڵح",
@@ -14,9 +92,9 @@
     ],
     "posterUrl": "https://i.ibb.co/fGkzn5xB/1794610130701.jpg",
     "description": "چیرۆکی پێغەمبەر صاڵح.",
-    "platform": "telegram",
-    "watchUrl": "https://t.me/mediay_islamy/13",
-    "telegramPostUrl": "https://t.me/mediay_islamy/13",
+    "platform": "youtube",
+    "watchUrl": "https://youtu.be/dvQmsUHVW8g?si=BoDFGpJNr7m7GDE9",
+    "telegramPostUrl": "https://youtu.be/dvQmsUHVW8g?si=BoDFGpJNr7m7GDE9",
     "parts": [],
     "imageFit": "contain",
     "imageZoom": 103,
@@ -38,9 +116,9 @@
     ],
     "posterUrl": "https://i.ibb.co/jvZTjgkZ/1794610080447.jpg",
     "description": "چیرۆکی پێغەمبەر موسایە، کە ڕوو بەڕووی فیرعەون و دار و دەسەکەی ئەوەستێت.",
-    "platform": "telegram",
-    "watchUrl": "https://t.me/mediay_islamy/8",
-    "telegramPostUrl": "https://t.me/mediay_islamy/8",
+    "platform": "youtube",
+    "watchUrl": "https://youtu.be/8fLIUVXeslk?si=MJ0O92obWfnjQFXC",
+    "telegramPostUrl": "https://youtu.be/8fLIUVXeslk?si=MJ0O92obWfnjQFXC",
     "parts": [],
     "imageFit": "contain",
     "imageZoom": 102,
@@ -85,9 +163,9 @@
     ],
     "posterUrl": "https://i.ibb.co/v6ZsYv4g/1794608432533.jpg",
     "description": "بیلالی حەبەشی، یەکێکە لە سەحابەکان، کەم کەسمان ناو چیرۆکی ئەومان نەبیستووە.\n\nتێبینی: ، کارتۆنەکە بە سێ بەش دانراوە، بەس کێشەی نییە، بە دوای یەکا لە تێلیگرام دامانناوە.",
-    "platform": "telegram",
-    "watchUrl": "https://t.me/mediay_islamy/17  بەشی دووەم: https://t.me/mediay_islamy/19  بەشی سێیەم: https://t.me/mediay_islamy/21",
-    "telegramPostUrl": "https://t.me/mediay_islamy/17  بەشی دووەم: https://t.me/mediay_islamy/19  بەشی سێیەم: https://t.me/mediay_islamy/21",
+    "platform": "youtube",
+    "watchUrl": "https://ok.ru/video/16595266964015",
+    "telegramPostUrl": "https://ok.ru/video/16595266964015",
     "parts": [],
     "imageFit": "contain",
     "imageZoom": 102,
@@ -155,9 +233,9 @@
     ],
     "posterUrl": "https://i.ibb.co/MDGHBPGn/1794620530754.jpg",
     "description": "سەرەتای بانگەوازی ئیسلام",
-    "platform": "telegram",
-    "watchUrl": "https://t.me/mediay_islamy/11",
-    "telegramPostUrl": "https://t.me/mediay_islamy/11",
+    "platform": "youtube",
+    "watchUrl": "https://youtu.be/0sNUU_KbNgU?si=eGU445UKpJw8p5L3",
+    "telegramPostUrl": "https://youtu.be/0sNUU_KbNgU?si=eGU445UKpJw8p5L3",
     "parts": [],
     "imageFit": "contain",
     "imageZoom": 102,
