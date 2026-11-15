@@ -1,14 +1,10 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import {
   ChevronRight,
   ChevronLeft,
-  Calendar,
-  Clock,
   Film as FilmIcon,
   Sparkles,
-  ExternalLink,
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import { readFilms } from '@/lib/storage';
@@ -20,16 +16,12 @@ import {
   getFilmWatchUrl,
   extractYouTubeId,
   getFilmTelegramParts,
-  extractOkRuVideoId,
   getOkRuEmbedUrl,
 } from '@/data/films';
 import { FilmCard } from '@/components/FilmCard';
 import { ShareButton } from '@/components/ShareButton';
 import { FavoriteButton } from '@/components/FavoriteButton';
-import { MediaViewer } from '@/components/MediaViewer';
-import { TelegramIcon } from '@/components/TelegramIcon';
-import { YouTubeIcon } from '@/components/YouTubeIcon';
-import { OkRuIcon } from '@/components/OkRuIcon';
+import { FilmInteractiveViewer } from '@/components/FilmInteractiveViewer';
 
 export const revalidate = 1800;
 export const dynamicParams = true;
@@ -166,14 +158,8 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
   }
 
   const posterSrc = film.posterUrl || '/placeholder.jpg';
-  const fit = film.imageFit ?? 'contain';
-  const zoom = (film.imageZoom ?? 100) / 100;
-  const posX = film.imagePosX ?? 50;
-  const posY = film.imagePosY ?? 50;
-  const isDataUrl = posterSrc.startsWith('data:');
   const watchUrl = getFilmWatchUrl(film);
   const platform = getFilmPlatform(film);
-  const isYouTube = platform === 'youtube';
 
   const youtubeId =
     film.youtubeId ||
@@ -195,7 +181,7 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
   // Related films from other entries
   const relatedFilms = films
     .filter((f) => f.id !== film.id && f.slug !== film.slug)
-    .slice(0, 4);
+    .slice(0, 6);
 
   return (
     <article
@@ -242,256 +228,15 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
         </div>
       </div>
 
-      {/* Main Hero / Backdrop Showcase Card */}
-      <div className="relative w-full rounded-3xl overflow-hidden p-6 sm:p-8 transition-colors duration-200 bg-white border border-zinc-200 shadow-md dark:bg-zinc-900 dark:border-zinc-800 dark:shadow-2xl">
-        {/* Ambient Blurred Backdrop (Dark mode only for cinematic glow, clean white in light mode) */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none hidden dark:block">
-          <Image
-            src={posterSrc}
-            alt=""
-            aria-hidden="true"
-            fill
-            sizes="100px"
-            className="object-cover blur-2xl opacity-25 scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/85 to-zinc-900/40" />
-        </div>
-
-        {/* Hero Content Grid */}
-        <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8">
-          {/* Poster Card with Custom Framing & Zoom Clipping */}
-          <div className="relative w-44 sm:w-56 md:w-60 aspect-[2/3] shrink-0 rounded-2xl overflow-hidden shadow-xl border border-zinc-200/80 dark:border-white/15 bg-zinc-100 dark:bg-zinc-800 group">
-            <div className="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none">
-              {fit === 'contain' ? (
-                <>
-                  {/* Ambient Blurred Background Layer (eliminates ugly empty/black bars) */}
-                  <Image
-                    src={posterSrc}
-                    alt=""
-                    fill
-                    aria-hidden="true"
-                    unoptimized={isDataUrl}
-                    sizes="(max-width: 640px) 176px, (max-width: 768px) 224px, 240px"
-                    className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none select-none"
-                  />
-
-                  {/* Foreground Contained Poster with Dynamic Focal Point & Zoom */}
-                  <div className="relative z-10 w-full h-full overflow-hidden">
-                    <Image
-                      src={posterSrc}
-                      alt={film.titleKurdish}
-                      fill
-                      priority
-                      unoptimized={isDataUrl}
-                      sizes="(max-width: 640px) 176px, (max-width: 768px) 224px, 240px"
-                      className="w-full h-full object-contain transition-transform duration-300 select-none"
-                      style={{
-                        objectPosition: `${posX}% ${posY}%`,
-                        transform: `scale(${zoom})`,
-                      }}
-                    />
-                  </div>
-                </>
-              ) : (
-                /* Cover Fill Mode with Dynamic Focal Point & Zoom */
-                <div className="relative z-10 w-full h-full overflow-hidden">
-                  <Image
-                    src={posterSrc}
-                    alt={film.titleKurdish}
-                    fill
-                    priority
-                    unoptimized={isDataUrl}
-                    sizes="(max-width: 640px) 176px, (max-width: 768px) 224px, 240px"
-                    className="w-full h-full object-cover transition-transform duration-300 select-none"
-                    style={{
-                      objectPosition: `${posX}% ${posY}%`,
-                      transform: `scale(${zoom})`,
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Subtle Gradient On Poster */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none z-20" />
-          </div>
-
-          {/* Details & Metadata Column */}
-          <div className="flex-1 text-center md:text-right space-y-4 w-full">
-            {/* Badges Bar */}
-            <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap">
-              <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-amber-500 text-zinc-950 shadow-sm">
-                {film.category}
-              </span>
-              {film.genres &&
-                Array.from(new Set(film.genres.map((g) => g.trim()).filter(Boolean))).map((g, idx) => (
-                  <span
-                    key={`genre-${g}-${idx}`}
-                    className="px-2.5 py-1 rounded-full text-xs font-medium font-sirwan bg-zinc-100 text-zinc-700 dark:bg-white/10 dark:text-zinc-200 border border-zinc-200/80 dark:border-white/10 shadow-2xs"
-                  >
-                    {g}
-                  </span>
-                ))}
-            </div>
-
-            {/* Title & Original Title */}
-            <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-peshang text-zinc-900 dark:text-white leading-normal">
-                {film.titleKurdish}
-              </h1>
-              {film.originalTitle && (
-                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-sans mt-1">
-                  {film.originalTitle}
-                </p>
-              )}
-            </div>
-
-            {/* Quick Metadata Row */}
-            <div className="flex items-center justify-center md:justify-start gap-4 text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 font-sirwan flex-wrap pt-1">
-              <span className="inline-flex items-center gap-1.5">
-                <Calendar className="w-4 h-4 text-amber-500 dark:text-amber-400" strokeWidth={1.75} />
-                <span>ساڵی بەرهەمهێنان: {film.year}</span>
-              </span>
-              {film.duration && (
-                <>
-                  <span className="text-zinc-400 dark:text-zinc-600">•</span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <Clock className="w-4 h-4 text-amber-500 dark:text-amber-400" strokeWidth={1.75} />
-                    <span>ماوە: {film.duration}</span>
-                  </span>
-                </>
-              )}
-            </div>
-
-            {/* Action Buttons: OK.ru Direct Player, YouTube, and/or Telegram */}
-            <div className="pt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 w-full">
-              {okruEmbedUrl ? (
-                <>
-                  <a
-                    href="#media-player"
-                    className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base bg-orange-500 hover:bg-orange-400 text-white shadow-lg shadow-orange-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
-                  >
-                    <OkRuIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                    <span>سەیرکردنی فیلم لێرە (OK.ru)</span>
-                  </a>
-
-                  {/* Secondary Telegram channel button if available */}
-                  {film.telegramPostUrl && !film.telegramPostUrl.includes('ok.ru') && (
-                    <a
-                      href={film.telegramPostUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-semibold font-sirwan text-xs sm:text-sm bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/30 hover:bg-sky-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
-                    >
-                      <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                      <span>کەناڵی تێلیگرام</span>
-                    </a>
-                  )}
-
-                  {/* Secondary YouTube button if available */}
-                  {youtubeId && (
-                    <a
-                      href={`https://www.youtube.com/watch?v=${youtubeId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-semibold font-sirwan text-xs sm:text-sm bg-red-500/15 text-red-700 dark:text-red-300 border border-red-500/30 hover:bg-red-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
-                    >
-                      <YouTubeIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                      <span>یووتووب (YouTube)</span>
-                    </a>
-                  )}
-                </>
-              ) : (
-                <a
-                  href="#media-player"
-                  className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base active:scale-95 transition-all duration-200 cursor-pointer ${
-                    isYouTube
-                      ? 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/25'
-                      : 'bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-lg shadow-amber-500/25'
-                  }`}
-                >
-                  {isYouTube ? (
-                    <YouTubeIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                  ) : (
-                    <TelegramIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                  )}
-                  <span>
-                    {isYouTube
-                      ? 'تەماشاکردنی فیلم (یووتووب)'
-                      : telegramParts.length > 1
-                      ? `تەماشاکردنی فیلم (${telegramParts.length} بەش)`
-                      : 'تەماشاکردنی فیلم ڕاستەوخۆ'}
-                  </span>
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Unified Intelligent Media Viewer (OK.ru Embed / YouTube / Public Telegram Embed / Private Fallback) */}
-      <section id="media-player" className="w-full scroll-mt-24 space-y-6">
-        {okruEmbedUrl ? (
-          <div className="w-full space-y-3.5 text-right" dir="rtl">
-            <div className="flex items-center justify-between pb-2 border-b border-zinc-200/80 dark:border-zinc-800/80">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-500 flex items-center justify-center">
-                  <OkRuIcon className="w-4 h-4" />
-                </div>
-                <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-                  پەخشی ڕاستەوخۆ (OK.ru)
-                </h2>
-              </div>
-
-              {okruSource && (
-                <a
-                  href={
-                    okruSource.startsWith('http')
-                      ? okruSource
-                      : `https://ok.ru/video/${extractOkRuVideoId(okruSource)}`
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-sirwan text-zinc-500 hover:text-orange-500 dark:text-zinc-400 dark:hover:text-orange-400 transition-colors"
-                >
-                  <span>کردنەوە لە OK.ru</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              )}
-            </div>
-
-            <div className="w-full aspect-video rounded-2xl overflow-hidden bg-black border border-zinc-200 dark:border-zinc-800 shadow-xl">
-              <iframe
-                src={okruEmbedUrl}
-                className="w-full h-full border-0"
-                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-                allowFullScreen
-                loading="lazy"
-                title={film.titleKurdish}
-              />
-            </div>
-
-            {telegramParts.length > 1 && (
-              <div className="pt-2">
-                <MediaViewer
-                  title={film.titleKurdish}
-                  watchUrl={watchUrl}
-                  telegramPostUrl={film.telegramPostUrl}
-                  parts={telegramParts}
-                />
-              </div>
-            )}
-          </div>
-        ) : (
-          <MediaViewer
-            title={film.titleKurdish}
-            watchUrl={watchUrl}
-            telegramPostUrl={film.telegramPostUrl}
-            youtubeId={film.youtubeId || youtubeId || undefined}
-            parts={telegramParts}
-          />
-        )}
-      </section>
+      {/* Main Interactive Hero Showcase & In-Site Theater Video Player */}
+      <FilmInteractiveViewer
+        film={film}
+        episodes={telegramParts}
+        okruEmbedUrl={okruEmbedUrl}
+        okruSource={okruSource}
+        youtubeId={film.youtubeId || youtubeId || undefined}
+        watchUrl={watchUrl}
+      />
 
       {/* Full Synopsis / Story Section (کورتەی چیرۆک) */}
       <section className="w-full rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80 p-5 sm:p-8 space-y-4 shadow-xs text-right">

@@ -1,13 +1,15 @@
 "use client";
 
+import React, { useState } from "react";
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import { Play, X, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { LiteYouTube } from "@/components/LiteYouTube";
 import { TelegramParts, type TelegramPartItem } from "@/components/TelegramParts";
 import { TelegramIcon } from "@/components/TelegramIcon";
 import { YouTubeIcon } from "@/components/YouTubeIcon";
 import { OkRuIcon } from "@/components/OkRuIcon";
-import { extractYouTubeId, extractOkRuVideoId, getOkRuEmbedUrl } from "@/data/films";
+import { extractYouTubeId, extractOkRuVideoId, getOkRuEmbedUrl, toKurdishNumber } from "@/data/films";
+import { getEmbedInfo } from "@/lib/videoEmbed";
 
 export interface MediaViewerProps {
   title: string;
@@ -20,6 +22,14 @@ export interface MediaViewerProps {
   className?: string;
 }
 
+function getEpisodePlayableUrl(part: TelegramPartItem): string {
+  if (part.youtubeUrl && part.youtubeUrl.trim()) return part.youtubeUrl.trim();
+  if (part.okruUrl && part.okruUrl.trim()) return part.okruUrl.trim();
+  if (part.url && !part.url.includes("t.me")) return part.url.trim();
+  if (part.telegramUrl && !part.telegramUrl.includes("t.me")) return part.telegramUrl.trim();
+  return (part.url || part.telegramUrl || "").trim();
+}
+
 export function MediaViewer({
   title,
   posterUrl,
@@ -30,15 +40,167 @@ export function MediaViewer({
   parts = [],
   className = "",
 }: MediaViewerProps) {
-  // 1. Multi-Part Check
-  const hasMultipleParts = Array.isArray(parts) && parts.length > 1;
+  const [activeEpisodeIndex, setActiveEpisodeIndex] = useState<number | null>(null);
 
-  // 2. OK.ru Video Embed Check
-  const resolvedOkRuEmbedUrl = getOkRuEmbedUrl(okruUrl || (watchUrl?.includes('ok.ru') ? watchUrl : undefined));
-  if (resolvedOkRuEmbedUrl) {
-    const rawOkRuSource = okruUrl || watchUrl || '';
+  const hasMultipleParts = Array.isArray(parts) && parts.length > 0;
+
+  const handleSelectEpisode = (index: number) => {
+    setActiveEpisodeIndex(index);
+    setTimeout(() => {
+      const playerEl = document.getElementById("in-site-player");
+      if (playerEl) {
+        playerEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 60);
+  };
+
+  const handleClosePlayer = () => {
+    setActiveEpisodeIndex(null);
+  };
+
+  // 1. Multi-Part / Multi-Episode Interactive Theater Player
+  if (hasMultipleParts) {
+    const currentEpisode =
+      activeEpisodeIndex !== null && parts[activeEpisodeIndex]
+        ? parts[activeEpisodeIndex]
+        : null;
+
+    const currentEpisodeUrl = currentEpisode
+      ? getEpisodePlayableUrl(currentEpisode)
+      : "";
+
+    const currentEmbed = currentEpisodeUrl ? getEmbedInfo(currentEpisodeUrl) : null;
+
     return (
-      <section className={`w-full space-y-6 text-right ${className}`} dir="rtl">
+      <section id="in-site-player" className={`w-full space-y-6 text-right ${className}`} dir="rtl">
+        {activeEpisodeIndex !== null && currentEpisode ? (
+          <div className="w-full space-y-3.5 rounded-3xl bg-zinc-900 border border-zinc-800 p-4 sm:p-6 shadow-2xl">
+            {/* Top Bar */}
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center shrink-0">
+                  <Play className="w-4 h-4 fill-current" />
+                </div>
+                <h2 className="text-sm sm:text-base font-bold font-peshang text-white truncate">
+                  {title} —{" "}
+                  <span className="text-amber-400">
+                    {currentEpisode.title || `ئەڵقەی ${toKurdishNumber(activeEpisodeIndex + 1)}`}
+                  </span>
+                </h2>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleClosePlayer}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-xs font-semibold font-sirwan transition-colors cursor-pointer shrink-0"
+              >
+                <span>داخستن</span>
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* 16:9 Responsive Player */}
+            <div className="w-full aspect-video rounded-2xl overflow-hidden bg-black border border-zinc-800 shadow-xl relative">
+              {currentEmbed?.type === "video" ? (
+                <video
+                  key={currentEmbed.src}
+                  src={currentEmbed.src}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="w-full h-full object-contain bg-black"
+                />
+              ) : currentEmbed?.type === "iframe" ? (
+                <iframe
+                  key={currentEmbed.src}
+                  src={currentEmbed.src}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
+                  allowFullScreen
+                  loading="lazy"
+                  title={`${title} - ${currentEpisode.title || activeEpisodeIndex + 1}`}
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center space-y-3">
+                  <p className="text-sm text-zinc-300 font-sirwan">
+                    ئەم ئەڵقەیە لە ڕێگەی تێلیگرامەوە بەردەستە:
+                  </p>
+                  {currentEpisodeUrl && (
+                    <a
+                      href={currentEpisodeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-bold font-sirwan text-sm transition-all"
+                    >
+                      <TelegramIcon className="w-4 h-4" />
+                      <span>کردنەوە لە تێلیگرام</span>
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Next / Prev Controls */}
+            {parts.length > 1 && (
+              <div className="flex items-center justify-between pt-2">
+                <button
+                  type="button"
+                  disabled={activeEpisodeIndex === 0}
+                  onClick={() => handleSelectEpisode(activeEpisodeIndex - 1)}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold font-sirwan transition-all cursor-pointer ${
+                    activeEpisodeIndex === 0
+                      ? "opacity-35 cursor-not-allowed bg-zinc-800 text-zinc-500"
+                      : "bg-zinc-800 hover:bg-zinc-700 text-zinc-200 active:scale-95"
+                  }`}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                  <span>ئەڵقەی پێشوو</span>
+                </button>
+
+                <div className="text-xs sm:text-sm font-bold font-sirwan text-zinc-400">
+                  ئەڵقەی{" "}
+                  <span className="text-amber-400">
+                    {toKurdishNumber(activeEpisodeIndex + 1)}
+                  </span>{" "}
+                  لە {toKurdishNumber(parts.length)}
+                </div>
+
+                <button
+                  type="button"
+                  disabled={activeEpisodeIndex === parts.length - 1}
+                  onClick={() => handleSelectEpisode(activeEpisodeIndex + 1)}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold font-sirwan transition-all cursor-pointer ${
+                    activeEpisodeIndex === parts.length - 1
+                      ? "opacity-35 cursor-not-allowed bg-zinc-800 text-zinc-500"
+                      : "bg-amber-500 hover:bg-amber-400 text-zinc-950 active:scale-95 shadow-sm shadow-amber-500/20"
+                  }`}
+                >
+                  <span>ئەڵقەی دواتر</span>
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        ) : null}
+
+        {/* Episode List */}
+        <TelegramParts
+          parts={parts}
+          activeEpisodeIndex={activeEpisodeIndex}
+          onSelectEpisode={handleSelectEpisode}
+        />
+      </section>
+    );
+  }
+
+  // 2. OK.ru Video Embed Check (Single Film)
+  const resolvedOkRuEmbedUrl = getOkRuEmbedUrl(
+    okruUrl || (watchUrl?.includes("ok.ru") ? watchUrl : undefined)
+  );
+  if (resolvedOkRuEmbedUrl) {
+    const rawOkRuSource = okruUrl || watchUrl || "";
+    return (
+      <section id="in-site-player" className={`w-full space-y-6 text-right ${className}`} dir="rtl">
         <div className="space-y-3.5">
           <div className="flex items-center justify-between pb-2 border-b border-zinc-200/80 dark:border-zinc-800/80">
             <div className="flex items-center gap-2">
@@ -53,7 +215,7 @@ export function MediaViewer({
             {rawOkRuSource && (
               <a
                 href={
-                  rawOkRuSource.startsWith('http')
+                  rawOkRuSource.startsWith("http")
                     ? rawOkRuSource
                     : `https://ok.ru/video/${extractOkRuVideoId(rawOkRuSource)}`
                 }
@@ -78,13 +240,11 @@ export function MediaViewer({
             />
           </div>
         </div>
-
-        {hasMultipleParts && <TelegramParts parts={parts} />}
       </section>
     );
   }
 
-  // 2. YouTube Identification
+  // 3. YouTube Identification (Single Film)
   const resolvedYouTubeId =
     youtubeId ||
     extractYouTubeId(watchUrl) ||
@@ -92,7 +252,7 @@ export function MediaViewer({
 
   if (resolvedYouTubeId) {
     return (
-      <section className={`w-full space-y-6 text-right ${className}`} dir="rtl">
+      <section id="in-site-player" className={`w-full space-y-6 text-right ${className}`} dir="rtl">
         <div className="space-y-3.5">
           <div className="flex items-center justify-between pb-1 border-b border-zinc-200/80 dark:border-zinc-800/80">
             <div className="flex items-center gap-2">
@@ -100,7 +260,7 @@ export function MediaViewer({
                 <YouTubeIcon className="w-4 h-4" />
               </div>
               <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-                پەخشی ڕاستەوخۆ
+                پەخشی ڕاستەوخۆ (یووتووب)
               </h2>
             </div>
 
@@ -117,34 +277,22 @@ export function MediaViewer({
 
           <LiteYouTube videoId={resolvedYouTubeId} title={title} />
         </div>
-
-        {hasMultipleParts && <TelegramParts parts={parts} />}
       </section>
     );
   }
 
-  // 3. Multi-Part Content (when not YouTube-only)
-  if (hasMultipleParts) {
-    return (
-      <section className={`w-full space-y-4 text-right ${className}`} dir="rtl">
-        <TelegramParts parts={parts} />
-      </section>
-    );
-  }
-
-  // 3. Single Telegram Media Card (High-End & Polished)
+  // 4. Single Telegram Media Card (Fallback)
   const targetTelegramUrl =
-    (parts && parts.length === 1 ? parts[0].url : "") ||
     watchUrl ||
     telegramPostUrl ||
     "https://t.me/mediay_islamy";
 
   return (
     <section
+      id="in-site-player"
       className={`relative w-full rounded-3xl overflow-hidden border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-6 sm:p-10 text-center shadow-lg dark:shadow-xl transition-colors duration-200 ${className}`}
       dir="rtl"
     >
-      {/* Background Banner / Backdrop with Elegant Dark Overlay */}
       {posterUrl && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <Image
@@ -159,14 +307,11 @@ export function MediaViewer({
         </div>
       )}
 
-      {/* Foreground Content */}
       <div className="relative z-10 max-w-xl mx-auto space-y-5 flex flex-col items-center">
-        {/* Telegram Icon Badge */}
         <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/25 flex items-center justify-center shadow-lg shadow-sky-500/10 transition-transform duration-300 hover:scale-105">
           <TelegramIcon className="w-8 h-8 sm:w-9 sm:h-9" />
         </div>
 
-        {/* Clean Kurdish Notice & Movie Title */}
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-xs font-semibold font-sirwan text-sky-700 dark:text-sky-400">
             <span>کەناڵی فەرمی</span>
@@ -183,7 +328,6 @@ export function MediaViewer({
           </p>
         </div>
 
-        {/* Direct Action Button */}
         <div className="pt-2 w-full sm:w-auto">
           <a
             href={targetTelegramUrl}
