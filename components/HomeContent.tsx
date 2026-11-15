@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { ChevronLeft } from 'lucide-react';
 import { TelegramIcon } from './TelegramIcon';
 import { YouTubeIcon } from './YouTubeIcon';
+import { OkRuIcon } from './OkRuIcon';
 import type { Film } from '@/data/films';
 import type { Article } from '@/data/articles';
 import { ArticleCard } from './ArticleCard';
@@ -137,9 +138,17 @@ export function HomeContent({ films, articles }: HomeContentProps) {
                   </div>
                 </div>
 
-                {/* Direct Action Button (Telegram or YouTube) */}
+                {/* Direct Action Button (OK.ru, YouTube, or Telegram) */}
                 <div className="pt-3 mt-2 border-t border-zinc-200/80 dark:border-zinc-800/80">
-                  {film.platform === 'youtube' || (film.watchUrl?.includes('youtu') || film.telegramPostUrl?.includes('youtu')) ? (
+                  {film.platform === 'okru' || film.okruUrl || (film as any).okru_url || (film.watchUrl?.includes('ok.ru')) ? (
+                    <Link
+                      href={`/films/${film.slug || film.id}#media-player`}
+                      className="group/btn inline-flex items-center justify-center gap-1.5 w-full py-2 rounded-xl bg-orange-500/15 text-orange-950 border border-orange-500/30 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20 hover:bg-orange-500 hover:text-white hover:shadow-md hover:shadow-orange-500/20 active:scale-95 transition-all duration-200 text-xs font-semibold font-sirwan tracking-normal cursor-pointer touch-manipulation select-none"
+                    >
+                      <OkRuIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover/btn:scale-110 text-orange-500 group-hover/btn:text-white" />
+                      <span>سەیرکردن لە ماڵپەڕ (OK.ru)</span>
+                    </Link>
+                  ) : film.platform === 'youtube' || (film.watchUrl?.includes('youtu') || film.telegramPostUrl?.includes('youtu')) ? (
                     <a
                       href={film.watchUrl || film.telegramPostUrl}
                       target="_blank"

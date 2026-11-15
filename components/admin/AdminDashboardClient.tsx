@@ -30,7 +30,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { useToast } from '@/components/ToastContext';
-import { SAMPLE_FILMS, type Film, type FilmCategory, type FilmPlatform, type FilmPart, normalizeFilmParts, toKurdishNumber } from '@/data/films';
+import { SAMPLE_FILMS, type Film, type FilmCategory, type FilmPlatform, type FilmPart, normalizeFilmParts, toKurdishNumber, extractOkRuVideoId, getOkRuEmbedUrl } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article, type ArticleCategory } from '@/data/articles';
 import { DEFAULT_ABOUT_SETTINGS, type AboutSettings } from '@/data/about';
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from '@/data/homeSettings';
@@ -44,6 +44,7 @@ import { FilmCard } from '@/components/FilmCard';
 import { TelegramIcon } from '@/components/TelegramIcon';
 import { InstagramIcon } from '@/components/InstagramIcon';
 import { YouTubeIcon } from '@/components/YouTubeIcon';
+import { OkRuIcon } from '@/components/OkRuIcon';
 import { ArticleCard } from '@/components/ArticleCard';
 import { matchesSearchQuery } from '@/lib/search';
 
@@ -102,6 +103,7 @@ export function AdminDashboardClient() {
   const [filmImagePosY, setFilmImagePosY] = useState<number>(50);
   const [filmPlatform, setFilmPlatform] = useState<FilmPlatform>('telegram');
   const [filmTelegramUrl, setFilmTelegramUrl] = useState('https://t.me/mediay_islamy');
+  const [filmOkruUrl, setFilmOkruUrl] = useState('');
   const [filmDescription, setFilmDescription] = useState('');
   const [filmParts, setFilmParts] = useState<FilmPart[]>([]);
 
@@ -468,6 +470,7 @@ export function AdminDashboardClient() {
     setFilmImagePosY(50);
     setFilmPlatform('telegram');
     setFilmTelegramUrl('https://t.me/mediay_islamy');
+    setFilmOkruUrl('');
     setFilmDescription('');
     setFilmParts([]);
   };
@@ -482,6 +485,7 @@ export function AdminDashboardClient() {
         title: `بەشی ${toKurdishNumber(nextNum)}`,
         telegramUrl: '',
         youtubeUrl: '',
+        okruUrl: '',
         duration: '',
       },
     ]);
@@ -534,10 +538,18 @@ export function AdminDashboardClient() {
     setFilmImageZoom(film.imageZoom ?? 100);
     setFilmImagePosX(film.imagePosX ?? 50);
     setFilmImagePosY(film.imagePosY ?? 50);
-    const link = film.watchUrl || film.telegramPostUrl || '';
-    const platform = film.platform || (link.includes('youtu') ? 'youtube' : 'telegram');
+    const okruLink =
+      film.okruUrl ||
+      film.okru_url ||
+      (film.platform === 'okru' ? film.watchUrl || '' : '') ||
+      (film.watchUrl?.includes('ok.ru') ? film.watchUrl : '');
+    const link = film.watchUrl || film.telegramPostUrl || okruLink || '';
+    const platform =
+      film.platform ||
+      (link.includes('ok.ru') || okruLink ? 'okru' : link.includes('youtu') ? 'youtube' : 'telegram');
     setFilmPlatform(platform);
     setFilmTelegramUrl(link);
+    setFilmOkruUrl(okruLink);
     setFilmDescription(film.description);
     setFilmParts(film.parts && Array.isArray(film.parts) ? normalizeFilmParts(film.parts) : []);
     setActiveTab('create');
@@ -554,7 +566,7 @@ export function AdminDashboardClient() {
   // Save (Create or Update) Film
   const handleSaveFilm = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!filmTitleKurdish.trim() || !filmTelegramUrl.trim()) {
+    if (!filmTitleKurdish.trim() || (!filmTelegramUrl.trim() && !filmOkruUrl.trim())) {
       triggerToast('تکایە ناوی فیلم و بەستەری بینین بنووسە', undefined, 'error');
       return;
     }
@@ -567,20 +579,27 @@ export function AdminDashboardClient() {
     const isEditMode = Boolean(editingFilmId);
     const method = isEditMode ? 'PUT' : 'POST';
 
+    const okruLink =
+      filmPlatform === 'okru'
+        ? filmTelegramUrl.trim()
+        : filmOkruUrl.trim() || (filmTelegramUrl.includes('ok.ru') ? filmTelegramUrl.trim() : undefined);
+
     const sanitizedParts: FilmPart[] = filmParts
       .filter(
         (p) =>
           (p.title && p.title.trim()) ||
           (p.telegramUrl && p.telegramUrl.trim()) ||
-          (p.youtubeUrl && p.youtubeUrl.trim())
+          (p.youtubeUrl && p.youtubeUrl.trim()) ||
+          (p.okruUrl && p.okruUrl.trim())
       )
       .map((p, idx) => ({
         partNumber: idx + 1,
         title: p.title?.trim() || `بەشی ${toKurdishNumber(idx + 1)}`,
         telegramUrl: p.telegramUrl?.trim() || undefined,
         youtubeUrl: p.youtubeUrl?.trim() || undefined,
+        okruUrl: p.okruUrl?.trim() || undefined,
         duration: p.duration?.trim() || undefined,
-        url: p.telegramUrl?.trim() || p.youtubeUrl?.trim() || p.url || '',
+        url: p.telegramUrl?.trim() || p.youtubeUrl?.trim() || p.okruUrl?.trim() || p.url || '',
       }));
 
     const payload: Film = {
@@ -597,8 +616,15 @@ export function AdminDashboardClient() {
         'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80',
       description: filmDescription.trim() || 'ناساندنی ئەم شاکارە سینەمایییە.',
       platform: filmPlatform,
-      watchUrl: filmTelegramUrl.trim(),
-      telegramPostUrl: filmTelegramUrl.trim(),
+      watchUrl: filmTelegramUrl.trim() || okruLink || '',
+      telegramPostUrl:
+        filmPlatform === 'telegram'
+          ? filmTelegramUrl.trim()
+          : filmTelegramUrl.includes('t.me')
+          ? filmTelegramUrl.trim()
+          : 'https://t.me/mediay_islamy',
+      okruUrl: okruLink || undefined,
+      okru_url: okruLink || undefined,
       parts: sanitizedParts,
       imageFit: filmImageFit,
       imageZoom: filmImageZoom,
@@ -1348,6 +1374,21 @@ export function AdminDashboardClient() {
                         <YouTubeIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
                         <span className="hidden md:inline">یووتووب</span>
                       </a>
+                    ) : film.platform === 'okru' || film.okruUrl || (film as any).okru_url || film.watchUrl?.includes('ok.ru') ? (
+                      <a
+                        href={
+                          (film.okruUrl || (film as any).okru_url || film.watchUrl)?.startsWith('http')
+                            ? film.okruUrl || (film as any).okru_url || film.watchUrl
+                            : `https://ok.ru/video/${extractOkRuVideoId(film.okruUrl || (film as any).okru_url || film.watchUrl)}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-orange-500/20 bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 text-xs font-semibold font-sirwan transition-colors cursor-pointer"
+                        title="تاقیکردنەوەی بەستەری OK.ru"
+                      >
+                        <OkRuIcon className="w-3.5 h-3.5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                        <span className="hidden md:inline">OK.ru</span>
+                      </a>
                     ) : (
                       <a
                         href={film.watchUrl || film.telegramPostUrl}
@@ -2019,16 +2060,16 @@ export function AdminDashboardClient() {
                     <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-2">
                       سەکۆی پەخش (Streaming Platform) <span className="text-rose-500">*</span>
                     </label>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                       <button
                         type="button"
                         onClick={() => {
                           setFilmPlatform('telegram');
-                          if (filmTelegramUrl.includes('youtu')) {
+                          if (filmTelegramUrl.includes('youtu') || filmTelegramUrl.includes('ok.ru')) {
                             setFilmTelegramUrl('https://t.me/mediay_islamy');
                           }
                         }}
-                        className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${filmPlatform === 'telegram'
+                        className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${filmPlatform === 'telegram'
                             ? 'bg-amber-500/15 border-amber-500 text-amber-900 dark:text-amber-400 font-bold shadow-xs'
                             : 'border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-amber-500/40'
                           }`}
@@ -2041,11 +2082,11 @@ export function AdminDashboardClient() {
                         type="button"
                         onClick={() => {
                           setFilmPlatform('youtube');
-                          if (filmTelegramUrl.includes('t.me')) {
+                          if (filmTelegramUrl.includes('t.me') || filmTelegramUrl.includes('ok.ru')) {
                             setFilmTelegramUrl('https://www.youtube.com/watch?v=');
                           }
                         }}
-                        className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${filmPlatform === 'youtube'
+                        className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${filmPlatform === 'youtube'
                             ? 'bg-red-500/15 border-red-500 text-red-700 dark:text-red-400 font-bold shadow-xs'
                             : 'border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-red-500/40'
                           }`}
@@ -2053,23 +2094,46 @@ export function AdminDashboardClient() {
                         <YouTubeIcon className="w-4 h-4 text-red-600 shrink-0" />
                         <span>یووتووب (YouTube)</span>
                       </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFilmPlatform('okru');
+                          if (filmTelegramUrl.includes('t.me') || filmTelegramUrl.includes('youtu')) {
+                            setFilmTelegramUrl('https://ok.ru/video/');
+                          }
+                        }}
+                        className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-semibold font-sirwan border transition-all cursor-pointer ${filmPlatform === 'okru'
+                            ? 'bg-orange-500/15 border-orange-500 text-orange-700 dark:text-orange-400 font-bold shadow-xs'
+                            : 'border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 hover:border-orange-500/40'
+                          }`}
+                      >
+                        <OkRuIcon className="w-4 h-4 text-orange-500 shrink-0" />
+                        <span>ئۆکەی ڕو (OK.ru)</span>
+                      </button>
                     </div>
                   </div>
 
                   {/* Watch Link Input */}
                   <div>
                     <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
-                      {filmPlatform === 'youtube' ? 'لینکی فیلم لە یووتووب' : 'لینکی فیلم لە تێلیگرام'}{' '}
+                      {filmPlatform === 'youtube'
+                        ? 'لینکی فیلم لە یووتووب'
+                        : filmPlatform === 'okru'
+                        ? 'لینکی فیلم یان ناسێنەری ڤیدیۆ لە OK.ru'
+                        : 'لینکی فیلم لە تێلیگرام'}{' '}
                       <span className="text-rose-500">*</span>
                     </label>
                     <input
-                      type="url"
+                      type="text"
                       required
                       value={filmTelegramUrl}
                       onChange={(e) => {
                         const val = e.target.value;
                         setFilmTelegramUrl(val);
-                        if (val.includes('youtu.be') || val.includes('youtube.com')) {
+                        if (val.includes('ok.ru') || val.includes('/video/') || val.includes('/videoembed/')) {
+                          setFilmPlatform('okru');
+                        } else if (val.includes('youtu.be') || val.includes('youtube.com')) {
                           setFilmPlatform('youtube');
                         } else if (val.includes('t.me/')) {
                           setFilmPlatform('telegram');
@@ -2078,12 +2142,41 @@ export function AdminDashboardClient() {
                       placeholder={
                         filmPlatform === 'youtube'
                           ? 'https://www.youtube.com/watch?v=... یان https://youtu.be/...'
+                          : filmPlatform === 'okru'
+                          ? 'https://ok.ru/video/1234567890 یان https://ok.ru/videoembed/1234567890 یان تەنها ژمارەی ID'
                           : 'https://t.me/mediay_islamy/101'
                       }
                       dir="ltr"
                       className="w-full px-3.5 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sans focus:outline-none focus:border-[#d49757]"
                     />
+                    {filmPlatform === 'okru' && extractOkRuVideoId(filmTelegramUrl) && (
+                      <p className="mt-1.5 text-[11px] font-sirwan text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5" />
+                        <span>ناسێنەری ڤیدیۆ دۆزرایەوە ({extractOkRuVideoId(filmTelegramUrl)}) و ئامادەیە بۆ ئیمبێدکردن</span>
+                      </p>
+                    )}
                   </div>
+
+                  {/* Optional OK.ru Embed Field when platform is Telegram or YouTube */}
+                  {filmPlatform !== 'okru' && (
+                    <div className="p-3 rounded-xl bg-orange-500/5 border border-orange-500/20 space-y-1.5">
+                      <label className="block text-xs font-semibold font-sirwan text-orange-800 dark:text-orange-300 flex items-center gap-1.5">
+                        <OkRuIcon className="w-3.5 h-3.5 text-orange-500" />
+                        <span>بەستەری ڤیدیۆی OK.ru بۆ پەخشی ڕاستەوخۆ لە ماڵپەڕدا (ئارەزوومەندانە)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={filmOkruUrl}
+                        onChange={(e) => setFilmOkruUrl(e.target.value)}
+                        placeholder="https://ok.ru/video/1234567890 یان ژمارەی ناسێنەر"
+                        dir="ltr"
+                        className="w-full px-3.5 py-1.5 rounded-xl border border-orange-200/80 dark:border-orange-500/30 bg-white dark:bg-zinc-900 text-xs font-sans focus:outline-none focus:border-orange-500"
+                      />
+                      <p className="text-[10px] text-zinc-500 dark:text-zinc-400 font-sirwan">
+                        ئەگەر ئەم خانەیە پڕبکەیتەوە، پەخشی ڕاستەوخۆی فیلمەکە لە ڕێگەی OK.ru لە پەڕەی تایبەتی فیلمەکەدا جێگیر دەبێت.
+                      </p>
+                    </div>
+                  )}
 
                   <div>
                     <label className="block text-xs font-semibold font-sirwan text-zinc-700 dark:text-zinc-300 mb-1">
@@ -2205,6 +2298,20 @@ export function AdminDashboardClient() {
                                   onChange={(e) => handleFilmPartChange(idx, 'youtubeUrl', e.target.value)}
                                   placeholder="https://youtube.com/watch?v=..."
                                   className="w-full px-3 py-1.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-sans focus:outline-none focus:border-amber-500"
+                                />
+                              </div>
+
+                              <div className="sm:col-span-2">
+                                <label className="block text-[11px] font-medium font-sirwan text-orange-600 dark:text-orange-400 mb-1">
+                                  لینکی OK.ru یان ناسێنەری ڤیدیۆ بۆ ئەم بەشە (ئارەزوومەندانە)
+                                </label>
+                                <input
+                                  type="text"
+                                  dir="ltr"
+                                  value={part.okruUrl || ''}
+                                  onChange={(e) => handleFilmPartChange(idx, 'okruUrl', e.target.value)}
+                                  placeholder="https://ok.ru/video/1234567890 یان تەنها ID"
+                                  className="w-full px-3 py-1.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-sans focus:outline-none focus:border-orange-500"
                                 />
                               </div>
                             </div>

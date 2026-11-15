@@ -8,6 +8,7 @@ import {
   Clock,
   Film as FilmIcon,
   Sparkles,
+  ExternalLink,
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import { readFilms } from '@/lib/storage';
@@ -19,6 +20,8 @@ import {
   getFilmWatchUrl,
   extractYouTubeId,
   getFilmTelegramParts,
+  extractOkRuVideoId,
+  getOkRuEmbedUrl,
 } from '@/data/films';
 import { FilmCard } from '@/components/FilmCard';
 import { ShareButton } from '@/components/ShareButton';
@@ -26,6 +29,7 @@ import { FavoriteButton } from '@/components/FavoriteButton';
 import { MediaViewer } from '@/components/MediaViewer';
 import { TelegramIcon } from '@/components/TelegramIcon';
 import { YouTubeIcon } from '@/components/YouTubeIcon';
+import { OkRuIcon } from '@/components/OkRuIcon';
 
 export const revalidate = 1800;
 export const dynamicParams = true;
@@ -177,6 +181,14 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
     extractYouTubeId(film.telegramPostUrl);
 
   const telegramParts = getFilmTelegramParts(film);
+
+  const okruSource =
+    film.okru_url ||
+    film.okruUrl ||
+    (platform === 'okru' ? film.watchUrl : undefined) ||
+    (film.watchUrl?.includes('ok.ru') ? film.watchUrl : undefined);
+
+  const okruEmbedUrl = getOkRuEmbedUrl(okruSource);
 
   const shareFilmUrl = `https://mediay-islamy.vercel.app/films/${encodeURIComponent(film.slug || film.id)}`;
 
@@ -351,42 +363,134 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               )}
             </div>
 
-            {/* Primary Action Button: Smooth scroll to the Unified Media Viewer */}
-            <div className="pt-4 flex items-center justify-center md:justify-start w-full">
-              <a
-                href="#media-player"
-                className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base active:scale-95 transition-all duration-200 cursor-pointer ${isYouTube
-                    ? 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/25'
-                    : 'bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-lg shadow-amber-500/25'
+            {/* Action Buttons: OK.ru Direct Player, YouTube, and/or Telegram */}
+            <div className="pt-4 flex flex-wrap items-center justify-center md:justify-start gap-3 w-full">
+              {okruEmbedUrl ? (
+                <>
+                  <a
+                    href="#media-player"
+                    className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base bg-orange-500 hover:bg-orange-400 text-white shadow-lg shadow-orange-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
+                  >
+                    <OkRuIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                    <span>سەیرکردنی فیلم لێرە (OK.ru)</span>
+                  </a>
+
+                  {/* Secondary Telegram channel button if available */}
+                  {film.telegramPostUrl && !film.telegramPostUrl.includes('ok.ru') && (
+                    <a
+                      href={film.telegramPostUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-semibold font-sirwan text-xs sm:text-sm bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-500/30 hover:bg-sky-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
+                    >
+                      <TelegramIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                      <span>کەناڵی تێلیگرام</span>
+                    </a>
+                  )}
+
+                  {/* Secondary YouTube button if available */}
+                  {youtubeId && (
+                    <a
+                      href={`https://www.youtube.com/watch?v=${youtubeId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl font-semibold font-sirwan text-xs sm:text-sm bg-red-500/15 text-red-700 dark:text-red-300 border border-red-500/30 hover:bg-red-500/25 active:scale-95 transition-all duration-200 cursor-pointer"
+                    >
+                      <YouTubeIcon className="w-4 h-4 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                      <span>یووتووب (YouTube)</span>
+                    </a>
+                  )}
+                </>
+              ) : (
+                <a
+                  href="#media-player"
+                  className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl font-bold font-sirwan text-sm sm:text-base active:scale-95 transition-all duration-200 cursor-pointer ${
+                    isYouTube
+                      ? 'bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/25'
+                      : 'bg-amber-500 hover:bg-amber-400 text-zinc-950 shadow-lg shadow-amber-500/25'
                   }`}
-              >
-                {isYouTube ? (
-                  <YouTubeIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                ) : (
-                  <TelegramIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
-                )}
-                <span>
-                  {isYouTube
-                    ? 'تەماشاکردنی فیلم (یووتووب)'
-                    : telegramParts.length > 1
+                >
+                  {isYouTube ? (
+                    <YouTubeIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                  ) : (
+                    <TelegramIcon className="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                  )}
+                  <span>
+                    {isYouTube
+                      ? 'تەماشاکردنی فیلم (یووتووب)'
+                      : telegramParts.length > 1
                       ? `تەماشاکردنی فیلم (${telegramParts.length} بەش)`
                       : 'تەماشاکردنی فیلم ڕاستەوخۆ'}
-                </span>
-              </a>
+                  </span>
+                </a>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Unified Intelligent Media Viewer (YouTube / Public Telegram Embed / Private Fallback) */}
-      <section id="media-player" className="w-full scroll-mt-24">
-        <MediaViewer
-          title={film.titleKurdish}
-          watchUrl={watchUrl}
-          telegramPostUrl={film.telegramPostUrl}
-          youtubeId={film.youtubeId || youtubeId || undefined}
-          parts={telegramParts}
-        />
+      {/* Unified Intelligent Media Viewer (OK.ru Embed / YouTube / Public Telegram Embed / Private Fallback) */}
+      <section id="media-player" className="w-full scroll-mt-24 space-y-6">
+        {okruEmbedUrl ? (
+          <div className="w-full space-y-3.5 text-right" dir="rtl">
+            <div className="flex items-center justify-between pb-2 border-b border-zinc-200/80 dark:border-zinc-800/80">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-500 flex items-center justify-center">
+                  <OkRuIcon className="w-4 h-4" />
+                </div>
+                <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+                  پەخشی ڕاستەوخۆ (OK.ru)
+                </h2>
+              </div>
+
+              {okruSource && (
+                <a
+                  href={
+                    okruSource.startsWith('http')
+                      ? okruSource
+                      : `https://ok.ru/video/${extractOkRuVideoId(okruSource)}`
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-sirwan text-zinc-500 hover:text-orange-500 dark:text-zinc-400 dark:hover:text-orange-400 transition-colors"
+                >
+                  <span>کردنەوە لە OK.ru</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
+            </div>
+
+            <div className="w-full aspect-video rounded-2xl overflow-hidden bg-black border border-zinc-200 dark:border-zinc-800 shadow-xl">
+              <iframe
+                src={okruEmbedUrl}
+                className="w-full h-full border-0"
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                allowFullScreen
+                loading="lazy"
+                title={film.titleKurdish}
+              />
+            </div>
+
+            {telegramParts.length > 1 && (
+              <div className="pt-2">
+                <MediaViewer
+                  title={film.titleKurdish}
+                  watchUrl={watchUrl}
+                  telegramPostUrl={film.telegramPostUrl}
+                  parts={telegramParts}
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          <MediaViewer
+            title={film.titleKurdish}
+            watchUrl={watchUrl}
+            telegramPostUrl={film.telegramPostUrl}
+            youtubeId={film.youtubeId || youtubeId || undefined}
+            parts={telegramParts}
+          />
+        )}
       </section>
 
       {/* Full Synopsis / Story Section (کورتەی چیرۆک) */}

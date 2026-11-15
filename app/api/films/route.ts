@@ -42,13 +42,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'تکایە ناوی کوردیی فیلم بنووسە' }, { status: 400 });
     }
 
+    const okruLink =
+      newFilm.okruUrl?.trim() ||
+      newFilm.okru_url?.trim() ||
+      (newFilm.platform === 'okru' ? newFilm.watchUrl?.trim() || newFilm.telegramPostUrl?.trim() : undefined) ||
+      (newFilm.watchUrl?.includes('ok.ru') ? newFilm.watchUrl.trim() : undefined);
+
     const watchLink =
       newFilm.watchUrl?.trim() ||
       newFilm.telegramPostUrl?.trim() ||
+      okruLink ||
       'https://t.me/mediay_islamy';
     const platform =
       newFilm.platform ||
-      (watchLink.includes('youtu') ? 'youtube' : 'telegram');
+      (watchLink.includes('ok.ru') || okruLink ? 'okru' : watchLink.includes('youtu') ? 'youtube' : 'telegram');
 
     const filmToSave: Film = {
       id: newFilm.id || `film-${Date.now()}`,
@@ -65,7 +72,9 @@ export async function POST(req: Request) {
       description: newFilm.description?.trim() || '',
       platform,
       watchUrl: watchLink,
-      telegramPostUrl: watchLink,
+      telegramPostUrl: newFilm.telegramPostUrl?.trim() || (platform === 'telegram' ? watchLink : 'https://t.me/mediay_islamy'),
+      okruUrl: okruLink || undefined,
+      okru_url: okruLink || undefined,
       parts: newFilm.parts && Array.isArray(newFilm.parts) ? normalizeFilmParts(newFilm.parts) : [],
       imageFit: newFilm.imageFit === 'cover' ? 'cover' : 'contain',
       imageZoom: typeof newFilm.imageZoom === 'number' ? Math.min(180, Math.max(100, Number(newFilm.imageZoom))) : 100,
@@ -105,15 +114,24 @@ export async function PUT(req: Request) {
     const films = await readFilms();
     const existing = films.find((f) => f.id === updatedFilm.id);
 
+    const okruLink =
+      updatedFilm.okruUrl?.trim() ||
+      updatedFilm.okru_url?.trim() ||
+      (updatedFilm.platform === 'okru' ? updatedFilm.watchUrl?.trim() || updatedFilm.telegramPostUrl?.trim() : undefined) ||
+      (updatedFilm.watchUrl?.includes('ok.ru') ? updatedFilm.watchUrl.trim() : undefined) ||
+      existing?.okruUrl ||
+      existing?.okru_url;
+
     const watchLink =
       updatedFilm.watchUrl?.trim() ||
       updatedFilm.telegramPostUrl?.trim() ||
+      (updatedFilm.platform === 'okru' && okruLink ? okruLink : undefined) ||
       existing?.watchUrl ||
       existing?.telegramPostUrl ||
       'https://t.me/mediay_islamy';
     const platform =
       updatedFilm.platform ||
-      (watchLink.includes('youtu') ? 'youtube' : 'telegram');
+      (watchLink.includes('ok.ru') || okruLink ? 'okru' : watchLink.includes('youtu') ? 'youtube' : 'telegram');
 
     const imageFit =
       updatedFilm.imageFit !== undefined
@@ -154,7 +172,9 @@ export async function PUT(req: Request) {
       year: Number(updatedFilm.year) || (existing ? existing.year : 2024),
       platform,
       watchUrl: watchLink,
-      telegramPostUrl: watchLink,
+      telegramPostUrl: updatedFilm.telegramPostUrl?.trim() || existing?.telegramPostUrl || watchLink,
+      okruUrl: okruLink || undefined,
+      okru_url: okruLink || undefined,
       parts:
         updatedFilm.parts !== undefined
           ? normalizeFilmParts(updatedFilm.parts)

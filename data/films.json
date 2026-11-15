@@ -166,6 +166,8 @@
     "platform": "youtube",
     "watchUrl": "https://ok.ru/video/16595266964015",
     "telegramPostUrl": "https://ok.ru/video/16595266964015",
+    "okruUrl": "https://ok.ru/video/16595266964015",
+    "okru_url": "https://ok.ru/video/16595266964015",
     "parts": [],
     "imageFit": "contain",
     "imageZoom": 102,

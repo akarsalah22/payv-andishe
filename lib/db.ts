@@ -83,6 +83,10 @@ export async function ensureDbInitialized(): Promise<boolean> {
     `);
 
     await sql.query(`
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS okru_url TEXT;
+    `);
+
+    await sql.query(`
       ALTER TABLE films ADD COLUMN IF NOT EXISTS parts JSONB DEFAULT '[]'::jsonb;
     `);
 
@@ -274,6 +278,8 @@ interface FilmDbRow {
   telegramPostUrl: string;
   platform?: Film['platform'];
   watchUrl?: string;
+  okruUrl?: string | null;
+  okru_url?: string | null;
   parts?: FilmPart[] | string | null;
   imageFit?: 'contain' | 'cover';
   imageZoom?: number | string | null;
@@ -321,6 +327,7 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
         telegram_post_url AS "telegramPostUrl",
         platform,
         watch_url AS "watchUrl",
+        okru_url AS "okruUrl",
         parts,
         image_fit AS "imageFit",
         image_zoom AS "imageZoom",
@@ -331,8 +338,11 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
     `);
 
     return (rows as unknown as FilmDbRow[]).map((r) => {
-      const activeUrl = r.watchUrl || r.telegramPostUrl || '';
-      const activePlatform = r.platform || (activeUrl.includes('youtu') ? 'youtube' : 'telegram');
+      const okruUrl = r.okruUrl || (r as any).okru_url || undefined;
+      const activeUrl = r.watchUrl || r.telegramPostUrl || okruUrl || '';
+      const activePlatform =
+        r.platform ||
+        (activeUrl.includes('ok.ru') || okruUrl ? 'okru' : activeUrl.includes('youtu') ? 'youtube' : 'telegram');
       let parsedParts: FilmPart[] = [];
       if (r.parts) {
         if (Array.isArray(r.parts)) {
@@ -360,6 +370,8 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
         platform: activePlatform,
         watchUrl: activeUrl,
         telegramPostUrl: r.telegramPostUrl || activeUrl,
+        okruUrl: okruUrl || (activeUrl.includes('ok.ru') ? activeUrl : undefined),
+        okru_url: okruUrl || (activeUrl.includes('ok.ru') ? activeUrl : undefined),
         parts: parsedParts,
         imageFit: (r.imageFit === 'cover' ? 'cover' : 'contain') as 'contain' | 'cover',
         imageZoom: typeof r.imageZoom === 'number' ? r.imageZoom : r.imageZoom ? Number(r.imageZoom) : 100,
@@ -382,16 +394,23 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
 
   try {
     await ensureDbInitialized();
-    const watchLink = film.watchUrl || film.telegramPostUrl || '';
-    const platform = film.platform || (watchLink.includes('youtu') ? 'youtube' : 'telegram');
+    const okruLink =
+      film.okruUrl ||
+      film.okru_url ||
+      (film.platform === 'okru' ? film.watchUrl : undefined) ||
+      (film.watchUrl?.includes('ok.ru') ? film.watchUrl : undefined);
+    const watchLink = film.watchUrl || film.telegramPostUrl || okruLink || '';
+    const platform =
+      film.platform ||
+      (watchLink.includes('ok.ru') || okruLink ? 'okru' : watchLink.includes('youtu') ? 'youtube' : 'telegram');
 
     await sql.query(
       `
       INSERT INTO films (
         id, slug, title_kurdish, original_title, year, duration,
         category, genres, poster_url, description, telegram_post_url,
-        platform, watch_url, parts, image_fit, image_zoom, image_pos_x, image_pos_y, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, NOW())
+        platform, watch_url, okru_url, parts, image_fit, image_zoom, image_pos_x, image_pos_y, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, NOW())
       ON CONFLICT (id) DO UPDATE SET
         slug = EXCLUDED.slug,
         title_kurdish = EXCLUDED.title_kurdish,
@@ -405,6 +424,7 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         telegram_post_url = EXCLUDED.telegram_post_url,
         platform = EXCLUDED.platform,
         watch_url = EXCLUDED.watch_url,
+        okru_url = EXCLUDED.okru_url,
         parts = EXCLUDED.parts,
         image_fit = EXCLUDED.image_fit,
         image_zoom = EXCLUDED.image_zoom,
@@ -426,6 +446,7 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         film.telegramPostUrl || watchLink,
         platform,
         watchLink,
+        okruLink || null,
         JSON.stringify(film.parts ? normalizeFilmParts(film.parts) : []),
         film.imageFit || 'contain',
         film.imageZoom ?? 100,

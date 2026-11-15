@@ -55,14 +55,22 @@ async function readLocalFilms(): Promise<Film[]> {
     if (!data.trim()) return SAMPLE_FILMS;
     const parsed = JSON.parse(data);
     if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed.map((f: Record<string, unknown>) => ({
-        ...f,
-        parts: f.parts ? normalizeFilmParts(f.parts) : undefined,
-        imageFit: f.imageFit === 'cover' ? 'cover' : 'contain',
-        imageZoom: typeof f.imageZoom === 'number' ? f.imageZoom : 100,
-        imagePosX: typeof f.imagePosX === 'number' ? f.imagePosX : 50,
-        imagePosY: typeof f.imagePosY === 'number' ? f.imagePosY : 50,
-      })) as unknown as Film[];
+      return parsed.map((f: Record<string, unknown>) => {
+        const okruLink =
+          (typeof f.okruUrl === 'string' && f.okruUrl.trim() ? f.okruUrl.trim() : undefined) ||
+          (typeof f.okru_url === 'string' && f.okru_url.trim() ? f.okru_url.trim() : undefined) ||
+          (typeof f.watchUrl === 'string' && f.watchUrl.includes('ok.ru') ? f.watchUrl.trim() : undefined);
+        return {
+          ...f,
+          okruUrl: okruLink,
+          okru_url: okruLink,
+          parts: f.parts ? normalizeFilmParts(f.parts) : undefined,
+          imageFit: f.imageFit === 'cover' ? 'cover' : 'contain',
+          imageZoom: typeof f.imageZoom === 'number' ? f.imageZoom : 100,
+          imagePosX: typeof f.imagePosX === 'number' ? f.imagePosX : 50,
+          imagePosY: typeof f.imagePosY === 'number' ? f.imagePosY : 50,
+        };
+      }) as unknown as Film[];
     }
     return SAMPLE_FILMS;
   } catch (error) {

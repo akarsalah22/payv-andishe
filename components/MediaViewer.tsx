@@ -6,7 +6,8 @@ import { LiteYouTube } from "@/components/LiteYouTube";
 import { TelegramParts, type TelegramPartItem } from "@/components/TelegramParts";
 import { TelegramIcon } from "@/components/TelegramIcon";
 import { YouTubeIcon } from "@/components/YouTubeIcon";
-import { extractYouTubeId } from "@/data/films";
+import { OkRuIcon } from "@/components/OkRuIcon";
+import { extractYouTubeId, extractOkRuVideoId, getOkRuEmbedUrl } from "@/data/films";
 
 export interface MediaViewerProps {
   title: string;
@@ -14,6 +15,7 @@ export interface MediaViewerProps {
   watchUrl?: string;
   telegramPostUrl?: string;
   youtubeId?: string;
+  okruUrl?: string;
   parts?: TelegramPartItem[];
   className?: string;
 }
@@ -24,11 +26,63 @@ export function MediaViewer({
   watchUrl,
   telegramPostUrl,
   youtubeId,
+  okruUrl,
   parts = [],
   className = "",
 }: MediaViewerProps) {
   // 1. Multi-Part Check
   const hasMultipleParts = Array.isArray(parts) && parts.length > 1;
+
+  // 2. OK.ru Video Embed Check
+  const resolvedOkRuEmbedUrl = getOkRuEmbedUrl(okruUrl || (watchUrl?.includes('ok.ru') ? watchUrl : undefined));
+  if (resolvedOkRuEmbedUrl) {
+    const rawOkRuSource = okruUrl || watchUrl || '';
+    return (
+      <section className={`w-full space-y-6 text-right ${className}`} dir="rtl">
+        <div className="space-y-3.5">
+          <div className="flex items-center justify-between pb-2 border-b border-zinc-200/80 dark:border-zinc-800/80">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-500 flex items-center justify-center">
+                <OkRuIcon className="w-4 h-4" />
+              </div>
+              <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+                پەخشی ڕاستەوخۆ (OK.ru)
+              </h2>
+            </div>
+
+            {rawOkRuSource && (
+              <a
+                href={
+                  rawOkRuSource.startsWith('http')
+                    ? rawOkRuSource
+                    : `https://ok.ru/video/${extractOkRuVideoId(rawOkRuSource)}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-sirwan text-zinc-500 hover:text-orange-500 dark:text-zinc-400 dark:hover:text-orange-400 transition-colors"
+              >
+                <span>کردنەوە لە OK.ru</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
+            )}
+          </div>
+
+          <div className="w-full aspect-video rounded-2xl overflow-hidden bg-black border border-zinc-200 dark:border-zinc-800 shadow-xl">
+            <iframe
+              src={resolvedOkRuEmbedUrl}
+              className="w-full h-full border-0"
+              allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+              allowFullScreen
+              loading="lazy"
+              title={title}
+            />
+          </div>
+        </div>
+
+        {hasMultipleParts && <TelegramParts parts={parts} />}
+      </section>
+    );
+  }
 
   // 2. YouTube Identification
   const resolvedYouTubeId =

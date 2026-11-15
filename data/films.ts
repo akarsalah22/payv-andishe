@@ -7,13 +7,14 @@ export type FilmCategory =
   | 'سینەمایی' // پشتیوانی پێشوو
   | 'ئەنیمەیشن'; // پشتیوانی پێشوو
 
-export type FilmPlatform = 'telegram' | 'youtube';
+export type FilmPlatform = 'telegram' | 'youtube' | 'okru';
 
 export interface FilmPart {
   partNumber: number;      // e.g. 1, 2, 3
   title: string;           // e.g. "بەشی یەکەم", "بەشی دووەم"
   youtubeUrl?: string;     // YouTube link or Unlisted ID for this part
   telegramUrl?: string;    // Direct Telegram post/video link for this part
+  okruUrl?: string;        // Direct OK.ru video link or video ID for this part
   duration?: string;       // Optional duration e.g. "45 خولەک"
   // Backward compatibility with previous schema
   url?: string;
@@ -47,6 +48,14 @@ export function normalizeFilmParts(parts?: unknown): FilmPart[] {
         : rawUrl && (rawUrl.includes('youtu') || /^[a-zA-Z0-9_-]{11}$/.test(rawUrl))
         ? rawUrl
         : '';
+    const okruUrl =
+      typeof raw.okruUrl === 'string' && raw.okruUrl.trim()
+        ? raw.okruUrl.trim()
+        : typeof (raw as any).okru_url === 'string' && (raw as any).okru_url.trim()
+        ? (raw as any).okru_url.trim()
+        : rawUrl && rawUrl.includes('ok.ru')
+        ? rawUrl
+        : '';
     const duration = typeof raw.duration === 'string' ? raw.duration.trim() : '';
     const quality = typeof raw.quality === 'string' ? raw.quality.trim() : undefined;
 
@@ -55,8 +64,9 @@ export function normalizeFilmParts(parts?: unknown): FilmPart[] {
       title,
       youtubeUrl: youtubeUrl || undefined,
       telegramUrl: telegramUrl || undefined,
+      okruUrl: okruUrl || undefined,
       duration: duration || undefined,
-      url: telegramUrl || youtubeUrl || rawUrl,
+      url: telegramUrl || youtubeUrl || okruUrl || rawUrl,
       quality,
     };
   });
@@ -77,6 +87,8 @@ export interface Film {
   watchUrl?: string;
   telegramPostUrl: string;
   youtubeId?: string;
+  okruUrl?: string;
+  okru_url?: string;
   parts?: FilmPart[];
   imageFit?: 'contain' | 'cover';
   imageZoom?: number;
@@ -92,6 +104,46 @@ export function extractYouTubeId(urlOrId?: string): string | null {
     /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/
   );
   return match ? match[1] : null;
+}
+
+/**
+ * Extracts numeric video ID from various OK.ru video link formats:
+ * - https://ok.ru/video/1234567890
+ * - https://m.ok.ru/video/1234567890
+ * - https://ok.ru/videoembed/1234567890
+ * - Pure numeric ID: "1234567890"
+ */
+export function extractOkRuVideoId(urlOrId?: string): string | null {
+  if (!urlOrId) return null;
+  const trimmed = String(urlOrId).trim();
+  if (!trimmed) return null;
+
+  // Pure numeric video ID
+  if (/^\d+$/.test(trimmed)) {
+    return trimmed;
+  }
+
+  // Common OK.ru URL patterns
+  const match = trimmed.match(/(?:ok\.ru\/(?:video|videoembed)\/|video(?:embed)?\/)(\d+)/i);
+  if (match && match[1]) {
+    return match[1];
+  }
+
+  // Fallback: look for 5+ continuous digits in URL path
+  const fallbackMatch = trimmed.match(/\/(\d{5,})(?:[/?#]|$)/);
+  if (fallbackMatch && fallbackMatch[1]) {
+    return fallbackMatch[1];
+  }
+
+  return null;
+}
+
+/**
+ * Returns standard embed URL for OK.ru: https://ok.ru/videoembed/${videoId}
+ */
+export function getOkRuEmbedUrl(urlOrId?: string): string | null {
+  const videoId = extractOkRuVideoId(urlOrId);
+  return videoId ? `https://ok.ru/videoembed/${videoId}` : null;
 }
 
 export function getFilmTelegramParts(film: Partial<Film>): FilmPart[] {
@@ -117,10 +169,19 @@ export function getFilmParts(film: Partial<Film>): FilmPart[] {
 }
 
 export function getFilmPlatform(film: Partial<Film>): FilmPlatform {
-  if (film.platform === 'youtube' || film.platform === 'telegram') {
+  if (film.platform === 'youtube' || film.platform === 'telegram' || film.platform === 'okru') {
     return film.platform;
   }
-  const url = film.watchUrl || film.telegramPostUrl || (film as any)?.telegramUrl || '';
+  const url =
+    film.watchUrl ||
+    film.okruUrl ||
+    film.okru_url ||
+    film.telegramPostUrl ||
+    (film as any)?.telegramUrl ||
+    '';
+  if (url.includes('ok.ru') || film.okruUrl || film.okru_url) {
+    return 'okru';
+  }
   if (url.includes('youtube.com') || url.includes('youtu.be')) {
     return 'youtube';
   }
