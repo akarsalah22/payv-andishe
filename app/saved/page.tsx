@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   Bookmark,
   Trash2,
@@ -12,89 +11,72 @@ import {
   X,
 } from 'lucide-react';
 import { useFavorites, type SavedItem } from '@/hooks/useFavorites';
+import type { Film } from '@/data/films';
+import type { Article } from '@/data/articles';
 
 type FilterType = 'all' | 'movies' | 'writings';
 
 function MovieCard({
   item,
+  liveFilm,
   onRemove,
 }: {
   item: SavedItem;
+  liveFilm?: Film;
   onRemove: (id: string) => void;
 }) {
-  const targetUrl = `/films/${encodeURIComponent(item.slug || item.id)}`;
-  const imageSource =
-    item.coverImage ||
-    item.image ||
+  const targetUrl = `/films/${encodeURIComponent(liveFilm?.slug || item.slug || liveFilm?.id || item.id)}`;
+  const initialPoster =
+    liveFilm?.posterUrl ||
     item.imageUrl ||
+    item.image ||
+    item.coverImage ||
     '/placeholder.jpg';
+  const [posterSrc, setPosterSrc] = useState(initialPoster);
+
+  // Sync framing strictly with live database, ignoring stale localStorage settings.
+  // Defaults strictly to 'cover' so posters fill the entire 2:3 frame edge-to-edge with zero black bars.
+  const fit = liveFilm?.imageFit === 'contain' ? 'contain' : 'cover';
+  const zoom = liveFilm?.imageZoom ?? 100;
+  const posX = liveFilm?.imagePosX ?? 50;
+  const posY = liveFilm?.imagePosY ?? 50;
+  const title = liveFilm?.titleKurdish || item.title;
+  const category =
+    liveFilm?.category ||
+    item.category ||
+    (item.type === 'cartoon' ? 'کارتۆن' : 'فیلم');
 
   return (
-    <div
-      key={item.id}
-      className="group relative flex flex-col rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10"
+    <Link
+      href={targetUrl}
+      className="group relative aspect-[2/3] w-full rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 block shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10 focus:outline-none select-none tap-highlight-transparent"
     >
-      {/* Movies Poster: 2:3 Portrait Aspect Ratio */}
-      <Link
-        href={targetUrl}
-        className="relative block w-full aspect-[2/3] overflow-hidden bg-zinc-100 dark:bg-zinc-950"
-      >
-        <div className="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-500 group-hover:scale-105 pointer-events-none">
-          {item.imageFit === 'contain' ? (
-            <>
-              {/* Ambient Blurred Background */}
-              <Image
-                src={imageSource}
-                alt=""
-                fill
-                aria-hidden="true"
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
-              />
-              {/* Foreground Contained Poster */}
-              <div className="relative z-10 w-full h-full overflow-hidden">
-                <Image
-                  src={imageSource}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                  className="w-full h-full object-contain transition-transform duration-300"
-                  style={{
-                    objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
-                    transform: `scale(${(item.imageZoom ?? 100) / 100})`,
-                  }}
-                />
-              </div>
-            </>
-          ) : (
-            <div className="relative z-10 w-full h-full overflow-hidden">
-              <Image
-                src={imageSource}
-                alt={item.title}
-                fill
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                className="w-full h-full object-cover transition-transform duration-300"
-                style={{
-                  objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
-                  transform: `scale(${(item.imageZoom ?? 100) / 100})`,
-                }}
-              />
-            </div>
-          )}
-        </div>
+      {/* Poster Image with Dashboard Framing */}
+      {fit === 'contain' && (
+        <img
+          src={posterSrc}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
+        />
+      )}
+      <img
+        src={posterSrc}
+        alt={title}
+        onError={() => setPosterSrc('/placeholder.jpg')}
+        className={`w-full h-full transition-transform duration-300 ${
+          fit === 'contain' ? 'relative z-10 object-contain' : 'object-cover'
+        }`}
+        style={{
+          objectPosition: `${posX}% ${posY}%`,
+          transform: `scale(${zoom / 100})`,
+        }}
+      />
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-20 pointer-events-none" />
+      {/* Bottom Dark Gradient Overlay */}
+      <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/90 via-black/25 to-transparent pointer-events-none" />
 
-        {/* Top Badges */}
-        <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
-          <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
-            {item.category || 'فیلم'}
-          </span>
-        </div>
-      </Link>
-
-      {/* Quick Removal Button (Top Left Overlay) */}
+      {/* Top-Left Remove / Unsave Button */}
       <button
         type="button"
         onClick={(e) => {
@@ -102,43 +84,51 @@ function MovieCard({
           e.stopPropagation();
           onRemove(item.id);
         }}
-        title="سڕینەوە لە هەڵگیراوەکان"
-        aria-label="سڕینەوە لە هەڵگیراوەکان"
-        className="absolute top-2 left-2 z-30 p-1.5 rounded-full bg-black/70 hover:bg-rose-600 text-white/80 hover:text-white backdrop-blur-md border border-white/20 transition-all duration-200 cursor-pointer active:scale-75 shadow-xs"
+        aria-label="لابردن لە هەڵگیراوەکان"
+        title="لابردن لە هەڵگیراوەکان"
+        className="absolute top-3 left-3 z-30 w-8 h-8 rounded-full bg-amber-500/20 hover:bg-red-500/90 text-amber-400 hover:text-white backdrop-blur-md border border-amber-500/30 flex items-center justify-center transition-colors cursor-pointer active:scale-90"
       >
-        <X className="w-3.5 h-3.5" />
+        <Bookmark className="w-4 h-4 fill-current" />
       </button>
 
-      {/* Title & Info at Bottom */}
-      <div className="p-3 flex-1 flex flex-col justify-between gap-2 text-right">
-        <Link href={targetUrl} className="block">
-          <h4 className="text-xs sm:text-sm font-bold font-peshang text-zinc-900 dark:text-white group-hover:text-amber-500 transition-colors line-clamp-2 leading-snug">
-            {item.title}
-          </h4>
-        </Link>
+      {/* Top-Right Category Badge */}
+      <span className="absolute top-3 right-3 z-30 px-2.5 py-1 rounded-lg bg-black/65 backdrop-blur-md text-zinc-100 text-[11px] font-bold font-sirwan">
+        {category}
+      </span>
 
-        <div className="flex items-center justify-between text-[11px] font-sirwan text-zinc-500 dark:text-zinc-400 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
-          <span>بینینی فیلم</span>
-          <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1 text-amber-500" />
-        </div>
+      {/* Bottom-Right Title Inside Poster */}
+      <div className="absolute bottom-3 inset-x-3 z-30 text-right">
+        <h3 className="text-sm sm:text-base font-bold font-peshang text-white line-clamp-1 group-hover:text-amber-400 transition-colors">
+          {title}
+        </h3>
       </div>
-    </div>
+    </Link>
   );
 }
 
 function WritingCard({
   item,
+  liveArticle,
   onRemove,
 }: {
   item: SavedItem;
+  liveArticle?: Article;
   onRemove: (id: string) => void;
 }) {
-  const targetUrl = `/articles/${encodeURIComponent(item.slug || item.id)}`;
+  const targetUrl = `/articles/${encodeURIComponent(liveArticle?.slug || item.slug || liveArticle?.id || item.id)}`;
   const imageSource =
+    liveArticle?.coverImage ||
     item.coverImage ||
     item.image ||
     item.imageUrl ||
     '/placeholder-article.jpg';
+
+  const fit = item.imageFit ?? 'cover';
+  const zoom = item.imageZoom ?? 100;
+  const posX = item.imagePosX ?? 50;
+  const posY = item.imagePosY ?? 50;
+  const title = liveArticle?.title || item.title;
+  const category = liveArticle?.category || item.category || 'نووسین';
 
   return (
     <div
@@ -150,16 +140,16 @@ function WritingCard({
         <div className="relative w-full aspect-video overflow-hidden bg-zinc-900">
           <img
             src={imageSource}
-            alt={item.title}
+            alt={title}
             className={`w-full h-full ${
-              item.imageFit === 'contain' ? 'object-contain relative z-10' : 'object-cover'
+              fit === 'contain' ? 'object-contain relative z-10' : 'object-cover'
             }`}
             style={{
-              objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
-              transform: `scale(${(item.imageZoom ?? 100) / 100})`,
+              objectPosition: `${posX}% ${posY}%`,
+              transform: `scale(${zoom / 100})`,
             }}
           />
-          {item.imageFit === 'contain' && (
+          {fit === 'contain' && (
             <img
               src={imageSource}
               alt=""
@@ -174,7 +164,7 @@ function WritingCard({
           {/* Top Badges */}
           <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
             <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
-              {item.category || 'نووسین'}
+              {category}
             </span>
           </div>
         </div>
@@ -199,7 +189,7 @@ function WritingCard({
       <div className="p-3.5 flex-1 flex flex-col justify-between gap-2.5 text-right">
         <Link href={targetUrl} className="block">
           <h4 className="text-xs sm:text-sm font-bold font-peshang text-zinc-900 dark:text-white group-hover:text-amber-500 transition-colors line-clamp-2 leading-snug">
-            {item.title}
+            {title}
           </h4>
         </Link>
 
@@ -216,6 +206,48 @@ export default function SavedPage() {
   const { favorites, removeFavorite, clearFavorites, isLoaded } = useFavorites();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [confirmClear, setConfirmClear] = useState(false);
+
+  // Live media maps for syncing framing and metadata
+  const [liveFilms, setLiveFilms] = useState<Record<string, Film>>({});
+  const [liveArticles, setLiveArticles] = useState<Record<string, Article>>({});
+
+  useEffect(() => {
+    // Fetch live films from database
+    fetch('/api/films')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data: Film[]) => {
+        if (Array.isArray(data)) {
+          const map: Record<string, Film> = {};
+          for (const f of data) {
+            if (f.id) map[f.id.trim().toLowerCase()] = f;
+            if (f.slug) map[f.slug.trim().toLowerCase()] = f;
+            if (f.titleKurdish) map[f.titleKurdish.trim().toLowerCase()] = f;
+          }
+          setLiveFilms(map);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to sync live films for bookmarks:', err);
+      });
+
+    // Fetch live articles from database
+    fetch('/api/articles')
+      .then((res) => (res.ok ? res.json() : []))
+      .then((data: Article[]) => {
+        if (Array.isArray(data)) {
+          const map: Record<string, Article> = {};
+          for (const a of data) {
+            if (a.id) map[a.id.trim().toLowerCase()] = a;
+            if (a.slug) map[a.slug.trim().toLowerCase()] = a;
+            if (a.title) map[a.title.trim().toLowerCase()] = a;
+          }
+          setLiveArticles(map);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to sync live articles for bookmarks:', err);
+      });
+  }, []);
 
   const isMovieType = (type?: string) => type === 'movie' || type === 'cartoon';
   const isWritingType = (type?: string) => type === 'writing' || type === 'article';
@@ -241,6 +273,20 @@ export default function SavedPage() {
       setConfirmClear(true);
       setTimeout(() => setConfirmClear(false), 4000);
     }
+  };
+
+  const findLiveFilm = (item: SavedItem): Film | undefined => {
+    const idKey = item.id ? item.id.trim().toLowerCase() : '';
+    const slugKey = item.slug ? item.slug.trim().toLowerCase() : '';
+    const titleKey = item.title ? item.title.trim().toLowerCase() : '';
+    return liveFilms[idKey] || (slugKey ? liveFilms[slugKey] : undefined) || (titleKey ? liveFilms[titleKey] : undefined);
+  };
+
+  const findLiveArticle = (item: SavedItem): Article | undefined => {
+    const idKey = item.id ? item.id.trim().toLowerCase() : '';
+    const slugKey = item.slug ? item.slug.trim().toLowerCase() : '';
+    const titleKey = item.title ? item.title.trim().toLowerCase() : '';
+    return liveArticles[idKey] || (slugKey ? liveArticles[slugKey] : undefined) || (titleKey ? liveArticles[titleKey] : undefined);
   };
 
   return (
@@ -397,7 +443,12 @@ export default function SavedPage() {
 
                   <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                     {savedMovies.map((item) => (
-                      <MovieCard key={item.id} item={item} onRemove={removeFavorite} />
+                      <MovieCard
+                        key={item.id}
+                        item={item}
+                        liveFilm={findLiveFilm(item)}
+                        onRemove={removeFavorite}
+                      />
                     ))}
                   </div>
                 </section>
@@ -423,7 +474,12 @@ export default function SavedPage() {
 
                   <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
                     {savedWritings.map((item) => (
-                      <WritingCard key={item.id} item={item} onRemove={removeFavorite} />
+                      <WritingCard
+                        key={item.id}
+                        item={item}
+                        liveArticle={findLiveArticle(item)}
+                        onRemove={removeFavorite}
+                      />
                     ))}
                   </div>
                 </section>
@@ -444,7 +500,12 @@ export default function SavedPage() {
             ) : (
               <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-5">
                 {savedMovies.map((item) => (
-                  <MovieCard key={item.id} item={item} onRemove={removeFavorite} />
+                  <MovieCard
+                    key={item.id}
+                    item={item}
+                    liveFilm={findLiveFilm(item)}
+                    onRemove={removeFavorite}
+                  />
                 ))}
               </div>
             )
@@ -457,7 +518,12 @@ export default function SavedPage() {
             ) : (
               <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
                 {savedWritings.map((item) => (
-                  <WritingCard key={item.id} item={item} onRemove={removeFavorite} />
+                  <WritingCard
+                    key={item.id}
+                    item={item}
+                    liveArticle={findLiveArticle(item)}
+                    onRemove={removeFavorite}
+                  />
                 ))}
               </div>
             )
