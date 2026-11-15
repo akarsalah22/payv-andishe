@@ -8,15 +8,209 @@ import {
   Trash2,
   Clapperboard,
   BookOpen,
-  ArrowRight,
-  ExternalLink,
   ChevronLeft,
   X,
-  Sparkles,
 } from 'lucide-react';
 import { useFavorites, type SavedItem } from '@/hooks/useFavorites';
 
 type FilterType = 'all' | 'movies' | 'writings';
+
+function MovieCard({
+  item,
+  onRemove,
+}: {
+  item: SavedItem;
+  onRemove: (id: string) => void;
+}) {
+  const targetUrl = `/films/${encodeURIComponent(item.slug || item.id)}`;
+  const imageSource =
+    item.coverImage ||
+    item.image ||
+    item.imageUrl ||
+    '/placeholder.jpg';
+
+  return (
+    <div
+      key={item.id}
+      className="group relative flex flex-col rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10"
+    >
+      {/* Movies Poster: 2:3 Portrait Aspect Ratio */}
+      <Link
+        href={targetUrl}
+        className="relative block w-full aspect-[2/3] overflow-hidden bg-zinc-100 dark:bg-zinc-950"
+      >
+        <div className="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-500 group-hover:scale-105 pointer-events-none">
+          {item.imageFit === 'contain' ? (
+            <>
+              {/* Ambient Blurred Background */}
+              <Image
+                src={imageSource}
+                alt=""
+                fill
+                aria-hidden="true"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
+              />
+              {/* Foreground Contained Poster */}
+              <div className="relative z-10 w-full h-full overflow-hidden">
+                <Image
+                  src={imageSource}
+                  alt={item.title}
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                  className="w-full h-full object-contain transition-transform duration-300"
+                  style={{
+                    objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
+                    transform: `scale(${(item.imageZoom ?? 100) / 100})`,
+                  }}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="relative z-10 w-full h-full overflow-hidden">
+              <Image
+                src={imageSource}
+                alt={item.title}
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
+                className="w-full h-full object-cover transition-transform duration-300"
+                style={{
+                  objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
+                  transform: `scale(${(item.imageZoom ?? 100) / 100})`,
+                }}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-20 pointer-events-none" />
+
+        {/* Top Badges */}
+        <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
+          <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
+            {item.category || 'فیلم'}
+          </span>
+        </div>
+      </Link>
+
+      {/* Quick Removal Button (Top Left Overlay) */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onRemove(item.id);
+        }}
+        title="سڕینەوە لە هەڵگیراوەکان"
+        aria-label="سڕینەوە لە هەڵگیراوەکان"
+        className="absolute top-2 left-2 z-30 p-1.5 rounded-full bg-black/70 hover:bg-rose-600 text-white/80 hover:text-white backdrop-blur-md border border-white/20 transition-all duration-200 cursor-pointer active:scale-75 shadow-xs"
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+
+      {/* Title & Info at Bottom */}
+      <div className="p-3 flex-1 flex flex-col justify-between gap-2 text-right">
+        <Link href={targetUrl} className="block">
+          <h4 className="text-xs sm:text-sm font-bold font-peshang text-zinc-900 dark:text-white group-hover:text-amber-500 transition-colors line-clamp-2 leading-snug">
+            {item.title}
+          </h4>
+        </Link>
+
+        <div className="flex items-center justify-between text-[11px] font-sirwan text-zinc-500 dark:text-zinc-400 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
+          <span>بینینی فیلم</span>
+          <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1 text-amber-500" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WritingCard({
+  item,
+  onRemove,
+}: {
+  item: SavedItem;
+  onRemove: (id: string) => void;
+}) {
+  const targetUrl = `/articles/${encodeURIComponent(item.slug || item.id)}`;
+  const imageSource =
+    item.coverImage ||
+    item.image ||
+    item.imageUrl ||
+    '/placeholder-article.jpg';
+
+  return (
+    <div
+      key={item.id}
+      className="group relative flex flex-col rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10"
+    >
+      {/* Writings Cover: 16:9 Landscape Video Aspect Ratio */}
+      <Link href={targetUrl} className="relative block w-full overflow-hidden">
+        <div className="relative w-full aspect-video overflow-hidden bg-zinc-900">
+          <img
+            src={imageSource}
+            alt={item.title}
+            className={`w-full h-full ${
+              item.imageFit === 'contain' ? 'object-contain relative z-10' : 'object-cover'
+            }`}
+            style={{
+              objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
+              transform: `scale(${(item.imageZoom ?? 100) / 100})`,
+            }}
+          />
+          {item.imageFit === 'contain' && (
+            <img
+              src={imageSource}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
+            />
+          )}
+
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-20 pointer-events-none" />
+
+          {/* Top Badges */}
+          <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
+            <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
+              {item.category || 'نووسین'}
+            </span>
+          </div>
+        </div>
+      </Link>
+
+      {/* Quick Removal Button (Top Left Overlay) */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onRemove(item.id);
+        }}
+        title="سڕینەوە لە هەڵگیراوەکان"
+        aria-label="سڕینەوە لە هەڵگیراوەکان"
+        className="absolute top-2 left-2 z-30 p-1.5 rounded-full bg-black/70 hover:bg-rose-600 text-white/80 hover:text-white backdrop-blur-md border border-white/20 transition-all duration-200 cursor-pointer active:scale-75 shadow-xs"
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+
+      {/* Title & Info at Bottom */}
+      <div className="p-3.5 flex-1 flex flex-col justify-between gap-2.5 text-right">
+        <Link href={targetUrl} className="block">
+          <h4 className="text-xs sm:text-sm font-bold font-peshang text-zinc-900 dark:text-white group-hover:text-amber-500 transition-colors line-clamp-2 leading-snug">
+            {item.title}
+          </h4>
+        </Link>
+
+        <div className="flex items-center justify-between text-[11px] font-sirwan text-zinc-500 dark:text-zinc-400 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
+          <span>خوێندنەوە</span>
+          <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1 text-amber-500" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function SavedPage() {
   const { favorites, removeFavorite, clearFavorites, isLoaded } = useFavorites();
@@ -26,24 +220,18 @@ export default function SavedPage() {
   const isMovieType = (type?: string) => type === 'movie' || type === 'cartoon';
   const isWritingType = (type?: string) => type === 'writing' || type === 'article';
 
-  const moviesCount = useMemo(
-    () => favorites.filter((item) => isMovieType(item.type)).length,
-    [favorites]
-  );
-  const writingsCount = useMemo(
-    () => favorites.filter((item) => isWritingType(item.type)).length,
+  const savedMovies = useMemo(
+    () => favorites.filter((item) => isMovieType(item.type)),
     [favorites]
   );
 
-  const filteredItems = useMemo(() => {
-    if (activeFilter === 'movies') {
-      return favorites.filter((item) => isMovieType(item.type));
-    }
-    if (activeFilter === 'writings') {
-      return favorites.filter((item) => isWritingType(item.type));
-    }
-    return favorites;
-  }, [favorites, activeFilter]);
+  const savedWritings = useMemo(
+    () => favorites.filter((item) => isWritingType(item.type)),
+    [favorites]
+  );
+
+  const moviesCount = savedMovies.length;
+  const writingsCount = savedWritings.length;
 
   const handleClearAll = () => {
     if (confirmClear) {
@@ -122,7 +310,7 @@ export default function SavedPage() {
               className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 font-medium font-sirwan text-xs sm:text-sm transition-all duration-200 active:scale-95 border border-zinc-200 dark:border-zinc-700"
             >
               <BookOpen className="w-4 h-4" />
-              <span>خوێندنەوەی نووسینەکان  </span>
+              <span>خوێندنەوەی نووسینەکان</span>
             </Link>
           </div>
         </div>
@@ -137,10 +325,11 @@ export default function SavedPage() {
               <button
                 type="button"
                 onClick={() => setActiveFilter('all')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${activeFilter === 'all'
-                  ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-                  }`}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${
+                  activeFilter === 'all'
+                    ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                }`}
               >
                 <span>هەمووی</span>
                 <span className="mr-1.5 text-[11px] opacity-80 font-sans">({favorites.length})</span>
@@ -150,12 +339,13 @@ export default function SavedPage() {
               <button
                 type="button"
                 onClick={() => setActiveFilter('movies')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${activeFilter === 'movies'
-                  ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-                  }`}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${
+                  activeFilter === 'movies'
+                    ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                }`}
               >
-                <span>فیلمەکان </span>
+                <span>فیلمەکان</span>
                 <span className="mr-1.5 text-[11px] opacity-80 font-sans">({moviesCount})</span>
               </button>
 
@@ -163,12 +353,13 @@ export default function SavedPage() {
               <button
                 type="button"
                 onClick={() => setActiveFilter('writings')}
-                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${activeFilter === 'writings'
-                  ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
-                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
-                  }`}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-sirwan font-medium transition-all duration-200 cursor-pointer ${
+                  activeFilter === 'writings'
+                    ? 'bg-amber-500 text-zinc-950 font-bold shadow-xs'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                }`}
               >
-                <span>نووسینەکان </span>
+                <span>نووسینەکان</span>
                 <span className="mr-1.5 text-[11px] opacity-80 font-sans">({writingsCount})</span>
               </button>
             </div>
@@ -177,187 +368,102 @@ export default function SavedPage() {
             <button
               type="button"
               onClick={handleClearAll}
-              className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-sirwan transition-all duration-200 cursor-pointer select-none active:scale-95 ${confirmClear
-                ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30'
-                : 'text-zinc-500 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400 hover:bg-rose-500/10'
-                }`}
+              className={`inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-sirwan transition-all duration-200 cursor-pointer select-none active:scale-95 ${
+                confirmClear
+                  ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30'
+                  : 'text-zinc-500 hover:text-rose-600 dark:text-zinc-400 dark:hover:text-rose-400 hover:bg-rose-500/10'
+              }`}
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>{confirmClear ? 'دڵنیایت لە پاککردنەوە؟' : 'سڕینەوەی هەمووی'}</span>
             </button>
           </div>
 
-          {/* Cards Grid */}
-          {filteredItems.length === 0 ? (
-            <div className="w-full py-12 text-center text-xs sm:text-sm font-sirwan text-zinc-400">
-              هیچ بەرهەمێک لەم بەشەدا پاشەکەوت نەکراوە.
-            </div>
-          ) : (
-            <div
-              className={
-                activeFilter === 'writings'
-                  ? 'w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'
-                  : activeFilter === 'all'
-                  ? 'w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-5'
-                  : 'w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-5'
-              }
-            >
-              {filteredItems.map((item) => {
-                const isWriting = isWritingType(item.type);
-                const targetUrl = isWriting
-                  ? `/articles/${encodeURIComponent(item.slug || item.id)}`
-                  : `/films/${encodeURIComponent(item.slug || item.id)}`;
-
-                const imageSource =
-                  item.coverImage ||
-                  item.image ||
-                  item.imageUrl ||
-                  (isWriting ? '/placeholder-article.jpg' : '/placeholder.jpg');
-
-                return (
-                  <div
-                    key={item.id}
-                    className={`group relative flex flex-col rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200/90 dark:border-zinc-800 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10 ${
-                      activeFilter === 'all' && isWriting ? 'col-span-2 sm:col-span-1' : ''
-                    }`}
-                  >
-                    {/* Image Link Container */}
-                    {isWriting ? (
-                      /* Writings Cover: 16:9 Landscape Video Aspect Ratio without cropping */
-                      <Link
-                        href={targetUrl}
-                        className="relative block w-full overflow-hidden"
-                      >
-                        <div className="relative w-full aspect-video overflow-hidden bg-zinc-900">
-                          <img
-                            src={imageSource}
-                            alt={item.title}
-                            className={`w-full h-full ${
-                              item.imageFit === 'contain' ? 'object-contain relative z-10' : 'object-cover'
-                            }`}
-                            style={{
-                              objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
-                              transform: `scale(${(item.imageZoom ?? 100) / 100})`,
-                            }}
-                          />
-                          {item.imageFit === 'contain' && (
-                            <img
-                              src={imageSource}
-                              alt=""
-                              aria-hidden="true"
-                              className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
-                            />
-                          )}
-
-                          {/* Gradient Overlay */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-20 pointer-events-none" />
-
-                          {/* Top Badges */}
-                          <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
-                            <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
-                              {item.category || 'نووسین'}
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-                    ) : (
-                      /* Movies Poster: 2:3 Portrait Aspect Ratio */
-                      <Link
-                        href={targetUrl}
-                        className="relative block w-full aspect-[2/3] overflow-hidden bg-zinc-100 dark:bg-zinc-950"
-                      >
-                        <div className="absolute inset-0 w-full h-full overflow-hidden transition-transform duration-500 group-hover:scale-105 pointer-events-none">
-                          {item.imageFit === 'contain' ? (
-                            <>
-                              {/* Ambient Blurred Background */}
-                              <Image
-                                src={imageSource}
-                                alt=""
-                                fill
-                                aria-hidden="true"
-                                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                                className="absolute inset-0 w-full h-full object-cover blur-xl scale-125 opacity-45 pointer-events-none"
-                              />
-                              {/* Foreground Contained Poster */}
-                              <div className="relative z-10 w-full h-full overflow-hidden">
-                                <Image
-                                  src={imageSource}
-                                  alt={item.title}
-                                  fill
-                                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                                  className="w-full h-full object-contain transition-transform duration-300"
-                                  style={{
-                                    objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
-                                    transform: `scale(${(item.imageZoom ?? 100) / 100})`,
-                                  }}
-                                />
-                              </div>
-                            </>
-                          ) : (
-                            <div className="relative z-10 w-full h-full overflow-hidden">
-                              <Image
-                                src={imageSource}
-                                alt={item.title}
-                                fill
-                                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
-                                className="w-full h-full object-cover transition-transform duration-300"
-                                style={{
-                                  objectPosition: `${item.imagePosX ?? 50}% ${item.imagePosY ?? 50}%`,
-                                  transform: `scale(${(item.imageZoom ?? 100) / 100})`,
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 z-20 pointer-events-none" />
-
-                        {/* Top Badges */}
-                        <div className="absolute top-2 inset-x-2 flex items-center justify-between z-30 pointer-events-none">
-                          <span className="px-2 py-0.5 rounded-md text-[10px] font-sirwan font-medium bg-black/60 backdrop-blur-md text-amber-400 border border-white/10">
-                            {item.category || 'فیلم'}
-                          </span>
-                        </div>
-                      </Link>
-                    )}
-
-                    {/* Quick Removal Button (Top Left Overlay) */}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        removeFavorite(item.id);
-                      }}
-                      title="سڕینەوە لە هەڵگیراوەکان"
-                      aria-label="سڕینەوە لە هەڵگیراوەکان"
-                      className="absolute top-2 left-2 z-30 p-1.5 rounded-full bg-black/70 hover:bg-rose-600 text-white/80 hover:text-white backdrop-blur-md border border-white/20 transition-all duration-200 cursor-pointer active:scale-75 shadow-xs"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-
-                    {/* Title & Info at Bottom */}
-                    <div className="p-3 flex-1 flex flex-col justify-between gap-2 text-right">
-                      <Link href={targetUrl} className="block">
-                        <h4 className="text-xs sm:text-sm font-bold font-peshang text-zinc-900 dark:text-white group-hover:text-amber-500 transition-colors line-clamp-2 leading-snug">
-                          {item.title}
-                        </h4>
-                      </Link>
-
-                      <div className="flex items-center justify-between text-[11px] font-sirwan text-zinc-500 dark:text-zinc-400 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
-                        <span>{isWriting ? 'خوێندنەوە' : 'بینینی فیلم'}</span>
-                        <ChevronLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1 text-amber-500" />
-                      </div>
-                    </div>
+          {/* Cards Content Area */}
+          {activeFilter === 'all' ? (
+            /* "هەمووی" (All) Tab: Two Distinct Sections Separated Vertically */
+            <div className="w-full space-y-10">
+              {/* Movies & Cartoons Section */}
+              {savedMovies.length > 0 && (
+                <section className="space-y-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                      <span>فیلم و کارتۆنەکان</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-200/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-sans">
+                        {savedMovies.length}
+                      </span>
+                    </h2>
                   </div>
-                );
-              })}
+
+                  <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {savedMovies.map((item) => (
+                      <MovieCard key={item.id} item={item} onRemove={removeFavorite} />
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {/* Writings Section */}
+              {savedWritings.length > 0 && (
+                <section
+                  className={`space-y-4 ${
+                    savedMovies.length > 0
+                      ? 'pt-8 border-t border-zinc-200/70 dark:border-zinc-800/70'
+                      : ''
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                      <span>نووسینەکان</span>
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-zinc-200/80 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-sans">
+                        {savedWritings.length}
+                      </span>
+                    </h2>
+                  </div>
+
+                  <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
+                    {savedWritings.map((item) => (
+                      <WritingCard key={item.id} item={item} onRemove={removeFavorite} />
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {savedMovies.length === 0 && savedWritings.length === 0 && (
+                <div className="w-full py-12 text-center text-xs sm:text-sm font-sirwan text-zinc-400">
+                  هیچ بەرهەمێک لەم بەشەدا پاشەکەوت نەکراوە.
+                </div>
+              )}
             </div>
+          ) : activeFilter === 'movies' ? (
+            /* "فیلمەکان" Tab */
+            savedMovies.length === 0 ? (
+              <div className="w-full py-12 text-center text-xs sm:text-sm font-sirwan text-zinc-400">
+                هیچ فیلمێک لەم بەشەدا پاشەکەوت نەکراوە.
+              </div>
+            ) : (
+              <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3.5 sm:gap-5">
+                {savedMovies.map((item) => (
+                  <MovieCard key={item.id} item={item} onRemove={removeFavorite} />
+                ))}
+              </div>
+            )
+          ) : (
+            /* "نووسینەکان" Tab */
+            savedWritings.length === 0 ? (
+              <div className="w-full py-12 text-center text-xs sm:text-sm font-sirwan text-zinc-400">
+                هیچ نووسینێک لەم بەشەدا پاشەکەوت نەکراوە.
+              </div>
+            ) : (
+              <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
+                {savedWritings.map((item) => (
+                  <WritingCard key={item.id} item={item} onRemove={removeFavorite} />
+                ))}
+              </div>
+            )
           )}
         </div>
       )}
     </div>
   );
 }
-
