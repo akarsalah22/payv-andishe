@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Play, X, ChevronLeft, ChevronRight, ExternalLink, Tv } from "lucide-react";
+import { Play, X, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import { LiteYouTube } from "@/components/LiteYouTube";
 import { TelegramParts, type TelegramPartItem } from "@/components/TelegramParts";
 import { TelegramIcon } from "@/components/TelegramIcon";
@@ -212,12 +212,12 @@ export function MediaViewer({
           </div>
         ) : (
           /* Authentic 16:9 Cinema Screen Stage (Idle State) */
-          <div className="w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800/90 shadow-2xl">
+          <div className="w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800">
             <button
               type="button"
               onClick={() => handleSelectEpisode(0)}
               className="group relative w-full aspect-video flex flex-col items-center justify-center text-center px-4 cursor-pointer focus:outline-none select-none overflow-hidden"
-              aria-label="تەماشاکردنی زنجیرەکە"
+              aria-label="تەماشاکردنی ئەڵقەی ١"
             >
               {/* 1. Subtle Dimmed Backdrop */}
               {posterUrl && (
@@ -229,28 +229,22 @@ export function MediaViewer({
                     fill
                     className="w-full h-full object-cover opacity-30 scale-105 blur-[2px]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/60" />
                 </div>
               )}
 
-              {/* 2. Top-Right Minimal Screen Indicator Badge */}
-              <div className="absolute top-3.5 right-3.5 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/10 text-[11px] font-medium font-sirwan text-zinc-300">
-                <Tv className="w-3.5 h-3.5 text-amber-400" />
-                <span>شاشەی پەخش</span>
+              {/* 2. Center Play Trigger (No Yellow Box/Pill) */}
+              <div className="z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/15 group-hover:bg-white/25 border border-white/30 backdrop-blur-md flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+                <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-current translate-x-[1px]" />
               </div>
 
-              {/* 3. Center Interactive Cinema Play Trigger */}
-              <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/12 group-hover:bg-amber-500 border border-white/25 group-hover:border-amber-400 backdrop-blur-md flex items-center justify-center transition-all duration-200 group-hover:scale-105 shadow-xl">
-                <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:text-zinc-950 fill-current translate-x-[1px] transition-colors duration-200" />
-              </div>
-
-              {/* Clear Screen Label Below the Play Button */}
-              <div className="mt-3.5 z-20 text-center">
+              {/* 3. Minimal Screen Caption Below the Circle */}
+              <div className="mt-3 z-10 text-center">
                 <p className="text-sm sm:text-base font-bold font-peshang text-white">
-                  لێرە تەماشای زنجیرەکە بکە — ئەڵقەی ١
+                  شاشەی پەخش — تەماشاکردنی ئەڵقەی ١
                 </p>
                 <p className="text-xs font-sirwan text-zinc-400 mt-1">
-                  کرتە لە شاشەکە بکە یان ئەڵقەیەک لە خوارەوە هەڵبژێرە
+                  کرتە لێرە بکە یان ئەڵقەیەک لە خوارەوە هەڵبژێرە
                 </p>
               </div>
             </button>
@@ -276,12 +270,12 @@ export function MediaViewer({
     return (
       <section id="in-site-player" className={`w-full space-y-6 text-right ${className}`} dir="rtl">
         {!isPlayingSingle ? (
-          <div className="w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800/90 shadow-2xl">
+          <div className="w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800">
             <button
               type="button"
               onClick={() => setIsPlayingSingle(true)}
               className="group relative w-full aspect-video flex flex-col items-center justify-center text-center px-4 cursor-pointer focus:outline-none select-none overflow-hidden"
-              aria-label="تەماشاکردنی فیلمەکە"
+              aria-label="تەماشاکردنی فیلم"
             >
               {/* 1. Subtle Dimmed Backdrop */}
               {posterUrl && (
@@ -293,28 +287,22 @@ export function MediaViewer({
                     fill
                     className="w-full h-full object-cover opacity-30 scale-105 blur-[2px]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/60" />
                 </div>
               )}
 
-              {/* 2. Top-Right Minimal Screen Indicator Badge */}
-              <div className="absolute top-3.5 right-3.5 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/10 text-[11px] font-medium font-sirwan text-zinc-300">
-                <Tv className="w-3.5 h-3.5 text-amber-400" />
-                <span>شاشەی پەخش</span>
+              {/* 2. Center Play Trigger (No Yellow Box/Pill) */}
+              <div className="z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/15 group-hover:bg-white/25 border border-white/30 backdrop-blur-md flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+                <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-current translate-x-[1px]" />
               </div>
 
-              {/* 3. Center Interactive Cinema Play Trigger */}
-              <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/12 group-hover:bg-amber-500 border border-white/25 group-hover:border-amber-400 backdrop-blur-md flex items-center justify-center transition-all duration-200 group-hover:scale-105 shadow-xl">
-                <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:text-zinc-950 fill-current translate-x-[1px] transition-colors duration-200" />
-              </div>
-
-              {/* Clear Screen Label Below the Play Button */}
-              <div className="mt-3.5 z-20 text-center">
+              {/* 3. Minimal Screen Caption Below the Circle */}
+              <div className="mt-3 z-10 text-center">
                 <p className="text-sm sm:text-base font-bold font-peshang text-white">
-                  لێرە تەماشای فیلمەکە بکە
+                  شاشەی پەخش — تەماشاکردنی فیلم
                 </p>
                 <p className="text-xs font-sirwan text-zinc-400 mt-1">
-                  کرتە لە شاشەکە بکە بۆ دەستپێکردنی پەخش
+                  کرتە لێرە بکە بۆ دەستپێکردن
                 </p>
               </div>
             </button>
@@ -396,12 +384,12 @@ export function MediaViewer({
     return (
       <section id="in-site-player" className={`w-full space-y-6 text-right ${className}`} dir="rtl">
         {!isPlayingSingle ? (
-          <div className="w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-800/90 shadow-2xl">
+          <div className="w-full rounded-2xl overflow-hidden bg-zinc-950 border border-zinc-200/80 dark:border-zinc-800">
             <button
               type="button"
               onClick={() => setIsPlayingSingle(true)}
               className="group relative w-full aspect-video flex flex-col items-center justify-center text-center px-4 cursor-pointer focus:outline-none select-none overflow-hidden"
-              aria-label="تەماشاکردنی فیلمەکە"
+              aria-label="تەماشاکردنی فیلم"
             >
               {/* 1. Subtle Dimmed Backdrop */}
               {posterUrl && (
@@ -413,28 +401,22 @@ export function MediaViewer({
                     fill
                     className="w-full h-full object-cover opacity-30 scale-105 blur-[2px]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/60" />
                 </div>
               )}
 
-              {/* 2. Top-Right Minimal Screen Indicator Badge */}
-              <div className="absolute top-3.5 right-3.5 z-20 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/10 text-[11px] font-medium font-sirwan text-zinc-300">
-                <Tv className="w-3.5 h-3.5 text-amber-400" />
-                <span>شاشەی پەخش</span>
+              {/* 2. Center Play Trigger (No Yellow Box/Pill) */}
+              <div className="z-10 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/15 group-hover:bg-white/25 border border-white/30 backdrop-blur-md flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+                <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-current translate-x-[1px]" />
               </div>
 
-              {/* 3. Center Interactive Cinema Play Trigger */}
-              <div className="z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/12 group-hover:bg-amber-500 border border-white/25 group-hover:border-amber-400 backdrop-blur-md flex items-center justify-center transition-all duration-200 group-hover:scale-105 shadow-xl">
-                <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:text-zinc-950 fill-current translate-x-[1px] transition-colors duration-200" />
-              </div>
-
-              {/* Clear Screen Label Below the Play Button */}
-              <div className="mt-3.5 z-20 text-center">
+              {/* 3. Minimal Screen Caption Below the Circle */}
+              <div className="mt-3 z-10 text-center">
                 <p className="text-sm sm:text-base font-bold font-peshang text-white">
-                  لێرە تەماشای فیلمەکە بکە
+                  شاشەی پەخش — تەماشاکردنی فیلم
                 </p>
                 <p className="text-xs font-sirwan text-zinc-400 mt-1">
-                  کرتە لە شاشەکە بکە بۆ دەستپێکردنی پەخش
+                  کرتە لێرە بکە بۆ دەستپێکردن
                 </p>
               </div>
             </button>
