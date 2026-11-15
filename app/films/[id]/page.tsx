@@ -4,7 +4,6 @@ import {
   ChevronRight,
   ChevronLeft,
   Film as FilmIcon,
-  Sparkles,
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import { readFilms } from '@/lib/storage';
@@ -258,12 +257,9 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
       {relatedFilms.length > 0 && (
         <section className="w-full space-y-5 pt-4">
           <div className="flex items-center justify-between pb-3 border-b border-zinc-200/80 dark:border-zinc-800/80">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-500" strokeWidth={2} />
-              <h2 className="text-lg sm:text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-                بەرهەمە پێشنیارکراوەکان
-              </h2>
-            </div>
+            <h2 className="text-lg sm:text-xl font-bold font-peshang text-zinc-900 dark:text-zinc-100">
+              بەرهەمە پێشنیارکراوەکان
+            </h2>
             <Link
               href="/films"
               className="group inline-flex items-center gap-1 text-xs sm:text-sm font-semibold font-sirwan text-amber-600 dark:text-amber-400 hover:text-amber-500 dark:hover:text-amber-300 transition-colors"
