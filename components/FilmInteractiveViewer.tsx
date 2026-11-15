@@ -267,15 +267,20 @@ export function FilmInteractiveViewer({
           <div className="w-full space-y-4">
             {activeEpisodeIndex !== null && currentEpisode ? (
               /* Active Theater Player Container */
-              <div className="w-full space-y-3.5 rounded-3xl bg-zinc-900 border border-zinc-800 p-4 sm:p-6 shadow-2xl">
+              <div className="w-full space-y-2.5 sm:space-y-3.5 rounded-2xl sm:rounded-3xl bg-zinc-900 border border-zinc-800 p-3 sm:p-6 shadow-2xl">
                 {/* Top Bar with Media Title, Episode Title & Close Button */}
-                <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center shrink-0">
-                      <Play className="w-4 h-4 fill-current" />
+                <div className="flex items-center justify-between gap-2 pb-2.5 sm:pb-3 border-b border-zinc-800">
+                  <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center shrink-0">
+                      <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current" />
                     </div>
-                    <div className="min-w-0 text-right">
-                      <h2 className="text-sm sm:text-base font-bold font-peshang text-white truncate">
+                    <div className="min-w-0 flex-1 text-right">
+                      {/* Mobile concise title */}
+                      <p className="sm:hidden text-xs font-semibold font-sirwan text-zinc-100 truncate">
+                        {currentEpisode.title || `ئەڵقەی ${toKurdishNumber(activeEpisodeIndex + 1)}`}
+                      </p>
+                      {/* Desktop full title */}
+                      <h2 className="hidden sm:block text-sm sm:text-base font-bold font-peshang text-white truncate">
                         {film.titleKurdish} —{" "}
                         <span className="text-amber-400">
                           {currentEpisode.title || `ئەڵقەی ${toKurdishNumber(activeEpisodeIndex + 1)}`}
@@ -284,11 +289,23 @@ export function FilmInteractiveViewer({
                     </div>
                   </div>
 
+                  {/* Mobile icon-only close button */}
                   <button
                     type="button"
                     onClick={handleClosePlayer}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-xs font-semibold font-sirwan transition-colors cursor-pointer shrink-0"
+                    aria-label="داخستن"
                     title="داخستنی پەخشکەر"
+                    className="sm:hidden w-8 h-8 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+
+                  {/* Desktop close button */}
+                  <button
+                    type="button"
+                    onClick={handleClosePlayer}
+                    title="داخستنی پەخشکەر"
+                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-xs font-semibold font-sirwan transition-colors cursor-pointer shrink-0"
                   >
                     <span>داخستن</span>
                     <X className="w-3.5 h-3.5" />
@@ -338,41 +355,48 @@ export function FilmInteractiveViewer({
 
                 {/* Next / Previous Episode Controls Bar (when episodes > 1) */}
                 {episodes.length > 1 && (
-                  <div className="flex items-center justify-between pt-2">
+                  <div className="flex items-center justify-between gap-2 pt-2 sm:pt-2">
                     <button
                       type="button"
                       disabled={activeEpisodeIndex === 0}
                       onClick={() => handleSelectEpisode(activeEpisodeIndex - 1)}
-                      className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold font-sirwan transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1 sm:gap-1.5 h-8 px-2.5 sm:h-auto sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium sm:font-bold font-sirwan transition-all cursor-pointer whitespace-nowrap ${
                         activeEpisodeIndex === 0
-                          ? "opacity-35 cursor-not-allowed bg-zinc-800 text-zinc-500"
-                          : "bg-zinc-800 hover:bg-zinc-700 text-zinc-200 active:scale-95"
+                          ? "opacity-30 cursor-not-allowed bg-zinc-800/80 sm:bg-zinc-800 text-zinc-500 border border-transparent"
+                          : "border border-zinc-700/60 sm:border-transparent bg-zinc-800/80 sm:bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white active:scale-95"
                       }`}
                     >
-                      <ChevronRight className="w-4 h-4" />
-                      <span>ئەڵقەی پێشوو</span>
+                      <ChevronRight className="w-4 h-4 shrink-0" />
+                      <span className="sm:hidden">پێشوو</span>
+                      <span className="hidden sm:inline">ئەڵقەی پێشوو</span>
                     </button>
 
-                    <div className="text-xs sm:text-sm font-bold font-sirwan text-zinc-400">
-                      ئەڵقەی{" "}
-                      <span className="text-amber-400">
-                        {toKurdishNumber(activeEpisodeIndex + 1)}
-                      </span>{" "}
-                      لە {toKurdishNumber(episodes.length)}
+                    <div className="text-xs sm:text-sm font-medium sm:font-bold font-sirwan text-zinc-400 tabular-nums whitespace-nowrap">
+                      <span className="sm:hidden">
+                        {toKurdishNumber(activeEpisodeIndex + 1)} / {toKurdishNumber(episodes.length)}
+                      </span>
+                      <span className="hidden sm:inline">
+                        ئەڵقەی{" "}
+                        <span className="text-amber-400">
+                          {toKurdishNumber(activeEpisodeIndex + 1)}
+                        </span>{" "}
+                        لە {toKurdishNumber(episodes.length)}
+                      </span>
                     </div>
 
                     <button
                       type="button"
                       disabled={activeEpisodeIndex === episodes.length - 1}
                       onClick={() => handleSelectEpisode(activeEpisodeIndex + 1)}
-                      className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold font-sirwan transition-all cursor-pointer ${
+                      className={`inline-flex items-center gap-1 sm:gap-1.5 h-8 px-2.5 sm:h-auto sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold font-sirwan transition-all cursor-pointer whitespace-nowrap ${
                         activeEpisodeIndex === episodes.length - 1
-                          ? "opacity-35 cursor-not-allowed bg-zinc-800 text-zinc-500"
+                          ? "opacity-30 cursor-not-allowed bg-zinc-800 text-zinc-500"
                           : "bg-amber-500 hover:bg-amber-400 text-zinc-950 active:scale-95 shadow-sm shadow-amber-500/20"
                       }`}
                     >
-                      <span>ئەڵقەی دواتر</span>
-                      <ChevronLeft className="w-4 h-4" />
+                      <span className="sm:hidden">دواتر</span>
+                      <span className="hidden sm:inline">ئەڵقەی دواتر</span>
+                      <ChevronLeft className="w-4 h-4 shrink-0" />
                     </button>
                   </div>
                 )}

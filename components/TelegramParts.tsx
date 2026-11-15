@@ -37,17 +37,19 @@ export function TelegramParts({
   return (
     <section className={`w-full space-y-3.5 text-right ${className}`} dir="rtl">
       {/* Header */}
-      <div className="flex items-center justify-between pb-1 border-b border-zinc-200/80 dark:border-zinc-800/80">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs font-sirwan">
+      <div className="flex items-center justify-between gap-2 pb-1 border-b border-zinc-200/80 dark:border-zinc-800/80">
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-xs font-sirwan shrink-0">
             {toKurdishNumber(parts.length)}
           </div>
-          <h3 className="text-base sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100">
-            بەشەکانی بەرهەم ({toKurdishNumber(parts.length)} بەش)
+          <h3 className="text-sm sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100 truncate">
+            <span>بەشەکانی بەرهەم</span>
+            <span className="hidden sm:inline"> ({toKurdishNumber(parts.length)} بەش)</span>
           </h3>
         </div>
-        <span className="text-xs font-sirwan text-zinc-500 dark:text-zinc-400">
-          تەماشاکردن ڕاستەوخۆ لە ماڵپەڕ
+        <span className="text-[11px] sm:text-xs font-sirwan text-zinc-500 dark:text-zinc-400 whitespace-nowrap shrink-0">
+          <span className="sm:hidden">پەخشی ناوخۆیی</span>
+          <span className="hidden sm:inline">تەماشاکردن ڕاستەوخۆ لە ماڵپەڕ</span>
         </span>
       </div>
 
