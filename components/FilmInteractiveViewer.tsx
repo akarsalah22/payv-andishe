@@ -387,15 +387,9 @@ export function FilmInteractiveViewer({
                     <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-current translate-x-[1px]" />
                   </div>
 
-                  {/* 3. Minimal Screen Caption Below the Circle */}
-                  <div className="mt-3 z-10 text-center">
-                    <p className="text-sm sm:text-base font-bold font-peshang text-white">
-                      شاشەی پەخش — تەماشاکردنی ئەڵقەی ١
-                    </p>
-                    <p className="text-xs font-sirwan text-zinc-400 mt-1">
-                      کرتە لێرە بکە یان ئەڵقەیەک لە خوارەوە هەڵبژێرە
-                    </p>
-                  </div>
+                  <span className="mt-3 z-10 text-sm sm:text-base font-bold text-white">
+                    تەماشاکردن
+                  </span>
                 </button>
               </div>
             )}
@@ -439,15 +433,9 @@ export function FilmInteractiveViewer({
                   <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-current translate-x-[1px]" />
                 </div>
 
-                {/* 3. Minimal Screen Caption Below the Circle */}
-                <div className="mt-3 z-10 text-center">
-                  <p className="text-sm sm:text-base font-bold font-peshang text-white">
-                    شاشەی پەخش — تەماشاکردنی فیلم
-                  </p>
-                  <p className="text-xs font-sirwan text-zinc-400 mt-1">
-                    کرتە لێرە بکە بۆ دەستپێکردن
-                  </p>
-                </div>
+                <span className="mt-3 z-10 text-sm sm:text-base font-bold text-white">
+                  تەماشاکردن
+                </span>
               </button>
             </div>
           ) : (
@@ -543,15 +531,9 @@ export function FilmInteractiveViewer({
                   <Play className="w-6 h-6 sm:w-7 sm:h-7 text-white fill-current translate-x-[1px]" />
                 </div>
 
-                {/* 3. Minimal Screen Caption Below the Circle */}
-                <div className="mt-3 z-10 text-center">
-                  <p className="text-sm sm:text-base font-bold font-peshang text-white">
-                    شاشەی پەخش — تەماشاکردنی فیلم
-                  </p>
-                  <p className="text-xs font-sirwan text-zinc-400 mt-1">
-                    کرتە لێرە بکە بۆ دەستپێکردن
-                  </p>
-                </div>
+                <span className="mt-3 z-10 text-sm sm:text-base font-bold text-white">
+                  تەماشاکردن
+                </span>
               </button>
             </div>
           ) : (
