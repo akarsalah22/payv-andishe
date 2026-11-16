@@ -17,7 +17,7 @@ import { OkRuIcon } from "@/components/OkRuIcon";
 import { TelegramParts, type TelegramPartItem } from "@/components/TelegramParts";
 import { LiteYouTube } from "@/components/LiteYouTube";
 import { getEmbedInfo, extractOkRuVideoId } from "@/lib/videoEmbed";
-import { toKurdishNumber, type Film, type FilmPart } from "@/data/films";
+import { toKurdishNumber, normalizeCategory, type Film, type FilmPart } from "@/data/films";
 
 export interface FilmInteractiveViewerProps {
   film: Partial<Film>;
@@ -167,7 +167,7 @@ export function FilmInteractiveViewer({
             <div className="flex items-center justify-center md:justify-start gap-2 flex-wrap">
               {film.category && (
                 <span className="px-3 py-1 rounded-full text-xs font-bold font-sirwan bg-amber-500 text-zinc-950 shadow-sm">
-                  {film.category}
+                  {normalizeCategory(film.category)}
                 </span>
               )}
               {film.genres &&

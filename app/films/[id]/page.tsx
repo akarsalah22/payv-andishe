@@ -16,6 +16,7 @@ import {
   extractYouTubeId,
   getFilmTelegramParts,
   getOkRuEmbedUrl,
+  normalizeCategory,
 } from '@/data/films';
 import { FilmCard } from '@/components/FilmCard';
 import { ShareButton } from '@/components/ShareButton';
@@ -78,7 +79,7 @@ export async function generateMetadata({
   const posterSrc = film.posterUrl || '/placeholder.jpg';
   const description =
     film.description ||
-    `${film.titleKurdish} (${film.year}) - لە پۆلینی ${film.category}. تەماشای بکە لە میدیای ئیسلامی.`;
+    `${film.titleKurdish} (${film.year}) - لە پۆلینی ${normalizeCategory(film.category)}. تەماشای بکە لە میدیای ئیسلامی.`;
   const shareableUrl = `https://mediay-islamy.vercel.app/films/${encodeURIComponent(film.slug || film.id)}`;
   const fullPosterUrl = posterSrc.startsWith('http')
     ? posterSrc
@@ -207,7 +208,7 @@ export default async function FilmDetailsPage({ params }: FilmPageProps) {
               imageUrl: posterSrc,
               type: 'movie',
               slug: film.slug || film.id,
-              category: film.category,
+              category: normalizeCategory(film.category),
               year: film.year,
               duration: film.duration,
               imageFit: film.imageFit,

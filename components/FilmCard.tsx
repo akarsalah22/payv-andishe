@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import type { Film } from '@/data/films';
+import { normalizeCategory, type Film } from '@/data/films';
 import { FavoriteButton } from './FavoriteButton';
 
 interface FilmCardProps {
@@ -95,7 +95,7 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
       <div className="absolute top-2 right-2 flex items-center gap-1.5 flex-wrap pointer-events-none z-30">
         {film.category && (
           <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[10px] sm:text-xs font-medium font-sirwan text-zinc-300 border border-white/10 tracking-normal">
-            {film.category}
+            {normalizeCategory(film.category)}
           </span>
         )}
         {film.parts && film.parts.length > 1 && (

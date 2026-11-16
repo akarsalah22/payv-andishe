@@ -30,7 +30,7 @@ import {
   FileText,
 } from 'lucide-react';
 import { useToast } from '@/components/ToastContext';
-import { SAMPLE_FILMS, type Film, type FilmCategory, type FilmPlatform, type FilmPart, normalizeFilmParts, toKurdishNumber, extractOkRuVideoId, getOkRuEmbedUrl } from '@/data/films';
+import { SAMPLE_FILMS, type Film, type FilmCategory, type FilmPlatform, type FilmPart, normalizeCategory, normalizeFilmParts, toKurdishNumber, extractOkRuVideoId, getOkRuEmbedUrl } from '@/data/films';
 import { SAMPLE_ARTICLES, type Article, type ArticleCategory } from '@/data/articles';
 import { DEFAULT_ABOUT_SETTINGS, type AboutSettings } from '@/data/about';
 import { DEFAULT_HOME_SETTINGS, type HomeSettings } from '@/data/homeSettings';
@@ -529,7 +529,7 @@ export function AdminDashboardClient() {
     setCreateType('film');
     setFilmTitleKurdish(film.titleKurdish);
     setFilmOriginalTitle(film.originalTitle || '');
-    setFilmCategory(film.category);
+    setFilmCategory(normalizeCategory(film.category) as FilmCategory);
     setFilmGenres(film.genres ? film.genres.join('، ') : '');
     setFilmYear(film.year);
     setFilmDuration(film.duration);
@@ -1346,7 +1346,7 @@ export function AdminDashboardClient() {
                         <span>{film.duration}</span>
                         <span>•</span>
                         <span className="px-2 py-0.5 rounded-md text-[11px] font-semibold font-sirwan bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/25">
-                          {film.category}
+                          {normalizeCategory(film.category)}
                         </span>
                         {film.genres[0] && (
                           <span className="px-2 py-0.5 rounded-md text-[11px] font-medium font-sirwan bg-stone-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
@@ -1744,14 +1744,14 @@ export function AdminDashboardClient() {
                         پۆلێن (Category)
                       </label>
                       <select
-                        value={filmCategory}
+                        value={normalizeCategory(filmCategory)}
                         onChange={(e) => setFilmCategory(e.target.value as FilmCategory)}
                         className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-zinc-700 bg-stone-50/50 dark:bg-zinc-900 text-xs sm:text-sm font-sirwan focus:outline-none focus:border-[#d49757]"
                       >
                         <option value="فیلم">فیلم</option>
-                        <option value="زنجیرەفیلم">زنجیرەفیلم</option>
+                        <option value="زنجیرە فیلم">زنجیرە فیلم</option>
                         <option value="کارتۆن">کارتۆن</option>
-                        <option value="زنجیرەکارتۆن">زنجیرەکارتۆن</option>
+                        <option value="زنجیرە کارتۆن">زنجیرە کارتۆن</option>
                         <option value="کورتە فیلم">کورتە فیلم</option>
                       </select>
                     </div>

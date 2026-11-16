@@ -131,7 +131,11 @@ export function SearchBar({
       {onCategoryChange && categories && categories.length > 0 && (
         <div className="w-full flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar py-1 gap-2 flex-nowrap sm:flex-wrap px-0.5 select-none">
           {categories.map((category) => {
-            const isActive = activeCategory === category;
+            const isActive =
+              activeCategory === category ||
+              (activeCategory !== 'هەمووی' &&
+                category !== 'هەمووی' &&
+                activeCategory.replace(/\s+/g, '') === category.replace(/\s+/g, ''));
             return (
               <button
                 key={category}

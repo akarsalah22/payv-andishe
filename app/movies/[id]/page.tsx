@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { readFilms } from '@/lib/storage';
-import { SAMPLE_FILMS, getFilmById, getFilmBySlug } from '@/data/films';
+import { SAMPLE_FILMS, getFilmById, getFilmBySlug, normalizeCategory } from '@/data/films';
 
 export const revalidate = 1800;
 export const dynamicParams = true;
@@ -55,7 +55,7 @@ export async function generateMetadata({
   const posterSrc = film.posterUrl || '/placeholder.jpg';
   const description =
     film.description ||
-    `${film.titleKurdish} (${film.year}) - لە پۆلینی ${film.category}. تەماشای بکە لە میدیای ئیسلامی.`;
+    `${film.titleKurdish} (${film.year}) - لە پۆلینی ${normalizeCategory(film.category)}. تەماشای بکە لە میدیای ئیسلامی.`;
   const shareableUrl = `https://mediay-islamy.vercel.app/films/${encodeURIComponent(film.slug || film.id)}`;
   const fullPosterUrl = posterSrc.startsWith('http')
     ? posterSrc

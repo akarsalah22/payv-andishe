@@ -11,7 +11,7 @@ import {
   X,
 } from 'lucide-react';
 import { useFavorites, type SavedItem } from '@/hooks/useFavorites';
-import type { Film } from '@/data/films';
+import { normalizeCategory, type Film } from '@/data/films';
 import type { Article } from '@/data/articles';
 
 type FilterType = 'all' | 'movies' | 'writings';
@@ -93,7 +93,7 @@ function MovieCard({
 
       {/* Top-Right Category Badge */}
       <span className="absolute top-3 right-3 z-30 px-2.5 py-1 rounded-lg bg-black/65 backdrop-blur-md text-zinc-100 text-[11px] font-bold font-sirwan">
-        {category}
+        {normalizeCategory(category)}
       </span>
 
       {/* Bottom-Right Title Inside Poster */}

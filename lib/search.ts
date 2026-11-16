@@ -1,4 +1,4 @@
-import type { Film } from '@/data/films';
+import { normalizeCategory, type Film } from '@/data/films';
 import type { Article } from '@/data/articles';
 
 /**
@@ -99,42 +99,69 @@ export function filterFilms(films: Film[], query: string, category?: string): Fi
 
   if (category && category !== 'هەمووی') {
     const target = category.trim();
+    const targetUnspaced = target.replace(/\s+/g, '');
 
     result = result.filter((film) => {
-      // 1. Direct category match
-      if (film.category === target) return true;
+      const filmCat = (film.category || '').trim();
+      const filmCatUnspaced = filmCat.replace(/\s+/g, '');
 
-      // 2. فیلم
+      // 1. Direct or whitespace-normalized category match (e.g. "زنجیرەفیلم" matches "زنجیرە فیلم")
+      if (filmCat === target || (filmCatUnspaced && filmCatUnspaced === targetUnspaced)) {
+        return true;
+      }
+
+      // 2. زنجیرە فیلم (supports legacy زنجیرەفیلم or generic series)
+      if (targetUnspaced === 'زنجیرەفیلم') {
+        return (
+          filmCatUnspaced === 'زنجیرەفیلم' ||
+          (filmCat.includes('زنجیرە') && !filmCat.includes('کارتۆن'))
+        );
+      }
+
+      // 3. زنجیرە کارتۆن (supports legacy زنجیرەکارتۆن)
+      if (targetUnspaced === 'زنجیرەکارتۆن') {
+        return (
+          filmCatUnspaced === 'زنجیرەکارتۆن' ||
+          (filmCat.includes('زنجیرە') && filmCat.includes('کارتۆن'))
+        );
+      }
+
+      // 4. کورتە فیلم (supports legacy کورتەفیلم)
+      if (targetUnspaced === 'کورتەفیلم') {
+        return filmCatUnspaced === 'کورتەفیلم';
+      }
+
+      // 5. فیلم (standalone movies)
       if (target === 'فیلم') {
         return (
-          film.category === 'فیلم' ||
-          film.category === ('سینەمایی' as any) ||
+          filmCat === 'فیلم' ||
+          filmCat === 'سینەمایی' ||
           (film as any).type === 'فیلم'
         );
       }
 
-      // 3. کارتۆن
+      // 6. کارتۆن
       if (target === 'کارتۆن') {
         return (
-          film.category === 'کارتۆن' ||
-          film.category === 'زنجیرەکارتۆن' ||
-          film.category === ('ئەنیمەیشن' as any) ||
+          filmCat === 'کارتۆن' ||
+          filmCatUnspaced === 'زنجیرەکارتۆن' ||
+          filmCat === 'ئەنیمەیشن' ||
           (film as any).type === 'کارتۆن'
         );
       }
 
-      // 4. زنجیرە
+      // 7. زنجیرە (Generic series filter)
       if (target === 'زنجیرە') {
         return (
-          film.category === 'زنجیرەفیلم' ||
-          film.category === 'زنجیرەکارتۆن' ||
-          film.category?.includes('زنجیرە') ||
+          filmCatUnspaced === 'زنجیرەفیلم' ||
+          filmCatUnspaced === 'زنجیرەکارتۆن' ||
+          filmCat.includes('زنجیرە') ||
           (film.genres || []).some((g) => g.includes('زنجیرە')) ||
           film.titleKurdish?.includes('زنجیرە')
         );
       }
 
-      // 5. دۆبلاژ
+      // 8. دۆبلاژ
       if (target === 'دۆبلاژ') {
         const fullInfo = `${film.titleKurdish} ${film.description} ${(film.genres || []).join(' ')}`;
         return (
@@ -144,7 +171,7 @@ export function filterFilms(films: Film[], query: string, category?: string): Fi
         );
       }
 
-      // 6. ژێرنووس
+      // 9. ژێرنووس
       if (target === 'ژێرنووس') {
         const fullInfo = `${film.titleKurdish} ${film.description} ${(film.genres || []).join(' ')}`;
         return (
@@ -167,6 +194,7 @@ export function filterFilms(films: Film[], query: string, category?: string): Fi
       film.originalTitle,
       film.description,
       film.category,
+      normalizeCategory(film.category),
       ...(film.genres || []),
       film.year?.toString() || '',
     ].join(' ');

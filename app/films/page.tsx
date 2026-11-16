@@ -9,7 +9,7 @@ export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'فیلم، زنجیرە و کارتۆن | میدیای ئیسلامی',
-  description: 'ئەرشیڤی شاکارە سینەمایییەکان، زنجیرەفیلم، کارتۆن و کورتە فیلمەکان بە پەخشی ڕاستەوخۆ لە کەناڵی تێلیگرام',
+  description: 'ئەرشیڤی شاکارە سینەمایییەکان، زنجیرە فیلم، کارتۆن و کورتە فیلمەکان بە پەخشی ڕاستەوخۆ لە کەناڵی تێلیگرام',
 };
 
 export default async function FilmsPage() {

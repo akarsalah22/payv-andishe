@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { readFilms, saveSingleFilm, removeSingleFilm } from '@/lib/storage';
 import { SESSION_COOKIE_NAME, verifySessionToken } from '@/lib/auth';
-import { type Film, normalizeFilmParts } from '@/data/films';
+import { type Film, type FilmCategory, normalizeCategory, normalizeFilmParts } from '@/data/films';
 
 // Helper to generate a clean URL slug from title
 function generateSlug(text: string) {
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
       originalTitle: newFilm.originalTitle?.trim() || newFilm.titleKurdish.trim(),
       year: Number(newFilm.year) || new Date().getFullYear(),
       duration: newFilm.duration?.trim() || '٢ کاتژمێر',
-      category: newFilm.category || 'فیلم',
+      category: normalizeCategory(newFilm.category) as FilmCategory,
       genres: Array.isArray(newFilm.genres) && newFilm.genres.length > 0 ? newFilm.genres : ['سینەما'],
       posterUrl:
         newFilm.posterUrl?.trim() ||
@@ -169,6 +169,7 @@ export async function PUT(req: Request) {
         watchUrl: watchLink,
       }),
       ...updatedFilm,
+      category: normalizeCategory(updatedFilm.category || existing?.category) as FilmCategory,
       year: Number(updatedFilm.year) || (existing ? existing.year : 2024),
       platform,
       watchUrl: watchLink,

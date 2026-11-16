@@ -7,7 +7,7 @@ import { ChevronLeft } from 'lucide-react';
 import { TelegramIcon } from './TelegramIcon';
 import { YouTubeIcon } from './YouTubeIcon';
 import { OkRuIcon } from './OkRuIcon';
-import type { Film } from '@/data/films';
+import { normalizeCategory, type Film } from '@/data/films';
 import type { Article } from '@/data/articles';
 import { ArticleCard } from './ArticleCard';
 
@@ -25,10 +25,16 @@ export function HomeContent({ films, articles }: HomeContentProps) {
   const displayedFilms = useMemo(() => {
     if (activeCategory === 'هەمووی') return films.slice(0, 4);
     if (activeCategory === 'فیلم') {
-      return films.filter((f) => f.category === 'سینەمایی' || f.category === 'کورتە فیلم');
+      return films.filter((f) => {
+        const cat = normalizeCategory(f.category);
+        return cat === 'فیلم' || cat === 'زنجیرە فیلم' || cat === 'کورتە فیلم' || f.category === 'سینەمایی';
+      });
     }
     if (activeCategory === 'کارتۆن') {
-      return films.filter((f) => f.category === 'کارتۆن');
+      return films.filter((f) => {
+        const cat = normalizeCategory(f.category);
+        return cat === 'کارتۆن' || cat === 'زنجیرە کارتۆن';
+      });
     }
     return [];
   }, [activeCategory, films]);

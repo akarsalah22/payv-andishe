@@ -1,11 +1,29 @@
 export type FilmCategory =
   | 'فیلم'
-  | 'زنجیرەفیلم'
+  | 'زنجیرە فیلم'
   | 'کارتۆن'
-  | 'زنجیرەکارتۆن'
+  | 'زنجیرە کارتۆن'
   | 'کورتە فیلم'
+  | 'زنجیرەفیلم' // پشتیوانی پێشوو
+  | 'زنجیرەکارتۆن' // پشتیوانی پێشوو
   | 'سینەمایی' // پشتیوانی پێشوو
   | 'ئەنیمەیشن'; // پشتیوانی پێشوو
+
+/**
+ * Normalizes legacy unspaced categories into standardized spaced labels.
+ * E.g.: "زنجیرەفیلم" -> "زنجیرە فیلم", "زنجیرەکارتۆن" -> "زنجیرە کارتۆن"
+ */
+export function normalizeCategory(category?: string | null): string {
+  if (!category) return 'فیلم';
+  const trimmed = category.trim();
+  const unspaced = trimmed.replace(/\s+/g, '');
+  if (unspaced === 'زنجیرەفیلم') return 'زنجیرە فیلم';
+  if (unspaced === 'زنجیرەکارتۆن') return 'زنجیرە کارتۆن';
+  if (unspaced === 'کورتەفیلم') return 'کورتە فیلم';
+  if (unspaced === 'سینەمایی') return 'فیلم';
+  if (unspaced === 'ئەنیمەیشن') return 'کارتۆن';
+  return trimmed;
+}
 
 export type FilmPlatform = 'telegram' | 'youtube' | 'okru';
 
@@ -197,17 +215,17 @@ export function getFilmWatchUrl(film: Partial<Film>): string {
 export const FILM_CATEGORIES: ('هەمووی' | FilmCategory)[] = [
   'هەمووی',
   'فیلم',
-  'زنجیرەفیلم',
+  'زنجیرە فیلم',
   'کارتۆن',
-  'زنجیرەکارتۆن',
+  'زنجیرە کارتۆن',
   'کورتە فیلم',
 ];
 
 export const ADMIN_FILM_CATEGORIES = [
   'فیلم',
-  'زنجیرەفیلم',
+  'زنجیرە فیلم',
   'کارتۆن',
-  'زنجیرەکارتۆن',
+  'زنجیرە کارتۆن',
   'کورتە فیلم',
 ] as const;
 
