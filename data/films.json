@@ -33,7 +33,7 @@
         "url": "https://youtu.be/GazKvqHx9kQ?si=eyGlUzZAerlITeze"
       }
     ],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 102,
     "imagePosX": 50,
     "imagePosY": 50
@@ -72,7 +72,7 @@
         "url": "https://youtu.be/8cfttuTanss?feature=shared"
       }
     ],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 102,
     "imagePosX": 50,
     "imagePosY": 50
@@ -96,7 +96,7 @@
     "watchUrl": "https://youtu.be/dvQmsUHVW8g?si=BoDFGpJNr7m7GDE9",
     "telegramPostUrl": "https://youtu.be/dvQmsUHVW8g?si=BoDFGpJNr7m7GDE9",
     "parts": [],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 103,
     "imagePosX": 50,
     "imagePosY": 50
@@ -120,7 +120,7 @@
     "watchUrl": "https://youtu.be/8fLIUVXeslk?si=MJ0O92obWfnjQFXC",
     "telegramPostUrl": "https://youtu.be/8fLIUVXeslk?si=MJ0O92obWfnjQFXC",
     "parts": [],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 102,
     "imagePosX": 50,
     "imagePosY": 50
@@ -144,7 +144,7 @@
     "watchUrl": "https://youtu.be/sh1O0NSpgP0?si=pib_eM49JXfgvjTO",
     "telegramPostUrl": "https://youtu.be/sh1O0NSpgP0?si=pib_eM49JXfgvjTO",
     "parts": [],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 102,
     "imagePosX": 50,
     "imagePosY": 50
@@ -169,7 +169,7 @@
     "okruUrl": "https://ok.ru/video/16595266964015",
     "okru_url": "https://ok.ru/video/16595266964015",
     "parts": [],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 102,
     "imagePosX": 50,
     "imagePosY": 50
@@ -193,7 +193,7 @@
     "watchUrl": "https://youtu.be/Ba9suwEabOI?si=JPxG_3UB8btgh3AL",
     "telegramPostUrl": "https://youtu.be/Ba9suwEabOI?si=JPxG_3UB8btgh3AL",
     "parts": [],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 102,
     "imagePosX": 0,
     "imagePosY": 50
@@ -217,7 +217,7 @@
     "watchUrl": "https://youtu.be/0UG4IxUlt5k?si=piSL5K1tFX9He64O",
     "telegramPostUrl": "https://youtu.be/0UG4IxUlt5k?si=piSL5K1tFX9He64O",
     "parts": [],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 102,
     "imagePosX": 50,
     "imagePosY": 50
@@ -239,7 +239,7 @@
     "watchUrl": "https://youtu.be/0sNUU_KbNgU?si=eGU445UKpJw8p5L3",
     "telegramPostUrl": "https://youtu.be/0sNUU_KbNgU?si=eGU445UKpJw8p5L3",
     "parts": [],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 102,
     "imagePosX": 100,
     "imagePosY": 50
@@ -261,7 +261,7 @@
     "watchUrl": "https://youtu.be/3lvdV0yOiYE?si=mhd6qHFY91-7rynJ",
     "telegramPostUrl": "https://youtu.be/3lvdV0yOiYE?si=mhd6qHFY91-7rynJ",
     "parts": [],
-    "imageFit": "contain",
+    "imageFit": "cover",
     "imageZoom": 102,
     "imagePosX": 50,
     "imagePosY": 50

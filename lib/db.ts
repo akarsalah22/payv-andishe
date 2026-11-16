@@ -91,7 +91,7 @@ export async function ensureDbInitialized(): Promise<boolean> {
     `);
 
     await sql.query(`
-      ALTER TABLE films ADD COLUMN IF NOT EXISTS image_fit TEXT DEFAULT 'contain';
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS image_fit TEXT DEFAULT 'cover';
     `);
 
     await sql.query(`

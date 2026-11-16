@@ -141,6 +141,10 @@ export function useFavorites() {
     saveToStorage([]);
   }, []);
 
+  const updateFavorites = useCallback((updated: SavedItem[]) => {
+    saveToStorage(updated);
+  }, []);
+
   return {
     favorites,
     favoritesCount: isLoaded ? favorites.length : 0,
@@ -148,6 +152,7 @@ export function useFavorites() {
     toggleFavorite,
     removeFavorite,
     clearFavorites,
+    updateFavorites,
     isLoaded,
   };
 }
