@@ -398,6 +398,7 @@ export function FilmInteractiveViewer({
             <div className="pt-2">
               <TelegramParts
                 parts={episodes}
+                episodeUnit={film.episodeUnit}
                 activeEpisodeIndex={activeEpisodeIndex}
                 onSelectEpisode={handleSelectEpisode}
               />

@@ -75,7 +75,8 @@ export async function POST(req: Request) {
       telegramPostUrl: newFilm.telegramPostUrl?.trim() || (platform === 'telegram' ? watchLink : 'https://t.me/mediay_islamy'),
       okruUrl: okruLink || undefined,
       okru_url: okruLink || undefined,
-      parts: newFilm.parts && Array.isArray(newFilm.parts) ? normalizeFilmParts(newFilm.parts) : [],
+      parts: newFilm.parts && Array.isArray(newFilm.parts) ? normalizeFilmParts(newFilm.parts, newFilm.episodeUnit) : [],
+      episodeUnit: newFilm.episodeUnit === 'بەش' ? 'بەش' : 'ئەڵقە',
       imageFit: newFilm.imageFit === 'cover' ? 'cover' : 'contain',
       imageZoom: typeof newFilm.imageZoom === 'number' ? Math.min(180, Math.max(100, Number(newFilm.imageZoom))) : 100,
       imagePosX: typeof newFilm.imagePosX === 'number' ? Math.min(100, Math.max(0, Number(newFilm.imagePosX))) : 50,
@@ -178,10 +179,11 @@ export async function PUT(req: Request) {
       okru_url: okruLink || undefined,
       parts:
         updatedFilm.parts !== undefined
-          ? normalizeFilmParts(updatedFilm.parts)
+          ? normalizeFilmParts(updatedFilm.parts, updatedFilm.episodeUnit || existing?.episodeUnit)
           : existing?.parts
-          ? normalizeFilmParts(existing.parts)
+          ? normalizeFilmParts(existing.parts, existing.episodeUnit)
           : [],
+      episodeUnit: updatedFilm.episodeUnit || existing?.episodeUnit || 'ئەڵقە',
       imageFit,
       imageZoom,
       imagePosX,

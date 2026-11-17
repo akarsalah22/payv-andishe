@@ -44,15 +44,16 @@ export function toKurdishNumber(num: number | string): string {
   return String(num).replace(/[0-9]/g, (w) => kurdishDigits[+w]);
 }
 
-export function normalizeFilmParts(parts?: unknown): FilmPart[] {
+export function normalizeFilmParts(parts?: unknown, defaultUnit: 'ئەڵقە' | 'بەش' = 'ئەڵقە'): FilmPart[] {
   if (!Array.isArray(parts)) return [];
   return parts.map((p, idx) => {
     const raw = typeof p === 'object' && p !== null ? (p as Record<string, unknown>) : {};
     const partNum = typeof raw.partNumber === 'number' ? raw.partNumber : idx + 1;
+    const prefix = defaultUnit === 'بەش' ? 'بەشی' : 'ئەڵقەی';
     const title =
       typeof raw.title === 'string' && raw.title.trim()
         ? raw.title.trim()
-        : `بەشی ${toKurdishNumber(partNum)}`;
+        : `${prefix} ${toKurdishNumber(partNum)}`;
     const rawUrl = typeof raw.url === 'string' ? raw.url.trim() : '';
     const telegramUrl =
       typeof raw.telegramUrl === 'string' && raw.telegramUrl.trim()
@@ -108,6 +109,7 @@ export interface Film {
   okruUrl?: string;
   okru_url?: string;
   parts?: FilmPart[];
+  episodeUnit?: 'ئەڵقە' | 'بەش';
   imageFit?: 'contain' | 'cover';
   imageZoom?: number;
   imagePosX?: number;
@@ -166,15 +168,16 @@ export function getOkRuEmbedUrl(urlOrId?: string): string | null {
 
 export function getFilmTelegramParts(film: Partial<Film>): FilmPart[] {
   if (film.parts && Array.isArray(film.parts) && film.parts.length > 0) {
-    return normalizeFilmParts(film.parts);
+    return normalizeFilmParts(film.parts, film.episodeUnit);
   }
   const text = `${film.watchUrl || ''} ${film.telegramPostUrl || ''}`;
   const matches = Array.from(text.matchAll(/https?:\/\/t\.me\/[^\s"']+/g));
   const uniqueUrls = Array.from(new Set(matches.map((m) => m[0])));
   if (uniqueUrls.length > 1) {
+    const prefix = film.episodeUnit === 'بەش' ? 'بەشی' : 'ئەڵقەی';
     return uniqueUrls.map((url, index) => ({
       partNumber: index + 1,
-      title: `بەشی ${toKurdishNumber(index + 1)}`,
+      title: `${prefix} ${toKurdishNumber(index + 1)}`,
       telegramUrl: url,
       url,
     }));

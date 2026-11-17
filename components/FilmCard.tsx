@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { normalizeCategory, type Film } from '@/data/films';
+import { normalizeCategory, toKurdishNumber, type Film } from '@/data/films';
 import { FavoriteButton } from './FavoriteButton';
 
 interface FilmCardProps {
@@ -100,7 +100,7 @@ export function FilmCard({ film, priority = false }: FilmCardProps) {
         )}
         {film.parts && film.parts.length > 1 && (
           <span className="px-1.5 py-0.5 rounded-md bg-amber-500 text-zinc-950 font-bold text-[10px] font-sirwan shadow-xs">
-            {film.parts.length} بەش
+            {toKurdishNumber(film.parts.length)} {film.episodeUnit === 'بەش' ? 'بەش' : 'ئەڵقە'}
           </span>
         )}
       </div>

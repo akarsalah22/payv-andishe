@@ -19,6 +19,7 @@ export interface TelegramPartItem {
 
 export interface TelegramPartsProps {
   parts?: TelegramPartItem[];
+  episodeUnit?: 'ئەڵقە' | 'بەش';
   activeEpisodeIndex?: number | null;
   onSelectEpisode?: (index: number) => void;
   className?: string;
@@ -26,6 +27,7 @@ export interface TelegramPartsProps {
 
 export function TelegramParts({
   parts,
+  episodeUnit = 'ئەڵقە',
   activeEpisodeIndex = null,
   onSelectEpisode,
   className = "",
@@ -33,6 +35,9 @@ export function TelegramParts({
   if (!parts || !Array.isArray(parts) || parts.length === 0) {
     return null;
   }
+
+  const unitLabel = episodeUnit === 'بەش' ? 'بەش' : 'ئەڵقە';
+  const headerLabel = episodeUnit === 'بەش' ? 'بەشەکانی بەرهەم' : 'ئەڵقەکانی بەرهەم';
 
   return (
     <section className={`w-full space-y-3.5 text-right ${className}`} dir="rtl">
@@ -43,8 +48,8 @@ export function TelegramParts({
             {toKurdishNumber(parts.length)}
           </div>
           <h3 className="text-sm sm:text-lg font-bold font-peshang text-zinc-900 dark:text-zinc-100 truncate">
-            <span>بەشەکانی بەرهەم</span>
-            <span className="hidden sm:inline"> ({toKurdishNumber(parts.length)} بەش)</span>
+            <span>{headerLabel}</span>
+            <span className="hidden sm:inline"> ({toKurdishNumber(parts.length)} {unitLabel})</span>
           </h3>
         </div>
         <span className="text-[11px] sm:text-xs font-sirwan text-zinc-500 dark:text-zinc-400 whitespace-nowrap shrink-0">
@@ -63,7 +68,7 @@ export function TelegramParts({
             (item.url && (item.url.includes("youtu") || /^[a-zA-Z0-9_-]{11}$/.test(item.url))
               ? item.url
               : "");
-          const displayTitle = item.title || `ئەڵقەی ${toKurdishNumber(item.partNumber || index + 1)}`;
+          const displayTitle = item.title || (episodeUnit === 'بەش' ? `بەشی ${toKurdishNumber(item.partNumber || index + 1)}` : `ئەڵقەی ${toKurdishNumber(item.partNumber || index + 1)}`);
           const isActive = activeEpisodeIndex === index;
 
           // If onSelectEpisode is provided, use interactive in-site button

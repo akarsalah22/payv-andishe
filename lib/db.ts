@@ -91,6 +91,10 @@ export async function ensureDbInitialized(): Promise<boolean> {
     `);
 
     await sql.query(`
+      ALTER TABLE films ADD COLUMN IF NOT EXISTS episode_unit TEXT DEFAULT 'ئەڵقە';
+    `);
+
+    await sql.query(`
       ALTER TABLE films ADD COLUMN IF NOT EXISTS image_fit TEXT DEFAULT 'cover';
     `);
 
@@ -281,6 +285,8 @@ interface FilmDbRow {
   okruUrl?: string | null;
   okru_url?: string | null;
   parts?: FilmPart[] | string | null;
+  episodeUnit?: 'ئەڵقە' | 'بەش' | string | null;
+  episode_unit?: 'ئەڵقە' | 'بەش' | string | null;
   imageFit?: 'contain' | 'cover';
   imageZoom?: number | string | null;
   imagePosX?: number | string | null;
@@ -329,6 +335,7 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
         watch_url AS "watchUrl",
         okru_url AS "okruUrl",
         parts,
+        episode_unit AS "episodeUnit",
         image_fit AS "imageFit",
         image_zoom AS "imageZoom",
         image_pos_x AS "imagePosX",
@@ -373,6 +380,11 @@ export async function getFilmsFromDb(): Promise<Film[] | null> {
         okruUrl: okruUrl || (activeUrl.includes('ok.ru') ? activeUrl : undefined),
         okru_url: okruUrl || (activeUrl.includes('ok.ru') ? activeUrl : undefined),
         parts: parsedParts,
+        episodeUnit:
+          (r.episodeUnit as 'ئەڵقە' | 'بەش') ||
+          (parsedParts.some((p) => p.title?.includes('بەشی')) && !parsedParts.some((p) => p.title?.includes('ئەڵقەی'))
+            ? 'بەش'
+            : 'ئەڵقە'),
         imageFit: (r.imageFit === 'cover' ? 'cover' : 'contain') as 'contain' | 'cover',
         imageZoom: typeof r.imageZoom === 'number' ? r.imageZoom : r.imageZoom ? Number(r.imageZoom) : 100,
         imagePosX: typeof r.imagePosX === 'number' ? r.imagePosX : r.imagePosX ? Number(r.imagePosX) : 50,
@@ -409,8 +421,8 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
       INSERT INTO films (
         id, slug, title_kurdish, original_title, year, duration,
         category, genres, poster_url, description, telegram_post_url,
-        platform, watch_url, okru_url, parts, image_fit, image_zoom, image_pos_x, image_pos_y, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, NOW())
+        platform, watch_url, okru_url, parts, episode_unit, image_fit, image_zoom, image_pos_x, image_pos_y, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, NOW())
       ON CONFLICT (id) DO UPDATE SET
         slug = EXCLUDED.slug,
         title_kurdish = EXCLUDED.title_kurdish,
@@ -426,6 +438,7 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         watch_url = EXCLUDED.watch_url,
         okru_url = EXCLUDED.okru_url,
         parts = EXCLUDED.parts,
+        episode_unit = EXCLUDED.episode_unit,
         image_fit = EXCLUDED.image_fit,
         image_zoom = EXCLUDED.image_zoom,
         image_pos_x = EXCLUDED.image_pos_x,
@@ -447,7 +460,8 @@ export async function upsertFilmToDb(film: Film): Promise<boolean> {
         platform,
         watchLink,
         okruLink || null,
-        JSON.stringify(film.parts ? normalizeFilmParts(film.parts) : []),
+        JSON.stringify(film.parts ? normalizeFilmParts(film.parts, film.episodeUnit) : []),
+        film.episodeUnit || 'ئەڵقە',
         film.imageFit || 'contain',
         film.imageZoom ?? 100,
         film.imagePosX ?? 50,

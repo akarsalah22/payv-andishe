@@ -106,6 +106,7 @@ export function AdminDashboardClient() {
   const [filmOkruUrl, setFilmOkruUrl] = useState('');
   const [filmDescription, setFilmDescription] = useState('');
   const [filmParts, setFilmParts] = useState<FilmPart[]>([]);
+  const [filmEpisodeUnit, setFilmEpisodeUnit] = useState<'ئەڵقە' | 'بەش'>('ئەڵقە');
 
   // Article Form State
   const [articleTitle, setArticleTitle] = useState('');
@@ -473,16 +474,41 @@ export function AdminDashboardClient() {
     setFilmOkruUrl('');
     setFilmDescription('');
     setFilmParts([]);
+    setFilmEpisodeUnit('ئەڵقە');
+  };
+
+  // Switcher Handler for Episode Unit
+  const handleSelectEpisodeUnit = (unit: 'ئەڵقە' | 'بەش') => {
+    setFilmEpisodeUnit(unit);
+    // Auto-update parts that match default pattern if any exist
+    setFilmParts((prev) =>
+      prev.map((p, idx) => {
+        const kNum = toKurdishNumber(idx + 1);
+        const eNum = String(idx + 1);
+        const trimmed = p.title?.trim() || '';
+        if (unit === 'ئەڵقە') {
+          if (!trimmed || trimmed === `بەشی ${kNum}` || trimmed === `بەشی ${eNum}`) {
+            return { ...p, title: `ئەڵقەی ${kNum}` };
+          }
+        } else {
+          if (!trimmed || trimmed === `ئەڵقەی ${kNum}` || trimmed === `ئەڵقەی ${eNum}`) {
+            return { ...p, title: `بەشی ${kNum}` };
+          }
+        }
+        return p;
+      })
+    );
   };
 
   // Multi-Part Handlers
   const handleAddFilmPart = () => {
     const nextNum = filmParts.length + 1;
+    const prefix = filmEpisodeUnit === 'بەش' ? 'بەشی' : 'ئەڵقەی';
     setFilmParts((prev) => [
       ...prev,
       {
         partNumber: nextNum,
-        title: `بەشی ${toKurdishNumber(nextNum)}`,
+        title: `${prefix} ${toKurdishNumber(nextNum)}`,
         telegramUrl: '',
         youtubeUrl: '',
         okruUrl: '',
@@ -551,7 +577,13 @@ export function AdminDashboardClient() {
     setFilmTelegramUrl(link);
     setFilmOkruUrl(okruLink);
     setFilmDescription(film.description);
-    setFilmParts(film.parts && Array.isArray(film.parts) ? normalizeFilmParts(film.parts) : []);
+    setFilmParts(film.parts && Array.isArray(film.parts) ? normalizeFilmParts(film.parts, film.episodeUnit) : []);
+    const initialUnit: 'ئەڵقە' | 'بەش' =
+      film.episodeUnit ||
+      (film.parts?.some((p) => p.title?.includes('بەشی')) && !film.parts?.some((p) => p.title?.includes('ئەڵقەی'))
+        ? 'بەش'
+        : 'ئەڵقە');
+    setFilmEpisodeUnit(initialUnit);
     setActiveTab('create');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -594,7 +626,11 @@ export function AdminDashboardClient() {
       )
       .map((p, idx) => ({
         partNumber: idx + 1,
-        title: p.title?.trim() || `بەشی ${toKurdishNumber(idx + 1)}`,
+        title:
+          p.title?.trim() ||
+          (filmEpisodeUnit === 'بەش'
+            ? `بەشی ${toKurdishNumber(idx + 1)}`
+            : `ئەڵقەی ${toKurdishNumber(idx + 1)}`),
         telegramUrl: p.telegramUrl?.trim() || undefined,
         youtubeUrl: p.youtubeUrl?.trim() || undefined,
         okruUrl: p.okruUrl?.trim() || undefined,
@@ -626,6 +662,7 @@ export function AdminDashboardClient() {
       okruUrl: okruLink || undefined,
       okru_url: okruLink || undefined,
       parts: sanitizedParts,
+      episodeUnit: filmEpisodeUnit,
       imageFit: filmImageFit,
       imageZoom: filmImageZoom,
       imagePosX: filmImagePosX,
@@ -1044,11 +1081,12 @@ export function AdminDashboardClient() {
     watchUrl: filmTelegramUrl.trim() || 'https://t.me/mediay_islamy',
     telegramPostUrl: filmTelegramUrl.trim() || 'https://t.me/mediay_islamy',
     parts: filmParts,
+    episodeUnit: filmEpisodeUnit,
     imageFit: filmImageFit,
     imageZoom: filmImageZoom,
     imagePosX: filmImagePosX,
     imagePosY: filmImagePosY,
-  }), [editingFilmId, filmTitleKurdish, filmOriginalTitle, filmYear, filmDuration, filmCategory, filmGenres, filmPosterUrl, filmDescription, filmTelegramUrl, filmPlatform, filmParts, filmImageFit, filmImageZoom, filmImagePosX, filmImagePosY]);
+  }), [editingFilmId, filmTitleKurdish, filmOriginalTitle, filmYear, filmDuration, filmCategory, filmGenres, filmPosterUrl, filmDescription, filmTelegramUrl, filmPlatform, filmParts, filmEpisodeUnit, filmImageFit, filmImageZoom, filmImagePosX, filmImagePosY]);
 
   // Live Article Preview Object
   const liveArticleSample: Article = useMemo(() => ({
@@ -2193,30 +2231,58 @@ export function AdminDashboardClient() {
 
                   {/* Multi-Part / Episodes Management */}
                   <div className="pt-3 border-t border-stone-200/80 dark:border-zinc-800/80 space-y-3">
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1">
                       <div>
                         <label className="block text-xs font-semibold font-sirwan text-zinc-900 dark:text-zinc-100">
-                          بەشەکان یان ئەڵقەکان (Multi-Part Content)
+                          ئەڵقەکان یان بەشەکان (Episodes / Multi-Part)
                         </label>
                         <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-sirwan mt-0.5">
-                          بۆ فیلمی چەند بەشی یان زنجیرە (وەک بەشی ١، ٢، ٣...)
+                          دیاریکردنی شێوازی ناو لێنان (ئەڵقە بۆ زنجیرە، بەش بۆ فیلم)
                         </p>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={handleAddFilmPart}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-amber-500/15 hover:bg-amber-500/25 text-amber-700 dark:text-amber-400 border border-amber-500/30 transition-all cursor-pointer active:scale-95 shadow-2xs"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>زیادکردنی بەش</span>
-                      </button>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {/* Compact Two-Button Switcher (Default: ئەڵقە) */}
+                        <div className="inline-flex items-center p-0.5 rounded-xl bg-stone-100 dark:bg-zinc-800/90 border border-stone-200 dark:border-zinc-700/80 shadow-2xs">
+                          <button
+                            type="button"
+                            onClick={() => handleSelectEpisodeUnit('ئەڵقە')}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sirwan transition-all cursor-pointer ${
+                              filmEpisodeUnit === 'ئەڵقە'
+                                ? 'bg-amber-500 text-zinc-950 shadow-xs'
+                                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                            }`}
+                          >
+                            ئەڵقە (زنجیرە)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleSelectEpisodeUnit('بەش')}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-semibold font-sirwan transition-all cursor-pointer ${
+                              filmEpisodeUnit === 'بەش'
+                                ? 'bg-amber-500 text-zinc-950 shadow-xs'
+                                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
+                            }`}
+                          >
+                            بەش (فیلم)
+                          </button>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={handleAddFilmPart}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold font-sirwan bg-amber-500/15 hover:bg-amber-500/25 text-amber-700 dark:text-amber-400 border border-amber-500/30 transition-all cursor-pointer active:scale-95 shadow-2xs"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>{filmEpisodeUnit === 'بەش' ? 'زیادکردنی بەش' : 'زیادکردنی ئەڵقە'}</span>
+                        </button>
+                      </div>
                     </div>
 
                     {filmParts.length === 0 ? (
                       <div className="p-3.5 rounded-xl bg-stone-50/60 dark:bg-zinc-900/40 border border-dashed border-stone-200 dark:border-zinc-800 text-center">
                         <p className="text-xs text-zinc-500 dark:text-zinc-400 font-sirwan">
-                          ئەم بەرهەمە تاکە بەشە. ئەگەر چەند بەش یان ئەڵقەیە، لە سەرەوە کلیک لە «زیادکردنی بەش» بکە.
+                          ئەم بەرهەمە تاکە بەشە. ئەگەر چەند ئەڵقە یان بەشە، لە سەرەوە کلیک لە «{filmEpisodeUnit === 'بەش' ? 'زیادکردنی بەش' : 'زیادکردنی ئەڵقە'}» بکە.
                         </p>
                       </div>
                     ) : (
@@ -2232,7 +2298,7 @@ export function AdminDashboardClient() {
                                   {idx + 1}
                                 </span>
                                 <span className="text-xs font-bold font-sirwan text-zinc-900 dark:text-zinc-100">
-                                  {part.title || `بەشی ${toKurdishNumber(idx + 1)}`}
+                                  {part.title?.trim() || (filmEpisodeUnit === 'بەش' ? `بەشی ${toKurdishNumber(idx + 1)}` : `ئەڵقەی ${toKurdishNumber(idx + 1)}`)}
                                 </span>
                               </div>
 
@@ -2240,7 +2306,7 @@ export function AdminDashboardClient() {
                                 type="button"
                                 onClick={() => handleRemoveFilmPart(idx)}
                                 className="p-1 rounded-lg text-rose-500 hover:bg-rose-500/10 transition-colors cursor-pointer"
-                                title="سڕینەوەی ئەم بەشە"
+                                title={filmEpisodeUnit === 'بەش' ? "سڕینەوەی ئەم بەشە" : "سڕینەوەی ئەم ئەڵقەیە"}
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
@@ -2248,14 +2314,42 @@ export function AdminDashboardClient() {
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                               <div>
-                                <label className="block text-[11px] font-medium font-sirwan text-zinc-600 dark:text-zinc-400 mb-1">
-                                  ناوی بەش / ئەڵقە
-                                </label>
+                                <div className="flex items-center justify-between gap-1 mb-1">
+                                  <label className="block text-[11px] font-medium font-sirwan text-zinc-600 dark:text-zinc-400">
+                                    ناوی بەش / ئەڵقە
+                                  </label>
+                                  <div className="flex items-center gap-1">
+                                    <button
+                                      type="button"
+                                      onClick={() => handleFilmPartChange(idx, 'title', `ئەڵقەی ${toKurdishNumber(idx + 1)}`)}
+                                      className={`px-1.5 py-0.5 rounded text-[10px] font-sirwan transition-colors cursor-pointer border ${
+                                        part.title?.trim() === `ئەڵقەی ${toKurdishNumber(idx + 1)}`
+                                          ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/30 font-bold'
+                                          : 'bg-stone-200/60 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-transparent hover:bg-stone-200 dark:hover:bg-zinc-700'
+                                      }`}
+                                      title="ناونانی خێرا وەک ئەڵقە"
+                                    >
+                                      ئەڵقەی {toKurdishNumber(idx + 1)}
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleFilmPartChange(idx, 'title', `بەشی ${toKurdishNumber(idx + 1)}`)}
+                                      className={`px-1.5 py-0.5 rounded text-[10px] font-sirwan transition-colors cursor-pointer border ${
+                                        part.title?.trim() === `بەشی ${toKurdishNumber(idx + 1)}`
+                                          ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/30 font-bold'
+                                          : 'bg-stone-200/60 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-transparent hover:bg-stone-200 dark:hover:bg-zinc-700'
+                                      }`}
+                                      title="ناونانی خێرا وەک بەش"
+                                    >
+                                      بەشی {toKurdishNumber(idx + 1)}
+                                    </button>
+                                  </div>
+                                </div>
                                 <input
                                   type="text"
                                   value={part.title}
                                   onChange={(e) => handleFilmPartChange(idx, 'title', e.target.value)}
-                                  placeholder="نموونە: بەشی یەکەم"
+                                  placeholder="بۆ نموونە: ئەڵقەی ١"
                                   className="w-full px-3 py-1.5 rounded-xl border border-stone-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-sirwan focus:outline-none focus:border-amber-500"
                                 />
                               </div>
@@ -2359,7 +2453,7 @@ export function AdminDashboardClient() {
                 {filmParts.length > 0 && (
                   <div className="p-3.5 rounded-2xl bg-white/70 dark:bg-[#16171b] border border-stone-200/80 dark:border-zinc-800/80 space-y-2">
                     <span className="text-xs font-bold font-sirwan text-zinc-700 dark:text-zinc-300">
-                      لیستی بەشەکان ({filmParts.length} بەش):
+                      {filmEpisodeUnit === 'بەش' ? `لیستی بەشەکان (${toKurdishNumber(filmParts.length)} بەش):` : `لیستی ئەڵقەکان (${toKurdishNumber(filmParts.length)} ئەڵقە):`}
                     </span>
                     <div className="space-y-1.5 max-h-48 overflow-y-auto no-scrollbar">
                       {filmParts.map((p, i) => (
@@ -2368,7 +2462,7 @@ export function AdminDashboardClient() {
                           className="flex items-center justify-between text-xs px-2.5 py-1.5 rounded-xl bg-stone-50 dark:bg-zinc-900 border border-stone-200/60 dark:border-zinc-800"
                         >
                           <span className="font-sirwan text-zinc-800 dark:text-zinc-200">
-                            {p.title || `بەشی ${toKurdishNumber(i + 1)}`}
+                            {p.title?.trim() || (filmEpisodeUnit === 'بەش' ? `بەشی ${toKurdishNumber(i + 1)}` : `ئەڵقەی ${toKurdishNumber(i + 1)}`)}
                           </span>
                           {p.duration && (
                             <span className="text-[11px] text-zinc-500 font-sirwan">{p.duration}</span>

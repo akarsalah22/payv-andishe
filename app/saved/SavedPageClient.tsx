@@ -12,7 +12,7 @@ import {
   X,
 } from 'lucide-react';
 import { useFavorites, type SavedItem } from '@/hooks/useFavorites';
-import { normalizeCategory, type Film } from '@/data/films';
+import { normalizeCategory, toKurdishNumber, type Film } from '@/data/films';
 import type { Article } from '@/data/articles';
 
 type FilterType = 'all' | 'movies' | 'writings';
@@ -116,10 +116,17 @@ function MovieCard({
         <Bookmark className="w-4 h-4 fill-current" />
       </button>
 
-      {/* Top-Right Category Badge */}
-      <span className="absolute top-3 right-3 z-30 px-2.5 py-1 rounded-lg bg-black/65 backdrop-blur-md text-zinc-100 text-[11px] font-bold font-sirwan">
-        {normalizeCategory(category)}
-      </span>
+      {/* Top-Right Category & Parts Badge */}
+      <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 flex-wrap pointer-events-none">
+        <span className="px-2.5 py-1 rounded-lg bg-black/65 backdrop-blur-md text-zinc-100 text-[11px] font-bold font-sirwan">
+          {normalizeCategory(category)}
+        </span>
+        {liveFilm?.parts && liveFilm.parts.length > 1 && (
+          <span className="px-1.5 py-1 rounded-lg bg-amber-500 text-zinc-950 font-bold text-[10px] font-sirwan shadow-xs">
+            {toKurdishNumber(liveFilm.parts.length)} {liveFilm.episodeUnit === 'بەش' ? 'بەش' : 'ئەڵقە'}
+          </span>
+        )}
+      </div>
 
       {/* Bottom-Right Title Inside Poster */}
       <div className="absolute bottom-3 inset-x-3 z-30 text-right">
