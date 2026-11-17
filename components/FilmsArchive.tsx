@@ -9,8 +9,6 @@ import type { Film } from '@/data/films';
 import { filterFilms } from '@/lib/search';
 import { DEFAULT_MOVIES_PAGE_SETTINGS, type MoviesPageSettings } from '@/data/pageSettings';
 
-const ITEMS_PER_PAGE = 8;
-
 function getPaginationItems(current: number, total: number): (number | 'ellipsis')[] {
   if (total <= 5) {
     return Array.from({ length: total }, (_, i) => i + 1);
@@ -65,6 +63,18 @@ export function FilmsArchive({ initialFilms, pageSettings }: FilmsArchiveProps) 
   const [searchQuery, setSearchQuery] = useState(queryParam);
   const [activeCategory, setActiveCategory] = useState<string>(categoryParam);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(8);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const updatePageSize = () => {
+      setItemsPerPage(mediaQuery.matches ? 18 : 8);
+    };
+
+    updatePageSize();
+    mediaQuery.addEventListener('change', updatePageSize);
+    return () => mediaQuery.removeEventListener('change', updatePageSize);
+  }, []);
 
   // Synchronize state when URL query parameters change externally
   const qFromParams = searchParams.get('q') || searchParams.get('search') || '';
@@ -128,13 +138,13 @@ export function FilmsArchive({ initialFilms, pageSettings }: FilmsArchiveProps) 
     return filterFilms(films, searchQuery, activeCategory);
   }, [films, searchQuery, activeCategory]);
 
-  const totalPages = Math.ceil(filteredFilms.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredFilms.length / itemsPerPage);
   const safeCurrentPage = totalPages <= 1 ? 1 : Math.min(Math.max(1, currentPage), totalPages);
 
   const paginatedFilms = useMemo(() => {
-    const start = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
-    return filteredFilms.slice(start, start + ITEMS_PER_PAGE);
-  }, [filteredFilms, safeCurrentPage]);
+    const start = (safeCurrentPage - 1) * itemsPerPage;
+    return filteredFilms.slice(start, start + itemsPerPage);
+  }, [filteredFilms, safeCurrentPage, itemsPerPage]);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages || page === safeCurrentPage) return;
