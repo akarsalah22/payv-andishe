@@ -111,7 +111,7 @@ export function Header() {
   return (
     <>
       <header className="fixed top-0 inset-x-0 z-50 w-full bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 overflow-visible transition-colors duration-200">
-        <div className="w-full max-w-7xl mx-auto flex h-16 items-center justify-between px-3.5 sm:px-6 lg:px-8 overflow-visible">
+        <div className="w-full px-3.5 sm:px-6 md:max-w-[1680px] md:mx-auto lg:px-6 flex h-16 items-center justify-between overflow-visible">
           {/* Brand Logo / Clean Title (Order 2 on mobile: left side; Order 1 on desktop: right side in RTL) */}
           <Link
             href="/"

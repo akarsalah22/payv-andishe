@@ -1,5 +1,29 @@
 [
   {
+    "id": "film-1794910960242",
+    "slug": "محمد-رسول-الله",
+    "titleKurdish": "محمد رسول الله ﷺ",
+    "originalTitle": "Mohammad Rasoolollah ﷺ",
+    "year": 2015,
+    "duration": "٢ کاتژمێر و ٤٢ خولەک",
+    "category": "فیلم",
+    "genres": [
+      "دراما",
+      "مێژووی",
+      "ژیاننامە"
+    ],
+    "posterUrl": "https://i.ibb.co/tpf8G5r9/1794910370836.jpg",
+    "description": "ڕووداوەکانی فیلم لە ساڵی فیل و هێرشی سوپای ئەبرەهە بۆ سەر مەککە دەست پێدەکات و تا تەمەنی 12 ساڵی پێغەمبەر محمد ﷺ بەردەوام دەبێت.",
+    "platform": "youtube",
+    "watchUrl": "https://youtu.be/7xuHJQfzSaA?si=TrZuUBULYNH5xzeK",
+    "telegramPostUrl": "https://t.me/mediay_islamy",
+    "parts": [],
+    "imageFit": "cover",
+    "imageZoom": 100,
+    "imagePosX": 50,
+    "imagePosY": 50
+  },
+  {
     "id": "film-1794673502151",
     "slug": "یارانی-ئەشکەوت",
     "titleKurdish": "یارانی ئەشکەوت",
@@ -16,7 +40,7 @@
     "description": "ئەمیش زنجیرەیەکی زۆر بەناوبانگە، باس لە یارانی ئەشکەوت ئەکا. تەبعەن لە قورئانا هەیە ئەم چیرۆکە.",
     "platform": "youtube",
     "watchUrl": "https://youtube.com/playlist?list=PLCliBIDpUyfZi0eN4s9jNWGMDp1ZwwoF0&si=Uank0lU_0HZ5DLtO",
-    "telegramPostUrl": "https://youtube.com/playlist?list=PLCliBIDpUyfZi0eN4s9jNWGMDp1ZwwoF0&si=Uank0lU_0HZ5DLtO",
+    "telegramPostUrl": "https://t.me/mediay_islamy",
     "parts": [
       {
         "partNumber": 1,
@@ -28,9 +52,30 @@
       {
         "partNumber": 2,
         "title": "ئەڵقەی ٢",
-        "youtubeUrl": "https://youtu.be/GazKvqHx9kQ?si=eyGlUzZAerlITeze",
+        "youtubeUrl": "https://youtu.be/GazKvqHx9kQ?si=MR_Fo7nJ8lkuU7nu",
         "duration": "۳۲ خولەک",
-        "url": "https://youtu.be/GazKvqHx9kQ?si=eyGlUzZAerlITeze"
+        "url": "https://youtu.be/GazKvqHx9kQ?si=MR_Fo7nJ8lkuU7nu"
+      },
+      {
+        "partNumber": 3,
+        "title": "ئەڵقەی ٣",
+        "youtubeUrl": "https://youtu.be/PNCASmHNjh8?si=cT5eCwUF-ZMl7Di2",
+        "duration": "٣١ خولەک",
+        "url": "https://youtu.be/PNCASmHNjh8?si=cT5eCwUF-ZMl7Di2"
+      },
+      {
+        "partNumber": 4,
+        "title": "ئەڵقەی ٤",
+        "youtubeUrl": "https://youtu.be/GwQu1wPFBQQ?si=eGWHUASoYpmxQhl0",
+        "duration": "٣٣ خولەک",
+        "url": "https://youtu.be/GwQu1wPFBQQ?si=eGWHUASoYpmxQhl0"
+      },
+      {
+        "partNumber": 5,
+        "title": "ئەڵقەی ٥",
+        "youtubeUrl": "https://youtu.be/1S0S9kFveR8?si=AKjJT1gvBMFO5qFR",
+        "duration": "٣٠ خولەک",
+        "url": "https://youtu.be/1S0S9kFveR8?si=AKjJT1gvBMFO5qFR"
       }
     ],
     "imageFit": "cover",

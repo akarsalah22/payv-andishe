@@ -134,7 +134,7 @@ export default function RootLayout({
               <ToastProvider>
                 <SplashScreen />
                 <Header />
-                <main className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col overflow-x-clip">
+                <main className="w-full px-4 sm:px-6 md:max-w-[1680px] md:mx-auto lg:px-6 flex-1 flex flex-col overflow-x-clip">
                   {children}
                 </main>
                 <Footer />

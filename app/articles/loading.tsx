@@ -4,7 +4,7 @@ export default function ArticlesLoading() {
   return (
     <div
       dir="rtl"
-      className="flex-1 flex flex-col items-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full py-10 space-y-10 text-right animate-pulse"
+      className="flex-1 flex flex-col items-center w-full px-4 sm:px-6 md:max-w-[1680px] md:mx-auto lg:px-6 py-10 space-y-10 text-right animate-pulse"
       aria-busy="true"
       aria-label="چاوەڕوان بە بۆ بارکردنی وتارەکان..."
     >

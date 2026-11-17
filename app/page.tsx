@@ -19,7 +19,7 @@ export default async function HomePage() {
   return (
     <div
       dir="rtl"
-      className="w-full py-8 sm:py-12 flex-1 flex flex-col space-y-16 sm:space-y-20 text-right"
+      className="w-full md:max-w-[1680px] md:mx-auto py-8 sm:py-12 flex-1 flex flex-col space-y-16 sm:space-y-20 text-right"
     >
       {/* 1. Hero Section */}
       <section className="w-full max-w-5xl mx-auto text-center space-y-6 pt-2 sm:pt-6 select-none">
